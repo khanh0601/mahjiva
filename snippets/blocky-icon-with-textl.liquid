@@ -22,7 +22,10 @@
         src="{{ block.settings.icon_image | image_url }}"
         alt="{{ block.settings.icon_heading }}"
         class="iwt-icon-image"
-      />
+        width="{{ block.settings.icon_image.width }}"
+        height="{{ block.settings.icon_image.height }}"
+        loading="lazy"
+      >
     </div>
   {% elsif block.settings.icon_code != blank %}
     <div class="iwt-icon-container">

@@ -851,6 +851,31 @@
     border-radius: 4px;
   }
 
+  .pdp-country-native-form {
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+
+  .pdp-country-native-select {
+    width: 100%;
+    max-width: 320px;
+    min-height: 38px;
+    padding: 8px 10px;
+    border: 1px solid #D8D2C4;
+    border-radius: 8px;
+    background: #FFFFFF;
+    color: #163327;
+    font: inherit;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+  }
+
+  .pdp-country-native-select:focus-visible {
+    outline: 2px solid #163327;
+    outline-offset: 2px;
+  }
+
   /* Pricing Cluster Directly Above ATC (CLS Reservation) */
   .pdp-price-row {
     display: flex;
@@ -2038,9 +2063,9 @@
     {%- endif -%}
 
     <nav class="lp-breadcrumb" aria-label="Breadcrumb">
-      <a href="/">MAHJIVA</a>
+      <a href="{{ routes.root_url }}">MAHJIVA</a>
       <span class="lp-sep">&gt;</span>
-      <a href="/collections/all">ALL PRODUCTS</a>
+      <a href="{{ routes.all_products_collection_url }}">ALL PRODUCTS</a>
       {%- if prod_collection != blank -%}
         <span class="lp-sep">&gt;</span>
         <a href="{{ prod_collection.url }}">{{ badge_label }}</a>
@@ -2186,47 +2211,22 @@
             <!-- Row 1: Deliver to Country -->
             <div class="pdp-delivery-row pdp-delivery-country-wrap">
               <span class="pdp-delivery-label">Deliver to:</span>
-              <button 
-                type="button" 
-                class="pdp-delivery-trigger pdp-country-trigger" 
-                id="pdpCountryTrigger-{{ section.id }}" 
-                aria-expanded="false"
-                aria-label="Change delivery country"
-              >
-                <span class="pdp-delivery-val" id="pdpCountryName-{{ section.id }}">{{ localization.country.name | default: 'United States' }}</span>
-                <svg class="pdp-chevron-icon" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round">
-                  <polyline points="6 9 12 15 18 9"></polyline>
-                </svg>
-              </button>
-
-              <!-- Country Selection Popover -->
-              <div class="pdp-country-popover" id="pdpCountryPopover-{{ section.id }}" hidden>
-                <div class="pdp-popover-header">
-                  <span class="pdp-popover-title">Select Delivery Destination</span>
-                  <button type="button" class="pdp-popover-close" id="pdpCountryClose-{{ section.id }}" aria-label="Close">✕</button>
-                </div>
-                {%- form 'localization', id: 'PdpDeliveryCountryForm', class: 'pdp-delivery-form' -%}
-                  <input type="hidden" name="country_code" id="PdpDeliveryCountryInput" value="{{ localization.country.iso_code }}">
-                  <div class="pdp-country-search-wrap">
-                    <input type="search" class="pdp-country-search-input" id="pdpCountrySearch-{{ section.id }}" placeholder="Search country or currency..." autocomplete="off">
-                  </div>
-                  <ul class="pdp-country-list" role="list">
-                    {%- for country in localization.available_countries -%}
-                      <li>
-                        <button 
-                          type="button" 
-                          class="pdp-country-select-item{% if country.iso_code == localization.country.iso_code %} is-selected{% endif %}"
-                          data-country-code="{{ country.iso_code }}"
-                        >
-                          <span class="pdp-country-flag">{% render 'country-flag', country: country, country_code: country.iso_code %}</span>
-                          <span class="pdp-country-name-text">{{ country.name }}</span>
-                          <span class="pdp-country-curr-tag">{{ country.currency.iso_code }}</span>
-                        </button>
-                      </li>
-                    {%- endfor -%}
-                  </ul>
-                {%- endform -%}
-              </div>
+              {%- form 'localization', id: 'PdpDeliveryCountryForm', class: 'pdp-country-native-form' -%}
+                <label class="visually-hidden" for="PdpDeliveryCountryInput-{{ section.id }}">Delivery destination</label>
+                <select
+                  name="country_code"
+                  id="PdpDeliveryCountryInput-{{ section.id }}"
+                  class="pdp-country-native-select"
+                  aria-label="Delivery destination"
+                  onchange="this.form.submit()"
+                >
+                  {%- for country in localization.available_countries -%}
+                    <option value="{{ country.iso_code }}"{% if country.iso_code == localization.country.iso_code %} selected{% endif %}>
+                      {{ country.name }} — {{ country.currency.iso_code }} {{ country.currency.symbol }}
+                    </option>
+                  {%- endfor -%}
+                </select>
+              {%- endform -%}
             </div>
 
             <!-- Row 2: Order today, get it as early as -->
@@ -3032,7 +3032,7 @@
   <div id="AtelierLightbox" role="dialog" aria-modal="true" onclick="if(!event.target.closest('#lbMainImg') && !event.target.closest('.lp-lb-controls-bar')) closeLightbox()">
     <!-- SÂN KHẤU TRUNG TÂM -->
     <div class="lp-lb-stage">
-      <img id="lbMainImg" src="{{ initial_media | image_url: width: 2400 }}" alt="{{ initial_media.alt | default: product.title | escape }}" class="lp-lb-img" onclick="event.stopPropagation();" ondblclick="toggleLightboxZoom()">
+      <img id="lbMainImg" src="{{ initial_media | image_url: width: 2400 }}" alt="{{ initial_media.alt | default: product.title | escape }}" class="lp-lb-img" width="{{ initial_media.width }}" height="{{ initial_media.height }}" loading="lazy" onclick="event.stopPropagation();" ondblclick="toggleLightboxZoom()">
     </div>
 
     <!-- COMPACT LUXURY BOTTOM CONTROLLER (Buttons next to counter) -->

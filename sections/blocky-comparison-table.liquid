@@ -94,7 +94,7 @@
           <thead>
             <tr>
               <th>&nbsp</th>
-              {% for i in (1 .. section.settings.headings_shown) %}
+              {% for i in (1..section.settings.headings_shown) %}
                 {% assign heading = 'heading_' | append: i %}
                 {% assign heading_image = 'heading_image_' | append: i %}
                 <th
@@ -119,7 +119,7 @@
                 <td align="center" class="blocky-table-corner blocky-comparison-table-feature" style="background: {{ section.settings.feature_background_color }}">
                   <p style="color: {{ section.settings.feature_color }}; --font-size: {{ block.settings.feature_size }}px;">{{ block.settings.feature }}</p>
                 </td>
-                {% for i in (1 .. section.settings.headings_shown) %}
+                {% for i in (1..section.settings.headings_shown) %}
                   {% assign icon = 'heading_icon_' | append: i %}
                   <td align="center">
                     {%- if block.settings[icon] == "yes" -%}

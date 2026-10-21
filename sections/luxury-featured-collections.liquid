@@ -390,9 +390,9 @@
             <!-- Full-bleed Media -->
             <div class="lfc-card-media">
               {%- if img_1 != blank -%}
-                {{ img_1 | image_url: width: 900 | image_tag: class: 'lfc-card-img lfc-img-primary', loading: 'lazy', alt: card_title | escape }}
+                {{ img_1 | image_url: width: 900 | image_tag: class: 'lfc-card-img lfc-img-primary', loading: 'lazy', widths: '240, 360, 480, 640, 900', sizes: '(max-width: 749px) 70vw, 20vw', alt: card_title | escape }}
                 {%- if has_hover_img -%}
-                  {{ img_2 | image_url: width: 900 | image_tag: class: 'lfc-card-img lfc-img-secondary', loading: 'lazy', alt: card_title | escape }}
+                  {{ img_2 | image_url: width: 900 | image_tag: class: 'lfc-card-img lfc-img-secondary', loading: 'lazy', widths: '240, 360, 480, 640, 900', sizes: '(max-width: 749px) 70vw, 20vw', alt: card_title | escape }}
                 {%- endif -%}
               {%- else -%}
                 <div class="lfc-card-placeholder">

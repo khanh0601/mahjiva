@@ -408,7 +408,7 @@
                             {% endif %}
                             <div class="blocky-faq-question-text">
                               {% if block.settings.image != null %}
-                                <img src="{{ block.settings.image | image_url }}" alt="{{ block.settings.question }}" class="blocky-faq-icon"/>
+                                <img src="{{ block.settings.image | image_url }}" alt="{{ block.settings.question }}" class="blocky-faq-icon" width="{{ block.settings.image.width }}" height="{{ block.settings.image.height }}" loading="lazy">
                               {% elsif block.settings.icon_code != blank %}
                                 <span class="material-icons material-symbols-outlined blocky-icon blocky-faq-icon"> {{ block.settings.icon_code }} </span>
                               {% endif %}
@@ -566,7 +566,7 @@
                         {% endif %}
                         <div class="blocky-faq-question-text">
                           {% if block.settings.image != null %}
-                            <img src="{{ block.settings.image | image_url }}" alt="{{ block.settings.question }}" class="blocky-faq-icon"/>
+                            <img src="{{ block.settings.image | image_url }}" alt="{{ block.settings.question }}" class="blocky-faq-icon" width="{{ block.settings.image.width }}" height="{{ block.settings.image.height }}" loading="lazy">
                           {% elsif block.settings.icon_code != blank %}
                             <span class="material-icons material-symbols-outlined blocky-icon blocky-faq-icon"> {{ block.settings.icon_code }} </span>
                           {% endif %}
@@ -608,7 +608,7 @@
                         {% endif %}
                         <div class="blocky-faq-question-text">
                           {% if block.settings.image != null %}
-                            <img src="{{ block.settings.image | image_url }}" alt="{{ block.settings.question }}" class="blocky-faq-icon"/>
+                            <img src="{{ block.settings.image | image_url }}" alt="{{ block.settings.question }}" class="blocky-faq-icon" width="{{ block.settings.image.width }}" height="{{ block.settings.image.height }}" loading="lazy">
                           {% elsif block.settings.icon_code != blank %}
                             <span class="material-icons material-symbols-outlined blocky-icon blocky-faq-icon"> {{ block.settings.icon_code }} </span>
                           {% endif %}
@@ -723,6 +723,28 @@
     </div>
   </div>
 </div>
+
+{%- assign faq_schema_blocks = section.blocks | where: 'type', 'question' -%}
+{%- if faq_schema_blocks.size > 0 -%}
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {%- for block in faq_schema_blocks -%}
+          {
+            "@type": "Question",
+            "name": {{ block.settings.question | strip_html | strip_newlines | json }},
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": {{ block.settings.content | strip_html | strip_newlines | json }}
+            }
+          }{% unless forloop.last %},{% endunless %}
+        {%- endfor -%}
+      ]
+    }
+  </script>
+{%- endif -%}
 
 {% schema %}
 

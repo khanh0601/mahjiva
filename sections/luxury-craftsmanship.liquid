@@ -319,7 +319,7 @@
       <div class="lc-media-col">
         <div class="lc-media-wrapper">
           {%- if section.settings.craftsman_image != blank -%}
-            {{ section.settings.craftsman_image | image_url: width: 1400 | image_tag: class: 'lc-craft-img', loading: 'lazy', alt: section.settings.heading | escape }}
+            {{ section.settings.craftsman_image | image_url: width: 1400 | image_tag: class: 'lc-craft-img', loading: 'lazy', widths: '480, 720, 960, 1200, 1400', sizes: '(max-width: 749px) 100vw, 50vw', alt: section.settings.heading | escape }}
           {%- else -%}
             <div class="lc-craft-placeholder">
               <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="margin-bottom: 12px; opacity: 0.6;">

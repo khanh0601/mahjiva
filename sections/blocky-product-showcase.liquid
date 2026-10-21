@@ -150,6 +150,10 @@ Unauthorized copying, distribution, or reproduction in any form will result in l
                   <img
                     class="blocky-full blocky-image-cover"
                     src="{{ block.settings.image | image_url: height: 750 }}"
+                    alt="{{ block.settings.image.alt | escape }}"
+                    width="{{ block.settings.image.width }}"
+                    height="{{ block.settings.image.height }}"
+                    loading="lazy"
                   >  
                 {% else %}
                   {{ 'image' | placeholder_svg_tag: "blocky-full blocky-showcase-img-placeholder" }}

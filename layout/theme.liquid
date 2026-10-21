@@ -17,11 +17,12 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&display=swap">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&display=swap" media="print" onload="this.media='all'">
 
     <title>
-      {%- if collection.handle == 'all' and page_title == 'Products' -%}
+      {%- if request.page_type == 'index' and page_title == shop.name -%}
+        {{ shop.name }} | American Mahjong Sets &amp; Accessories
+      {%- elsif collection.handle == 'all' and page_title == 'Products' -%}
         All Products
       {%- elsif request.path contains 'about' or page.handle contains 'about' or request.path contains 'contact-information' -%}
         About Us &ndash; {{ shop.name }}
@@ -33,11 +34,77 @@
       {%- unless page_title contains shop.name %} &ndash; {{ shop.name }}{% endunless -%}
     </title>
 
-    {% if page_description %}
-      <meta name="description" content="{{ page_description | escape }}">
-    {% endif %}
+    {%- liquid
+      assign seo_description = page_description
+      if seo_description == blank
+        if request.page_type == 'index'
+          assign seo_description = 'Shop Mahjiva American Mahjong tile sets, mats, racks, tile bags, and dice designed to bring personality and style to every game.'
+        elsif request.page_type == 'collection'
+          capture seo_description
+            echo 'Shop '
+            echo collection.title
+            echo ' from '
+            echo shop.name
+            echo '.'
+          endcapture
+        else
+          assign seo_description = shop.description
+        endif
+      endif
+    -%}
+    {%- if seo_description != blank -%}
+      <meta name="description" content="{{ seo_description | strip_html | strip_newlines | escape }}">
+    {%- endif -%}
 
-    {% render 'meta-tags' %}
+    {% render 'meta-tags', seo_description: seo_description %}
+
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "name": {{ shop.name | json }},
+        "url": {{ shop.url | json }}{% if settings.logo != blank %},
+        "logo": {{ settings.logo | image_url: width: 600 | prepend: 'https:' | json }}{% endif %}
+      }
+    </script>
+    {%- if request.page_type == 'index' -%}
+      {%- capture search_target -%}{{ shop.url }}{{ routes.search_url }}?q={search_term_string}{%- endcapture -%}
+      <script type="application/ld+json">
+        {
+          "@context": "https://schema.org",
+          "@type": "WebSite",
+          "name": {{ shop.name | json }},
+          "url": {{ shop.url | json }},
+          "potentialAction": {
+            "@type": "SearchAction",
+            "target": {{ search_target | json }},
+            "query-input": "required name=search_term_string"
+          }
+        }
+      </script>
+    {%- elsif request.page_type == 'collection' -%}
+      <script type="application/ld+json">
+        {
+          "@context": "https://schema.org",
+          "@type": "CollectionPage",
+          "name": {{ collection.title | json }},
+          "url": {{ canonical_url | json }},
+          "description": {{ seo_description | strip_html | strip_newlines | json }},
+          "isPartOf": {
+            "@type": "WebSite",
+            "name": {{ shop.name | json }},
+            "url": {{ shop.url | json }}
+          }
+        }
+      </script>
+    {%- endif -%}
+
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:FILL@0..1&display=swap"
+      media="print"
+      onload="this.media='all'"
+    >
 
     <script src="{{ 'constants.js' | asset_url }}" defer="defer"></script>
     <script src="{{ 'pubsub.js' | asset_url }}" defer="defer"></script>
@@ -62,6 +129,7 @@
       {{ body_font_bold_italic | font_face: font_display: 'swap' }}
       {{ settings.type_header_font | font_face: font_display: 'swap' }}
 
+      {% assign scheme_classes = '' %}
       {% for scheme in settings.color_schemes -%}
         {% assign scheme_classes = scheme_classes | append: ', .color-' | append: scheme.id %}
         {% if forloop.index == 1 -%}
@@ -550,24 +618,6 @@
           }
         };
 
-        // 3rd-party App Reliever: Isolate MutationObserver from flooding document.body
-        try {
-          if (typeof window.MutationObserver === 'function' && !window._maisonObserverPatched) {
-            window._maisonObserverPatched = true;
-            const nativeObserve = MutationObserver.prototype.observe;
-            MutationObserver.prototype.observe = function(target, options) {
-              if (target === document.body && options && options.subtree && options.attributes) {
-                const pdpTarget = document.getElementById('ProductDetails') || document.querySelector('.lp-container') || document.querySelector('#MainContent');
-                if (pdpTarget && !this._isMaisonScoped) {
-                  this._isMaisonScoped = true;
-                  return nativeObserve.call(this, pdpTarget, options);
-                }
-              }
-              return nativeObserve.call(this, target, options);
-            };
-          }
-        } catch(e) {}
-
         window.addEventListener('scroll', onScrollRequest, { passive: true });
 
         // Chống giật trên Mobile: Debounce 150ms khi thay đổi kích thước màn hình
@@ -585,7 +635,5 @@
       })();
     </script>
 
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:FILL@0..1" rel="stylesheet" />
   </body>
 </html>

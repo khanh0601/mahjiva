@@ -1,8 +1,11 @@
 {%- liquid
   assign og_title = page_title | default: shop.name
+  if request.page_type == 'index' and page_title == shop.name
+    assign og_title = shop.name | append: ' | American Mahjong Sets & Accessories'
+  endif
   assign og_url = canonical_url | default: request.origin
   assign og_type = 'website'
-  assign og_description = page_description | default: shop.description | default: shop.name
+  assign og_description = page_description | default: seo_description | default: shop.description | default: shop.name
 
   if request.page_type == 'product'
     assign og_type = 'product'

@@ -339,7 +339,23 @@
 
 {%- assign slide_count = section.blocks.size -%}
 {%- if slide_count > 0 -%}
+  {%- liquid
+    assign hero_heading = blank
+    for block in section.blocks
+      if block.settings.title != blank
+        assign hero_heading = block.settings.title
+        break
+      endif
+    endfor
+    if hero_heading == blank
+      capture hero_heading
+        echo shop.name
+        echo ' | American Mahjong Sets & Accessories'
+      endcapture
+    endif
+  -%}
   <div class="luxury-hero-slider" id="LuxuryHero-{{ section.id }}" data-section-id="{{ section.id }}" data-autoplay="{{ section.settings.auto_rotate }}" data-duration="{{ section.settings.slide_duration | default: 6 }}">
+    <h1 class="visually-hidden">{{ hero_heading | strip | escape }}</h1>
     <div class="lhs-track">
       {%- for block in section.blocks -%}
         <div class="lhs-slide {% if forloop.first %}is-active{% endif %}" data-slide-index="{{ forloop.index0 }}" {{ block.shopify_attributes }}>
@@ -392,7 +408,7 @@
                 {%- endif -%}
 
                 {%- if block.settings.title != blank -%}
-                  <h1 class="lhs-title">{{ block.settings.title }}</h1>
+                  <h2 class="lhs-title">{{ block.settings.title }}</h2>
                 {%- endif -%}
 
                 {%- if block.settings.subtitle != blank -%}

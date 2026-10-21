@@ -136,10 +136,13 @@
                                 {% if block.type == "image" %}
                                     {% if block.settings.image %}
                                         <img
-                                                class="img-fit-{{ block.settings.media_fit }} {{ other_classes }}"
+                                                class="img-fit-{{ block.settings.media_fit }} {{ other_classes }}{% if block.settings.link %} blocky-media-instructions-img-link{% endif %}"
                                                 src="{{ block.settings.image | image_url: height: 750 }}"
-                                                {% if block.settings.link %}class="blocky-media-instructions-img-link" data-url={{ block.settings.link }}{% endif %}
+                                                {% if block.settings.link %}data-url="{{ block.settings.link }}"{% endif %}
                                                 alt="{{ block.settings.title | default: 'Media instruction image' }}"
+                                                width="{{ block.settings.image.width }}"
+                                                height="{{ block.settings.image.height }}"
+                                                loading="lazy"
                                         >
                                     {% else %}
                                         {{ 'image' | placeholder_svg_tag: other_classes }}
@@ -181,10 +184,13 @@
                                 {% if block.type == "image" %}
                                     {% if block.settings.image %}
                                         <img
-                                                class="img-fit-{{ block.settings.media_fit }} {{ other_classes }}"
+                                                class="img-fit-{{ block.settings.media_fit }} {{ other_classes }}{% if block.settings.link %} blocky-media-instructions-img-link{% endif %}"
                                                 src="{{ block.settings.image | image_url: height: 750 }}"
-                                                {% if block.settings.link %}class="blocky-media-instructions-img-link" data-url={{ block.settings.link }}{% endif %}
+                                                {% if block.settings.link %}data-url="{{ block.settings.link }}"{% endif %}
                                                 alt="{{ block.settings.title | default: 'Media instruction image' }}"
+                                                width="{{ block.settings.image.width }}"
+                                                height="{{ block.settings.image.height }}"
+                                                loading="lazy"
                                         >
                                     {% else %}
                                         {{ 'image' | placeholder_svg_tag: other_classes }}

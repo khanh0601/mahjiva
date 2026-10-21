@@ -464,9 +464,9 @@
               {%- endif -%}
 
               {%- if prod.featured_image != blank -%}
-                {{ prod.featured_image | image_url: width: 800 | image_tag: class: 'lbs-img lbs-img--primary', loading: 'lazy', alt: prod.title | escape }}
+                {{ prod.featured_image | image_url: width: 800 | image_tag: class: 'lbs-img lbs-img--primary', loading: 'lazy', widths: '240, 360, 480, 640, 800', sizes: '(max-width: 749px) 50vw, 25vw', alt: prod.title | escape }}
                 {%- if prod.images.size > 1 -%}
-                  {{ prod.images[1] | image_url: width: 800 | image_tag: class: 'lbs-img lbs-img--secondary', loading: 'lazy', alt: prod.title | escape }}
+                  {{ prod.images[1] | image_url: width: 800 | image_tag: class: 'lbs-img lbs-img--secondary', loading: 'lazy', widths: '240, 360, 480, 640, 800', sizes: '(max-width: 749px) 50vw, 25vw', alt: prod.title | escape }}
                 {%- endif -%}
               {%- else -%}
                 {{ 'product-1' | placeholder_svg_tag: 'lbs-img' }}

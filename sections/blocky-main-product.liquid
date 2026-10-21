@@ -4,7 +4,7 @@
 {% endcomment %}
 
 <link href="https://cdn.jsdelivr.net/npm/glidejs@2.1.0/dist/css/glide.core.min.css" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/@glidejs/glide"></script>
+<script src="https://cdn.jsdelivr.net/npm/@glidejs/glide" defer></script>
 <script src="{{ 'blocky-image-video-slider.js' | asset_url }}" defer></script>
 
 {%- liquid
@@ -3115,13 +3115,13 @@
                       {%- if block.settings.avatar_1 != blank or block.settings.avatar_2 != blank or block.settings.avatar_3 != blank -%}
                         <div class="blocky-rti-avatars">
                           {%- if block.settings.avatar_1 != blank -%}
-                            <div class="blocky-rti-avatar"><img src="{{ block.settings.avatar_1 | image_url: width: 200 }}" alt="" loading="lazy"></div>
+                            <div class="blocky-rti-avatar"><img src="{{ block.settings.avatar_1 | image_url: width: 200 }}" alt="" loading="lazy" width="{{ block.settings.avatar_1.width }}" height="{{ block.settings.avatar_1.height }}"></div>
                           {%- endif -%}
                           {%- if block.settings.avatar_2 != blank -%}
-                            <div class="blocky-rti-avatar"><img src="{{ block.settings.avatar_2 | image_url: width: 200 }}" alt="" loading="lazy"></div>
+                            <div class="blocky-rti-avatar"><img src="{{ block.settings.avatar_2 | image_url: width: 200 }}" alt="" loading="lazy" width="{{ block.settings.avatar_2.width }}" height="{{ block.settings.avatar_2.height }}"></div>
                           {%- endif -%}
                           {%- if block.settings.avatar_3 != blank -%}
-                            <div class="blocky-rti-avatar"><img src="{{ block.settings.avatar_3 | image_url: width: 200 }}" alt="" loading="lazy"></div>
+                            <div class="blocky-rti-avatar"><img src="{{ block.settings.avatar_3 | image_url: width: 200 }}" alt="" loading="lazy" width="{{ block.settings.avatar_3.width }}" height="{{ block.settings.avatar_3.height }}"></div>
                           {%- endif -%}
                         </div>
                       {%- endif -%}
@@ -3152,7 +3152,7 @@
                         {%- if feature_text != blank -%}
                           <div class="blocky-rti-feature">
                             {%- if icon_img != blank -%}
-                              <img class="blocky-rti-feature-icon" src="{{ icon_img | image_url: width: 100 }}" alt="" loading="lazy">
+                              <img class="blocky-rti-feature-icon" src="{{ icon_img | image_url: width: 100 }}" alt="" loading="lazy" width="{{ icon_img.width }}" height="{{ icon_img.height }}">
                             {%- elsif icon_code != blank -%}
                               <span class="blocky-rti-feature-icon-code material-icons material-symbols-outlined">{{ icon_code }}</span>
                             {%- endif -%}
@@ -3625,7 +3625,7 @@
                       <details class="blocky-acc-item">
                         <summary class="blocky-acc-summary">
                           {%- if block.settings[acc_image_key] != blank -%}
-                            <img class="blocky-acc-icon" src="{{ block.settings[acc_image_key] | image_url: width: 120 }}" alt="" loading="lazy">
+                            <img class="blocky-acc-icon" src="{{ block.settings[acc_image_key] | image_url: width: 120 }}" alt="" loading="lazy" width="{{ block.settings[acc_image_key].width }}" height="{{ block.settings[acc_image_key].height }}">
                           {%- elsif block.settings[acc_code_key] != blank -%}
                             <span class="blocky-acc-icon-code material-icons material-symbols-outlined">{{ block.settings[acc_code_key] }}</span>
                           {%- endif -%}

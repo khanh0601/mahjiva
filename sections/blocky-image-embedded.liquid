@@ -28,14 +28,20 @@
                           src="{{ block.settings.image | image_url: width: 2560 }}"
                           alt="{{ block.settings.image.alt | default: 'Banner' | escape }}"
                           loading="{% if forloop.first %}eager{% else %}lazy{% endif %}"
-                        />
+                          width="{{ block.settings.image.width }}"
+                          height="{{ block.settings.image.height }}"
+                          fetchpriority="{% if forloop.first %}high{% else %}auto{% endif %}"
+                        >
                       {% else %}
                         <img
                           class="blocky-image-hero-img blocky-image-{{ section.settings.image_fit }}"
                           src="{{ block.settings.image_mobile | image_url: width: 1200 }}"
                           alt="{{ block.settings.image_mobile.alt | default: 'Banner' | escape }}"
                           loading="{% if forloop.first %}eager{% else %}lazy{% endif %}"
-                        />
+                          width="{{ block.settings.image_mobile.width }}"
+                          height="{{ block.settings.image_mobile.height }}"
+                          fetchpriority="{% if forloop.first %}high{% else %}auto{% endif %}"
+                        >
                       {% endif %}
                     </picture>
                   {% elsif block.settings.image != blank %}
@@ -44,7 +50,10 @@
                       src="{{ block.settings.image | image_url: width: 2560 }}"
                       alt="{{ block.settings.image.alt | default: 'Banner' | escape }}"
                       loading="{% if forloop.first %}eager{% else %}lazy{% endif %}"
-                    />
+                      width="{{ block.settings.image.width }}"
+                      height="{{ block.settings.image.height }}"
+                      fetchpriority="{% if forloop.first %}high{% else %}auto{% endif %}"
+                    >
                   {% endif %}
                 {% else %}
                   <div class="hero-slide-placeholder">
@@ -86,7 +95,11 @@
             class="blocky-image-hero-img blocky-image-{{ section.settings.image_fit }}"
             src="{{ section.settings.image | image_url: width: 2560 }}"
             alt="{{ section.settings.image.alt | default: 'Banner' | escape }}"
-          />
+            width="{{ section.settings.image.width }}"
+            height="{{ section.settings.image.height }}"
+            loading="eager"
+            fetchpriority="high"
+          >
         {% else %}
           {{ 'image' | placeholder_svg_tag: 'placeholder-svg placeholder' }}
         {% endif %}

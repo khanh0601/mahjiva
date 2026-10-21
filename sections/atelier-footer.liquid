@@ -499,6 +499,19 @@
     position: relative;
   }
 
+  .af-country-select {
+    appearance: auto;
+    -webkit-appearance: menulist;
+    display: block;
+    max-width: min(320px, 82vw);
+    text-overflow: ellipsis;
+  }
+
+  .af-country-select option {
+    color: #141517;
+    background: #FFFFFF;
+  }
+
   .af-curr-btn {
     display: inline-flex;
     align-items: center;
@@ -1132,62 +1145,20 @@
       <!-- Left: Native Shopify Localization / Currency Dropup Selector -->
       <div class="af-currency-box">
         {%- form 'localization', id: 'FooterLocalizationForm', class: 'af-curr-form' -%}
-          <input type="hidden" name="country_code" id="FooterCountryCode" value="{{ localization.country.iso_code }}">
-          
-          <button 
-            type="button" 
-            class="af-curr-btn" 
-            id="afCurrencyToggle" 
-            aria-expanded="false" 
-            aria-label="Shipping Destination & Currency"
-            {% if localization.available_countries.size <= 1 %}style="cursor: default;"{% endif %}
+          <label class="visually-hidden" for="FooterCountryCode">Shipping destination and currency</label>
+          <select
+            name="country_code"
+            id="FooterCountryCode"
+            class="af-curr-btn af-country-select"
+            aria-label="Shipping destination and currency"
+            onchange="this.form.submit()"
           >
-            <span class="af-curr-flag">{% render 'country-flag', country: localization.country, country_code: localization.country.iso_code %}</span>
-            <span class="af-curr-text">{{ localization.country.name }} | {{ localization.country.currency.symbol }}({{ localization.country.currency.iso_code }})</span>
-            {%- if localization.available_countries.size > 1 -%}
-              <svg class="af-curr-arrow" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <polyline points="18 15 12 9 6 15"></polyline>
-              </svg>
-            {%- endif -%}
-          </button>
-
-          {%- if localization.available_countries.size > 1 -%}
-            <div class="af-curr-menu" id="afCurrencyMenu" hidden>
-              <div class="af-curr-header">Shipping Destination &amp; Currency</div>
-              
-              <div class="af-curr-search-box">
-                <input 
-                  type="search" 
-                  class="af-curr-search-input" 
-                  id="afCurrSearch" 
-                  placeholder="Search region or currency..." 
-                  aria-label="Search region or currency"
-                  autocomplete="off"
-                >
-              </div>
-
-              <ul class="af-curr-options" role="list">
-                {%- for country in localization.available_countries -%}
-                  <li class="af-curr-option-item">
-                    <button 
-                      type="button" 
-                      class="af-curr-select-btn{% if country.iso_code == localization.country.iso_code %} is-active{% endif %}"
-                      data-country-code="{{ country.iso_code }}"
-                      data-currency="{{ country.currency.iso_code }}"
-                    >
-                      <div class="af-curr-btn-left">
-                        {% render 'country-flag', country: country, country_code: country.iso_code %}
-                        <span class="af-curr-country-name">{{ country.name }}</span>
-                      </div>
-                      <span class="af-curr-currency-tag">
-                        {{ country.currency.iso_code }} {{ country.currency.symbol }}
-                      </span>
-                    </button>
-                  </li>
-                {%- endfor -%}
-              </ul>
-            </div>
-          {%- endif -%}
+            {%- for country in localization.available_countries -%}
+              <option value="{{ country.iso_code }}"{% if country.iso_code == localization.country.iso_code %} selected{% endif %}>
+                {{ country.name }} — {{ country.currency.iso_code }} {{ country.currency.symbol }}
+              </option>
+            {%- endfor -%}
+          </select>
         {%- endform -%}
       </div>
 
@@ -1231,75 +1202,6 @@
 
   </div>
 </footer>
-
-<script>
-  (function() {
-    function initFooterCurrency() {
-      var toggle = document.getElementById('afCurrencyToggle');
-      var menu = document.getElementById('afCurrencyMenu');
-      var codeInput = document.getElementById('FooterCountryCode');
-      var form = document.getElementById('FooterLocalizationForm');
-      var searchInput = document.getElementById('afCurrSearch');
-
-      if (!toggle || !menu) return;
-
-      toggle.addEventListener('click', function(e) {
-        e.stopPropagation();
-        var isHidden = menu.hasAttribute('hidden');
-        if (isHidden) {
-          menu.removeAttribute('hidden');
-          toggle.setAttribute('aria-expanded', 'true');
-          if (searchInput) {
-            setTimeout(function() { searchInput.focus(); }, 60);
-          }
-        } else {
-          menu.setAttribute('hidden', 'true');
-          toggle.setAttribute('aria-expanded', 'false');
-        }
-      });
-
-      menu.addEventListener('click', function(e) {
-        e.stopPropagation();
-      });
-
-      document.addEventListener('click', function(e) {
-        if (!menu.hasAttribute('hidden')) {
-          menu.setAttribute('hidden', 'true');
-          toggle.setAttribute('aria-expanded', 'false');
-        }
-      });
-
-      var optionBtns = menu.querySelectorAll('.af-curr-select-btn');
-      optionBtns.forEach(function(btn) {
-        btn.addEventListener('click', function(e) {
-          e.preventDefault();
-          var code = this.getAttribute('data-country-code');
-          if (code && codeInput && form) {
-            codeInput.value = code;
-            form.submit();
-          }
-        });
-      });
-
-      if (searchInput) {
-        searchInput.addEventListener('input', function() {
-          var q = this.value.toLowerCase().trim();
-          var items = menu.querySelectorAll('.af-curr-option-item');
-          items.forEach(function(item) {
-            var text = item.textContent.toLowerCase();
-            item.style.display = text.indexOf(q) !== -1 ? '' : 'none';
-          });
-        });
-      }
-    }
-
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', initFooterCurrency);
-    } else {
-      initFooterCurrency();
-    }
-  })();
-</script>
 
 {% schema %}
 {

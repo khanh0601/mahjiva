@@ -1,14 +1,12 @@
 <link rel="stylesheet" href="{{ 'component-list-menu.css' | asset_url }}" media="print" onload="this.media='all'">
 <link rel="stylesheet" href="{{ 'component-search.css' | asset_url }}" media="print" onload="this.media='all'">
-<link rel="stylesheet" href="{{ 'component-localization-form.css' | asset_url }}" media="print" onload="this.media='all'">
 {%- if settings.predictive_search_enabled -%}
-  <link rel="stylesheet" href="{{ 'component-price.css' | asset_url }}" media="print" onload="this.media='all'">
-  <link rel="stylesheet" href="{{ 'component-predictive-search.css' | asset_url }}" media="print" onload="this.media='all'">
+  {%- unless settings.cart_type == 'drawer' -%}
+    <link rel="stylesheet" href="{{ 'component-price.css' | asset_url }}" media="print" onload="this.media='all'">
+  {%- endunless -%}
 {%- endif -%}
 {%- if settings.cart_type == "drawer" -%}
-  {{ 'component-cart-drawer.css' | asset_url | stylesheet_tag }}
   {{ 'component-cart.css' | asset_url | stylesheet_tag }}
-  {{ 'component-cart-items.css' | asset_url | stylesheet_tag }}
   {{ 'component-totals.css' | asset_url | stylesheet_tag }}
   {{ 'component-price.css' | asset_url | stylesheet_tag }}
   {{ 'component-discounts.css' | asset_url | stylesheet_tag }}
@@ -40,13 +38,6 @@
 {%- assign logo_h_mb = section.settings.logo_height_mobile | default: 36 -%}
 {%- assign brand_size_pc = section.settings.brand_name_size_desktop | default: section.settings.brand_name_size | default: 18 -%}
 {%- assign brand_size_mb = section.settings.brand_name_size_mobile | default: 14 -%}
-
-{%- assign current_currency = localization.country.currency.iso_code | default: cart.currency.iso_code | default: shop.currency -%}
-{%- assign current_symbol = localization.country.currency.symbol | default: cart.currency.symbol -%}
-
-{%- assign active_country_code = localization.country.iso_code -%}
-{%- assign active_country_name = localization.country.name -%}
-{%- assign active_flag = localization.country.iso_code -%}
 
 {%- style -%}
   /* =========================================================================
@@ -703,6 +694,21 @@
     padding: 0 !important;
     display: inline-flex !important;
     align-items: center !important;
+    gap: 7px !important;
+  }
+
+  .lh-country-select {
+    appearance: auto !important;
+    -webkit-appearance: menulist !important;
+    display: inline-block !important;
+    max-width: 190px !important;
+    text-overflow: ellipsis !important;
+  }
+
+  .lh-country-select option {
+    color: #141517;
+    background: #FFFFFF;
+    text-transform: none;
   }
 
   .lh-curr-toggle {
@@ -1502,6 +1508,23 @@
     width: 100% !important;
   }
 
+  .lh-drawer-country-select {
+    appearance: auto !important;
+    -webkit-appearance: menulist !important;
+    display: block !important;
+    width: 100% !important;
+    color: #FAF8F5 !important;
+    background: #181A1E !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+    border-radius: 8px !important;
+    padding: 9px 10px !important;
+  }
+
+  .lh-drawer-country-select option {
+    color: #141517;
+    background: #FFFFFF;
+  }
+
   .lh-drawer-curr-btn {
     background: transparent !important;
     border: none !important;
@@ -1790,18 +1813,22 @@
 
       {%- assign header_logo = section.settings.logo | default: settings.logo -%}
       {%- if header_logo != blank -%}
+        {%- assign header_logo_alt = header_logo.alt | default: shop.name | escape -%}
         <a href="{{ routes.root_url }}" class="lh-brand-link" aria-label="{{ shop.name }}">
           {%- if section.settings.show_seal_badge -%}
             <div class="lh-seal-box" aria-hidden="true">玉</div>
           {%- endif -%}
-          <img 
-            src="{{ header_logo | image_url: width: 800 }}" 
-            alt="{{ header_logo.alt | default: shop.name | escape }}"
-            class="lh-logo-img"
-            width="{{ header_logo.width }}"
-            height="{{ header_logo.height }}"
-            loading="eager"
-          >
+          {{-
+            header_logo
+            | image_url: width: 240
+            | image_tag:
+              class: 'lh-logo-img',
+              widths: '120, 180, 240',
+              sizes: '(max-width: 749px) 110px, 140px',
+              alt: header_logo_alt,
+              loading: 'eager',
+              fetchpriority: 'high'
+          -}}
         </a>
       {%- else -%}
         <a href="{{ routes.root_url }}" class="lh-brand-link" aria-label="{{ shop.name }}">
@@ -2558,7 +2585,7 @@
           {%- else -%}
             <!-- Fallback Navigation with Collections Mega Menu -->
             <li class="lh-nav-item has-dropdown lh-has-dropdown has-mega-menu">
-              <a href="/collections/all" class="lh-nav-link" aria-expanded="false" aria-haspopup="true">
+              <a href="{{ routes.all_products_collection_url }}" class="lh-nav-link" aria-expanded="false" aria-haspopup="true">
                 <span>Collections</span>
                 <svg viewBox="0 0 10 6" fill="none" stroke="currentColor" stroke-width="1.3" style="width:7px; height:5px; margin-left:4px;">
                   <path d="M1 1L5 5L9 1" stroke-linecap="round" stroke-linejoin="round"/>
@@ -2566,8 +2593,8 @@
               </a>
               {{ mega_dropdown_fallback_html }}
             </li>
-            <li class="lh-nav-item"><a href="/collections/all" class="lh-nav-link"><span>The 144-Tile Suites</span></a></li>
-            <li class="lh-nav-item"><a href="/collections/all" class="lh-nav-link"><span>Tablecraft & Pushers</span></a></li>
+            <li class="lh-nav-item"><a href="{{ routes.all_products_collection_url }}" class="lh-nav-link"><span>The 144-Tile Suites</span></a></li>
+            <li class="lh-nav-item"><a href="{{ routes.all_products_collection_url }}" class="lh-nav-link"><span>Tablecraft & Pushers</span></a></li>
             <li class="lh-nav-item"><a href="/pages/contact" class="lh-nav-link"><span>Private Bespoke</span></a></li>
             <li class="lh-nav-item"><a href="/pages/about" class="lh-nav-link"><span>Atelier Story</span></a></li>
           {%- endif -%}
@@ -2583,61 +2610,21 @@
       {%- if section.settings.enable_country_selector -%}
         <div class="lh-curr-dropdown-wrapper">
           {%- form 'localization', id: 'HeaderCountryForm', class: 'lh-currency-form' -%}
-            <input type="hidden" name="country_code" id="HeaderCountryCode" value="{{ localization.country.iso_code }}">
-            <button 
-              type="button" 
-              class="lh-curr-toggle" 
-              id="lhCurrencyToggle" 
-              aria-expanded="false" 
-              aria-label="Shipping Destination & Currency"
-              {% if localization.available_countries.size <= 1 %}style="cursor: default;"{% endif %}
+            <span class="lh-curr-flag" aria-hidden="true">{% render 'country-flag', country: localization.country, country_code: localization.country.iso_code %}</span>
+            <label class="visually-hidden" for="HeaderCountryCode">Shipping destination and currency</label>
+            <select
+              name="country_code"
+              id="HeaderCountryCode"
+              class="lh-curr-toggle lh-country-select"
+              aria-label="Shipping destination and currency"
+              onchange="this.form.submit()"
             >
-              <span class="lh-curr-flag">{% render 'country-flag', country: localization.country, country_code: localization.country.iso_code %}</span>
-              <span class="lh-curr-current">{{ localization.country.currency.iso_code }} ({{ localization.country.currency.symbol }})</span>
-              {%- if localization.available_countries.size > 1 -%}
-                <svg class="lh-curr-arrow" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                  <polyline points="6 9 12 15 18 9"></polyline>
-                </svg>
-              {%- endif -%}
-            </button>
-
-            {%- if localization.available_countries.size > 1 -%}
-              <div class="lh-curr-menu" id="lhCurrencyMenu" hidden>
-                <div class="lh-curr-header">Shipping Destination & Currency</div>
-                
-                <div class="lh-curr-search-box">
-                  <input 
-                    type="search" 
-                    class="lh-curr-search-input" 
-                    id="lhCurrSearchDesktop" 
-                    placeholder="Search region or currency..." 
-                    aria-label="Search region or currency"
-                    autocomplete="off"
-                  >
-                </div>
-
-                <ul class="lh-curr-options" role="list">
-                  {%- for country in localization.available_countries -%}
-                    <li class="lh-curr-option-item">
-                      <button 
-                        type="button" 
-                        class="lh-curr-select-btn{% if country.iso_code == localization.country.iso_code %} is-active{% endif %}"
-                        data-country-code="{{ country.iso_code }}"
-                        data-currency="{{ country.currency.iso_code }}"
-                      >
-                        <div class="lh-curr-btn-left">
-                          {% render 'country-flag', country: country, country_code: country.iso_code %}
-                          <span class="lh-curr-country-name">{{ country.name }}</span>
-                        </div>
-                        <span class="lh-curr-currency-tag">
-                          {{ country.currency.iso_code }} {{ country.currency.symbol }}
-                        </span>
-                      </button>
-                    </li>
-                  {%- endfor -%}
-                </ul>
-              </div>
-            {%- endif -%}
+              {%- for country in localization.available_countries -%}
+                <option value="{{ country.iso_code }}"{% if country.iso_code == localization.country.iso_code %} selected{% endif %}>
+                  {{ country.name }} — {{ country.currency.iso_code }} {{ country.currency.symbol }}
+                </option>
+              {%- endfor -%}
+            </select>
           {%- endform -%}
         </div>
       {%- endif -%}
@@ -2905,7 +2892,7 @@
         {%- else -%}
           <li class="lh-drawer-item has-submenu has-dropdown">
             <div class="lh-drawer-parent-row">
-              <a href="/collections/all" class="lh-drawer-link">Collections</a>
+              <a href="{{ routes.all_products_collection_url }}" class="lh-drawer-link">Collections</a>
               <button type="button" class="lh-drawer-sub-toggle" aria-expanded="false" aria-label="Toggle Collections">
                 <svg width="8" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                   <polyline points="9 18 15 12 9 6"></polyline>
@@ -2913,14 +2900,14 @@
               </button>
             </div>
             <ul class="lh-drawer-sublist" hidden>
-              <li class="lh-drawer-subitem"><a href="{% if collections['tiles'] != blank %}{{ collections['tiles'].url }}{% else %}/collections/all{% endif %}" class="lh-drawer-sublink">01 • The 144-Tile Suites</a></li>
-              <li class="lh-drawer-subitem"><a href="{% if collections['racks'] != blank %}{{ collections['racks'].url }}{% else %}/collections/all{% endif %}" class="lh-drawer-sublink">02 • Pushers & Racks</a></li>
-              <li class="lh-drawer-subitem"><a href="{% if collections['mats'] != blank %}{{ collections['mats'].url }}{% else %}/collections/all{% endif %}" class="lh-drawer-sublink">03 • Acoustic Tablecraft</a></li>
+              <li class="lh-drawer-subitem"><a href="{% if collections['tiles'] != blank %}{{ collections['tiles'].url }}{% else %}{{ routes.all_products_collection_url }}{% endif %}" class="lh-drawer-sublink">01 • The 144-Tile Suites</a></li>
+              <li class="lh-drawer-subitem"><a href="{% if collections['racks'] != blank %}{{ collections['racks'].url }}{% else %}{{ routes.all_products_collection_url }}{% endif %}" class="lh-drawer-sublink">02 • Pushers & Racks</a></li>
+              <li class="lh-drawer-subitem"><a href="{% if collections['mats'] != blank %}{{ collections['mats'].url }}{% else %}{{ routes.all_products_collection_url }}{% endif %}" class="lh-drawer-sublink">03 • Acoustic Tablecraft</a></li>
               <li class="lh-drawer-subitem"><a href="{% if collections['tile-bag'] != blank %}{{ collections['tile-bag'].url }}{% else %}/pages/contact{% endif %}" class="lh-drawer-sublink">04 • Bespoke Trunks & Cases</a></li>
             </ul>
           </li>
-          <li class="lh-drawer-item"><a href="/collections/all" class="lh-drawer-link">The 144-Tile Suites</a></li>
-          <li class="lh-drawer-item"><a href="/collections/all" class="lh-drawer-link">Tablecraft & Pushers</a></li>
+          <li class="lh-drawer-item"><a href="{{ routes.all_products_collection_url }}" class="lh-drawer-link">The 144-Tile Suites</a></li>
+          <li class="lh-drawer-item"><a href="{{ routes.all_products_collection_url }}" class="lh-drawer-link">Tablecraft & Pushers</a></li>
           <li class="lh-drawer-item"><a href="/pages/contact" class="lh-drawer-link">Private Bespoke</a></li>
           <li class="lh-drawer-item"><a href="/pages/about" class="lh-drawer-link">Atelier Story</a></li>
         {%- endif -%}
@@ -2951,65 +2938,20 @@
 
       <div class="lh-drawer-currency">
         {%- form 'localization', id: 'DrawerCountryForm', class: 'lh-drawer-currency-form' -%}
-          <input type="hidden" name="country_code" id="DrawerCountryCode" value="{{ localization.country.iso_code }}">
-          <button 
-            type="button" 
-            class="lh-drawer-curr-btn" 
-            id="lhDrawerCurrBtn"
-            aria-expanded="false"
-            aria-label="Shipping Destination & Currency"
-            {% if localization.available_countries.size <= 1 %}style="cursor: default;"{% endif %}
+          <label class="visually-hidden" for="DrawerCountryCode">Shipping destination and currency</label>
+          <select
+            name="country_code"
+            id="DrawerCountryCode"
+            class="lh-drawer-curr-btn lh-drawer-country-select"
+            aria-label="Shipping destination and currency"
+            onchange="this.form.submit()"
           >
-            <span class="lh-drawer-curr-flag">
-              {% render 'country-flag', country: localization.country, country_code: localization.country.iso_code %}
-            </span>
-            <span class="lh-drawer-curr-text">
-              {{ localization.country.currency.iso_code }} ({{ localization.country.currency.symbol }})
-            </span>
-            {%- if localization.available_countries.size > 1 -%}
-              <svg class="lh-drawer-curr-arrow" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                <polyline points="6 9 12 15 18 9"></polyline>
-              </svg>
-            {%- endif -%}
-          </button>
-
-          {%- if localization.available_countries.size > 1 -%}
-            <div class="lh-drawer-curr-menu" id="lhDrawerCurrMenu" hidden>
-              <div class="lh-drawer-curr-header">Shipping Destination & Currency</div>
-              
-              <div class="lh-curr-search-box" style="padding: 6px 8px 8px;">
-                <input 
-                  type="search" 
-                  class="lh-curr-search-input" 
-                  id="lhCurrSearchMobile" 
-                  placeholder="Search region or currency..." 
-                  aria-label="Search region or currency"
-                  autocomplete="off"
-                >
-              </div>
-
-              <ul class="lh-drawer-curr-options">
-                {%- for country in localization.available_countries -%}
-                  <li class="lh-drawer-curr-item">
-                    <button 
-                      type="button" 
-                      class="lh-drawer-curr-opt-btn{% if country.iso_code == localization.country.iso_code %} is-active{% endif %}"
-                      data-country-code="{{ country.iso_code }}"
-                      data-currency="{{ country.currency.iso_code }}"
-                    >
-                      <div class="lh-curr-btn-left">
-                        {% render 'country-flag', country: country, country_code: country.iso_code %}
-                        <span class="lh-curr-country-name">{{ country.name }}</span>
-                      </div>
-                      <span class="lh-drawer-currency-tag">
-                        {{ country.currency.iso_code }} {{ country.currency.symbol }}
-                      </span>
-                    </button>
-                  </li>
-                {%- endfor -%}
-              </ul>
-            </div>
-          {%- endif -%}
+            {%- for country in localization.available_countries -%}
+              <option value="{{ country.iso_code }}"{% if country.iso_code == localization.country.iso_code %} selected{% endif %}>
+                {{ country.name }} — {{ country.currency.iso_code }} {{ country.currency.symbol }}
+              </option>
+            {%- endfor -%}
+          </select>
         {%- endform -%}
       </div>
     </div>

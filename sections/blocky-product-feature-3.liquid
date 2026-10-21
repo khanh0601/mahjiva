@@ -218,6 +218,8 @@ Unauthorized copying, distribution, or reproduction in any form will result in l
                 src="{{ section.settings.device_image | image_url: height: 700 }}"
                 alt="{{ section.settings.device_image_alt | escape }}"
                 loading="lazy"
+                width="{{ section.settings.device_image.width }}"
+                height="{{ section.settings.device_image.height }}"
               >
             {%- endcapture -%}
 
@@ -271,6 +273,8 @@ Unauthorized copying, distribution, or reproduction in any form will result in l
                 src="{{ section.settings.device_image | image_url: height: 600 }}"
                 alt="{{ section.settings.device_image_alt | escape }}"
                 loading="lazy"
+                width="{{ section.settings.device_image.width }}"
+                height="{{ section.settings.device_image.height }}"
               >
             {%- endcapture -%}
 

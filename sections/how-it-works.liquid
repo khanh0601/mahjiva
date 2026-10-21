@@ -103,6 +103,10 @@ Unauthorized copying, distribution, or reproduction in any form will result in l
               <img
                 class="blocky-media blocky-image-{{ block.settings.media_height }} {% if block.settings.media_fit == "zoomed" %} blocky-video-zoomed{% endif %}"
                 src="{{ img | image_url: height: 750 }}"
+                alt="{{ img.alt | escape }}"
+                width="{{ img.width }}"
+                height="{{ img.height }}"
+                loading="lazy"
               >  
             {% else %}
               <div class="blocky-video blocky-shadow bky-vid-placeholder" style="--play-button-color: white; --play-button-background-color: lightgrey">
