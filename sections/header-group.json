@@ -1,0 +1,50 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "name": "t:sections.header.name",
+  "type": "header",
+  "sections": {
+    "header": {
+      "type": "atelier-header",
+      "settings": {
+        "header_height": 68,
+        "container_max_width": 1360,
+        "enable_sticky": true,
+        "bg_color_scrolled": "#fdfbf8",
+        "text_color": "#16181b",
+        "border_bottom_color": "#eae6df",
+        "accent_hover_color": "#b89768",
+        "logo_height_desktop": 48,
+        "logo_height_mobile": 44,
+        "show_seal_badge": false,
+        "brand_name": "",
+        "brand_subtitle": "",
+        "brand_name_size_desktop": 18,
+        "brand_name_size_mobile": 14,
+        "brand_letter_spacing": 3,
+        "show_menu": true,
+        "menu": "main-menu",
+        "menu_font_family": "sans_serif",
+        "menu_font_size": 13,
+        "menu_gap": 28,
+        "mega_spotlight_product_1": "",
+        "mega_spotlight_product_2": [],
+        "enable_country_selector": true,
+        "enable_account": true,
+        "enable_search": true,
+        "search_placeholder": "Search the Atelier repertoire...",
+        "enable_cart": true
+      }
+    }
+  },
+  "order": [
+    "header"
+  ]
+}

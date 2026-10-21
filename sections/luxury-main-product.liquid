@@ -1,0 +1,3743 @@
+{%- comment -%}
+  -----------------------------------------------------------------------------
+  SECTION: LUXURY MAIN PRODUCT (STAGE & FILMSTRIP ARCHITECTURE)
+  - 100% Real Shopify Data (Zero Mock)
+  - Fixed Header Buffer: padding-top: 128px !important; padding-bottom: 110px;
+  - Breadcrumb Navigation: The Maison • Collections • [Product Title]
+  - Left Column (56%):
+      * .lp-stage-frame: Aspect Ratio 4:3, max-height 520px, border-radius 20px, shadow 0 12px 32px rgba(20,21,23,0.06)
+      * .lp-thumbs-track: Loop product.media, 72x72px thumbnails with border-radius 10px
+      * Active thumbnail: Imperial Jade border #163327 and soft box-shadow
+      * Smooth horizontal scroll: overflow-x: auto, padding: 14px 2px 8px, scrollbar hidden
+  - Right Column (44%):
+      * Sticky on scroll: position: sticky; top: 110px;
+      * Clean price & tax notice (11px unstyled)
+      * Dynamic Variant Picker
+      * Full-width Primary CTA: ACQUIRE THIS ALLOCATION → (padding 17px, border-radius 10px, #163327)
+      * Single-line Secondary CTA: SPEAK WITH MAISON CONCIERGE
+      * .lp-trust-grid: 3-col grid, #FAF8F5 background, 16px 12px padding, 18px jade icons, 9.5px uppercase titles
+      * Clean Description Accordion (all cheap emojis stripped, classic serif typography)
+  - Vanilla JS Interactions:
+      * Click thumbnail -> updates 'is-active' class, transitions main image src with smooth fade
+      * Click main stage -> Full-screen Inspection Lightbox with ultra-crisp 2400px image
+      * Close button, click outside, and ESC key listener
+      * Left / Right arrow navigation in Lightbox
+  -----------------------------------------------------------------------------
+{%- endcomment -%}
+
+<style>
+  #LuxuryProduct-{{ section.id }},
+  #LuxuryMainProduct-{{ section.id }},
+  #LuxuryProduct-{{ section.id }} *,
+  #LuxuryMainProduct-{{ section.id }} * {
+    box-sizing: border-box !important;
+  }
+
+  /* 1. COMPACT ATELIER PADDING & RESPONSIVE CONTAINER (1360px) */
+  #LuxuryProduct-{{ section.id }},
+  #LuxuryMainProduct-{{ section.id }} {
+    background-color: {{ section.settings.bg_color | default: '#FCFAF8' }};
+    padding-top: {{ section.settings.padding_top | default: 24 }}px !important;
+    padding-bottom: {{ section.settings.padding_bottom | default: 60 }}px !important;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    color: #141517;
+    position: relative;
+    overflow-x: clip !important;
+    overflow-y: visible !important;
+    max-width: 100vw !important;
+  }
+
+  @media (max-width: 767px) {
+    #LuxuryProduct-{{ section.id }},
+    #LuxuryMainProduct-{{ section.id }} {
+      padding-top: {{ section.settings.padding_top | default: 24 | times: 0.7 | round | at_least: 16 }}px !important;
+      padding-bottom: 40px !important;
+    }
+  }
+
+  .lp-container,
+  .pdp-container {
+    max-width: 1200px !important;
+    margin: 0 auto !important;
+    padding: 0 24px !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  @media (max-width: 767px) {
+    .lp-container,
+    .pdp-container {
+      padding: 0 16px !important;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .lp-container,
+    .pdp-container {
+      max-width: 1200px !important;
+      padding: 0 24px !important;
+    }
+  }
+
+  /* Breadcrumb Navigation */
+  .lp-breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 11.5px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #7A7571;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+    line-height: 1.4;
+  }
+
+  @media (max-width: 767px) {
+    .lp-breadcrumb {
+      font-size: 10.5px !important;
+      gap: 6px !important;
+      margin-bottom: 12px !important;
+      line-height: 1.4 !important;
+    }
+  }
+
+  .lp-breadcrumb a {
+    color: #7A7571;
+    text-decoration: none;
+    transition: color 0.2s ease;
+  }
+
+  .lp-breadcrumb a:hover {
+    color: #163327;
+  }
+
+  .lp-breadcrumb .lp-sep,
+  .lp-breadcrumb span:not([style]) {
+    color: #B89768;
+    font-size: 10px;
+  }
+
+  /* Grid Layout: Left Column 54% / Right Column 46%, 40px gap on Desktop */
+  .lp-grid,
+  .pdp-grid,
+  .lp-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) !important;
+    gap: 28px;
+    width: 100% !important;
+    min-width: 0 !important;
+    box-sizing: border-box !important;
+  }
+
+  @media (max-width: 767px) {
+    .lp-grid,
+    .pdp-grid,
+    .lp-layout {
+      gap: 20px !important;
+    }
+  }
+
+  @media (min-width: 992px) {
+    .lp-grid,
+    .pdp-grid,
+    .lp-layout {
+      grid-template-columns: 54% 46% !important;
+      gap: 40px !important;
+      align-items: start;
+    }
+  }
+
+  @media (min-width: 1200px) {
+    .lp-grid,
+    .pdp-grid,
+    .lp-layout {
+      grid-template-columns: 54% 46% !important;
+      gap: 40px !important;
+    }
+  }
+
+  /* =========================================================================
+     2. LEFT COLUMN (54%): GALLERY STAGE & FILMSTRIP
+     ========================================================================= */
+  .lp-gallery-col,
+  .pdp-gallery-col {
+    position: relative;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    box-sizing: border-box !important;
+  }
+
+  /* Desktop Sticky Gallery Pinning */
+  @media (min-width: 992px) {
+    .lp-gallery-col,
+    .pdp-gallery-col {
+      position: sticky !important;
+      top: 88px !important;
+      align-self: start !important;
+      z-index: 5;
+    }
+  }
+
+  /* Master Stage Frame: 1:1 ratio, max-height 480px, border-radius 18px, champagne gold border #B89768 */
+  .lp-stage-frame,
+  .pdp-main-stage {
+    position: relative;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    aspect-ratio: 1 / 1 !important;
+    max-height: 480px !important;
+    border-radius: 18px !important;
+    overflow: hidden;
+    background-color: #F5F2EB !important;
+    border: 1px solid rgba(184, 151, 104, 0.45) !important;
+    box-shadow: 0 12px 32px rgba(20, 21, 23, 0.06);
+    cursor: zoom-in;
+    transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.35s ease, border-color 0.3s ease;
+    box-sizing: border-box !important;
+  }
+
+  @media (max-width: 767px) {
+    .lp-stage-frame,
+    .pdp-main-stage {
+      border-radius: 14px !important;
+      max-height: 420px !important;
+    }
+  }
+
+  .lp-stage-frame:hover,
+  .pdp-main-stage:hover {
+    box-shadow: 0 16px 44px rgba(20, 21, 23, 0.1);
+    border-color: rgba(184, 151, 104, 0.7) !important;
+  }
+
+  .lp-stage-inner,
+  .pdp-stage-inner {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .lp-main-img,
+  .pdp-main-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    opacity: 1;
+    transform: scale(1);
+    transition: opacity 0.25s cubic-bezier(0.16, 1, 0.3, 1), transform 0.45s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  }
+
+  .lp-main-img.is-switching,
+  .lp-main-img.is-transitioning,
+  .pdp-main-img.is-switching,
+  .pdp-main-img.is-transitioning {
+    opacity: 0 !important;
+    transform: scale(0.98) !important;
+  }
+
+  /* Micro-interaction: Hover Zoom 1.04x */
+  .lp-stage-frame:hover .lp-main-img,
+  .pdp-main-stage:hover .pdp-main-img {
+    transform: scale(1.04) !important;
+  }
+
+  /* Zoom badge removed to preserve unobstructed view of master artwork */
+
+  .pdp-no-image {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #9E978E;
+    font-size: 13px;
+    background: #F4F0E8;
+  }
+
+  /* Filmstrip thumbnails track: larger 82x82px thumbnails with integrated navigation */
+  .lp-thumbs-wrapper,
+  .pdp-thumbs-wrapper {
+    margin-top: 16px;
+    position: relative;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    box-sizing: border-box !important;
+  }
+
+  @media (max-width: 767px) {
+    .lp-thumbs-wrapper,
+    .pdp-thumbs-wrapper {
+      margin-top: 12px !important;
+      gap: 6px !important;
+    }
+  }
+
+  /* Thumbnail Navigation Buttons */
+  .lp-thumb-nav-btn {
+    flex: 0 0 34px !important;
+    width: 34px !important;
+    height: 34px !important;
+    border-radius: 50% !important;
+    background: #FFFFFF !important;
+    border: 1px solid rgba(184, 151, 104, 0.4) !important;
+    color: #163327 !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    cursor: pointer !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08) !important;
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
+    z-index: 5 !important;
+    padding: 0 !important;
+    outline: none !important;
+  }
+
+  @media (max-width: 767px) {
+    .lp-thumb-nav-btn {
+      flex: 0 0 30px !important;
+      width: 30px !important;
+      height: 30px !important;
+    }
+  }
+
+  .lp-thumb-nav-btn:hover {
+    background: #163327 !important;
+    color: #FAF8F5 !important;
+    border-color: #163327 !important;
+    transform: scale(1.08) !important;
+    box-shadow: 0 4px 12px rgba(22, 51, 39, 0.2) !important;
+  }
+
+  .lp-thumb-nav-btn:active {
+    transform: scale(0.96) !important;
+  }
+
+  .lp-thumb-nav-btn svg {
+    pointer-events: none !important;
+  }
+
+  .lp-thumbs-track,
+  .pdp-thumbs-track {
+    display: flex;
+    gap: 12px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    padding: 6px 2px 10px;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    flex: 1 1 0% !important;
+    width: 0 !important;
+    min-width: 0 !important;
+    align-items: center;
+  }
+
+  @media (max-width: 767px) {
+    .lp-thumbs-track,
+    .pdp-thumbs-track {
+      gap: 8px !important;
+      padding: 4px 2px 8px !important;
+    }
+  }
+
+  .lp-thumbs-track::-webkit-scrollbar,
+  .pdp-thumbs-track::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Enlarged Thumbnail dimensions: 82x82px, border-radius: 12px */
+  .lp-thumb-item,
+  .pdp-thumb-item {
+    width: 82px !important;
+    height: 82px !important;
+    flex: 0 0 82px !important;
+    border-radius: 12px !important;
+    overflow: hidden;
+    position: relative;
+    cursor: pointer;
+    padding: 0;
+    margin: 0;
+    background: #F4F1EA;
+    border: 1.5px solid rgba(22, 51, 39, 0.08);
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    outline: none;
+    scroll-snap-align: start;
+    opacity: 0.72;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+  }
+
+  @media (max-width: 767px) {
+    .lp-thumb-item,
+    .pdp-thumb-item {
+      width: 68px !important;
+      height: 68px !important;
+      flex: 0 0 68px !important;
+      border-radius: 8px !important;
+    }
+  }
+
+  .lp-thumb-item:hover,
+  .pdp-thumb-item:hover {
+    opacity: 1;
+    border-color: #B89768;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+  }
+
+  /* Active thumbnail: Imperial Jade border #163327 and soft elevation */
+  .lp-thumb-item.is-active,
+  .pdp-thumb-item.is-active {
+    opacity: 1 !important;
+    border: 2px solid #163327 !important;
+    box-shadow: 0 4px 14px rgba(22, 51, 39, 0.24) !important;
+    transform: translateY(-2px);
+  }
+
+  .lp-thumb-img,
+  .pdp-thumb-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    pointer-events: none;
+  }
+
+  /* =========================================================================
+     3. RIGHT COLUMN (44%): SUITE DOSSIER & COMMERCE (STICKY)
+     ========================================================================= */
+  .lp-info-col,
+  .pdp-info-col {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    position: relative;
+    align-self: start;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    box-sizing: border-box !important;
+  }
+
+  /* Eyebrow & Category Tag */
+  .pdp-tag-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 0;
+  }
+
+  .pdp-badge-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 5px 14px;
+    border-radius: 9999px;
+    background: #163327;
+    border: 1px solid rgba(216, 184, 140, 0.45);
+    color: #D8B88C;
+    font-size: 9.5px;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: all 0.2s ease;
+  }
+
+  a.pdp-badge-tag:hover {
+    background: #234d3c;
+    border-color: #D8B88C;
+    color: #FFFFFF;
+    transform: translateY(-1px);
+  }
+
+  .pdp-vendor-text {
+    font-size: 11px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: #7A7571;
+    font-weight: 600;
+  }
+
+  /* Judge.me Star Rating Badge (Above Product Title) */
+  .pdp-judgeme-rating {
+    display: flex;
+    align-items: center;
+    min-height: 18px;
+    margin-top: 2px;
+    margin-bottom: 2px;
+    cursor: pointer;
+  }
+
+  .pdp-judgeme-rating .jdgm-widget,
+  .pdp-judgeme-rating .jdgm-preview-badge,
+  .pdp-judgeme-rating .jdgm-preview-badge[data-template="product"],
+  .pdp-judgeme-rating .jdgm-prev-badge {
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 4px !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+  }
+
+  .pdp-judgeme-rating .jdgm-star {
+    color: #E3D10D !important;
+    font-size: 15px !important;
+  }
+
+  .pdp-judgeme-rating .jdgm-prev-badge__text {
+    font-size: 12.5px !important;
+    color: #55524E !important;
+    font-weight: 500 !important;
+    visibility: visible !important;
+    display: inline !important;
+    margin-left: 4px !important;
+  }
+
+  /* Product Title & Description Group */
+  .pdp-title-desc-group {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .pdp-title {
+    font-family: "Cormorant Garamond", Garamond, Georgia, serif;
+    font-size: 27px;
+    font-weight: 500;
+    line-height: 1.2;
+    color: #141517;
+    margin: 0 !important;
+    letter-spacing: -0.01em;
+  }
+
+  @media (min-width: 768px) {
+    .pdp-title {
+      font-size: 38px;
+      line-height: 1.15;
+    }
+  }
+
+  .pdp-description {
+    font-size: 14px;
+    line-height: 1.55;
+    color: #4A4642;
+    margin-top: 4px;
+    margin-bottom: 0;
+  }
+
+  .pdp-description p {
+    margin: 0 0 6px 0 !important;
+  }
+
+  .pdp-description p:last-child {
+    margin-bottom: 0 !important;
+  }
+
+  /* Delivery & Shipping Estimator Widget (Amazon/Etsy Style) */
+  .pdp-delivery-estimator {
+    margin: 8px 0 14px 0;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    position: relative;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  }
+
+  .pdp-delivery-row {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 6px;
+    font-size: 13.5px;
+    line-height: 1.45;
+    color: #4B5563;
+    position: relative;
+  }
+
+  .pdp-delivery-label {
+    color: #4B5563;
+    font-weight: 400;
+  }
+
+  .pdp-delivery-trigger {
+    background: transparent;
+    border: none;
+    padding: 0;
+    margin: 0;
+    font-family: inherit;
+    font-size: 13.5px;
+    color: #111827;
+    font-weight: 700;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    transition: color 0.15s ease;
+    line-height: inherit;
+  }
+
+  .pdp-delivery-trigger:hover {
+    color: #163327;
+  }
+
+  .pdp-chevron-icon {
+    color: #4B5563;
+    transition: transform 0.2s ease;
+    flex-shrink: 0;
+  }
+
+  .pdp-delivery-trigger[aria-expanded="true"] .pdp-chevron-icon {
+    transform: rotate(180deg);
+  }
+
+  /* Delivery Method Popover (Exact match to screenshot) */
+  .pdp-delivery-popover {
+    position: absolute;
+    top: calc(100% + 10px);
+    left: 0;
+    z-index: 1000;
+    width: 100%;
+    max-width: 385px;
+    animation: pdpFadeInUp 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  @keyframes pdpFadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(6px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .pdp-popover-arrow {
+    position: absolute;
+    top: -6px;
+    left: 48px;
+    width: 12px;
+    height: 12px;
+    background: #FFFFFF;
+    border-left: 1px solid #E5E7EB;
+    border-top: 1px solid #E5E7EB;
+    transform: rotate(45deg);
+    z-index: 1001;
+  }
+
+  .pdp-delivery-card {
+    position: relative;
+    background: #FFFFFF;
+    border: 1px solid #E5E7EB;
+    border-radius: 14px;
+    box-shadow: 0 12px 36px rgba(0, 0, 0, 0.12), 0 2px 8px rgba(0, 0, 0, 0.04);
+    padding: 18px 20px 20px;
+    color: #111827;
+    box-sizing: border-box;
+  }
+
+  .pdp-delivery-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 12px;
+  }
+
+  .pdp-delivery-method-title {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 15px;
+    font-weight: 700;
+    color: #111827;
+  }
+
+  .pdp-truck-icon {
+    color: #111827;
+    flex-shrink: 0;
+  }
+
+  .pdp-delivery-close-btn {
+    background: #F3F4F6;
+    border: none;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: #4B5563;
+    transition: all 0.15s ease;
+    padding: 0;
+  }
+
+  .pdp-delivery-close-btn:hover {
+    background: #E5E7EB;
+    color: #111827;
+  }
+
+  .pdp-delivery-subheading {
+    font-size: 14px;
+    font-weight: 700;
+    color: #111827;
+    margin-bottom: 12px;
+  }
+
+  .pdp-delivery-milestones {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 16px;
+  }
+
+  .pdp-milestone-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 13.5px;
+    line-height: 1.4;
+  }
+
+  .pdp-milestone-label {
+    font-weight: 700;
+    color: #111827;
+  }
+
+  .pdp-milestone-val {
+    font-weight: 700;
+    color: #111827;
+    text-align: right;
+  }
+
+  .pdp-delivery-notes {
+    border-top: 1px solid #F0ECE4;
+    padding-top: 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .pdp-note-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    font-size: 12px;
+    line-height: 1.5;
+    color: #4B5563;
+  }
+
+  .pdp-bullet {
+    font-size: 14px;
+    line-height: 1;
+    color: #111827;
+    flex-shrink: 0;
+  }
+
+  /* Country Selection Popover */
+  .pdp-country-popover {
+    position: absolute;
+    top: calc(100% + 8px);
+    left: 0;
+    z-index: 1002;
+    width: 320px;
+    max-width: 90vw;
+    background: #FFFFFF;
+    border: 1px solid #E5E7EB;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+    padding: 14px;
+    animation: pdpFadeInUp 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+    box-sizing: border-box;
+  }
+
+  .pdp-popover-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+  }
+
+  .pdp-popover-title {
+    font-size: 13px;
+    font-weight: 700;
+    color: #111827;
+    letter-spacing: 0.02em;
+  }
+
+  .pdp-popover-close {
+    background: transparent;
+    border: none;
+    font-size: 14px;
+    color: #6B7280;
+    cursor: pointer;
+    padding: 2px 6px;
+  }
+
+  .pdp-country-search-wrap {
+    margin-bottom: 8px;
+  }
+
+  .pdp-country-search-input {
+    width: 100%;
+    padding: 7px 10px;
+    font-size: 12.5px;
+    border: 1px solid #D1D5DB;
+    border-radius: 6px;
+    outline: none;
+    box-sizing: border-box;
+  }
+
+  .pdp-country-search-input:focus {
+    border-color: #163327;
+  }
+
+  .pdp-country-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    max-height: 200px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .pdp-country-select-item {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 7px 8px;
+    border-radius: 6px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 12.5px;
+    color: #374151;
+    text-align: left;
+    transition: background 0.15s ease;
+  }
+
+  .pdp-country-select-item:hover,
+  .pdp-country-select-item.is-selected {
+    background: #F3F4F6;
+    color: #111827;
+    font-weight: 600;
+  }
+
+  .pdp-country-flag {
+    margin-right: 8px;
+    display: inline-flex;
+  }
+
+  .pdp-country-curr-tag {
+    font-size: 11px;
+    color: #6B7280;
+    background: #F3F4F6;
+    padding: 2px 6px;
+    border-radius: 4px;
+  }
+
+  /* Pricing Cluster Directly Above ATC (CLS Reservation) */
+  .pdp-price-row {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    min-height: auto;
+    contain: layout style;
+    padding: 0;
+    margin-top: 0;
+    margin-bottom: 0;
+    border-bottom: none;
+  }
+
+  .pdp-current-price {
+    font-size: 28px;
+    font-weight: 700;
+    color: #163327;
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+  }
+
+  .pdp-current-price.is-inquiry-price {
+    font-size: 16px !important;
+    letter-spacing: 0.14em !important;
+    font-weight: 700 !important;
+    text-transform: uppercase !important;
+    color: #163327 !important;
+  }
+
+  .pdp-compare-price {
+    font-size: 18px;
+    color: #D03B3B;
+    text-decoration: line-through;
+    font-weight: 600;
+    margin-left: 6px;
+  }
+
+  /* =========================================================================
+     3 & 4. LUXURY BUNDLE DEALS (DESKTOP & MOBILE RESPONSIVE)
+     - Desktop: 3-column elegant card grid
+     - Mobile (< 768px): 1-column card stack, 12-14px padding, min 12px font,
+       distinct discount badge & strikethrough price without overlapping
+     ========================================================================= */
+  .pdp-bundle-container {
+    margin-top: 18px;
+    padding: 16px 14px;
+    background: #FAF8F5;
+    border: 1px solid #ECE7DE;
+    border-radius: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .pdp-bundle-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .pdp-bundle-heading {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: #163327;
+  }
+
+  .pdp-bundle-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    width: 100%;
+  }
+
+  .pdp-bundle-card {
+    position: relative;
+    padding: 24px 12px 14px;
+    border-radius: 12px;
+    border: 1.5px solid #E2DCD1;
+    background: #FFFFFF;
+    cursor: pointer;
+    transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .pdp-bundle-card:hover {
+    border-color: #B89768;
+    transform: translateY(-2px);
+  }
+
+  .pdp-bundle-card.is-selected {
+    border-color: #163327;
+    background: #F4F8F5;
+    box-shadow: 0 4px 14px rgba(22, 51, 39, 0.12);
+  }
+
+  .pdp-bundle-badge {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 4px 10px;
+    border-radius: 9999px;
+    background: #163327;
+    color: #FAF8F5;
+    font-size: 9.5px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    border: 1px solid rgba(216, 184, 140, 0.4);
+  }
+
+  .pdp-bundle-badge-save {
+    background: #B89768;
+    color: #FFFFFF;
+  }
+
+  .pdp-bundle-badge-vip {
+    background: #163327;
+    color: #D8B88C;
+  }
+
+  .pdp-bundle-card-content {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    width: 100%;
+  }
+
+  .pdp-bundle-title {
+    font-size: 13px;
+    font-weight: 700;
+    color: #141517;
+  }
+
+  .pdp-bundle-sub {
+    font-size: 11px;
+    color: #7A7571;
+  }
+
+  .pdp-bundle-pricing {
+    display: flex;
+    align-items: baseline;
+    justify-content: center;
+    gap: 6px;
+    margin-top: 4px;
+    flex-wrap: wrap;
+  }
+
+  .pdp-bundle-price {
+    font-size: 14px;
+    font-weight: 700;
+    color: #163327;
+  }
+
+  .pdp-bundle-compare {
+    font-size: 12px;
+    color: #9E978E;
+    text-decoration: line-through;
+  }
+
+  /* MOBILE BUNDLE REDESIGN: Viewport < 768px (Single column card stack) */
+  @media (max-width: 767px) {
+    .pdp-bundle-grid {
+      grid-template-columns: 1fr;
+      gap: 12px;
+    }
+
+    .pdp-bundle-card {
+      padding: 16px 14px 12px;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+      text-align: left;
+    }
+
+    .pdp-bundle-badge {
+      left: 14px;
+      transform: translateY(-50%);
+      font-size: 10px;
+      padding: 3px 8px;
+    }
+
+    .pdp-bundle-card-content {
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+    }
+
+    .pdp-bundle-card-info {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .pdp-bundle-title {
+      font-size: 13px;
+    }
+
+    .pdp-bundle-sub {
+      font-size: 12px;
+    }
+
+    .pdp-bundle-pricing {
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 2px;
+      margin-top: 0;
+    }
+
+    .pdp-bundle-price {
+      font-size: 14px;
+    }
+
+    .pdp-bundle-compare {
+      font-size: 12px;
+    }
+  }
+
+  /* Tax notice: 11px normal weight */
+  .pdp-tax-notice {
+    font-size: 11px;
+    font-style: normal;
+    font-weight: 450;
+    color: #7A7571;
+    line-height: 1.35;
+    margin-top: 0;
+    margin-bottom: 0;
+    letter-spacing: 0.01em;
+  }
+
+  /* Form Container */
+  .pdp-form {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+  }
+
+  /* Variant Picker */
+  /* Variant Swatch Card Grid & Pill Selectors */
+  .pdp-variants-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 2px;
+  }
+
+  .pdp-option-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .pdp-option-label {
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+    margin-bottom: 4px;
+  }
+
+  .pdp-option-name {
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: #141517;
+  }
+
+  .pdp-option-value-selected {
+    font-size: 13px;
+    font-weight: 700;
+    color: #163327;
+    letter-spacing: 0.02em;
+    text-transform: capitalize;
+  }
+
+  /* 4-column Swatch Card Grid */
+  .pdp-swatch-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    width: 100%;
+  }
+
+  @media (max-width: 540px) {
+    .pdp-swatch-grid {
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+    }
+  }
+
+  @media (max-width: 360px) {
+    .pdp-swatch-grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 6px;
+    }
+  }
+
+  .pdp-opt-btn {
+    appearance: none;
+    outline: none;
+    box-sizing: border-box;
+    cursor: pointer;
+  }
+
+  .pdp-opt-card {
+    background: #FFFFFF;
+    border: 1.5px solid #E6E1D8;
+    border-radius: 14px;
+    padding: 10px 6px 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    gap: 6px;
+    transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+    width: 100%;
+    min-height: 105px;
+  }
+
+  .pdp-opt-card:hover {
+    border-color: #BCA4BE;
+    background: #FDFAFE;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 14px rgba(112, 39, 115, 0.08);
+  }
+
+  .pdp-opt-card.is-selected {
+    border: 2px solid #163327 !important;
+    background: #F4F8F5 !important;
+    box-shadow: 0 4px 14px rgba(22, 51, 39, 0.16) !important;
+    transform: translateY(-1px);
+  }
+
+  .pdp-card-img-wrap {
+    width: 100%;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  .pdp-card-img {
+    max-width: 100%;
+    max-height: 60px;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    transition: transform 0.25s ease;
+  }
+
+  .pdp-opt-card:hover .pdp-card-img {
+    transform: scale(1.08);
+  }
+
+  .pdp-card-img-fallback {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: #F4EFEA;
+    color: #163327;
+    font-size: 11px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .pdp-card-label {
+    font-size: 11.5px;
+    font-weight: 600;
+    line-height: 1.25;
+    text-align: center;
+    color: #2D2B2A;
+    word-break: break-word;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    transition: color 0.2s ease;
+  }
+
+  .pdp-opt-card.is-selected .pdp-card-label {
+    color: #163327 !important;
+    font-weight: 700 !important;
+  }
+
+  /* Fallback Pill buttons for options without images */
+  .pdp-option-values {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .pdp-opt-pill {
+    border: 1px solid #D8D2C4;
+    background: #FFFFFF;
+    color: #141517;
+    padding: 8px 16px;
+    border-radius: 9999px;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    transition: all 0.2s ease;
+  }
+
+  .pdp-opt-pill:hover {
+    border-color: #163327;
+    background: #F4F8F5;
+  }
+
+  .pdp-opt-pill.is-selected {
+    border-color: #163327 !important;
+    background: #163327 !important;
+    color: #FAF8F5 !important;
+    box-shadow: 0 4px 12px rgba(22, 51, 39, 0.2);
+  }
+
+
+  /* Actions Wrapper */
+  .lp-actions-wrapper,
+  .pdp-actions-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 0;
+    margin-bottom: 6px;
+    width: 100%;
+  }
+
+  /* Primary CTA Button: Imperial Jade #163327 with Emerald Gleam Shimmer */
+  .lp-add-btn,
+  .pdp-add-btn,
+  .lp-primary-btn {
+    width: 100%;
+    padding: 17px 24px;
+    min-height: 54px;
+    border-radius: 10px;
+    background-color: #163327;
+    border: 1px solid #163327;
+    color: #FAF8F5;
+    font-size: 12.5px;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: 0 6px 18px rgba(22, 51, 39, 0.22);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    white-space: nowrap;
+    position: relative !important;
+    overflow: hidden !important;
+  }
+
+  /* Emerald Gleam Shimmer Effect */
+  .lp-add-btn::after,
+  .pdp-add-btn::after,
+  .lp-primary-btn::after {
+    content: '' !important;
+    position: absolute !important;
+    top: -50% !important;
+    left: -130% !important;
+    width: 80% !important;
+    height: 200% !important;
+    background: linear-gradient(
+      105deg,
+      transparent 20%,
+      rgba(216, 184, 140, 0.3) 42%,
+      rgba(255, 255, 255, 0.55) 50%,
+      rgba(216, 184, 140, 0.3) 58%,
+      transparent 80%
+    ) !important;
+    transform: rotate(25deg) !important;
+    pointer-events: none !important;
+    transition: none !important;
+  }
+
+  .lp-add-btn:hover::after,
+  .pdp-add-btn:hover::after,
+  .lp-primary-btn:hover::after {
+    left: 140% !important;
+    transition: left 0.85s cubic-bezier(0.19, 1, 0.22, 1) !important;
+  }
+
+  .lp-add-btn:hover,
+  .pdp-add-btn:hover,
+  .lp-primary-btn:hover {
+    background-color: #1a3d2f;
+    border-color: #D8B88C;
+    color: #FAF8F5;
+    transform: translateY(-1px);
+    box-shadow: 0 10px 28px rgba(22, 51, 39, 0.35);
+  }
+
+  .lp-add-btn:disabled,
+  .pdp-add-btn:disabled,
+  .lp-primary-btn:disabled {
+    background-color: #EDEAE4;
+    border-color: #EDEAE4;
+    color: #A39D94;
+    cursor: not-allowed;
+    box-shadow: none;
+    transform: none;
+  }
+
+  .lp-add-btn:disabled::after,
+  .pdp-add-btn:disabled::after,
+  .lp-primary-btn:disabled::after {
+    display: none !important;
+  }
+
+  /* Secondary CTA: SPEAK WITH MAISON CONCIERGE (Single line) */
+  .lp-inquire-btn,
+  .pdp-inquire-btn {
+    width: 100%;
+    padding: 14px 20px;
+    min-height: 48px;
+    border-radius: 10px;
+    background-color: transparent;
+    border: 1px solid rgba(22, 51, 39, 0.3);
+    color: #163327;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    gap: 8px;
+    white-space: nowrap;
+  }
+
+  .lp-inquire-btn:hover,
+  .pdp-inquire-btn:hover {
+    border-color: #163327;
+    background-color: rgba(22, 51, 39, 0.05);
+    color: #163327;
+  }
+
+
+  /* In-Column App Blocks Slot (Positioned between Action Buttons and Payment & Guarantees) */
+  .pdp-app-blocks-slot {
+    margin: 18px 0 14px;
+    width: 100%;
+    clear: both;
+  }
+  .pdp-app-block-item {
+    width: 100%;
+    min-width: 0;
+    margin-bottom: 12px;
+  }
+  .pdp-app-block-item:last-child {
+    margin-bottom: 0;
+  }
+  .pdp-app-block-item:empty {
+    display: none;
+  }
+
+  /* =========================================================================
+     PDP GUARANTEE & PAYMENT METHODS BAR (Seamless & Compact Single-Row)
+     ========================================================================= */
+  .pdp-guarantee-bar {
+    margin-top: 8px;
+    margin-bottom: 6px;
+    padding: 0;
+    background: transparent;
+    border: none;
+    box-shadow: none;
+  }
+
+  /* 3 Category-Specific Guarantee Bullets */
+  .pdp-guarantee-features {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 12px !important;
+    width: 100% !important;
+    margin-bottom: 8px !important;
+    padding: 2px 0 4px !important;
+  }
+
+  .pdp-guarantee-feature-item {
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+    flex: 1 1 0 !important;
+    justify-content: center !important;
+  }
+
+  .pdp-guarantee-feature-icon {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    flex-shrink: 0 !important;
+    width: 20px !important;
+    height: 20px !important;
+  }
+
+  .pdp-guarantee-feature-icon svg {
+    display: block !important;
+    width: 20px !important;
+    height: 20px !important;
+  }
+
+  .pdp-guarantee-feature-icon svg circle {
+    fill: #163327 !important;
+  }
+
+  .pdp-guarantee-feature-text {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif !important;
+    font-size: 13.5px !important;
+    font-weight: 500 !important;
+    color: #2D2D2D !important;
+    line-height: 1.25 !important;
+    white-space: nowrap !important;
+    letter-spacing: -0.01em !important;
+  }
+
+  @media (max-width: 640px) {
+    .pdp-guarantee-features {
+      flex-wrap: wrap !important;
+      justify-content: center !important;
+      gap: 8px 14px !important;
+    }
+    .pdp-guarantee-feature-item {
+      flex: 0 1 auto !important;
+    }
+    .pdp-guarantee-feature-text {
+      font-size: 12px !important;
+    }
+  }
+
+
+  .pdp-payment-icons-wrapper {
+    margin-top: 4px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+  }
+
+  .pdp-payment-methods-img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    object-fit: contain;
+    margin: 0 auto;
+  }
+
+  /* Payment logos grid: clean, responsive wrapping, perfectly centered */
+  .pdp-payment-icons-list {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    width: 100%;
+    margin-top: 6px;
+  }
+
+  .pdp-payment-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: #FFFFFF;
+    border: 1px solid #E5DFD3;
+    border-radius: 4px;
+    padding: 2px 4px;
+    height: 24px;
+    width: 40px;
+    box-sizing: border-box;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+  }
+
+  .pdp-payment-badge:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.08);
+  }
+
+  .pdp-payment-svg {
+    height: 15px;
+    width: auto;
+    max-width: 32px;
+    display: block;
+    object-fit: contain;
+  }
+
+  /* Product Description Directly Below Title */
+  .pdp-description {
+    margin: 0;
+    font-size: 14.5px;
+    line-height: 1.7;
+    color: #4A4642;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  }
+
+  .pdp-description p {
+    margin: 0 0 10px 0;
+  }
+
+  .pdp-description p:first-child {
+    margin-top: 0 !important;
+  }
+
+  .pdp-description p:last-child {
+    margin-bottom: 0;
+  }
+
+  .pdp-description ul,
+  .pdp-description ol {
+    margin: 0 0 16px 0;
+    padding-left: 20px;
+  }
+
+  .pdp-description li {
+    margin-bottom: 8px;
+    line-height: 1.7;
+  }
+
+  .pdp-description strong,
+  .pdp-description b {
+    color: #141517;
+    font-weight: 600;
+  }
+
+  .pdp-description h1,
+  .pdp-description h2,
+  .pdp-description h3,
+  .pdp-description h4 {
+    font-family: "Cormorant Garamond", Garamond, Georgia, serif;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    color: #141517;
+    margin-top: 16px;
+    margin-bottom: 8px;
+    line-height: 1.3;
+  }
+
+  /* =========================================================================
+     4. ELEGANT IMAGE INSPECTION MODAL (CLEAN, AIRY & SEAMLESS MAISON BACKDROP)
+     ========================================================================= */
+  #AtelierLightbox {
+    position: fixed !important;
+    inset: 0 !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    background-color: rgba(252, 250, 248, 0.94) !important; /* Soft Maison Ivory Cream */
+    backdrop-filter: blur(16px) !important;
+    -webkit-backdrop-filter: blur(16px) !important;
+    z-index: 2147483647 !important;
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 24px 20px !important;
+    box-sizing: border-box !important;
+    user-select: none;
+    cursor: zoom-out !important; /* Clicking backdrop closes modal */
+  }
+
+  #AtelierLightbox.active,
+  #AtelierLightbox.is-open {
+    display: flex !important;
+    animation: lbPureFadeIn 0.22s ease-out forwards;
+  }
+
+  @keyframes lbPureFadeIn {
+    from {
+      opacity: 0;
+      transform: scale(0.98);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  /* Zero unwanted nested styles */
+  #AtelierLightbox div,
+  #AtelierLightbox .lp-lb-stage,
+  #AtelierLightbox .lp-lb-img-wrap {
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  /* Hide top header bar completely */
+  #AtelierLightbox .lp-lb-header {
+    display: none !important;
+  }
+
+  /* Center Stage */
+  #AtelierLightbox .lp-lb-stage {
+    flex: 1 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    position: relative !important;
+    width: 100% !important;
+    max-height: 86vh !important;
+    cursor: zoom-out !important;
+  }
+
+  /* Enlarged Artwork Image */
+  #AtelierLightbox .lp-lb-img {
+    max-height: 84vh !important;
+    max-width: 86vw !important;
+    object-fit: contain !important;
+    border-radius: 12px !important;
+    background: #FFFFFF !important;
+    box-shadow: 0 16px 48px rgba(22, 51, 39, 0.12), 0 4px 16px rgba(0, 0, 0, 0.04) !important;
+    border: 1px solid rgba(184, 151, 104, 0.28) !important;
+    transition: transform 0.25s ease-out !important;
+    cursor: default !important;
+    display: block !important;
+  }
+
+  #AtelierLightbox .lp-lb-img.is-zoomed {
+    transform: scale(1.85) !important;
+    cursor: grab !important;
+  }
+
+  /* Integrated Luxury Bottom Controller (Buttons next to counter) */
+  #AtelierLightbox .lp-lb-footer {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 16px 0 20px !important;
+    z-index: 50 !important;
+  }
+
+  .lp-lb-controls-bar {
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 16px !important;
+    background: rgba(255, 255, 255, 0.92) !important;
+    backdrop-filter: blur(12px) !important;
+    -webkit-backdrop-filter: blur(12px) !important;
+    padding: 6px 14px !important;
+    border-radius: 9999px !important;
+    border: 1px solid rgba(184, 151, 104, 0.35) !important;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08) !important;
+  }
+
+  .lp-lb-ctrl-btn {
+    width: 34px !important;
+    height: 34px !important;
+    border-radius: 50% !important;
+    border: 1px solid rgba(184, 151, 104, 0.4) !important;
+    background: #FFFFFF !important;
+    color: #163327 !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    cursor: pointer !important;
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
+    padding: 0 !important;
+    outline: none !important;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04) !important;
+  }
+
+  .lp-lb-ctrl-btn:hover {
+    background: #163327 !important;
+    color: #FAF8F5 !important;
+    border-color: #163327 !important;
+    transform: scale(1.1) !important;
+    box-shadow: 0 4px 12px rgba(22, 51, 39, 0.25) !important;
+  }
+
+  .lp-lb-ctrl-btn:active {
+    transform: scale(0.96) !important;
+  }
+
+  .lp-lb-ctrl-btn svg {
+    pointer-events: none !important;
+  }
+
+  .lp-lb-counter {
+    font-size: 12px !important;
+    letter-spacing: 0.16em !important;
+    color: #163327 !important;
+    font-weight: 600 !important;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+    text-transform: uppercase !important;
+    background: transparent !important;
+    border: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    min-width: 58px !important;
+    text-align: center !important;
+    user-select: none !important;
+  }
+
+  /* -------------------------------------------------------------------------
+     3. IN-PRODUCT ACCORDION & CATEGORY-SPECIFIC Q&A
+     ------------------------------------------------------------------------- */
+  .pdp-details-accordion {
+    margin-top: 24px;
+    border-top: 1px solid rgba(184, 151, 104, 0.3);
+  }
+
+  .pdp-acc-item {
+    border-bottom: 1px solid rgba(184, 151, 104, 0.25);
+  }
+
+  .pdp-acc-trigger {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 15px 0;
+    background: transparent;
+    border: none;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #141517;
+    cursor: pointer;
+    text-align: left;
+    transition: color 0.2s ease;
+  }
+
+  .pdp-acc-trigger:hover,
+  .pdp-acc-trigger[aria-expanded="true"] {
+    color: #163327;
+  }
+
+  .pdp-acc-icon {
+    width: 16px;
+    height: 16px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: #B89768;
+    transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .pdp-acc-trigger[aria-expanded="true"] .pdp-acc-icon {
+    transform: rotate(180deg);
+  }
+
+  .pdp-acc-content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.35s cubic-bezier(0.16, 1, 0.3, 1), padding 0.25s ease, opacity 0.25s ease;
+    opacity: 0;
+    padding: 0;
+    color: #55524E;
+    font-size: 13.5px;
+    line-height: 1.6;
+  }
+
+  .pdp-acc-content.is-open {
+    max-height: 1400px;
+    opacity: 1;
+    padding-bottom: 18px;
+  }
+
+  .pdp-sub-qa-item {
+    padding: 10px 0;
+    border-top: 1px dashed rgba(184, 151, 104, 0.2);
+  }
+
+  .pdp-sub-qa-item:first-child {
+    border-top: none;
+    padding-top: 0;
+  }
+
+  .pdp-sub-q {
+    font-weight: 600;
+    color: #163327;
+    font-size: 13px;
+    margin-bottom: 4px;
+    display: flex;
+    align-items: flex-start;
+    gap: 6px;
+  }
+
+  .pdp-sub-q-badge {
+    color: #B89768;
+    font-weight: 700;
+    font-size: 11px;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  .pdp-sub-a {
+    font-size: 13px;
+    color: #55524E;
+    line-height: 1.55;
+    margin: 0;
+    padding-left: 17px;
+  }
+
+  /* Full Width In-Product Q&A Section (Below Stage & Info Grid) */
+  .lp-pdp-faq-wrapper {
+    margin-top: 56px;
+    padding-top: 48px;
+    border-top: 1px solid rgba(184, 151, 104, 0.3);
+  }
+
+  .lp-pdp-faq-header {
+    text-align: center;
+    max-width: 680px;
+    margin: 0 auto 36px;
+  }
+
+  .lp-pdp-faq-eyebrow {
+    display: inline-block;
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: #B89768;
+    font-weight: 600;
+    margin-bottom: 10px;
+  }
+
+  .lp-pdp-faq-title {
+    font-size: 32px;
+    font-family: "Cormorant Garamond", Georgia, serif;
+    font-weight: 500;
+    color: #141517;
+    margin: 0 0 10px;
+    letter-spacing: -0.01em;
+  }
+
+  .lp-pdp-faq-sub {
+    font-size: 14px;
+    color: #7A7571;
+    line-height: 1.5;
+    margin: 0;
+  }
+
+  .lp-pdp-faq-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 12px;
+    max-width: 880px;
+    margin: 0 auto;
+  }
+
+  .lp-faq-card {
+    background: #FFFFFF;
+    border: 1px solid rgba(184, 151, 104, 0.28);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 3px 12px rgba(20, 21, 23, 0.03);
+    transition: border-color 0.25s ease, box-shadow 0.25s ease;
+  }
+
+  .lp-faq-card:hover {
+    border-color: rgba(184, 151, 104, 0.6);
+    box-shadow: 0 6px 18px rgba(20, 21, 23, 0.06);
+  }
+
+  .lp-faq-trigger {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 16px 20px;
+    background: transparent;
+    border: none;
+    font-size: 14.5px;
+    font-weight: 600;
+    color: #141517;
+    cursor: pointer;
+    text-align: left;
+    transition: color 0.2s ease;
+  }
+
+  .lp-faq-trigger:hover,
+  .lp-faq-trigger[aria-expanded="true"] {
+    color: #163327;
+  }
+
+  .lp-faq-trigger[aria-expanded="true"] .lp-faq-icon {
+    transform: rotate(180deg);
+    color: #163327;
+  }
+
+  .lp-faq-icon {
+    flex-shrink: 0;
+    width: 18px;
+    height: 18px;
+    color: #B89768;
+    transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), color 0.2s ease;
+  }
+
+  .lp-faq-answer {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.35s cubic-bezier(0.16, 1, 0.3, 1), padding 0.25s ease, opacity 0.25s ease;
+    opacity: 0;
+    padding: 0 20px;
+    font-size: 13.5px;
+    line-height: 1.65;
+    color: #55524E;
+  }
+
+  .lp-faq-answer.is-open {
+    max-height: 600px;
+    opacity: 1;
+    padding: 0 20px 18px 20px;
+  }
+
+  .lp-pdp-faq-footer {
+    text-align: center;
+    margin-top: 32px;
+  }
+
+  .lp-faq-concierge-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 11.5px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #163327;
+    text-decoration: none;
+    padding: 10px 22px;
+    border-radius: 999px;
+    border: 1px solid rgba(22, 51, 39, 0.3);
+    background: #FFFFFF;
+    transition: all 0.25s ease;
+  }
+
+  .lp-faq-concierge-btn:hover {
+    background: #163327;
+    color: #FFFFFF;
+    border-color: #163327;
+  }
+</style>
+
+<section id="LuxuryProduct-{{ section.id }}" class="lp-section pdp-section" aria-label="{{ product.title | escape }}">
+  <div class="lp-container pdp-container">
+
+    <!-- 1. Breadcrumb Navigation (MAHJIVA > ALL PRODUCTS > TÊN COLLECTION > TÊN SP) -->
+    {%- assign prod_collection = collection -%}
+    {%- if prod_collection == blank or prod_collection.handle == 'all' or prod_collection.handle == 'frontpage' -%}
+      {%- for c in product.collections -%}
+        {%- unless c.handle == 'all' or c.handle == 'frontpage' or c.handle contains 'new' or c.handle contains 'best' -%}
+          {%- assign prod_collection = c -%}
+          {%- break -%}
+        {%- endunless -%}
+      {%- endfor -%}
+      {%- if prod_collection == blank and product.collections.size > 0 -%}
+        {%- assign prod_collection = product.collections.first -%}
+      {%- endif -%}
+    {%- endif -%}
+
+    {%- assign badge_label = prod_collection.title | default: product.type | default: 'MAHJIVA' | upcase -%}
+    {%- if prod_collection.handle == 'mahjong-set' or badge_label == 'TILES' or badge_label == 'TILE' -%}
+      {%- assign badge_label = 'MAHJONG SET' -%}
+    {%- elsif prod_collection.handle == 'mats' or badge_label == 'MAT' -%}
+      {%- assign badge_label = 'MATS' -%}
+    {%- elsif prod_collection.handle == 'racks' or badge_label == 'RACK' -%}
+      {%- assign badge_label = 'RACKS' -%}
+    {%- elsif prod_collection.handle == 'dices' or badge_label == 'DICES' -%}
+      {%- assign badge_label = 'DICE' -%}
+    {%- elsif prod_collection.handle == 'tile-bag' or badge_label == 'TILE-BAG' or badge_label == 'BAG' -%}
+      {%- assign badge_label = 'TILE BAG' -%}
+    {%- endif -%}
+
+    <nav class="lp-breadcrumb" aria-label="Breadcrumb">
+      <a href="/">MAHJIVA</a>
+      <span class="lp-sep">&gt;</span>
+      <a href="/collections/all">ALL PRODUCTS</a>
+      {%- if prod_collection != blank -%}
+        <span class="lp-sep">&gt;</span>
+        <a href="{{ prod_collection.url }}">{{ badge_label }}</a>
+      {%- endif -%}
+      <span class="lp-sep">&gt;</span>
+      <span style="color:#163327;font-weight:600;">{{ product.title | upcase }}</span>
+    </nav>
+
+    <!-- 2. Grid Architecture: Left Column 54% / Right Column 46% -->
+    <div class="lp-grid pdp-grid lp-layout">
+
+      <!-- =====================================================================
+           LEFT COLUMN (56%): GALLERY STAGE & FILMSTRIP TRACK
+           ===================================================================== -->
+      <div class="lp-gallery-col pdp-gallery-col">
+        {%- assign current_variant = product.selected_or_first_available_variant -%}
+        {%- assign initial_media = current_variant.featured_media | default: product.featured_media | default: product.media.first -%}
+
+        <!-- Master Stage Frame: Ratio 4:3, max-height 520px, border-radius 20px, soft shadow -->
+        <div 
+          class="lp-stage-frame pdp-main-stage" 
+          id="pdpMainStage-{{ section.id }}" 
+          role="region" 
+          aria-label="Master artwork stage - Click to inspect 2400px"
+          title="Click to enter full-screen inspection archive (2400px)"
+        >
+          {%- if initial_media != blank -%}
+            <div class="lp-stage-inner pdp-stage-inner">
+              <img 
+                id="pdpMainImage-{{ section.id }}"
+                class="lp-main-img pdp-main-img"
+                src="{{ initial_media | image_url: width: 1200 }}"
+                srcset="{{ initial_media | image_url: width: 800 }} 800w, {{ initial_media | image_url: width: 1200 }} 1200w, {{ initial_media | image_url: width: 1600 }} 1600w, {{ initial_media | image_url: width: 2000 }} 2000w"
+                sizes="(min-width: 1200px) 720px, (min-width: 992px) 56vw, 100vw"
+                alt="{{ initial_media.alt | default: product.title | escape }}"
+                loading="eager"
+                fetchpriority="high"
+                decoding="sync"
+                width="1200"
+                height="900"
+                data-full-src="{{ initial_media | image_url: width: 2400 }}"
+                data-media-id="{{ initial_media.id }}"
+              >
+
+            </div>
+          {%- else -%}
+            <div class="pdp-no-image">Artwork imagery in archive</div>
+          {%- endif -%}
+        </div>
+
+        <!-- Filmstrip Thumbnails Track: Larger 82x82px with navigation buttons -->
+        {%- if product.media.size > 1 -%}
+          <div class="lp-thumbs-wrapper pdp-thumbs-wrapper">
+            <button 
+              type="button" 
+              class="lp-thumb-nav-btn prev" 
+              id="pdpThumbPrev-{{ section.id }}" 
+              aria-label="Previous photo"
+              title="Previous photo"
+            >
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 19l-7-7 7-7"/></svg>
+            </button>
+
+            <div class="lp-thumbs-track pdp-thumbs-track" id="pdpThumbsTrack-{{ section.id }}" role="tablist" aria-label="Media archive filmstrip">
+              {%- for media in product.media -%}
+                {%- assign is_active = false -%}
+                {%- if media.id == initial_media.id or forloop.first and initial_media == blank -%}
+                  {%- assign is_active = true -%}
+                {%- endif -%}
+                <button
+                  type="button"
+                  role="tab"
+                  class="lp-thumb-item pdp-thumb-item{% if is_active %} is-active{% endif %}"
+                  data-media-id="{{ media.id }}"
+                  data-index="{{ forloop.index0 }}"
+                  data-src="{{ media | image_url: width: 1600 }}"
+                  data-srcset="{{ media | image_url: width: 800 }} 800w, {{ media | image_url: width: 1200 }} 1200w, {{ media | image_url: width: 1600 }} 1600w, {{ media | image_url: width: 2000 }} 2000w"
+                  data-full-src="{{ media | image_url: width: 2400 }}"
+                  data-alt="{{ media.alt | default: product.title | escape }}"
+                  aria-selected="{% if is_active %}true{% else %}false{% endif %}"
+                  aria-label="Plate {{ forloop.index }} of {{ product.title | escape }}"
+                >
+                  <img 
+                    src="{{ media | image_url: width: 200, height: 200, crop: 'center' }}"
+                    alt="{{ media.alt | default: product.title | escape }}"
+                    loading="lazy"
+                    decoding="async"
+                    width="82"
+                    height="82"
+                    class="lp-thumb-img pdp-thumb-img"
+                  >
+                </button>
+              {%- endfor -%}
+            </div>
+
+            <button 
+              type="button" 
+              class="lp-thumb-nav-btn next" 
+              id="pdpThumbNext-{{ section.id }}" 
+              aria-label="Next photo"
+              title="Next photo"
+            >
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg>
+            </button>
+          </div>
+        {%- endif -%}
+      </div>
+
+      <!-- =====================================================================
+           RIGHT COLUMN (44%): SUITE DOSSIER & COMMERCE (STICKY)
+           ===================================================================== -->
+      <div class="lp-info-col pdp-info-col">
+
+        <!-- Eyebrow & Tag (Dynamic Collection Badge - 100% Real Shopify Data) -->
+        <div class="pdp-tag-row">
+          {%- if prod_collection != blank -%}
+            <a href="{{ prod_collection.url }}" class="pdp-badge-tag" title="View {{ badge_label }} Collection">
+              {{ badge_label }}
+            </a>
+          {%- else -%}
+            <span class="pdp-badge-tag">
+              {{ badge_label }}
+            </span>
+          {%- endif -%}
+          {%- if product.vendor != blank -%}
+            <span class="pdp-vendor-text">{{ product.vendor | escape }}</span>
+          {%- endif -%}
+        </div>
+
+        <!-- Suite Title & Information Group -->
+        <div class="pdp-title-desc-group">
+          <!-- Judge.me Star Rating Badge directly above Product Title -->
+          <div class="pdp-judgeme-rating" id="pdpJudgemeRating-{{ section.id }}" title="View customer reviews">
+            <div class="jdgm-widget jdgm-preview-badge" data-id="{{ product.id }}">
+              {{ product.metafields.judgeme.badge }}
+            </div>
+          </div>
+
+          <h1 class="pdp-title">{{ product.title | escape }}</h1>
+
+          <!-- Delivery Estimation & Schedule Widget (Directly Below Product Title) -->
+          <div class="pdp-delivery-estimator" id="pdpDeliveryEstimator-{{ section.id }}">
+            <!-- Row 1: Deliver to Country -->
+            <div class="pdp-delivery-row pdp-delivery-country-wrap">
+              <span class="pdp-delivery-label">Deliver to:</span>
+              <button 
+                type="button" 
+                class="pdp-delivery-trigger pdp-country-trigger" 
+                id="pdpCountryTrigger-{{ section.id }}" 
+                aria-expanded="false"
+                aria-label="Change delivery country"
+              >
+                <span class="pdp-delivery-val" id="pdpCountryName-{{ section.id }}">{{ localization.country.name | default: 'United States' }}</span>
+                <svg class="pdp-chevron-icon" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="6 9 12 15 18 9"></polyline>
+                </svg>
+              </button>
+
+              <!-- Country Selection Popover -->
+              <div class="pdp-country-popover" id="pdpCountryPopover-{{ section.id }}" hidden>
+                <div class="pdp-popover-header">
+                  <span class="pdp-popover-title">Select Delivery Destination</span>
+                  <button type="button" class="pdp-popover-close" id="pdpCountryClose-{{ section.id }}" aria-label="Close">✕</button>
+                </div>
+                {%- form 'localization', id: 'PdpDeliveryCountryForm', class: 'pdp-delivery-form' -%}
+                  <input type="hidden" name="country_code" id="PdpDeliveryCountryInput" value="{{ localization.country.iso_code }}">
+                  <div class="pdp-country-search-wrap">
+                    <input type="search" class="pdp-country-search-input" id="pdpCountrySearch-{{ section.id }}" placeholder="Search country or currency..." autocomplete="off">
+                  </div>
+                  <ul class="pdp-country-list" role="list">
+                    {%- for country in localization.available_countries -%}
+                      <li>
+                        <button 
+                          type="button" 
+                          class="pdp-country-select-item{% if country.iso_code == localization.country.iso_code %} is-selected{% endif %}"
+                          data-country-code="{{ country.iso_code }}"
+                        >
+                          <span class="pdp-country-flag">{% render 'country-flag', country: country, country_code: country.iso_code %}</span>
+                          <span class="pdp-country-name-text">{{ country.name }}</span>
+                          <span class="pdp-country-curr-tag">{{ country.currency.iso_code }}</span>
+                        </button>
+                      </li>
+                    {%- endfor -%}
+                  </ul>
+                {%- endform -%}
+              </div>
+            </div>
+
+            <!-- Row 2: Order today, get it as early as -->
+            <div class="pdp-delivery-row pdp-delivery-schedule-wrap">
+              <span class="pdp-delivery-label">Order today, get it as early as:</span>
+              <button 
+                type="button" 
+                class="pdp-delivery-trigger pdp-schedule-trigger" 
+                id="pdpScheduleTrigger-{{ section.id }}" 
+                aria-expanded="false"
+                aria-label="View delivery schedule"
+              >
+                <span class="pdp-delivery-val pdp-delivery-date" id="pdpMainDeliveryDate-{{ section.id }}">
+                  {{ 'now' | date: '%s' | plus: 604800 | date: '%B %d' }}-{{ 'now' | date: '%s' | plus: 864000 | date: '%d' }}
+                </span>
+                <svg class="pdp-chevron-icon pdp-schedule-chevron" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="6 9 12 15 18 9"></polyline>
+                </svg>
+              </button>
+
+              <!-- Delivery Method Popover (Exact match to screenshot) -->
+              <div class="pdp-delivery-popover" id="pdpDeliveryPopover-{{ section.id }}" hidden>
+                <div class="pdp-popover-arrow"></div>
+                <div class="pdp-delivery-card">
+                  <!-- Header -->
+                  <div class="pdp-delivery-card-header">
+                    <div class="pdp-delivery-method-title">
+                      <svg class="pdp-truck-icon" width="17" height="17" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M1 3h15v13H1zM16 8h4.5l3.5 4v4h-8zM5.5 18a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5zM18.5 18a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5z"/>
+                      </svg>
+                      <span>Delivery Method</span>
+                    </div>
+                    <button type="button" class="pdp-delivery-close-btn" id="pdpDeliveryClose-{{ section.id }}" aria-label="Close delivery method popup">
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                      </svg>
+                    </button>
+                  </div>
+
+                  <!-- Subtitle -->
+                  <div class="pdp-delivery-subheading">Standard Shipping:</div>
+
+                  <!-- 3 Milestone Rows -->
+                  <div class="pdp-delivery-milestones">
+                    <div class="pdp-milestone-row">
+                      <span class="pdp-milestone-label">Order Placed:</span>
+                      <span class="pdp-milestone-val" id="pdpPlacedDate-{{ section.id }}">
+                        {{ 'now' | date: '%B %d' }}
+                      </span>
+                    </div>
+                    <div class="pdp-milestone-row">
+                      <span class="pdp-milestone-label">Order Ships:</span>
+                      <span class="pdp-milestone-val" id="pdpShipsDate-{{ section.id }}">
+                        {{ 'now' | date: '%s' | plus: 86400 | date: '%B %d' }}-{{ 'now' | date: '%s' | plus: 172800 | date: '%d' }}
+                      </span>
+                    </div>
+                    <div class="pdp-milestone-row">
+                      <span class="pdp-milestone-label">Delivered:</span>
+                      <span class="pdp-milestone-val" id="pdpDeliveredDate-{{ section.id }}">
+                        {{ 'now' | date: '%s' | plus: 604800 | date: '%B %d' }}-{{ 'now' | date: '%s' | plus: 864000 | date: '%d' }}
+                      </span>
+                    </div>
+                  </div>
+
+                  <!-- Notes -->
+                  <div class="pdp-delivery-notes">
+                    <div class="pdp-note-item">
+                      <span class="pdp-bullet">&bull;</span>
+                      <span>Orders can be cancelled or modified within 2 hours after being placed.</span>
+                    </div>
+                    <div class="pdp-note-item">
+                      <span class="pdp-bullet">&bull;</span>
+                      <span>Canvas/ Poster/ Metal Sign: These packages cannot be delivered to a PO box.</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Product Information / Description Directly Below Title -->
+          {%- if product.description != blank -%}
+            <div class="pdp-description rte">
+              {{ product.description }}
+            </div>
+          {%- endif -%}
+        </div>
+
+        <!-- Tax & Diplomatic Transit Notice -->
+        <div class="pdp-tax-notice">
+          <span>Complimentary Insured Diplomatic Courier & Archival Certificate</span>
+        </div>
+
+        <!-- Bundle Deals Block (Buy More Save More) - Server-side 100% -->
+        {%- assign has_bundle_deals = false -%}
+        {%- if current_variant.price > 0 -%}
+          {%- if product.metafields.custom.bundle_deals != blank or product.tags contains 'bundle' or section.settings.enable_bundle_deals -%}
+            {%- assign has_bundle_deals = true -%}
+          {%- endif -%}
+        {%- endif -%}
+
+        {%- if has_bundle_deals -%}
+          <div class="pdp-bundle-container" id="pdpBundleContainer-{{ section.id }}">
+            <div class="pdp-bundle-header">
+              <span class="pdp-bundle-heading">CURATED ALLOCATIONS (BUY MORE SAVE MORE)</span>
+            </div>
+            <div class="pdp-bundle-grid">
+              <!-- Tier 1 -->
+              <div class="pdp-bundle-card is-selected" data-bundle-qty="1">
+                <span class="pdp-bundle-badge">STANDARD</span>
+                <div class="pdp-bundle-card-content">
+                  <div class="pdp-bundle-card-info">
+                    <span class="pdp-bundle-title">01 Allocation Suite</span>
+                    <span class="pdp-bundle-sub">Standard allocation</span>
+                  </div>
+                  <div class="pdp-bundle-pricing">
+                    <span class="pdp-bundle-price" data-bundle-base="{{ current_variant.price }}">{{ current_variant.price | money }}</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Tier 2 -->
+              <div class="pdp-bundle-card" data-bundle-qty="2">
+                <span class="pdp-bundle-badge pdp-bundle-badge-save">SAVE 10%</span>
+                <div class="pdp-bundle-card-content">
+                  <div class="pdp-bundle-card-info">
+                    <span class="pdp-bundle-title">02 Allocation Suites</span>
+                    <span class="pdp-bundle-sub">Diplomatic pair</span>
+                  </div>
+                  <div class="pdp-bundle-pricing">
+                    <span class="pdp-bundle-price" data-bundle-discount="0.9">{{ current_variant.price | times: 1.8 | money }}</span>
+                    <s class="pdp-bundle-compare">{{ current_variant.price | times: 2 | money }}</s>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Tier 3 -->
+              <div class="pdp-bundle-card" data-bundle-qty="3">
+                <span class="pdp-bundle-badge pdp-bundle-badge-vip">MAISON VIP (-20%)</span>
+                <div class="pdp-bundle-card-content">
+                  <div class="pdp-bundle-card-info">
+                    <span class="pdp-bundle-title">03 Allocation Suites</span>
+                    <span class="pdp-bundle-sub">Private salon heirloom</span>
+                  </div>
+                  <div class="pdp-bundle-pricing">
+                    <span class="pdp-bundle-price" data-bundle-discount="0.8">{{ current_variant.price | times: 2.4 | money }}</span>
+                    <s class="pdp-bundle-compare">{{ current_variant.price | times: 3 | money }}</s>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        {%- endif -%}
+
+        <!-- Commerce & Variant Form -->
+        {%- assign product_form_id = 'PdpForm-' | append: section.id -%}
+        {%- form 'product', product, id: product_form_id, class: 'pdp-form' -%}
+          <input type="hidden" name="id" id="PdpVariantId-{{ section.id }}" value="{{ current_variant.id }}">
+
+          <!-- Variant Selectors (Swatch Card Grid & Pill Selector) -->
+          {%- unless product.has_only_default_variant -%}
+            <div class="pdp-variants-wrapper">
+              {%- for option in product.options_with_values -%}
+                {%- assign opt_idx = forloop.index0 -%}
+                {%- assign opt_pos = option.position -%}
+
+                {%- comment -%} Determine if this option has variant swatch images {%- endcomment -%}
+                {%- assign has_swatch_images = false -%}
+                {%- for val in option.values -%}
+                  {%- for variant in product.variants -%}
+                    {%- case opt_pos -%}
+                      {%- when 1 -%}
+                        {%- if variant.option1 == val and variant.featured_image != blank -%}
+                          {%- assign has_swatch_images = true -%}
+                          {%- break -%}
+                        {%- endif -%}
+                      {%- when 2 -%}
+                        {%- if variant.option2 == val and variant.featured_image != blank -%}
+                          {%- assign has_swatch_images = true -%}
+                          {%- break -%}
+                        {%- endif -%}
+                      {%- when 3 -%}
+                        {%- if variant.option3 == val and variant.featured_image != blank -%}
+                          {%- assign has_swatch_images = true -%}
+                          {%- break -%}
+                        {%- endif -%}
+                    {%- endcase -%}
+                  {%- endfor -%}
+                  {%- if has_swatch_images -%}{%- break -%}{%- endif -%}
+                {%- endfor -%}
+
+                <div class="pdp-option-group">
+                  <div class="pdp-option-label">
+                    <span class="pdp-option-name">{{ option.name | upcase }}:</span>
+                    <span class="pdp-option-value-selected" id="pdpSelectedValue-{{ section.id }}-{{ opt_idx }}">
+                      {{ option.selected_value }}
+                    </span>
+                  </div>
+
+                  {%- if has_swatch_images -%}
+                    <!-- 4-Column Specimen Swatch Card Grid (As requested) -->
+                    <div class="pdp-swatch-grid">
+                      {%- for value in option.values -%}
+                        {%- assign swatch_img = nil -%}
+                        {%- for variant in product.variants -%}
+                          {%- case opt_pos -%}
+                            {%- when 1 -%}
+                              {%- if variant.option1 == value and variant.featured_image != blank -%}
+                                {%- assign swatch_img = variant.featured_image -%}
+                                {%- break -%}
+                              {%- endif -%}
+                            {%- when 2 -%}
+                              {%- if variant.option2 == value and variant.featured_image != blank -%}
+                                {%- assign swatch_img = variant.featured_image -%}
+                                {%- break -%}
+                              {%- endif -%}
+                            {%- when 3 -%}
+                              {%- if variant.option3 == value and variant.featured_image != blank -%}
+                                {%- assign swatch_img = variant.featured_image -%}
+                                {%- break -%}
+                              {%- endif -%}
+                          {%- endcase -%}
+                        {%- endfor -%}
+
+                        {%- if swatch_img == blank -%}
+                          {%- for img in product.images -%}
+                            {%- assign alt_down = img.alt | downcase -%}
+                            {%- assign val_down = value | downcase -%}
+                            {%- if alt_down contains val_down or img.src contains val_down -%}
+                              {%- assign swatch_img = img -%}
+                              {%- break -%}
+                            {%- endif -%}
+                          {%- endfor -%}
+                        {%- endif -%}
+
+                        <button
+                          type="button"
+                          class="pdp-opt-btn pdp-opt-card{% if option.selected_value == value %} is-selected{% endif %}"
+                          data-option-index="{{ opt_idx }}"
+                          data-value="{{ value | escape }}"
+                          aria-label="{{ value | escape }}"
+                          title="{{ value | escape }}"
+                        >
+                          <div class="pdp-card-img-wrap">
+                            {%- if swatch_img != blank -%}
+                              <img
+                                src="{{ swatch_img | image_url: width: 240 }}"
+                                alt="{{ value | escape }}"
+                                class="pdp-card-img"
+                                width="70"
+                                height="70"
+                                loading="lazy"
+                              >
+                            {%- else -%}
+                              <div class="pdp-card-img-fallback">
+                                <span>{{ value | slice: 0, 2 | upcase }}</span>
+                              </div>
+                            {%- endif -%}
+                          </div>
+                          <span class="pdp-card-label">{{ value }}</span>
+                        </button>
+                      {%- endfor -%}
+                    </div>
+                  {%- else -%}
+                    <!-- Standard Pill Selectors -->
+                    <div class="pdp-option-values">
+                      {%- for value in option.values -%}
+                        <button
+                          type="button"
+                          class="pdp-opt-btn pdp-opt-pill{% if option.selected_value == value %} is-selected{% endif %}"
+                          data-option-index="{{ opt_idx }}"
+                          data-value="{{ value | escape }}"
+                        >
+                          {{ value }}
+                        </button>
+                      {%- endfor -%}
+                    </div>
+                  {%- endif -%}
+                </div>
+              {%- endfor -%}
+            </div>
+          {%- endunless -%}
+
+          <!-- Price Display Directly Above ATC Button -->
+          <div class="pdp-price-row maison-cls-price-slot">
+            <span class="pdp-current-price{% if current_variant.price == 0 %} is-inquiry-price{% endif %}" id="pdpPrice-{{ section.id }}">
+              {%- if current_variant.price > 0 -%}
+                {{ current_variant.price | money }}
+              {%- else -%}
+                PRICE UPON INQUIRY
+              {%- endif -%}
+            </span>
+            <span class="pdp-compare-price" id="pdpComparePrice-{{ section.id }}" style="{% unless current_variant.compare_at_price > current_variant.price and current_variant.price > 0 %}display: none;{% endunless %}">
+              {%- if current_variant.compare_at_price > current_variant.price and current_variant.price > 0 -%}
+                {{ current_variant.compare_at_price | money }}
+              {%- endif -%}
+            </span>
+          </div>
+
+          <!-- Suite Acquisition Action Buttons -->
+          <div class="lp-actions-wrapper pdp-actions-wrapper">
+            <button 
+              type="submit" 
+              name="add" 
+              id="pdpAddBtn-{{ section.id }}" 
+              class="lp-add-btn pdp-add-btn lp-primary-btn"
+              {% unless current_variant.available %}disabled{% endunless %}
+            >
+              <span id="pdpAddBtnText-{{ section.id }}">
+                {%- if current_variant.available -%}
+                  ADD TO CART
+                {%- else -%}
+                  SOLD OUT
+                {%- endif -%}
+              </span>
+            </button>
+          </div>
+        {%- endform -%}
+
+        <!-- App Blocks / Upsell Slot (Placed between Action Buttons and Payment & Guarantees) -->
+        {%- assign has_app_blocks = false -%}
+        {%- for block in section.blocks -%}
+          {%- if block.type == '@app' or block.type == 'custom_liquid' -%}
+            {%- assign has_app_blocks = true -%}
+            {%- break -%}
+          {%- endif -%}
+        {%- endfor -%}
+
+        {%- if has_app_blocks -%}
+          <div class="pdp-app-blocks-slot" id="pdpAppBlocksSlot-{{ section.id }}">
+            {%- for block in section.blocks -%}
+              {%- case block.type -%}
+                {%- when '@app' -%}
+                  <div class="pdp-app-block-item" {{ block.shopify_attributes }}>
+                    {% render block %}
+                  </div>
+                {%- when 'custom_liquid' -%}
+                  <div class="pdp-custom-liquid-block" {{ block.shopify_attributes }}>
+                    {{ block.settings.custom_liquid }}
+                  </div>
+              {%- endcase -%}
+            {%- endfor -%}
+          </div>
+        {%- endif -%}
+
+        {%- comment -%}
+          =======================================================================
+          DYNAMIC CATEGORY DETECTION FOR PRODUCT GUARANTEES & Q&A ARCHIVE
+          - Sets: 'tiles' (American Mahjong Sets), 'bags', 'mats', 'racks', 'dices'
+          =======================================================================
+        {%- endcomment -%}
+        {%- assign product_category = 'tiles' -%}
+        {%- assign category_label = 'American Mahjong Sets' -%}
+
+        {%- assign cat_name = '' -%}
+        {%- if product.category and product.category.name -%}
+          {%- assign cat_name = product.category.name | downcase -%}
+        {%- endif -%}
+        {%- assign p_type = product.type | downcase -%}
+        {%- assign p_handle = product.handle | downcase -%}
+        {%- assign p_title = product.title | downcase -%}
+
+        {%- assign tag_str = '' -%}
+        {%- for t in product.tags -%}
+          {%- assign t_down = t | downcase -%}
+          {%- assign tag_str = tag_str | append: ' ' | append: t_down -%}
+        {%- endfor -%}
+
+        {%- assign coll_str = '' -%}
+        {%- for c in product.collections -%}
+          {%- assign c_h = c.handle | downcase -%}
+          {%- assign c_t = c.title | downcase -%}
+          {%- assign coll_str = coll_str | append: ' ' | append: c_h | append: ' ' | append: c_t -%}
+        {%- endfor -%}
+
+        {%- if p_type contains 'bag' or cat_name contains 'bag' or coll_str contains 'bag' or p_handle contains 'bag' or p_title contains 'bag' or tag_str contains 'bag' or p_type contains 'túi' or p_title contains 'túi' or coll_str contains 'tui' -%}
+          {%- assign product_category = 'bags' -%}
+          {%- assign category_label = 'Tile Carrying Bags' -%}
+        {%- elsif p_type contains 'mat' or cat_name contains 'mat' or coll_str contains 'mat' or p_handle contains 'mat' or p_title contains 'mat' or tag_str contains 'mat' or p_type contains 'thảm' or p_title contains 'thảm' or coll_str contains 'tham' -%}
+          {%- assign product_category = 'mats' -%}
+          {%- assign category_label = 'Table Playing Mats' -%}
+        {%- elsif p_type contains 'rack' or cat_name contains 'rack' or coll_str contains 'rack' or p_handle contains 'rack' or p_title contains 'rack' or tag_str contains 'rack' or p_type contains 'khay' or p_title contains 'khay' -%}
+          {%- assign product_category = 'racks' -%}
+          {%- assign category_label = 'Mahjong Racks & Pushers' -%}
+        {%- elsif p_type contains 'dice' or cat_name contains 'dice' or coll_str contains 'dice' or p_handle contains 'dice' or p_title contains 'dice' or tag_str contains 'dice' or p_type contains 'xúc xắc' or p_title contains 'xúc xắc' or coll_str contains 'xuc-xac' -%}
+          {%- assign product_category = 'dices' -%}
+          {%- assign category_label = 'Artisanal Dice Sets' -%}
+        {%- else -%}
+          {%- assign product_category = 'tiles' -%}
+          {%- assign category_label = 'American Mahjong Sets' -%}
+        {%- endif -%}
+
+        <!-- Payment & Guarantee Bar -->
+        {%- if section.settings.show_payment_guarantee != false -%}
+          {%- assign g1_text = 'Easy Returns' -%}
+          {%- case product_category -%}
+            {%- when 'tiles' -%}
+              {%- assign g2_text = 'NMJL-Ready Tile Sets' -%}
+            {%- when 'mats' -%}
+              {%- assign g2_text = 'Designed for Mahjong' -%}
+            {%- when 'racks' -%}
+              {%- assign g2_text = 'Keep Your Tiles Organized' -%}
+            {%- when 'dices' -%}
+              {%- assign g2_text = 'Made for Mahjong' -%}
+            {%- when 'bags' -%}
+              {%- assign g2_text = 'Carry Your Tiles in Style' -%}
+            {%- else -%}
+              {%- assign g2_text = 'NMJL-Ready Tile Sets' -%}
+          {%- endcase -%}
+          {%- assign g3_text = 'U.S. Shipping' -%}
+
+          <div class="pdp-guarantee-bar">
+            <!-- 3 Category-Specific Guarantee Features Above Logos -->
+            <div class="pdp-guarantee-features">
+              <div class="pdp-guarantee-feature-item">
+                <span class="pdp-guarantee-feature-icon">
+                  <svg width="18" height="18" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="10" cy="10" r="10" fill="#163327"/>
+                    <path d="M6 10.2L8.7 13L14.2 7.5" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </span>
+                <span class="pdp-guarantee-feature-text">{{ g1_text }}</span>
+              </div>
+
+              <div class="pdp-guarantee-feature-item">
+                <span class="pdp-guarantee-feature-icon">
+                  <svg width="18" height="18" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="10" cy="10" r="10" fill="#163327"/>
+                    <path d="M6 10.2L8.7 13L14.2 7.5" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </span>
+                <span class="pdp-guarantee-feature-text">{{ g2_text }}</span>
+              </div>
+
+              <div class="pdp-guarantee-feature-item">
+                <span class="pdp-guarantee-feature-icon">
+                  <svg width="18" height="18" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="10" cy="10" r="10" fill="#163327"/>
+                    <path d="M6 10.2L8.7 13L14.2 7.5" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </span>
+                <span class="pdp-guarantee-feature-text">{{ g3_text }}</span>
+              </div>
+            </div>
+
+            <!-- Payment Icons (100% Dynamic from Shopify Server shop.enabled_payment_types) -->
+            {%- unless shop.enabled_payment_types == empty -%}
+              <div class="pdp-payment-icons-wrapper">
+                <div class="pdp-payment-icons-list" id="pdpPaymentIcons-{{ section.id }}" aria-label="Accepted Payment Methods">
+                  {%- for type in shop.enabled_payment_types -%}
+                    {%- liquid
+                      assign type_title = type | replace: '_', ' ' | capitalize
+                      if type == 'american_express'
+                        assign type_title = 'American Express'
+                      elsif type == 'apple_pay'
+                        assign type_title = 'Apple Pay'
+                      elsif type == 'google_pay'
+                        assign type_title = 'Google Pay'
+                      elsif type == 'shopify_pay'
+                        assign type_title = 'Shop Pay'
+                      elsif type == 'master'
+                        assign type_title = 'Mastercard'
+                      elsif type == 'diners_club'
+                        assign type_title = 'Diners Club'
+                      elsif type == 'unionpay'
+                        assign type_title = 'UnionPay'
+                      elsif type == 'ideal'
+                        assign type_title = 'iDEAL'
+                      elsif type == 'jcb'
+                        assign type_title = 'JCB'
+                      elsif type == 'blik'
+                        assign type_title = 'BLIK'
+                      elsif type == 'mbway'
+                        assign type_title = 'MB WAY'
+                      elsif type == 'bancontact'
+                        assign type_title = 'Bancontact'
+                      endif
+                    -%}
+                    <span class="pdp-payment-badge" title="{{ type_title }}">
+                      {{ type | payment_type_svg_tag: class: 'pdp-payment-svg' }}
+                    </span>
+                  {%- endfor -%}
+                </div>
+              </div>
+            {%- endunless -%}
+          </div>
+        {%- endif -%}
+
+
+
+      </div>
+
+    </div>
+
+    <!-- =========================================================================
+         DEDICATED IN-PRODUCT Q&A SECTION (CATEGORY-TAILORED & ADMIN CUSTOMIZABLE)
+         ========================================================================= -->
+    {%- if section.settings.show_pdp_faq_section -%}
+    <div class="lp-pdp-faq-wrapper" id="pdpFaqArchive-{{ section.id }}">
+      <div class="lp-pdp-faq-header">
+        <span class="lp-pdp-faq-eyebrow">CLIENT CARE • Q&A ARCHIVE</span>
+        <h2 class="lp-pdp-faq-title" style="text-transform: uppercase; letter-spacing: 0.05em;">A FEW THINGS BEFORE YOU PURCHASE</h2>
+        <p class="lp-pdp-faq-sub">Everything you need to know about our handcrafted {{ category_label | downcase }} and concierge care.</p>
+      </div>
+
+      <div class="lp-pdp-faq-grid">
+        {%- comment -%} 1. Render Admin Custom FAQ Blocks if configured {%- endcomment -%}
+        {%- for block in section.blocks -%}
+          {%- if block.type == 'faq_item' -%}
+            <div class="lp-faq-card" {{ block.shopify_attributes }}>
+              <button 
+                type="button" 
+                class="lp-faq-trigger" 
+                aria-expanded="{% if forloop.first %}true{% else %}false{% endif %}"
+                aria-controls="lpFaqCard-{{ block.id }}"
+              >
+                <span>{{ block.settings.question | escape }}</span>
+                <span class="lp-faq-icon">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+                </span>
+              </button>
+              <div class="lp-faq-answer{% if forloop.first %} is-open{% endif %}" id="lpFaqCard-{{ block.id }}">
+                {{ block.settings.answer }}
+              </div>
+            </div>
+          {%- endif -%}
+        {%- endfor -%}
+
+        {%- comment -%} 2. Category-Specific Default Q&A Cards {%- endcomment -%}
+        {%- case product_category -%}
+          {%- when 'tiles' -%}
+            <div class="lp-faq-card">
+              <button type="button" class="lp-faq-trigger" aria-expanded="true" aria-controls="lpFaq-t1-{{ section.id }}">
+                <span>1. Are Mahjiva sets ready for American Mahjong?</span>
+                <span class="lp-faq-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span>
+              </button>
+              <div class="lp-faq-answer is-open" id="lpFaq-t1-{{ section.id }}">
+                <p>Yes! Every Mahjiva tile set is NMJL-ready for American Mahjong. For the exact tile count and configuration, check the Details section of your chosen set.</p>
+              </div>
+            </div>
+
+            <div class="lp-faq-card">
+              <button type="button" class="lp-faq-trigger" aria-expanded="false" aria-controls="lpFaq-t2-{{ section.id }}">
+                <span>2. What’s included with my set?</span>
+                <span class="lp-faq-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span>
+              </button>
+              <div class="lp-faq-answer" id="lpFaq-t2-{{ section.id }}">
+                <p>Each product page lists the tiles and accessories included with your purchase. Mats, racks, bags, and dice featured in lifestyle photos are included only when specifically listed.</p>
+              </div>
+            </div>
+
+            <div class="lp-faq-card">
+              <button type="button" class="lp-faq-trigger" aria-expanded="false" aria-controls="lpFaq-t3-{{ section.id }}">
+                <span>3. Is the artwork engraved or printed?</span>
+                <span class="lp-faq-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span>
+              </button>
+              <div class="lp-faq-answer" id="lpFaq-t3-{{ section.id }}">
+                <p>Most Mahjiva sets feature hand-engraved artwork, while select designs use high-quality printing. We stand behind the colorfast finish of both—our tile artwork is guaranteed not to fade. Check your chosen set’s description for its specific finish.</p>
+              </div>
+            </div>
+
+            <div class="lp-faq-card">
+              <button type="button" class="lp-faq-trigger" aria-expanded="false" aria-controls="lpFaq-t4-{{ section.id }}">
+                <span>4. Will the colors look exactly like the photos?</span>
+                <span class="lp-faq-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span>
+              </button>
+              <div class="lp-faq-answer" id="lpFaq-t4-{{ section.id }}">
+                <p>Colors may appear slightly lighter or darker in person due to lighting, photography, and screen settings. These subtle differences are normal and don’t indicate fading or a product defect.</p>
+              </div>
+            </div>
+
+            <div class="lp-faq-card">
+              <button type="button" class="lp-faq-trigger" aria-expanded="false" aria-controls="lpFaq-t5-{{ section.id }}">
+                <span>5. When will my order arrive, and what if something isn’t right?</span>
+                <span class="lp-faq-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span>
+              </button>
+              <div class="lp-faq-answer" id="lpFaq-t5-{{ section.id }}">
+                <p>All orders arrive within 1–2 weeks. If your order arrives damaged, incorrect, or has another issue, please contact us with your order number and photos. We offer returns and exchanges within 30 days of delivery.</p>
+              </div>
+            </div>
+
+          {%- when 'bags' -%}
+            <div class="lp-faq-card">
+              <button type="button" class="lp-faq-trigger" aria-expanded="true" aria-controls="lpFaq-b1-{{ section.id }}">
+                <span>1. How do I know if my tiles will fit?</span>
+                <span class="lp-faq-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span>
+              </button>
+              <div class="lp-faq-answer is-open" id="lpFaq-b1-{{ section.id }}">
+                <p>Compare your tile set’s measurements with the dimensions and capacity listed on the product page. If you’re unsure, send us your tile size and the bag you’re considering—we’re happy to help.</p>
+              </div>
+            </div>
+
+            <div class="lp-faq-card">
+              <button type="button" class="lp-faq-trigger" aria-expanded="false" aria-controls="lpFaq-b2-{{ section.id }}">
+                <span>2. Are tiles or accessories included with the bag?</span>
+                <span class="lp-faq-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span>
+              </button>
+              <div class="lp-faq-answer" id="lpFaq-b2-{{ section.id }}">
+                <p>Check the product description for exactly what’s included. Tiles, racks, dice, and other accessories shown in styled photos are included only when specifically listed.</p>
+              </div>
+            </div>
+
+            <div class="lp-faq-card">
+              <button type="button" class="lp-faq-trigger" aria-expanded="false" aria-controls="lpFaq-b3-{{ section.id }}">
+                <span>3. How should I clean my tile bag?</span>
+                <span class="lp-faq-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span>
+              </button>
+              <div class="lp-faq-answer" id="lpFaq-b3-{{ section.id }}">
+                <p>For light cleaning, gently wipe with a soft, slightly damp cloth and let it air-dry before storing. Avoid soaking or harsh cleaners, and follow any care instructions provided for your chosen style.</p>
+              </div>
+            </div>
+
+            <div class="lp-faq-card">
+              <button type="button" class="lp-faq-trigger" aria-expanded="false" aria-controls="lpFaq-b4-{{ section.id }}">
+                <span>4. When will my order arrive?</span>
+                <span class="lp-faq-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span>
+              </button>
+              <div class="lp-faq-answer" id="lpFaq-b4-{{ section.id }}">
+                <p>Orders arrive within 1–2 weeks. If you’re shopping for a gift or an upcoming gathering, contact us before ordering if you need help with timing.</p>
+              </div>
+            </div>
+
+            <div class="lp-faq-card">
+              <button type="button" class="lp-faq-trigger" aria-expanded="false" aria-controls="lpFaq-b5-{{ section.id }}">
+                <span>5. What if my bag arrives damaged or incorrect?</span>
+                <span class="lp-faq-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span>
+              </button>
+              <div class="lp-faq-answer" id="lpFaq-b5-{{ section.id }}">
+                <p>Contact us with your order number and clear photos so we can help resolve the issue. We offer returns and exchanges within 30 days of delivery.</p>
+              </div>
+            </div>
+
+          {%- when 'mats' -%}
+            <div class="lp-faq-card">
+              <button type="button" class="lp-faq-trigger" aria-expanded="true" aria-controls="lpFaq-m1-{{ section.id }}">
+                <span>1. Can I use a Mahjiva mat for American Mahjong?</span>
+                <span class="lp-faq-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span>
+              </button>
+              <div class="lp-faq-answer is-open" id="lpFaq-m1-{{ section.id }}">
+                <p>Yes! Our mats are designed for your Mahjong table and can be paired with your American Mahjong tiles and racks. Check each design’s photos to see its layout and any printed playing guides.</p>
+              </div>
+            </div>
+
+            <div class="lp-faq-card">
+              <button type="button" class="lp-faq-trigger" aria-expanded="false" aria-controls="lpFaq-m2-{{ section.id }}">
+                <span>2. How do I know if the mat will fit my table?</span>
+                <span class="lp-faq-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span>
+              </button>
+              <div class="lp-faq-answer" id="lpFaq-m2-{{ section.id }}">
+                <p>Our current mats measure approximately 31.5 × 31.5 inches (80 × 80 cm). Measure your tabletop before ordering to make sure the mat can lie flat, with room for your preferred playing setup.</p>
+              </div>
+            </div>
+
+            <div class="lp-faq-card">
+              <button type="button" class="lp-faq-trigger" aria-expanded="false" aria-controls="lpFaq-m3-{{ section.id }}">
+                <span>3. How should I clean my mat?</span>
+                <span class="lp-faq-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span>
+              </button>
+              <div class="lp-faq-answer" id="lpFaq-m3-{{ section.id }}">
+                <p>For light cleaning, gently wipe the water-resistant surface with a soft, damp cloth. Let your mat air-dry completely before storing, and avoid harsh cleaners or abrasive scrubbing.</p>
+              </div>
+            </div>
+
+            <div class="lp-faq-card">
+              <button type="button" class="lp-faq-trigger" aria-expanded="false" aria-controls="lpFaq-m4-{{ section.id }}">
+                <span>4. Can you help me coordinate a mat with my tiles?</span>
+                <span class="lp-faq-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span>
+              </button>
+              <div class="lp-faq-answer" id="lpFaq-m4-{{ section.id }}">
+                <p>Absolutely. Choose a design that complements your tiles’ colors, or mix patterns for a more personal look. If you’re deciding between styles, contact us—we’re happy to help you put your table together.</p>
+              </div>
+            </div>
+
+            <div class="lp-faq-card">
+              <button type="button" class="lp-faq-trigger" aria-expanded="false" aria-controls="lpFaq-m5-{{ section.id }}">
+                <span>5. When will my mat arrive, and what if there’s an issue?</span>
+                <span class="lp-faq-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span>
+              </button>
+              <div class="lp-faq-answer" id="lpFaq-m5-{{ section.id }}">
+                <p>Orders arrive within 1–2 weeks. We offer returns and exchanges within 30 days of delivery. If your mat arrives damaged or incorrect, contact us with your order number and clear photos so we can help.</p>
+              </div>
+            </div>
+
+          {%- when 'racks' -%}
+            <div class="lp-faq-card">
+              <button type="button" class="lp-faq-trigger" aria-expanded="true" aria-controls="lpFaq-r1-{{ section.id }}">
+                <span>1. Will the racks fit my tiles?</span>
+                <span class="lp-faq-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span>
+              </button>
+              <div class="lp-faq-answer is-open" id="lpFaq-r1-{{ section.id }}">
+                <p>Check the rack dimensions on the product page against your tiles and playing row. If you’re unsure, send us your tile measurements—we’re happy to help.</p>
+              </div>
+            </div>
+
+            <div class="lp-faq-card">
+              <button type="button" class="lp-faq-trigger" aria-expanded="false" aria-controls="lpFaq-r2-{{ section.id }}">
+                <span>2. What does a pusher do?</span>
+                <span class="lp-faq-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span>
+              </button>
+              <div class="lp-faq-answer" id="lpFaq-r2-{{ section.id }}">
+                <p>A pusher helps move your tile wall into position in one smooth motion. Your chosen product’s description explains whether pushers are included and how they attach.</p>
+              </div>
+            </div>
+
+            <div class="lp-faq-card">
+              <button type="button" class="lp-faq-trigger" aria-expanded="false" aria-controls="lpFaq-r3-{{ section.id }}">
+                <span>3. What’s included in the set?</span>
+                <span class="lp-faq-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span>
+              </button>
+              <div class="lp-faq-answer" id="lpFaq-r3-{{ section.id }}">
+                <p>Each product page lists the number of racks and any included accessories. Tiles, mats, and other items shown in styled photos are included only when specifically listed.</p>
+              </div>
+            </div>
+
+            <div class="lp-faq-card">
+              <button type="button" class="lp-faq-trigger" aria-expanded="false" aria-controls="lpFaq-r4-{{ section.id }}">
+                <span>4. When will my order arrive?</span>
+                <span class="lp-faq-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span>
+              </button>
+              <div class="lp-faq-answer" id="lpFaq-r4-{{ section.id }}">
+                <p>Orders arrive within 1–2 weeks. Shopping for a gift or an upcoming game night? Contact us before ordering if you need help with timing.</p>
+              </div>
+            </div>
+
+            <div class="lp-faq-card">
+              <button type="button" class="lp-faq-trigger" aria-expanded="false" aria-controls="lpFaq-r5-{{ section.id }}">
+                <span>5. What if something arrives damaged or incorrect?</span>
+                <span class="lp-faq-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span>
+              </button>
+              <div class="lp-faq-answer" id="lpFaq-r5-{{ section.id }}">
+                <p>Contact us with your order number and clear photos so we can help resolve the issue. We offer returns and exchanges within 30 days of delivery.</p>
+              </div>
+            </div>
+
+          {%- when 'dices' -%}
+            <div class="lp-faq-card">
+              <button type="button" class="lp-faq-trigger" aria-expanded="true" aria-controls="lpFaq-d1-{{ section.id }}">
+                <span>1. Can I use these dice with my existing Mahjong set?</span>
+                <span class="lp-faq-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span>
+              </button>
+              <div class="lp-faq-answer is-open" id="lpFaq-d1-{{ section.id }}">
+                <p>Yes! Our dice can be paired with your American Mahjong tiles. Choose a style you love, and check the product page for the dimensions before ordering.</p>
+              </div>
+            </div>
+
+            <div class="lp-faq-card">
+              <button type="button" class="lp-faq-trigger" aria-expanded="false" aria-controls="lpFaq-d2-{{ section.id }}">
+                <span>2. How many dice are used for Mahjong?</span>
+                <span class="lp-faq-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span>
+              </button>
+              <div class="lp-faq-answer" id="lpFaq-d2-{{ section.id }}">
+                <p>American Mahjong typically uses two dice. Each product page lists the quantity included, so you’ll know exactly what you’re receiving and whether you’ll have extras.</p>
+              </div>
+            </div>
+
+            <div class="lp-faq-card">
+              <button type="button" class="lp-faq-trigger" aria-expanded="false" aria-controls="lpFaq-d3-{{ section.id }}">
+                <span>3. How should I care for my dice?</span>
+                <span class="lp-faq-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span>
+              </button>
+              <div class="lp-faq-answer" id="lpFaq-d3-{{ section.id }}">
+                <p>Gently wipe with a soft cloth to keep them looking their best. Avoid harsh cleaners and abrasive scrubbing, and store them somewhere dry between games.</p>
+              </div>
+            </div>
+
+            <div class="lp-faq-card">
+              <button type="button" class="lp-faq-trigger" aria-expanded="false" aria-controls="lpFaq-d4-{{ section.id }}">
+                <span>4. When will my order arrive?</span>
+                <span class="lp-faq-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span>
+              </button>
+              <div class="lp-faq-answer" id="lpFaq-d4-{{ section.id }}">
+                <p>Orders arrive within 1–2 weeks. If you’re shopping for a gift or a planned gathering, contact us before ordering if you need help with timing.</p>
+              </div>
+            </div>
+
+            <div class="lp-faq-card">
+              <button type="button" class="lp-faq-trigger" aria-expanded="false" aria-controls="lpFaq-d5-{{ section.id }}">
+                <span>5. What if my dice arrive damaged or incorrect?</span>
+                <span class="lp-faq-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span>
+              </button>
+              <div class="lp-faq-answer" id="lpFaq-d5-{{ section.id }}">
+                <p>Contact us with your order number and clear photos so we can help resolve the issue. We offer returns and exchanges within 30 days of delivery.</p>
+              </div>
+            </div>
+        {%- endcase -%}
+      </div>
+
+      <div class="lp-pdp-faq-footer">
+        <a href="mailto:{{ shop.email }}?subject=Question%20about%20{{ product.title | url_encode }}" class="lp-faq-concierge-btn">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+          <span>Have a bespoke question? Speak with Maison Concierge →</span>
+        </a>
+      </div>
+    </div>
+    {%- endif -%}
+
+  </div>
+
+  <!-- =========================================================================
+       ENLARGED IMAGE VIEWER (CLEAN, AIRY & LIGHT MAISON BACKDROP)
+       ========================================================================= -->
+  <div id="AtelierLightbox" role="dialog" aria-modal="true" onclick="if(!event.target.closest('#lbMainImg') && !event.target.closest('.lp-lb-controls-bar')) closeLightbox()">
+    <!-- SÂN KHẤU TRUNG TÂM -->
+    <div class="lp-lb-stage">
+      <img id="lbMainImg" src="{{ initial_media | image_url: width: 2400 }}" alt="{{ initial_media.alt | default: product.title | escape }}" class="lp-lb-img" onclick="event.stopPropagation();" ondblclick="toggleLightboxZoom()">
+    </div>
+
+    <!-- COMPACT LUXURY BOTTOM CONTROLLER (Buttons next to counter) -->
+    <div class="lp-lb-footer" onclick="event.stopPropagation();">
+      <div class="lp-lb-controls-bar">
+        <button 
+          type="button" 
+          class="lp-lb-ctrl-btn prev" 
+          onclick="event.stopPropagation(); changeLightboxImage(-1);" 
+          aria-label="Previous image"
+          title="Previous image"
+        >
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 19l-7-7 7-7"/></svg>
+        </button>
+
+        <span class="lp-lb-counter" id="lbCounterBadge">01 / {{ product.media.size | default: 1 | prepend: '0' | slice: -2, 2 }}</span>
+
+        <button 
+          type="button" 
+          class="lp-lb-ctrl-btn next" 
+          onclick="event.stopPropagation(); changeLightboxImage(1);" 
+          aria-label="Next image"
+          title="Next image"
+        >
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =========================================================================
+     VANILLA JAVASCRIPT: STAGE, FILMSTRIP & LIGHTBOX CONTROLLER
+     ========================================================================= -->
+<script>
+  (function() {
+    const sectionEl = document.getElementById('LuxuryProduct-{{ section.id }}') || document.getElementById('LuxuryMainProduct-{{ section.id }}');
+    if (!sectionEl) return;
+
+    // Elements
+    const mainStage = document.getElementById('pdpMainStage-{{ section.id }}');
+    const mainImg = document.getElementById('pdpMainImage-{{ section.id }}');
+    const zoomTrigger = document.getElementById('pdpZoomTrigger-{{ section.id }}');
+    const thumbsTrack = document.getElementById('pdpThumbsTrack-{{ section.id }}');
+    const thumbItems = Array.from(sectionEl.querySelectorAll('.lp-thumb-item, .pdp-thumb-item'));
+
+    // Lightbox Elements
+    const lbModal = document.getElementById('AtelierLightbox');
+    const lightboxImg = document.getElementById('lbMainImg');
+    const lightboxPlate = document.getElementById('lbPlateTitle');
+    const lightboxCounter = document.getElementById('lbCounterBadge');
+
+    // Automatically teleport #AtelierLightbox to document.body
+    function ensureLightboxInBody() {
+      const modal = document.getElementById('AtelierLightbox');
+      if (modal && modal.parentElement !== document.body) {
+        document.body.appendChild(modal);
+      }
+    }
+    ensureLightboxInBody();
+    document.addEventListener('DOMContentLoaded', ensureLightboxInBody);
+
+    let activeIdx = thumbItems.findIndex(t => t.classList.contains('is-active'));
+    let currentIndex = activeIdx >= 0 ? activeIdx : 0;
+    const totalMedia = thumbItems.length > 0 ? thumbItems.length : 1;
+    let switchTimeout = null;
+
+    // Helper: format 2-digit numbers
+    const formatNumber = num => (num < 10 ? '0' + num : num);
+
+    // 1. Switch Stage Image with Silky Crossfade (0.25s)
+    function switchMainImage(index) {
+      if (!mainImg || !thumbItems[index]) return;
+      currentIndex = index;
+
+      const targetThumb = thumbItems[index];
+      const newSrc = targetThumb.getAttribute('data-src');
+      const newSrcset = targetThumb.getAttribute('data-srcset');
+      const fullSrc = targetThumb.getAttribute('data-full-src');
+      const altText = targetThumb.getAttribute('data-alt') || '';
+
+      // Update thumb active state
+      thumbItems.forEach(t => {
+        t.classList.remove('is-active');
+        t.setAttribute('aria-selected', 'false');
+      });
+      targetThumb.classList.add('is-active');
+      targetThumb.setAttribute('aria-selected', 'true');
+
+      // Scroll thumbnail into view smoothly
+      if (thumbsTrack) {
+        targetThumb.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+      }
+
+      // Silky Crossfade Transition on Main Stage (0.25s)
+      if (switchTimeout) clearTimeout(switchTimeout);
+      mainImg.classList.add('is-switching');
+      mainImg.classList.add('is-transitioning');
+
+      switchTimeout = setTimeout(() => {
+        if (newSrcset) {
+          mainImg.setAttribute('srcset', newSrcset);
+        } else {
+          mainImg.removeAttribute('srcset');
+        }
+        mainImg.src = newSrc;
+        mainImg.alt = altText;
+        mainImg.setAttribute('data-full-src', fullSrc);
+        mainImg.classList.remove('is-switching');
+        mainImg.classList.remove('is-transitioning');
+      }, 120);
+
+      // Preload & Sync Lightbox Image & Text
+      const lbImg = document.getElementById('lbMainImg');
+      if (lbImg) {
+        lbImg.src = fullSrc;
+        lbImg.alt = altText;
+        lbImg.classList.remove('is-zoomed');
+      }
+      const lbPlate = document.getElementById('lbPlateTitle');
+      if (lbPlate) {
+        lbPlate.textContent = `PLATE ${formatNumber(currentIndex + 1)} • ATELIER ARCHIVE`;
+      }
+      const lbCounter = document.getElementById('lbCounterBadge');
+      if (lbCounter) {
+        lbCounter.textContent = `${formatNumber(currentIndex + 1)} / ${formatNumber(totalMedia)}`;
+      }
+    }
+
+    // Attach click events to thumbnails
+    thumbItems.forEach((thumb, idx) => {
+      thumb.addEventListener('click', (e) => {
+        e.preventDefault();
+        switchMainImage(idx);
+      });
+    });
+
+    // Thumbnail Navigation Buttons (Prev / Next) & Mouse Wheel Horizontal Scroll
+    const thumbPrevBtn = document.getElementById('pdpThumbPrev-{{ section.id }}');
+    const thumbNextBtn = document.getElementById('pdpThumbNext-{{ section.id }}');
+
+    if (thumbPrevBtn) {
+      thumbPrevBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        let prevIdx = (currentIndex - 1 + totalMedia) % totalMedia;
+        switchMainImage(prevIdx);
+      });
+    }
+
+    if (thumbNextBtn) {
+      thumbNextBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        let nextIdx = (currentIndex + 1) % totalMedia;
+        switchMainImage(nextIdx);
+      });
+    }
+
+    // Horizontal mouse wheel scrolling over thumbnail track
+    if (thumbsTrack) {
+      thumbsTrack.addEventListener('wheel', (e) => {
+        if (Math.abs(e.deltaY) > Math.abs(e.deltaX)) {
+          e.preventDefault();
+          thumbsTrack.scrollBy({ left: e.deltaY * 1.5, behavior: 'smooth' });
+        }
+      }, { passive: false });
+    }
+
+    // 2. Inspection Lightbox Operations
+    function openLightbox() {
+      const modal = document.getElementById('AtelierLightbox');
+      if (!modal) return;
+      ensureLightboxInBody();
+
+      const targetThumb = thumbItems[currentIndex];
+      const currentFullSrc = targetThumb ? targetThumb.getAttribute('data-full-src') : (mainImg ? (mainImg.getAttribute('data-full-src') || mainImg.src) : '');
+      const currentAlt = targetThumb ? targetThumb.getAttribute('data-alt') : (mainImg ? mainImg.alt : '');
+
+      const lbImg = document.getElementById('lbMainImg');
+      if (lbImg && currentFullSrc) {
+        lbImg.src = currentFullSrc;
+        lbImg.alt = currentAlt || '';
+        lbImg.classList.remove('is-zoomed');
+      }
+      const lbPlate = document.getElementById('lbPlateTitle');
+      if (lbPlate) {
+        lbPlate.textContent = `PLATE ${formatNumber(currentIndex + 1)} • ATELIER ARCHIVE`;
+      }
+      const lbCounter = document.getElementById('lbCounterBadge');
+      if (lbCounter) {
+        lbCounter.textContent = `${formatNumber(currentIndex + 1)} / ${formatNumber(totalMedia)}`;
+      }
+
+      modal.classList.add('active');
+      modal.classList.add('is-open');
+      modal.setAttribute('aria-hidden', 'false');
+      document.body.style.overflow = 'hidden';
+      document.addEventListener('keydown', handleKeyDown);
+    }
+
+    function closeLightbox() {
+      const modal = document.getElementById('AtelierLightbox');
+      if (!modal) return;
+      modal.classList.remove('active');
+      modal.classList.remove('is-open');
+      modal.setAttribute('aria-hidden', 'true');
+      const lbImg = document.getElementById('lbMainImg');
+      if (lbImg) lbImg.classList.remove('is-zoomed');
+      document.body.style.overflow = '';
+      document.removeEventListener('keydown', handleKeyDown);
+    }
+
+    function toggleLightboxZoom() {
+      const lbImg = document.getElementById('lbMainImg');
+      if (lbImg) {
+        lbImg.classList.toggle('is-zoomed');
+      }
+    }
+
+    function changeLightboxImage(direction) {
+      if (totalMedia <= 1) return;
+      let nextIdx = (currentIndex + direction + totalMedia) % totalMedia;
+      switchMainImage(nextIdx);
+    }
+
+    // Expose functions globally for inline onclick handlers
+    window.closeLightbox = closeLightbox;
+    window.closeAtelierLightbox = closeLightbox;
+    window.openLightbox = openLightbox;
+    window.openAtelierLightbox = openLightbox;
+    window.toggleLightboxZoom = toggleLightboxZoom;
+    window.changeLightboxImage = changeLightboxImage;
+
+    function handleKeyDown(e) {
+      const modal = document.getElementById('AtelierLightbox');
+      if (!modal || (!modal.classList.contains('active') && !modal.classList.contains('is-open'))) return;
+      if (e.key === 'Escape' || e.keyCode === 27) {
+        closeLightbox();
+      } else if (e.key === 'ArrowRight' || e.keyCode === 39) {
+        changeLightboxImage(1);
+      } else if (e.key === 'ArrowLeft' || e.keyCode === 37) {
+        changeLightboxImage(-1);
+      }
+    }
+
+    if (mainStage) {
+      mainStage.addEventListener('click', (e) => {
+        openLightbox();
+      });
+    }
+
+    if (zoomTrigger) {
+      zoomTrigger.addEventListener('click', (e) => {
+        e.stopPropagation();
+        openLightbox();
+      });
+    }
+
+    // 3. Variant Switching Logic & Product Form
+    const productData = {{ product | json }};
+    const optionBtns = Array.from(sectionEl.querySelectorAll('.pdp-opt-btn'));
+    const variantIdInput = document.getElementById('PdpVariantId-{{ section.id }}');
+    const priceEl = document.getElementById('pdpPrice-{{ section.id }}');
+    const comparePriceEl = document.getElementById('pdpComparePrice-{{ section.id }}');
+    const addBtn = document.getElementById('pdpAddBtn-{{ section.id }}');
+    const addBtnText = document.getElementById('pdpAddBtnText-{{ section.id }}');
+
+    // Helper: format money text without innerHTML re-render (Prevents layout shift and font flicker)
+    const moneyFormatString = {{ shop.money_format | json }};
+    function formatMoneyText(cents) {
+      if (!cents || cents <= 0) {
+        return 'PRICE UPON INQUIRY';
+      }
+      if (typeof Shopify !== 'undefined' && Shopify.formatMoney) {
+        const dummy = document.createElement('div');
+        dummy.innerHTML = Shopify.formatMoney(cents, moneyFormatString);
+        return dummy.textContent || dummy.innerText || '';
+      }
+      return (cents / 100).toLocaleString('{{ request.locale.iso_code | default: "en-US" }}') + ' {{ cart.currency.symbol | default: localization.country.currency.symbol | default: "$" }}';
+    }
+
+    function getSelectedOptions() {
+      const selected = [];
+      const groups = sectionEl.querySelectorAll('.pdp-option-group');
+      groups.forEach((group, gIdx) => {
+        const activeBtn = group.querySelector('.pdp-opt-btn.is-selected');
+        if (activeBtn) {
+          selected.push(activeBtn.getAttribute('data-value'));
+        }
+      });
+      return selected;
+    }
+
+    function onOptionClick(clickedBtn) {
+      const group = clickedBtn.closest('.pdp-option-group');
+      if (!group) return;
+
+      group.querySelectorAll('.pdp-opt-btn').forEach(btn => btn.classList.remove('is-selected'));
+      clickedBtn.classList.add('is-selected');
+
+      const optIdx = clickedBtn.getAttribute('data-option-index');
+      const labelValEl = document.getElementById(`pdpSelectedValue-{{ section.id }}-${optIdx}`);
+      if (labelValEl) {
+        labelValEl.textContent = clickedBtn.getAttribute('data-value');
+      }
+
+      const selectedOptions = getSelectedOptions();
+
+      // Find matched variant
+      if (productData && productData.variants) {
+        const matchedVariant = productData.variants.find(variant => {
+          return variant.options.every((optVal, idx) => optVal === selectedOptions[idx]);
+        });
+
+        if (matchedVariant) {
+          if (variantIdInput) variantIdInput.value = matchedVariant.id;
+
+          // Refactor variant change: Pure DOM textContent mutation (Zero innerHTML / Zero layout flicker)
+          if (priceEl && matchedVariant.price !== undefined) {
+            priceEl.textContent = formatMoneyText(matchedVariant.price);
+            if (matchedVariant.price <= 0) {
+              priceEl.classList.add('is-inquiry-price');
+            } else {
+              priceEl.classList.remove('is-inquiry-price');
+            }
+          }
+
+          if (comparePriceEl) {
+            if (matchedVariant.compare_at_price && matchedVariant.compare_at_price > matchedVariant.price && matchedVariant.price > 0) {
+              comparePriceEl.textContent = formatMoneyText(matchedVariant.compare_at_price);
+              comparePriceEl.style.display = 'inline';
+            } else {
+              comparePriceEl.textContent = '';
+              comparePriceEl.style.display = 'none';
+            }
+          }
+
+          // Update bundle card prices if bundle exists
+          const bundleCards = sectionEl.querySelectorAll('.pdp-bundle-card');
+          if (bundleCards.length > 0 && matchedVariant.price > 0) {
+            bundleCards.forEach(bCard => {
+              const qty = parseInt(bCard.getAttribute('data-bundle-qty') || '1', 10);
+              const bPriceEl = bCard.querySelector('.pdp-bundle-price');
+              const bCompEl = bCard.querySelector('.pdp-bundle-compare');
+              if (qty === 1 && bPriceEl) {
+                bPriceEl.textContent = formatMoneyText(matchedVariant.price);
+              } else if (qty === 2 && bPriceEl) {
+                bPriceEl.textContent = formatMoneyText(Math.round(matchedVariant.price * 1.8));
+                if (bCompEl) bCompEl.textContent = formatMoneyText(matchedVariant.price * 2);
+              } else if (qty === 3 && bPriceEl) {
+                bPriceEl.textContent = formatMoneyText(Math.round(matchedVariant.price * 2.4));
+                if (bCompEl) bCompEl.textContent = formatMoneyText(matchedVariant.price * 3);
+              }
+            });
+          }
+
+          // Stock button state
+          if (addBtn && addBtnText) {
+            if (!matchedVariant.available) {
+              addBtn.disabled = true;
+              addBtnText.textContent = 'SOLD OUT';
+            } else {
+              addBtn.disabled = false;
+              addBtnText.textContent = 'ADD TO CART';
+            }
+          }
+
+          // Switch image if variant has featured image
+          if (matchedVariant.featured_image) {
+            const featId = matchedVariant.featured_image.id;
+            const featSrc = matchedVariant.featured_image.src;
+            let mediaIdx = -1;
+            if (featId) {
+              mediaIdx = thumbItems.findIndex(t => t.getAttribute('data-media-id') == featId);
+            }
+            if (mediaIdx === -1 && featSrc) {
+              const filename = featSrc.split('?')[0].split('/').pop();
+              mediaIdx = thumbItems.findIndex(t => {
+                const s = t.getAttribute('data-src') || '';
+                return s.includes(filename);
+              });
+            }
+            if (mediaIdx !== -1) {
+              switchMainImage(mediaIdx);
+            } else if (featSrc) {
+              mainImg.removeAttribute('srcset');
+              mainImg.src = featSrc;
+            }
+          }
+        }
+      }
+    }
+
+    optionBtns.forEach(btn => {
+      btn.addEventListener('click', () => onOptionClick(btn));
+    });
+
+    // Bundle Card selection interaction
+    // Bundle Card selection interaction
+    const bundleCardList = sectionEl.querySelectorAll('.pdp-bundle-card');
+    bundleCardList.forEach(bCard => {
+      bCard.addEventListener('click', () => {
+        bundleCardList.forEach(c => c.classList.remove('is-selected'));
+        bCard.classList.add('is-selected');
+      });
+    });
+
+    // Accordion toggle handlers (Right Column & Full Q&A)
+    const accTriggers = sectionEl.querySelectorAll('.pdp-acc-trigger, .lp-faq-trigger');
+    accTriggers.forEach(trigger => {
+      trigger.addEventListener('click', () => {
+        const isExpanded = trigger.getAttribute('aria-expanded') === 'true';
+        trigger.setAttribute('aria-expanded', !isExpanded);
+        const content = trigger.nextElementSibling;
+        if (content) {
+          content.classList.toggle('is-open', !isExpanded);
+        }
+      });
+    });
+
+    // Judge.me rating click handler -> smooth scroll down to reviews widget
+    const judgemeRating = document.getElementById('pdpJudgemeRating-{{ section.id }}');
+    if (judgemeRating) {
+      judgemeRating.addEventListener('click', () => {
+        const reviewWidget = document.querySelector('.jdgm-review-widget, #judgeme_product_reviews, [data-from-snippet="true"]');
+        if (reviewWidget) {
+          reviewWidget.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      });
+    }
+
+    // Delivery Estimator & Shipping Schedule Popover Handler
+    (function initDeliveryEstimator() {
+      const now = new Date();
+      function formatRange(d1, d2) {
+        const m1 = d1.toLocaleString('en-US', { month: 'long' });
+        const day1 = d1.getDate();
+        const m2 = d2.toLocaleString('en-US', { month: 'long' });
+        const day2 = d2.getDate();
+        return (m1 === m2) ? `${m1} ${day1}-${day2}` : `${m1} ${day1} - ${m2} ${day2}`;
+      }
+      function formatSingle(d) {
+        return `${d.toLocaleString('en-US', { month: 'long' })} ${d.getDate()}`;
+      }
+
+      const ship1 = new Date(now); ship1.setDate(now.getDate() + 1);
+      const ship2 = new Date(now); ship2.setDate(now.getDate() + 2);
+      const del1 = new Date(now); del1.setDate(now.getDate() + 7);
+      const del2 = new Date(now); del2.setDate(now.getDate() + 10);
+
+      const placedStr = formatSingle(now);
+      const shipsStr = formatRange(ship1, ship2);
+      const delStr = formatRange(del1, del2);
+
+      const mainDelDate = document.getElementById('pdpMainDeliveryDate-{{ section.id }}');
+      const placedDateEl = document.getElementById('pdpPlacedDate-{{ section.id }}');
+      const shipsDateEl = document.getElementById('pdpShipsDate-{{ section.id }}');
+      const delDateEl = document.getElementById('pdpDeliveredDate-{{ section.id }}');
+
+      if (mainDelDate) mainDelDate.textContent = delStr;
+      if (placedDateEl) placedDateEl.textContent = placedStr;
+      if (shipsDateEl) shipsDateEl.textContent = shipsStr;
+      if (delDateEl) delDateEl.textContent = delStr;
+
+      // Delivery Method Popover Toggle
+      const scheduleTrigger = document.getElementById('pdpScheduleTrigger-{{ section.id }}');
+      const deliveryPopover = document.getElementById('pdpDeliveryPopover-{{ section.id }}');
+      const deliveryCloseBtn = document.getElementById('pdpDeliveryClose-{{ section.id }}');
+
+      function toggleDeliveryPopover(show) {
+        if (!deliveryPopover || !scheduleTrigger) return;
+        const isHidden = deliveryPopover.hasAttribute('hidden');
+        const willShow = show !== undefined ? show : isHidden;
+        if (willShow) {
+          deliveryPopover.removeAttribute('hidden');
+          scheduleTrigger.setAttribute('aria-expanded', 'true');
+          toggleCountryPopover(false);
+        } else {
+          deliveryPopover.setAttribute('hidden', 'true');
+          scheduleTrigger.setAttribute('aria-expanded', 'false');
+        }
+      }
+
+      if (scheduleTrigger) {
+        scheduleTrigger.addEventListener('click', (e) => {
+          e.stopPropagation();
+          toggleDeliveryPopover();
+        });
+      }
+
+      if (deliveryCloseBtn) {
+        deliveryCloseBtn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          toggleDeliveryPopover(false);
+        });
+      }
+
+      // Country Selection Popover Toggle
+      const countryTrigger = document.getElementById('pdpCountryTrigger-{{ section.id }}');
+      const countryPopover = document.getElementById('pdpCountryPopover-{{ section.id }}');
+      const countryCloseBtn = document.getElementById('pdpCountryClose-{{ section.id }}');
+      const countrySearch = document.getElementById('pdpCountrySearch-{{ section.id }}');
+      const countryForm = document.getElementById('PdpDeliveryCountryForm');
+      const countryInput = document.getElementById('PdpDeliveryCountryInput');
+
+      function toggleCountryPopover(show) {
+        if (!countryPopover || !countryTrigger) return;
+        const isHidden = countryPopover.hasAttribute('hidden');
+        const willShow = show !== undefined ? show : isHidden;
+        if (willShow) {
+          countryPopover.removeAttribute('hidden');
+          countryTrigger.setAttribute('aria-expanded', 'true');
+          toggleDeliveryPopover(false);
+          if (countrySearch) {
+            setTimeout(() => countrySearch.focus(), 60);
+          }
+        } else {
+          countryPopover.setAttribute('hidden', 'true');
+          countryTrigger.setAttribute('aria-expanded', 'false');
+        }
+      }
+
+      if (countryTrigger) {
+        countryTrigger.addEventListener('click', (e) => {
+          e.stopPropagation();
+          toggleCountryPopover();
+        });
+      }
+
+      if (countryCloseBtn) {
+        countryCloseBtn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          toggleCountryPopover(false);
+        });
+      }
+
+      if (countrySearch) {
+        countrySearch.addEventListener('input', () => {
+          const q = countrySearch.value.toLowerCase().trim();
+          const items = countryPopover.querySelectorAll('.pdp-country-select-item');
+          items.forEach(item => {
+            const txt = item.textContent.toLowerCase();
+            const li = item.closest('li');
+            if (li) li.style.display = txt.includes(q) ? '' : 'none';
+          });
+        });
+      }
+
+      if (countryPopover) {
+        const countryItems = countryPopover.querySelectorAll('.pdp-country-select-item');
+        countryItems.forEach(item => {
+          item.addEventListener('click', (e) => {
+            e.preventDefault();
+            const code = item.getAttribute('data-country-code');
+            if (code && countryInput && countryForm) {
+              countryInput.value = code;
+              countryForm.submit();
+            }
+          });
+        });
+      }
+
+      // Close popovers when clicking outside
+      document.addEventListener('click', (e) => {
+        const estimator = document.getElementById('pdpDeliveryEstimator-{{ section.id }}');
+        if (estimator && !estimator.contains(e.target)) {
+          toggleDeliveryPopover(false);
+          toggleCountryPopover(false);
+        }
+      });
+    })();
+
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Luxury Main Product",
+  "tag": "section",
+  "class": "section-luxury-main-product",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Layout & Palette"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Section Background Color",
+      "default": "#FCFAF8"
+    },
+    {
+      "type": "range",
+      "id": "container_max_width",
+      "min": 1100,
+      "max": 1600,
+      "step": 20,
+      "default": 1260,
+      "unit": "px",
+      "label": "Container Maximum Width"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "default": 24,
+      "unit": "px",
+      "label": "Padding Top"
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 20,
+      "max": 140,
+      "step": 4,
+      "default": 60,
+      "unit": "px",
+      "label": "Padding Bottom"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_pdp_faq_section",
+      "label": "Show Bottom Full-Width FAQ Section",
+      "info": "Enable if not using the separate Blocky FAQ section below this product",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_bundle_deals",
+      "label": "Enable Curated Allocations (Bundle Deals)",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "Payment & Guarantee Bar"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_payment_guarantee",
+      "label": "Show Payment & Guarantee Bar",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "guarantee_1",
+      "label": "Guarantee 1 Text",
+      "default": "30-day returns"
+    },
+    {
+      "type": "text",
+      "id": "guarantee_2",
+      "label": "Guarantee 2 Text",
+      "default": "Ships in 1–2 days"
+    },
+    {
+      "type": "text",
+      "id": "guarantee_3",
+      "label": "Guarantee 3 Text",
+      "default": "Free U.S. shipping"
+    },
+    {
+      "type": "image_picker",
+      "id": "payment_image",
+      "label": "Custom Payment Methods Image"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "@app"
+    },
+    {
+      "type": "custom_liquid",
+      "name": "Custom Liquid",
+      "settings": [
+        {
+          "type": "liquid",
+          "id": "custom_liquid",
+          "label": "Custom Liquid"
+        }
+      ]
+    },
+    {
+      "type": "faq_item",
+      "name": "Custom Q&A Question",
+      "settings": [
+        {
+          "type": "text",
+          "id": "question",
+          "label": "Question",
+          "default": "Frequently Asked Question"
+        },
+        {
+          "type": "richtext",
+          "id": "answer",
+          "label": "Answer",
+          "default": "<p>Detailed answer for your clients.</p>"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Luxury Main Product"
+    }
+  ]
+}
+{% endschema %}

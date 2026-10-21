@@ -1,0 +1,323 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "luxury-main-product",
+      "settings": {
+        "bg_color": "#fcfaf8",
+        "container_max_width": 1360,
+        "padding_top": 24,
+        "padding_bottom": 60,
+        "enable_bundle_deals": false
+      }
+    },
+    "related-products": {
+      "type": "related-products",
+      "disabled": true,
+      "settings": {
+        "heading": "You may also like",
+        "heading_size": "h2",
+        "products_to_show": 2,
+        "columns_desktop": 4,
+        "color_scheme": "scheme-1",
+        "image_ratio": "portrait",
+        "image_shape": "default",
+        "show_secondary_image": true,
+        "show_vendor": false,
+        "show_rating": false,
+        "columns_mobile": "2",
+        "padding_top": 0,
+        "padding_bottom": 60
+      }
+    },
+    "image_with_text_GtGA9b": {
+      "type": "image-with-text",
+      "blocks": {
+        "heading_Uce8fk": {
+          "type": "heading",
+          "settings": {
+            "heading": "Wild Style, Refined Elegance",
+            "heading_size": "h2"
+          }
+        },
+        "text_W6xXt4": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Bold leopard prints, rich brown tones, and a sleek, structured silhouette create a striking statement. The clear front window beautifully showcases your Mahjong tiles while adding a modern, sophisticated touch.</p>",
+            "text_style": "body"
+          }
+        }
+      },
+      "block_order": [
+        "heading_Uce8fk",
+        "text_W6xXt4"
+      ],
+      "name": "t:sections.image-with-text.presets.name",
+      "settings": {
+        "image": "shopify://shop_images/1gYIJjpEVnmIsApOZwmXo6MfAKqDHtPF.png",
+        "height": "adapt",
+        "desktop_image_width": "medium",
+        "layout": "image_first",
+        "desktop_content_position": "middle",
+        "desktop_content_alignment": "left",
+        "content_layout": "no-overlap",
+        "section_color_scheme": "",
+        "color_scheme": "",
+        "image_behavior": "none",
+        "mobile_content_alignment": "left",
+        "padding_top": 0,
+        "padding_bottom": 36
+      }
+    },
+    "image_with_text_qm8wqL": {
+      "type": "image-with-text",
+      "blocks": {
+        "heading_G8Deb9": {
+          "type": "heading",
+          "settings": {
+            "heading": "Beautifully Designed for Game Day",
+            "heading_size": "h2"
+          }
+        },
+        "text_EPVHFn": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Featuring sturdy top handles, a convenient zippered closure, and a clear viewing window, this chic carrying case keeps your Mahjong tiles together and makes them easy to access wherever you play.</p>",
+            "text_style": "body"
+          }
+        }
+      },
+      "block_order": [
+        "heading_G8Deb9",
+        "text_EPVHFn"
+      ],
+      "name": "t:sections.image-with-text.presets.name",
+      "settings": {
+        "image": "shopify://shop_images/19zfrRCoeWpFh9U-t_3OYpVYFCrdjM21y.png",
+        "height": "adapt",
+        "desktop_image_width": "medium",
+        "layout": "text_first",
+        "desktop_content_position": "middle",
+        "desktop_content_alignment": "left",
+        "content_layout": "no-overlap",
+        "section_color_scheme": "",
+        "color_scheme": "",
+        "bg_color": "#fcfaf8",
+        "image_behavior": "none",
+        "mobile_content_alignment": "left",
+        "padding_top": 48,
+        "padding_bottom": 48
+      }
+    },
+    "image_with_text_HbYQKm": {
+      "type": "image-with-text",
+      "blocks": {
+        "heading_TzYiPz": {
+          "type": "heading",
+          "settings": {
+            "heading": "Take a Little Glamour Along",
+            "heading_size": "h2"
+          }
+        },
+        "text_mWFcVP": {
+          "type": "text",
+          "settings": {
+            "text": "<p>From casual afternoons to elegant Mahjong gatherings, Leopard Luxe brings bold personality to every occasion. A stylish companion for players who appreciate beautiful details and effortless sophistication.</p>",
+            "text_style": "body"
+          }
+        }
+      },
+      "block_order": [
+        "heading_TzYiPz",
+        "text_mWFcVP"
+      ],
+      "name": "t:sections.image-with-text.presets.name",
+      "settings": {
+        "image": "shopify://shop_images/160yIqq-ianmGnXkx_yO8ACDuh92vZDoX.png",
+        "height": "adapt",
+        "desktop_image_width": "medium",
+        "layout": "image_first",
+        "desktop_content_position": "middle",
+        "desktop_content_alignment": "left",
+        "content_layout": "no-overlap",
+        "section_color_scheme": "",
+        "color_scheme": "",
+        "image_behavior": "none",
+        "mobile_content_alignment": "left",
+        "padding_top": 0,
+        "padding_bottom": 36
+      }
+    },
+    "blocky_faq_yqVYJ6": {
+      "type": "blocky-faq",
+      "blocks": {
+        "question_qDwyzL": {
+          "type": "question",
+          "settings": {
+            "question": "1. What products does MAHJIVA offer?",
+            "content": "<p>MAHJIVA offers a curated collection of American Mahjong essentials, including tile sets, tile bags, playing mats, racks, and dice. Each piece is thoughtfully selected to bring elegance, personality, and style to your Mahjong experience.</p>",
+            "default_open": false,
+            "icon_code": "",
+            "icon_color": "#000000"
+          }
+        },
+        "question_KCjHrw": {
+          "type": "question",
+          "settings": {
+            "question": "2. Are MAHJIVA Mahjong tiles compatible with American Mahjong?",
+            "content": "<p>Our American Mahjong tile sets are designed for American Mahjong play. Tile counts and included pieces may vary by collection, so please check the individual product description for details.</p>",
+            "default_open": false,
+            "icon_code": "",
+            "icon_color": "#000000"
+          }
+        },
+        "question_yjzJ7T": {
+          "type": "question",
+          "settings": {
+            "question": "3. Can I purchase Mahjong accessories separately?",
+            "content": "<p>Absolutely! Our tile bags, mats, racks, and dice are available separately, making it easy to mix and match your favorites to create a Mahjong setup that reflects your personal style.</p>",
+            "default_open": false,
+            "icon_code": "",
+            "icon_color": "#000000"
+          }
+        },
+        "question_Rh4gde": {
+          "type": "question",
+          "settings": {
+            "question": "4. How do I choose the right Mahjong products?",
+            "content": "<p>Start with your favorite tile set, then explore our coordinating accessories to complete your table. Each product page includes details to help you find the perfect pieces for your Mahjong experience.</p>",
+            "default_open": false,
+            "icon_code": "",
+            "icon_color": "#000000"
+          }
+        },
+        "question_mjJHCr": {
+          "type": "question",
+          "settings": {
+            "question": "5. How long does shipping take?",
+            "content": "<p>Shipping times vary depending on your location and the items ordered. Please refer to our Shipping Policy for the latest processing times, delivery estimates, and shipping information.</p>",
+            "default_open": false,
+            "icon_code": "",
+            "icon_color": "#000000"
+          }
+        },
+        "question_ret_6": {
+          "type": "question",
+          "settings": {
+            "question": "6. What if I need to return or exchange an item?",
+            "content": "<p>We want you to feel confident shopping with MAHJIVA. Return and exchange eligibility is outlined in our Return & Refund Policy. Please review the policy for details before making a request.</p>",
+            "default_open": false,
+            "icon_code": "",
+            "icon_color": "#000000"
+          }
+        },
+        "question_con_7": {
+          "type": "question",
+          "settings": {
+            "question": "7. How can I contact MAHJIVA?",
+            "content": "<p>We're always happy to help! Whether you have a product question, need assistance with an order, or want help choosing your Mahjong essentials, feel free to reach out through our Contact Us page.</p>",
+            "default_open": false,
+            "icon_code": "",
+            "icon_color": "#000000"
+          }
+        }
+      },
+      "block_order": [
+        "question_qDwyzL",
+        "question_KCjHrw",
+        "question_yjzJ7T",
+        "question_Rh4gde",
+        "question_mjJHCr",
+        "question_ret_6",
+        "question_con_7"
+      ],
+      "name": "Blocky FAQ",
+      "settings": {
+        "title": "Frequently Asked Questions",
+        "title_size": 40,
+        "title_color": "#000000",
+        "body_text": "<p>Everything you need to know before joining the table.</p>",
+        "body_size": 16,
+        "body_color": "#000000",
+        "button_label": "<p><strong>Contact Us</strong></p>",
+        "button_link": "/pages/contact",
+        "button_border_radius": "curved",
+        "button_background_color": "#000000",
+        "button_text_color": "#FFFFFF",
+        "faq_layout": "row",
+        "question_padding": 15,
+        "faq_border_radius": 15,
+        "faq_container_background": "#FFFFFF",
+        "faq_container_border_color": "transparent",
+        "show_container_shadow": true,
+        "question_font_size": 18,
+        "answer_font_size": 16,
+        "question_text_color": "#000000",
+        "answer_text_color": "#606367",
+        "layout": "row-reverse",
+        "columns": 1,
+        "desktop_faq_width": "large",
+        "desktop_content_alignment": "left",
+        "mobile_content_alignment": "center",
+        "text_vertical_alignment": "middle",
+        "chevron_style": "chevron",
+        "chevron_position": "end",
+        "text_container_gap": "2rem",
+        "background_color": "#FFFFFF",
+        "page_width": 1200,
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "17923938290993c0f7": {
+      "type": "apps",
+      "blocks": {
+        "judge_me_reviews_review_widget_GBCgwL": {
+          "type": "shopify://apps/judge-me-reviews/blocks/review_widget/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
+          "settings": {
+            "review_data": "sample_data",
+            "max_width": 1200,
+            "show_shop_reviews": false,
+            "empty_state": "empty_widget"
+          }
+        }
+      },
+      "block_order": [
+        "judge_me_reviews_review_widget_GBCgwL"
+      ],
+      "settings": {
+        "include_margins": true
+      }
+    },
+    "luxury_new_arrivals_upsell": {
+      "type": "luxury-new-arrivals",
+      "settings": {
+        "heading": "New Arrivals",
+        "subtitle": "The latest American Mahjong sets at MAHJIVA — fresh designs, NMJL-ready.",
+        "products_to_show": 4,
+        "columns_desktop": 4,
+        "sort_newest": true,
+        "show_sale_badge": true,
+        "bg_color": "#fcfaf8"
+      }
+    }
+  },
+  "order": [
+    "main",
+    "related-products",
+    "image_with_text_GtGA9b",
+    "luxury_new_arrivals_upsell",
+    "image_with_text_qm8wqL",
+    "image_with_text_HbYQKm",
+    "blocky_faq_yqVYJ6",
+    "17923938290993c0f7"
+  ]
+}

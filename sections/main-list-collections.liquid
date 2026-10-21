@@ -1,0 +1,446 @@
+{%- style -%}
+  .alc-section {
+    background-color: {{ section.settings.bg_color | default: '#FCFAF8' }};
+    padding: 0 0 100px;
+    min-height: 85vh;
+  }
+
+  /* Luxury Hero Header */
+  .alc-hero {
+    background: linear-gradient(180deg, #F8F4EC 0%, #FCFAF8 100%);
+    border-bottom: 1px solid rgba(22, 51, 39, 0.08);
+    padding: 72px 24px 56px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .alc-hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 600px;
+    height: 100%;
+    background: radial-gradient(circle at 50% 30%, rgba(216, 184, 140, 0.16) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .alc-hero-inner {
+    max-width: 820px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .alc-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 11px;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    font-weight: 700;
+    color: #B89768;
+    margin: 0;
+  }
+
+  .alc-eyebrow::before,
+  .alc-eyebrow::after {
+    content: '';
+    display: inline-block;
+    width: 32px;
+    height: 1px;
+    background: #B89768;
+    opacity: 0.5;
+  }
+
+  .alc-title {
+    font-family: "Cormorant Garamond", Georgia, serif !important;
+    font-size: clamp(38px, 5vw, 56px) !important;
+    font-weight: 500 !important;
+    color: #141517 !important;
+    line-height: 1.15 !important;
+    margin: 0 !important;
+    letter-spacing: -0.01em !important;
+  }
+
+  .alc-subtitle {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+    font-size: 15.5px !important;
+    line-height: 1.65 !important;
+    color: #66635F !important;
+    margin: 0 !important;
+    max-width: 620px !important;
+    font-weight: 400 !important;
+  }
+
+  /* Grid Layout */
+  .alc-container {
+    max-width: 1360px;
+    margin: 0 auto;
+    padding: 60px 24px 0;
+  }
+
+  .alc-grid {
+    display: grid;
+    grid-template-columns: repeat({{ section.settings.columns_desktop | default: 3 }}, 1fr);
+    gap: 32px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  @media (max-width: 1100px) {
+    .alc-grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 24px;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .alc-grid {
+      grid-template-columns: repeat({{ section.settings.columns_mobile | default: 2 }}, 1fr);
+      gap: 16px;
+    }
+    .alc-hero {
+      padding: 48px 20px 40px;
+    }
+    .alc-container {
+      padding: 36px 16px 0;
+    }
+  }
+
+  /* Luxury Card */
+  .alc-card {
+    background: #FFFFFF;
+    border-radius: 18px;
+    border: 1px solid #ECE7DE;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    text-decoration: none;
+    color: inherit;
+    box-shadow: 0 4px 20px rgba(20, 21, 23, 0.04);
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s ease;
+    position: relative;
+    height: 100%;
+  }
+
+  .alc-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 24px 48px -12px rgba(184, 151, 104, 0.22), 0 8px 20px rgba(20, 21, 23, 0.06);
+    border-color: #D8B88C;
+  }
+
+  /* Media Container */
+  .alc-card-media {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+    background-color: #F5F2EB;
+  }
+
+  .alc-card-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .alc-card:hover .alc-card-img {
+    transform: scale(1.06);
+  }
+
+  .alc-card-badge {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    background: rgba(20, 21, 23, 0.78);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    color: #FAF8F5;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    padding: 6px 12px;
+    border-radius: 100px;
+    border: 0.5px solid rgba(255, 255, 255, 0.25);
+    z-index: 2;
+  }
+
+  .alc-card-tag {
+    position: absolute;
+    top: 14px;
+    left: 14px;
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    color: #9E7D47;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    padding: 5px 10px;
+    border-radius: 6px;
+    border: 0.5px solid rgba(184, 151, 104, 0.3);
+    z-index: 2;
+  }
+
+  /* Card Body */
+  .alc-card-body {
+    padding: 24px 26px 24px;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    justify-content: space-between;
+    gap: 16px;
+    background: #FFFFFF;
+  }
+
+  @media (max-width: 640px) {
+    .alc-card-body {
+      padding: 16px 16px 18px;
+      gap: 12px;
+    }
+  }
+
+  .alc-card-title {
+    font-family: "Cormorant Garamond", Georgia, serif !important;
+    font-size: 24px !important;
+    font-weight: 500 !important;
+    color: #141517 !important;
+    line-height: 1.2 !important;
+    margin: 0 !important;
+    transition: color 0.25s ease;
+  }
+
+  @media (max-width: 640px) {
+    .alc-card-title {
+      font-size: 18px !important;
+    }
+  }
+
+  .alc-card:hover .alc-card-title {
+    color: #9E7D47;
+  }
+
+  .alc-card-desc {
+    font-size: 13px;
+    line-height: 1.55;
+    color: #706E6B;
+    margin: 0;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .alc-card-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 14px;
+    border-top: 1px solid #F0ECE4;
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    font-weight: 700;
+    color: #B89768;
+    transition: color 0.2s ease;
+  }
+
+  @media (max-width: 640px) {
+    .alc-card-footer {
+      font-size: 10px;
+      padding-top: 10px;
+    }
+  }
+
+  .alc-card-arrow {
+    display: inline-block;
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .alc-card:hover .alc-card-arrow {
+    transform: translateX(6px);
+  }
+{%- endstyle -%}
+
+<div class="alc-section">
+  <!-- Atelier Luxury Hero Header -->
+  <div class="alc-hero">
+    <div class="alc-hero-inner">
+      {%- if section.settings.eyebrow != blank -%}
+        <span class="alc-eyebrow">{{ section.settings.eyebrow }}</span>
+      {%- endif -%}
+      <h1 class="alc-title">
+        {%- if section.settings.title != blank -%}
+          {{ section.settings.title }}
+        {%- else -%}
+          Accessories & Suites
+        {%- endif -%}
+      </h1>
+      <p class="alc-subtitle">
+        {{ section.settings.subtitle | default: 'Discover handcrafted playing mats, precision racks, artisanal dice, and bespoke cases designed to elevate your game.' }}
+      </p>
+    </div>
+  </div>
+
+  <div class="alc-container">
+    {%- liquid
+      case section.settings.sort
+        when 'products_high', 'products_low'
+          assign sorted_collections = collections | sort: 'all_products_count'
+        when 'date', 'date_reversed'
+          assign sorted_collections = collections | sort: 'published_at'
+        else
+          assign sorted_collections = collections | sort: 'title'
+      endcase
+
+      if section.settings.sort == 'products_high' or section.settings.sort == 'date_reversed' or section.settings.sort == 'alphabetical_reversed'
+        assign sorted_collections = sorted_collections | reverse
+      endif
+    -%}
+
+    <div class="alc-grid">
+      {%- for col in sorted_collections -%}
+        {%- if col.handle == 'frontpage' or col.handle == 'all' or col.handle == 'best-seller' or col.handle == 'new-array' or col.handle == 'mahjong-set' or col.handle contains 'best-seller' or col.handle contains 'new-arrival' or col.handle contains 'mahjong' -%}{%- continue -%}{%- endif -%}
+        {%- assign col_img = col.featured_image | default: col.products.first.featured_image -%}
+        {%- assign col_count = col.all_products_count | default: col.products.size | default: 0 -%}
+
+        <a href="{{ col.url }}" class="alc-card" aria-label="{{ col.title | escape }}">
+          <div class="alc-card-media">
+            {%- if col_img != blank -%}
+              <img 
+                src="{{ col_img | image_url: width: 800 }}" 
+                alt="{{ col_img.alt | default: col.title | escape }}"
+                class="alc-card-img"
+                loading="lazy"
+                width="400"
+                height="300"
+              >
+            {%- else -%}
+              <div style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; background: #ECE8E1; color: #9E7D47; font-family: 'Cormorant Garamond', Georgia, serif; font-size: 20px;">
+                {{ col.title }}
+              </div>
+            {%- endif -%}
+
+            <span class="alc-card-tag">Collection</span>
+            <span class="alc-card-badge">{{ col_count }} {% if col_count == 1 %}Product{% else %}Products{% endif %}</span>
+          </div>
+
+          <div class="alc-card-body">
+            <div class="alc-card-content">
+              <h2 class="alc-card-title">{{ col.title }}</h2>
+              {%- if col.description != blank -%}
+                <p class="alc-card-desc">{{ col.description | strip_html | truncatewords: 16 }}</p>
+              {%- endif -%}
+            </div>
+
+            <div class="alc-card-footer">
+              <span>Explore Repertoire</span>
+              <span class="alc-card-arrow">&rarr;</span>
+            </div>
+          </div>
+        </a>
+      {%- endfor -%}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Collections List",
+  "class": "section-main-list-collections",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow Text"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "title",
+      "label": "Heading",
+      "default": "Accessories & Suites"
+    },
+    {
+      "type": "textarea",
+      "id": "subtitle",
+      "label": "Subtitle",
+      "default": "Discover handcrafted playing mats, precision racks, artisanal dice, and bespoke cases designed to elevate your game."
+    },
+    {
+      "type": "select",
+      "id": "sort",
+      "options": [
+        {
+          "value": "alphabetical",
+          "label": "Alphabetically, A-Z"
+        },
+        {
+          "value": "alphabetical_reversed",
+          "label": "Alphabetically, Z-A"
+        },
+        {
+          "value": "date_reversed",
+          "label": "Date, new to old"
+        },
+        {
+          "value": "date",
+          "label": "Date, old to new"
+        },
+        {
+          "value": "products_high",
+          "label": "Product count, high to low"
+        },
+        {
+          "value": "products_low",
+          "label": "Product count, low to high"
+        }
+      ],
+      "default": "alphabetical",
+      "label": "Sort collections by"
+    },
+    {
+      "type": "range",
+      "id": "columns_desktop",
+      "min": 2,
+      "max": 4,
+      "step": 1,
+      "default": 3,
+      "label": "Number of columns on desktop"
+    },
+    {
+      "type": "select",
+      "id": "columns_mobile",
+      "options": [
+        {
+          "value": "1",
+          "label": "1 column"
+        },
+        {
+          "value": "2",
+          "label": "2 columns"
+        }
+      ],
+      "default": "2",
+      "label": "Number of columns on mobile"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background Color",
+      "default": "#FCFAF8"
+    }
+  ]
+}
+{% endschema %}

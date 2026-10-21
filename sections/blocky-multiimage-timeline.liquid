@@ -1,0 +1,661 @@
+{%- comment -%}
+  © BlockyApps. You are permitted to use this content within your store. Redistribution or use in any other application is strictly prohibited.
+  Unauthorized copying, distribution, or reproduction in any form will result in legal action.
+{% endcomment %}
+
+{% stylesheet %}
+  .blocky-multiimage-timeline {
+    overflow: hidden;
+  }
+
+  .blocky-multiimage-timeline .blocky-multiimage-timeline__inner {
+    display: grid;
+    grid-template-columns: minmax(0, var(--mit-media-width)) minmax(0, 1fr);
+    gap: 42px;
+    align-items: center;
+  }
+
+  .blocky-multiimage-timeline .blocky-multiimage-timeline__media {
+    min-width: 0;
+  }
+
+  .blocky-multiimage-timeline .blocky-multiimage-timeline__columns {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--mit-image-gap);
+  }
+
+  .blocky-multiimage-timeline .blocky-multiimage-timeline__image-wrap {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    border: var(--mit-image-border-width) solid var(--mit-image-border-color);
+    border-radius: var(--mit-image-radius);
+    overflow: hidden;
+    box-sizing: border-box;
+    box-shadow: var(--mit-image-shadow);
+  }
+
+  .blocky-multiimage-timeline .blocky-multiimage-timeline__image-wrap--1 {
+    border-radius: var(--mit-image-radius) var(--mit-image-radius) 0 var(--mit-image-radius);
+    width: 95%;
+    justify-self: end;
+    align-self: end;
+  }
+
+  .blocky-multiimage-timeline .blocky-multiimage-timeline__image-wrap--2 {
+    border-radius: var(--mit-image-radius) var(--mit-image-radius) var(--mit-image-radius) 0;
+  }
+
+  .blocky-multiimage-timeline .blocky-multiimage-timeline__image-wrap--3 {
+    border-radius: var(--mit-image-radius) 0 var(--mit-image-radius) var(--mit-image-radius);
+  }
+
+  .blocky-multiimage-timeline .blocky-multiimage-timeline__image-wrap--4 {
+    border-radius: 0 var(--mit-image-radius) var(--mit-image-radius) var(--mit-image-radius);
+    width: 95%;
+    justify-self: start;
+    align-self: start;
+  }
+
+  .blocky-multiimage-timeline .blocky-multiimage-timeline__image-inner {
+    position: absolute;
+    inset: 0;
+  }
+
+  .blocky-multiimage-timeline .blocky-multiimage-timeline__image,
+  .blocky-multiimage-timeline .blocky-multiimage-timeline__placeholder {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: var(--mit-image-fit);
+  }
+
+  .blocky-multiimage-timeline .blocky-multiimage-timeline__placeholder {
+    background: #f2f2f2;
+  }
+
+  .blocky-multiimage-timeline .blocky-multiimage-timeline__title {
+    margin: 0 0 14px;
+    color: var(--mit-title-color);
+    font-size: var(--mit-title-size);
+    line-height: 1.08;
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    text-align: var(--mit-text-align);
+  }
+
+  .blocky-multiimage-timeline .blocky-multiimage-timeline__subtitle {
+    margin: 0 0 24px;
+    color: var(--mit-subtitle-color);
+    font-size: var(--mit-subtitle-size);
+    line-height: 1.4;
+    font-weight: 400;
+    text-align: var(--mit-text-align);
+  }
+
+  .blocky-multiimage-timeline .blocky-multiimage-timeline__steps {
+    display: grid;
+    gap: 26px;
+  }
+
+  .blocky-multiimage-timeline .blocky-multiimage-timeline__step {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: 14px;
+    align-items: start;
+  }
+
+  .blocky-multiimage-timeline .blocky-multiimage-timeline__step-badge {
+    width: var(--mit-step-circle-size);
+    height: var(--mit-step-circle-size);
+    border-radius: 999px;
+    border: var(--mit-step-circle-border-width) solid var(--mit-step-circle-color);
+    color: var(--mit-step-circle-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 auto;
+    margin-top: 1px;
+  }
+
+  .blocky-multiimage-timeline .blocky-multiimage-timeline__step-number {
+    font-size: var(--mit-step-number-size);
+    line-height: 1;
+    font-weight: 600;
+    letter-spacing: -0.03em;
+    color: var(--mit-step-circle-color);
+  }
+
+  .blocky-multiimage-timeline .blocky-multiimage-timeline__step-copy {
+    min-width: 0;
+  }
+
+  .blocky-multiimage-timeline .blocky-multiimage-timeline__step-title {
+    margin: 0 0 4px;
+    color: var(--mit-step-title-color);
+    font-size: var(--mit-step-title-size);
+    line-height: 1.22;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+  }
+
+  .blocky-multiimage-timeline .blocky-multiimage-timeline__step-title p {
+    margin: 0;
+  }
+
+  .blocky-multiimage-timeline .blocky-multiimage-timeline__step-description {
+    color: var(--mit-step-desc-color);
+    font-size: var(--mit-step-desc-size);
+    line-height: 1.42;
+    font-weight: 400;
+  }
+
+  @media screen and (max-width: 989px) {
+    .blocky-multiimage-timeline .blocky-multiimage-timeline__inner {
+      grid-template-columns: 1fr;
+      gap: 28px;
+    }
+  }
+
+  @media screen and (max-width: 749px) {
+    .blocky-multiimage-timeline .blocky-multiimage-timeline__title,
+    .blocky-multiimage-timeline .blocky-multiimage-timeline__subtitle {
+      text-align: var(--mit-text-align-mobile);
+    }
+
+    .blocky-multiimage-timeline .blocky-multiimage-timeline__step {
+      gap: 12px;
+    }
+
+    .blocky-multiimage-timeline .blocky-multiimage-timeline__step-badge {
+      width: calc(var(--mit-step-circle-size) * 0.8);
+      height: calc(var(--mit-step-circle-size) * 0.8);
+    }
+  }
+{% endstylesheet %}
+
+<div
+  class="blocky blocky-multiimage-timeline blocky-padding background-wrapper"
+  style="
+    --padding-top: {{ section.settings.padding_top }};
+    --padding-bottom: {{ section.settings.padding_bottom }};
+    --background-color: {{ section.settings.background_color }};
+    --section-page-width: {{ section.settings.page_width | divided_by: 10 }}rem;
+    --mit-title-color: {{ section.settings.title_color }};
+    --mit-title-size: {{ section.settings.title_size }}px;
+    --mit-subtitle-color: {{ section.settings.subtitle_color }};
+    --mit-subtitle-size: {{ section.settings.subtitle_size }}px;
+    --mit-text-align: {{ section.settings.content_alignment }};
+    --mit-text-align-mobile: {{ section.settings.mobile_content_alignment }};
+    --mit-image-border-width: {{ section.settings.image_border_width }}px;
+    --mit-image-border-color: {{ section.settings.image_border_color }};
+    --mit-image-radius: {{ section.settings.image_radius }}px;
+    --mit-image-gap: {{ section.settings.image_gap }}px;
+    --mit-image-fit: {{ section.settings.image_fit }};
+    --mit-media-width: {{ section.settings.media_width }}px;
+    --mit-image-shadow: {% if section.settings.image_shadow_enabled %}0 2px 4px grey, 0 12px 24px rgba(0,0,0,0.08){% else %}none{% endif %};
+    --mit-step-circle-size: {{ section.settings.step_circle_size }}px;
+    --mit-step-circle-border-width: {{ section.settings.step_circle_border_width }}px;
+    --mit-step-circle-color: {{ section.settings.step_circle_color }};
+    --mit-step-number-size: {{ section.settings.step_number_size }}px;
+    --mit-step-title-size: {{ section.settings.step_title_size }}px;
+    --mit-step-title-color: {{ section.settings.step_title_color }};
+    --mit-step-desc-size: {{ section.settings.step_desc_size }}px;
+    --mit-step-desc-color: {{ section.settings.step_description_color }};
+  "
+>
+  <div class="blocky-page-width">
+    <div class="blocky-multiimage-timeline__inner">
+      <div class="blocky-multiimage-timeline__media">
+        <div class="blocky-multiimage-timeline__columns">
+          <div class="blocky-multiimage-timeline__image-wrap blocky-multiimage-timeline__image-wrap--1">
+            {% if section.settings.image_1 != blank %}
+              <div class="blocky-multiimage-timeline__image-inner">
+                <img
+                  class="blocky-multiimage-timeline__image"
+                  src="{{ section.settings.image_1 | image_url: width: 1200 }}"
+                  alt="{{ section.settings.image_1.alt | escape }}"
+                  loading="lazy"
+                  width="{{ section.settings.image_1.width }}"
+                  height="{{ section.settings.image_1.height }}"
+                >
+              </div>
+            {% else %}
+              {{ 'image' | placeholder_svg_tag: 'blocky-multiimage-timeline__placeholder' }}
+            {% endif %}
+          </div>
+
+          <div class="blocky-multiimage-timeline__image-wrap blocky-multiimage-timeline__image-wrap--2">
+            {% if section.settings.image_2 != blank %}
+              <div class="blocky-multiimage-timeline__image-inner">
+                <img
+                  class="blocky-multiimage-timeline__image"
+                  src="{{ section.settings.image_2 | image_url: width: 1200 }}"
+                  alt="{{ section.settings.image_2.alt | escape }}"
+                  loading="lazy"
+                  width="{{ section.settings.image_2.width }}"
+                  height="{{ section.settings.image_2.height }}"
+                >
+              </div>
+            {% else %}
+              {{ 'image' | placeholder_svg_tag: 'blocky-multiimage-timeline__placeholder' }}
+            {% endif %}
+          </div>
+
+          <div class="blocky-multiimage-timeline__image-wrap blocky-multiimage-timeline__image-wrap--3">
+            {% if section.settings.image_3 != blank %}
+              <div class="blocky-multiimage-timeline__image-inner">
+                <img
+                  class="blocky-multiimage-timeline__image"
+                  src="{{ section.settings.image_3 | image_url: width: 1200 }}"
+                  alt="{{ section.settings.image_3.alt | escape }}"
+                  loading="lazy"
+                  width="{{ section.settings.image_3.width }}"
+                  height="{{ section.settings.image_3.height }}"
+                >
+              </div>
+            {% else %}
+              {{ 'image' | placeholder_svg_tag: 'blocky-multiimage-timeline__placeholder' }}
+            {% endif %}
+          </div>
+
+          <div class="blocky-multiimage-timeline__image-wrap blocky-multiimage-timeline__image-wrap--4">
+            {% if section.settings.image_4 != blank %}
+              <div class="blocky-multiimage-timeline__image-inner">
+                <img
+                  class="blocky-multiimage-timeline__image"
+                  src="{{ section.settings.image_4 | image_url: width: 1200 }}"
+                  alt="{{ section.settings.image_4.alt | escape }}"
+                  loading="lazy"
+                  width="{{ section.settings.image_4.width }}"
+                  height="{{ section.settings.image_4.height }}"
+                >
+              </div>
+            {% else %}
+              {{ 'image' | placeholder_svg_tag: 'blocky-multiimage-timeline__placeholder' }}
+            {% endif %}
+          </div>
+        </div>
+      </div>
+
+      <div class="blocky-multiimage-timeline__content">
+        {% if section.settings.title != blank %}
+          <h2 class="blocky-multiimage-timeline__title">{{ section.settings.title }}</h2>
+        {% endif %}
+
+        {% if section.settings.subtitle != blank %}
+          <div class="blocky-multiimage-timeline__subtitle">{{ section.settings.subtitle }}</div>
+        {% endif %}
+
+        <div class="blocky-multiimage-timeline__steps">
+          {% for block in section.blocks %}
+            <div class="blocky-multiimage-timeline__step" {{ block.shopify_attributes }}>
+              <div class="blocky-multiimage-timeline__step-badge" aria-hidden="true">
+                <span class="blocky-multiimage-timeline__step-number">{{ block.settings.step_number }}</span>
+              </div>
+              <div class="blocky-multiimage-timeline__step-copy">
+                {% if block.settings.title != blank %}
+                  <div class="blocky-multiimage-timeline__step-title">{{ block.settings.title }}</div>
+                {% endif %}
+                {% if block.settings.description != blank %}
+                  <div class="blocky-multiimage-timeline__step-description">{{ block.settings.description }}</div>
+                {% endif %}
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "BKY - MultiImage Timeline",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Image options"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_1",
+      "label": "Image 1"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_2",
+      "label": "Image 2"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_3",
+      "label": "Image 3"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_4",
+      "label": "Image 4"
+    },
+    {
+      "type": "select",
+      "id": "image_fit",
+      "label": "Image fit",
+      "default": "cover",
+      "options": [
+        {
+          "value": "contain",
+          "label": "Fit"
+        },
+        {
+          "value": "cover",
+          "label": "Zoomed in"
+        },
+        {
+          "value": "fill",
+          "label": "Fill"
+        }
+      ]
+    },
+    {
+      "type": "color",
+      "id": "image_border_color",
+      "label": "Image border color",
+      "default": "#e7e4f8"
+    },
+    {
+      "type": "range",
+      "id": "image_border_width",
+      "min": 0,
+      "max": 12,
+      "step": 1,
+      "unit": "px",
+      "label": "Image border width",
+      "default": 6
+    },
+    {
+      "type": "range",
+      "id": "image_radius",
+      "min": 0,
+      "max": 40,
+      "step": 1,
+      "unit": "px",
+      "label": "Image radius",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "image_gap",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "label": "Gap between images",
+      "default": 8
+    },
+    {
+      "type": "range",
+      "id": "media_width",
+      "min": 320,
+      "max": 760,
+      "step": 20,
+      "unit": "px",
+      "label": "Image area width",
+      "default": 600
+    },
+    {
+      "type": "checkbox",
+      "id": "image_shadow_enabled",
+      "label": "Enable image shadow",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "Title and subtitle"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "Engineered Support For Every Sleep Side"
+    },
+    {
+      "type": "textarea",
+      "id": "subtitle",
+      "label": "Subtitle",
+      "default": "Built around one idea: you should not have to think about how you sleep."
+    },
+    {
+      "type": "color",
+      "id": "title_color",
+      "label": "Title color",
+      "default": "#433a7d"
+    },
+    {
+      "type": "color",
+      "id": "subtitle_color",
+      "label": "Subtitle color",
+      "default": "#333333"
+    },
+    {
+      "type": "range",
+      "id": "title_size",
+      "min": 24,
+      "max": 72,
+      "step": 1,
+      "unit": "px",
+      "label": "Title size",
+      "default": 50
+    },
+    {
+      "type": "range",
+      "id": "subtitle_size",
+      "min": 14,
+      "max": 30,
+      "step": 1,
+      "unit": "px",
+      "label": "Subtitle size",
+      "default": 16
+    },
+    {
+      "type": "select",
+      "id": "content_alignment",
+      "label": "Desktop text alignment",
+      "default": "left",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "mobile_content_alignment",
+      "label": "Mobile text alignment",
+      "default": "center",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ]
+    },
+    {
+      "type": "header",
+      "content": "Step styling"
+    },
+    {
+      "type": "color",
+      "id": "step_circle_color",
+      "label": "Step circle color",
+      "default": "#433a7d"
+    },
+    {
+      "type": "color",
+      "id": "step_title_color",
+      "label": "Step title color",
+      "default": "#433a7d"
+    },
+    {
+      "type": "color",
+      "id": "step_description_color",
+      "label": "Step description color",
+      "default": "#4b4b4b"
+    },
+    {
+      "type": "range",
+      "id": "step_circle_border_width",
+      "min": 1,
+      "max": 4,
+      "step": 1,
+      "unit": "px",
+      "label": "Step circle border width",
+      "default": 1
+    },
+    {
+      "type": "range",
+      "id": "step_circle_size",
+      "min": 28,
+      "max": 72,
+      "step": 1,
+      "unit": "px",
+      "label": "Step size",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "step_number_size",
+      "min": 11,
+      "max": 26,
+      "step": 1,
+      "unit": "px",
+      "label": "Step number size",
+      "default": 14
+    },
+    {
+      "type": "range",
+      "id": "step_title_size",
+      "min": 14,
+      "max": 28,
+      "step": 1,
+      "unit": "px",
+      "label": "Step title size",
+      "default": 18
+    },
+    {
+      "type": "range",
+      "id": "step_desc_size",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "label": "Step description size",
+      "default": 14
+    },
+    {
+      "type": "header",
+      "content": "Section size"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "range",
+      "id": "page_width",
+      "min": 800,
+      "max": 1600,
+      "step": 20,
+      "unit": "px",
+      "label": "Section width",
+      "default": 1200
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "label": "Top padding",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "label": "Bottom padding",
+      "default": 36
+    }
+  ],
+  "blocks": [
+    {
+      "type": "step",
+      "name": "Step",
+      "settings": [
+        {
+          "type": "text",
+          "id": "step_number",
+          "label": "Step number",
+          "default": "01"
+        },
+        {
+          "type": "richtext",
+          "id": "title",
+          "label": "Title",
+          "default": "<p>Side Sleeper Zone</p>"
+        },
+        {
+          "type": "richtext",
+          "id": "description",
+          "label": "Description",
+          "default": "<p>Side wings relieve pressure on your shoulder and keep your neck elevated at the right angle — no bunching, no arm pain. </p>"
+        }
+      ]
+    }
+  ],
+  "max_blocks": 4,
+  "presets": [
+    {
+      "name": "BKY - MultiImage Timeline",
+      "blocks": [
+        {
+          "type": "step"
+        },
+        {
+          "type": "step"
+        },
+        {
+          "type": "step"
+        },
+        {
+          "type": "step"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,14 @@
+{%- comment -%}
+  © BlockyApps. You are permitted to use this content within your store. Redistribution or use in any other application is strictly prohibited. 
+  Unauthorized copying, distribution, or reproduction in any form will result in legal action.
+{% endcomment %}
+
+{%- unless title == blank -%}
+  <h2 
+    class="blocky-title{% if title_bold %} blocky-title-bold{% endif %}"
+    style="--title-color: {{ title_color }}; --title-size: {{ title_size }};"
+    {{ block-attributes }}
+  >
+    {{ title | newline_to_br }}
+  </h2>
+{%- endunless -%}

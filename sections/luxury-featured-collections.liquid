@@ -1,0 +1,609 @@
+{%- comment -%}
+  -----------------------------------------------------------------------------
+  SECTION: LUXURY FEATURED COLLECTIONS ("The Four Maisons")
+  - 4 Vertical Pillar Cards (Ratio 3:4)
+  - Full-Bleed Imagery with Mystical Chiaroscuro Gradient Overlay
+  - Hover Micro-interaction: Smooth 1.06x Zoom + Gold Underline Glow
+  - 100% Real Shopify Data (Collection handle, image, title, url)
+  - Zero External CDN / Self-contained Responsive CSS
+  -----------------------------------------------------------------------------
+{%- endcomment -%}
+
+<style>
+  #LuxuryFeaturedCollections-{{ section.id }},
+  #LuxuryFeaturedCollections-{{ section.id }} * {
+    box-sizing: border-box !important;
+  }
+
+  #LuxuryFeaturedCollections-{{ section.id }} {
+    background: {{ section.settings.bg_gradient | default: 'radial-gradient(ellipse 95% 75% at 50% 25%, #235a43 0%, #174230 48%, #0e2a1e 100%)' }};
+    padding: {{ section.settings.padding_top | default: 80 }}px 0 {{ section.settings.padding_bottom | default: 88 }}px;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .lfc-container {
+    max-width: {{ section.settings.container_max_width | default: 1360 }}px;
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+
+  @media (min-width: 1024px) {
+    .lfc-container {
+      padding: 0 32px;
+    }
+  }
+
+  /* Section Header */
+  .lfc-header {
+    text-align: center;
+    max-width: 720px;
+    margin: 0 auto 48px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .lfc-eyebrow {
+    font-size: 11px;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: #E2C78E;
+    font-weight: 700;
+    margin: 0 !important;
+    display: inline-block;
+  }
+
+  .lfc-heading {
+    font-family: "Cormorant Garamond", Garamond, Georgia, serif;
+    font-size: 36px;
+    font-weight: 500;
+    color: #FFFFFF;
+    text-shadow: 0 2px 16px rgba(0, 0, 0, 0.35);
+    line-height: 1.15;
+    margin: 0 !important;
+  }
+
+  @media (min-width: 768px) {
+    .lfc-heading {
+      font-size: 46px;
+    }
+  }
+
+  .lfc-description {
+    font-size: 14.5px;
+    font-weight: 450;
+    color: rgba(255, 255, 255, 0.88);
+    line-height: 1.6;
+    margin: 4px 0 0 !important;
+  }
+
+  /* Pillars Grid (Ratio 3:4) */
+  .lfc-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 16px;
+    width: 100%;
+  }
+
+  @media (min-width: 520px) {
+    .lfc-grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 18px;
+    }
+  }
+
+  @media (min-width: 800px) {
+    .lfc-grid {
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+  }
+
+  @media (min-width: 1100px) {
+    .lfc-grid {
+      grid-template-columns: repeat({{ section.blocks.size | default: 5 }}, 1fr);
+      gap: 20px;
+    }
+    .lfc-card-body {
+      padding: 44px 18px 20px;
+    }
+    .lfc-card-title {
+      font-size: 21px;
+      line-height: 1.2;
+    }
+    .lfc-card-desc {
+      font-size: 12px;
+    }
+  }
+
+  /* Pillar Card */
+  .lfc-card {
+    position: relative;
+    border-radius: 22px;
+    overflow: hidden;
+    aspect-ratio: 3 / 4;
+    width: 100%;
+    display: block;
+    text-decoration: none;
+    background: #FFFFFF;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    box-shadow: 0 16px 38px rgba(5, 20, 14, 0.38), 0 4px 10px rgba(0, 0, 0, 0.18);
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s ease;
+  }
+
+  .lfc-card:hover {
+    transform: translateY(-7px);
+    box-shadow: 0 26px 54px rgba(5, 20, 14, 0.55), 0 6px 14px rgba(0, 0, 0, 0.25);
+    border-color: #E2C78E;
+  }
+
+  /* Media Background Full-bleed */
+  .lfc-card-media {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    overflow: hidden;
+    background-color: #F7F4EE;
+  }
+
+  .lfc-card-img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    pointer-events: none;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+  }
+
+  .lfc-img-primary {
+    opacity: 1;
+    z-index: 1;
+    transform: scale(1);
+    transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .lfc-img-secondary {
+    opacity: 0;
+    z-index: 2;
+    transform: scale(1.05);
+    transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  /* Hover States */
+  .lfc-card:hover .lfc-img-primary {
+    transform: scale(1.08);
+  }
+
+  .lfc-card.has-secondary-img:hover .lfc-img-primary {
+    opacity: 0;
+    transform: scale(1.08);
+  }
+
+  .lfc-card.has-secondary-img:hover .lfc-img-secondary {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  .lfc-card-placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: #F7F4EE;
+    color: #8A857D;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    padding: 20px;
+    text-align: center;
+  }
+
+  /* Card Overlay */
+  .lfc-card-overlay {
+    display: none;
+  }
+
+  /* Pillar Badge (Top Left) - Frosted pearl pill with refined green accents */
+  .lfc-card-badge {
+    position: absolute;
+    top: 18px;
+    left: 18px;
+    z-index: 3;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: #143828;
+    background: rgba(255, 255, 255, 0.94);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    padding: 5px 12px;
+    border-radius: 9999px;
+    border: 1px solid rgba(20, 56, 40, 0.25);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+  }
+
+  /* Card Content (Bottom) - Luminous frosted glass panel with high contrast typography */
+  .lfc-card-body {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 44px 20px 22px;
+    z-index: 3;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    background: linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0) 0%,
+      rgba(255, 255, 255, 0.68) 22%,
+      rgba(255, 255, 255, 0.94) 54%,
+      rgba(255, 255, 255, 0.99) 100%
+    );
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    -webkit-mask-image: linear-gradient(to top, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 1) 65%, rgba(0, 0, 0, 0) 100%);
+    mask-image: linear-gradient(to top, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 1) 65%, rgba(0, 0, 0, 0) 100%);
+  }
+
+  .lfc-card-title {
+    font-family: "Cormorant Garamond", Garamond, Georgia, serif;
+    font-size: 24px;
+    font-weight: 600;
+    line-height: 1.18;
+    color: #141517;
+    margin: 0;
+    transition: color 0.25s ease;
+  }
+
+  .lfc-card:hover .lfc-card-title {
+    color: #1B3B2B;
+  }
+
+  .lfc-card-desc {
+    font-size: 12.5px;
+    line-height: 1.5;
+    color: #4A4D55;
+    margin: 0 0 4px 0;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .lfc-card-link-text {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: #1B3B2B;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding-bottom: 2px;
+    border-bottom: 1.5px solid #1B3B2B;
+    width: fit-content;
+    transition: all 0.25s ease;
+  }
+
+  .lfc-card:hover .lfc-card-link-text {
+    color: #B89768;
+    border-color: #B89768;
+    gap: 9px;
+  }
+</style>
+
+<section id="LuxuryFeaturedCollections-{{ section.id }}" class="lfc-section" aria-label="{{ section.settings.heading | default: 'The Four Maisons' | escape }}">
+  <div class="lfc-container">
+
+    <!-- Section Header -->
+    {%- if section.settings.eyebrow != blank or section.settings.heading != blank or section.settings.description != blank -%}
+      <div class="lfc-header">
+        {%- if section.settings.eyebrow != blank -%}
+          <span class="lfc-eyebrow">{{ section.settings.eyebrow | escape }}</span>
+        {%- endif -%}
+        {%- if section.settings.heading != blank -%}
+          <h2 class="lfc-heading">{{ section.settings.heading | escape }}</h2>
+        {%- endif -%}
+        {%- if section.settings.description != blank -%}
+          <p class="lfc-description">{{ section.settings.description | escape }}</p>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+
+    <!-- 4 Pillars Grid (Ratio 3:4) -->
+    <div class="lfc-grid">
+      {%- if section.blocks.size > 0 -%}
+        {%- for block in section.blocks -%}
+          {%- assign prod = block.settings.product -%}
+          {%- assign coll = collections[block.settings.collection] -%}
+          {%- if coll == blank and block.settings.collection.title != blank -%}
+            {%- assign coll = block.settings.collection -%}
+          {%- endif -%}
+
+          {%- comment -%} Automatic Fallback to Store Products if neither product nor collection is assigned {%- endcomment -%}
+          {%- if prod == blank and coll == blank -%}
+            {%- assign prod = collections['all'].products[forloop.index0] -%}
+          {%- endif -%}
+
+          {%- assign card_url = '' -%}
+          {%- assign card_title = '' -%}
+          {%- assign card_desc = '' -%}
+          {%- assign img_1 = nil -%}
+          {%- assign img_2 = nil -%}
+
+          {%- if coll != blank -%}
+            {%- assign card_url = coll.url -%}
+            {%- assign card_title = block.settings.custom_title | default: coll.title -%}
+            {%- assign card_desc = block.settings.custom_desc | default: coll.description | strip_html | truncatewords: 14 -%}
+            {%- assign first_prod = coll.products.first -%}
+            
+            {%- assign img_1 = block.settings.custom_image | default: prod.featured_media | default: coll.image | default: first_prod.featured_media | default: first_prod.images[0] -%}
+            {%- assign img_2 = block.settings.custom_hover_image | default: prod.media[1] | default: first_prod.media[1] | default: first_prod.images[1] | default: coll.products[1].featured_media -%}
+          {%- elsif prod != blank -%}
+            {%- assign card_url = prod.url -%}
+            {%- assign card_title = block.settings.custom_title | default: prod.title -%}
+            {%- assign card_desc = block.settings.custom_desc | default: prod.description | strip_html | truncatewords: 14 -%}
+            
+            {%- comment -%} 1st Image: custom_image > prod.featured_media > prod.images[0] {%- endcomment -%}
+            {%- assign img_1 = block.settings.custom_image | default: prod.featured_media | default: prod.images[0] -%}
+            
+            {%- comment -%} 2nd Image on Hover: custom_hover_image > prod.media[1] > prod.images[1] {%- endcomment -%}
+            {%- assign img_2 = block.settings.custom_hover_image | default: prod.media[1] | default: prod.images[1] -%}
+          {%- endif -%}
+
+          {%- if card_title == blank -%}
+            {%- assign card_title = 'Maison Pillar ' | append: forloop.index -%}
+          {%- endif -%}
+          {%- if card_url == blank -%}
+            {%- assign card_url = routes.all_products_collection_url | default: '/collections/all' -%}
+          {%- endif -%}
+
+          {%- assign pillar_badge = block.settings.custom_badge -%}
+          {%- if pillar_badge == blank -%}
+            {%- assign pillar_badge = 'PILLAR 0' | append: forloop.index -%}
+          {%- endif -%}
+
+          {%- assign has_hover_img = false -%}
+          {%- if img_2 != blank -%}
+            {%- assign img_1_url = img_1 | image_url: width: 120 -%}
+            {%- assign img_2_url = img_2 | image_url: width: 120 -%}
+            {%- if img_1_url != img_2_url -%}
+              {%- assign has_hover_img = true -%}
+            {%- endif -%}
+          {%- endif -%}
+
+          <a href="{{ card_url }}" class="lfc-card{% if has_hover_img %} has-secondary-img{% endif %}" {{ block.shopify_attributes }}>
+            <!-- Full-bleed Media -->
+            <div class="lfc-card-media">
+              {%- if img_1 != blank -%}
+                {{ img_1 | image_url: width: 900 | image_tag: class: 'lfc-card-img lfc-img-primary', loading: 'lazy', alt: card_title | escape }}
+                {%- if has_hover_img -%}
+                  {{ img_2 | image_url: width: 900 | image_tag: class: 'lfc-card-img lfc-img-secondary', loading: 'lazy', alt: card_title | escape }}
+                {%- endif -%}
+              {%- else -%}
+                <div class="lfc-card-placeholder">
+                  <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="margin-bottom: 8px;">
+                    <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                    <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                    <polyline points="21 15 16 10 5 21"></polyline>
+                  </svg>
+                  <span>Select Product or Collection</span>
+                </div>
+              {%- endif -%}
+            </div>
+
+            <!-- Chiaroscuro Gradient Overlay -->
+            <div class="lfc-card-overlay"></div>
+
+            <!-- Pillar Badge -->
+            <span class="lfc-card-badge">{{ pillar_badge }}</span>
+
+            <!-- Content Area (Bottom) -->
+            <div class="lfc-card-body">
+              <h3 class="lfc-card-title">{{ card_title | escape }}</h3>
+              {%- if card_desc != blank -%}
+                <p class="lfc-card-desc">{{ card_desc | escape }}</p>
+              {%- endif -%}
+              {%- assign default_link_text = 'Explore Collection' -%}
+              {%- assign raw_link_text = block.settings.card_link_text | default: default_link_text -%}
+              {%- assign link_label_text = raw_link_text | remove: '→' | remove: '->' | strip -%}
+              <span class="lfc-card-link-text">
+                <span>{{ link_label_text }}</span>
+                <span aria-hidden="true">→</span>
+              </span>
+            </div>
+          </a>
+        {%- endfor -%}
+      {%- else -%}
+        {%- if request.design_mode -%}
+          <div style="grid-column: 1 / -1; text-align: center; padding: 48px 24px; background: #F7F4EE; border: 1px dashed #D6D0C5; border-radius: 16px; color: #141517;">
+            <strong>No Maison Pillars Assigned</strong>
+            <p style="color: #606367; margin: 6px 0 0;">Click "Add block" in theme customizer to showcase up to 4 curated collections.</p>
+          </div>
+        {%- endif -%}
+      {%- endif -%}
+    </div>
+
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Luxury Featured Maisons",
+  "tag": "section",
+  "class": "section-luxury-featured-collections",
+  "max_blocks": 8,
+  "settings": [
+    {
+      "type": "header",
+      "content": "Section Dossier & Typography"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow Text",
+      "default": "CURATED ALLOCATIONS"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Section Heading",
+      "default": "The Four Maisons"
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Section Description",
+      "default": "Explore the four pillars of singular craftsmanship defining our atelier’s legacy — guiding you into ritual suites curated for private salons."
+    },
+    {
+      "type": "header",
+      "content": "Layout & Color Scheme"
+    },
+    {
+      "type": "range",
+      "id": "container_max_width",
+      "min": 1100,
+      "max": 1600,
+      "step": 20,
+      "default": 1360,
+      "unit": "px",
+      "label": "Container Max Width"
+    },
+    {
+      "type": "color_background",
+      "id": "bg_gradient",
+      "label": "Section Background Gradient",
+      "default": "radial-gradient(ellipse 95% 75% at 50% 25%, #235a43 0%, #174230 48%, #0e2a1e 100%)"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 40,
+      "max": 140,
+      "step": 4,
+      "default": 80,
+      "unit": "px",
+      "label": "Padding Top"
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 40,
+      "max": 140,
+      "step": 4,
+      "default": 88,
+      "unit": "px",
+      "label": "Padding Bottom"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "collection_pillar",
+      "name": "Maison Collection Pillar",
+      "settings": [
+        {
+          "type": "product",
+          "id": "product",
+          "label": "Select Product (Auto 1st & 2nd Hover Image)"
+        },
+        {
+          "type": "collection",
+          "id": "collection",
+          "label": "Select Collection (Used if no product is selected)"
+        },
+        {
+          "type": "image_picker",
+          "id": "custom_image",
+          "label": "Custom Primary Image (Optional override)"
+        },
+        {
+          "type": "image_picker",
+          "id": "custom_hover_image",
+          "label": "Custom Secondary Hover Image (Optional override)"
+        },
+        {
+          "type": "text",
+          "id": "custom_title",
+          "label": "Custom Pillar Title (Blank for Product/Collection Title)"
+        },
+        {
+          "type": "text",
+          "id": "custom_badge",
+          "label": "Corner Badge (e.g. PILLAR 01, BESPOKE)",
+          "default": "PILLAR"
+        },
+        {
+          "type": "text",
+          "id": "card_link_text",
+          "label": "Card Action Link Text",
+          "info": "e.g. Explore Collection →, Explore Product →",
+          "default": "Explore Collection"
+        },
+        {
+          "type": "textarea",
+          "id": "custom_desc",
+          "label": "Card Brief Description (Blank for Product/Collection Description)"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Luxury 4 Maisons",
+      "blocks": [
+        {
+          "type": "collection_pillar",
+          "settings": {
+            "custom_title": "Grand Imperial Jade",
+            "custom_badge": "PILLAR 01",
+            "card_link_text": "Explore Collection",
+            "custom_desc": "Hand-chiseled pure Hetian nephrite jade suites."
+          }
+        },
+        {
+          "type": "collection_pillar",
+          "settings": {
+            "custom_title": "Bespoke Leather Trunks",
+            "custom_badge": "PILLAR 02",
+            "card_link_text": "Discover Suites",
+            "custom_desc": "Hand-stitched French taurillon saddle leather trunks with solid brass rivets."
+          }
+        },
+        {
+          "type": "collection_pillar",
+          "settings": {
+            "custom_title": "Acoustic Tablecraft",
+            "custom_badge": "PILLAR 03",
+            "card_link_text": "Inquire Bespoke",
+            "custom_desc": "New Zealand virgin wool acoustic felt table covers engineered for private salons."
+          }
+        },
+        {
+          "type": "collection_pillar",
+          "settings": {
+            "custom_title": "Salon Accoutrements",
+            "custom_badge": "PILLAR 04",
+            "card_link_text": "Explore Collection",
+            "custom_desc": "Gilded brass directional wind indicators, weighted pushers, and precision dice."
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,748 @@
+{%- comment -%}
+  © BlockyApps. You are permitted to use this content within your store. Redistribution or use in any other application is strictly prohibited.
+  Unauthorized copying, distribution, or reproduction in any form will result in legal action.
+{% endcomment %}
+
+
+<style>
+  /* -- Feature list -- */
+  .blocky-iwi-{{ section.id }} .blocky-iwi-list { list-style: none; margin: 0; padding: 0; }
+  .blocky-iwi-{{ section.id }} .blocky-iwi-item {
+    margin-bottom: 12px;
+    background: {{ section.settings.card_background }};
+    border: {{ section.settings.card_border_width }}px solid {{ section.settings.card_border_color }};
+    border-radius: {{ section.settings.card_border_radius }}px;
+    padding: 16px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  }
+
+  .blocky-itw{{ section.id }}-text-container {
+    gap: {{ section.settings.card_content_gap }}px!important;
+  }
+
+  /* -- Media side -- */
+  .blocky-iwi-{{ section.id }} .blocky-iwi-image-wrap {
+    width: 100%;
+    border-radius: {{ section.settings.image_border_radius }}px;
+    overflow: hidden;
+  }
+  .blocky-iwi-{{ section.id }} .blocky-iwi-image-wrap img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  /* -- Icon background -- */
+  .blocky-iwi-{{ section.id }} .iwt-icon-container {
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+  .blocky-iwi-{{ section.id }} .iwt-icon-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  /* -- Content width when image is section background (desktop only) -- */
+  {%- if section.settings.image_as_background -%}
+  @media (min-width: 750px) {
+    .blocky-iwi-{{ section.id }} .blocky-iwi-content-col {
+      max-width: {{ section.settings.content_width }}%;
+    }
+  }
+  {%- endif -%}
+
+  /* Fix display:none from pre-blocky.css */
+  .blocky-iwi-{{ section.id }} [class*="iwt-container-"] { display: flex; align-items: center; }
+  /* Fix color on plain text node */
+  .blocky-iwi-{{ section.id }} .iwt-heading { color: var(--title-color); }
+  /* Fix text alignment */
+  .blocky-iwi-{{ section.id }} .iwt-text { width: 100%; }
+
+  /* -- Per-block styles -- */
+  {%- for block in section.blocks -%}
+  .blocky-iwi-{{ section.id }} .iwt-container-{{ forloop.index }} .iwt-text {
+    text-align: {{ block.settings.text_alignment }};
+  }
+  .blocky-iwi-{{ section.id }} .iwt-container-{{ forloop.index }} .iwt-heading {
+    font-size: {{ block.settings.title_size }}px !important;
+    font-weight: {% if block.settings.title_bold %}700{% else %}400{% endif %};
+  }
+  .blocky-iwi-{{ section.id }} .iwt-container-{{ forloop.index }} .iwt-heading strong,
+  .blocky-iwi-{{ section.id }} .iwt-container-{{ forloop.index }} .iwt-heading b { font-weight: 700; }
+  .blocky-iwi-{{ section.id }} .iwt-container-{{ forloop.index }} .iwt-description > p {
+    font-size: {{ block.settings.desc_size }}px !important;
+  }
+  .blocky-iwi-{{ section.id }} .iwt-container-{{ forloop.index }} .iwt-icon-container {
+    width: {{ block.settings.icon_size }}px !important;
+    height: {{ block.settings.icon_size }}px !important;
+    padding: {{ block.settings.icon_padding }}px !important;
+    box-sizing: border-box !important;
+    flex-shrink: 0;
+  }
+  .blocky-iwi-{{ section.id }} .iwt-container-{{ forloop.index }} .iwt-icon-container {
+    background-color: {{ block.settings.icon_bg_color }};
+  }
+  .blocky-iwi-{{ section.id }} .iwt-container-{{ forloop.index }} .material-icons,
+  .blocky-iwi-{{ section.id }} .iwt-container-{{ forloop.index }} .material-symbols-outlined {
+    font-size: calc({{ block.settings.icon_size }}px - {{ block.settings.icon_padding }}px * 2) !important;
+    max-width: calc({{ block.settings.icon_size }}px - {{ block.settings.icon_padding }}px * 2) !important;
+  }
+  {%- endfor -%}
+
+  /* -- Mobile media — hidden on desktop -- */
+  .blocky-iwi-{{ section.id }} .blocky-iwi-mobile-media { display: none; }
+
+  /* -- Responsive (standard Blocky 749px breakpoint) -- */
+  @media (max-width: 749px) {
+    .blocky-iwi-{{ section.id }} .blocky-title { --title-size: {{ section.settings.mobile_heading_size }} !important; }
+    .blocky-iwi-{{ section.id }} .blocky-body-text { --body-font-size: {{ section.settings.mobile_body_size }}px !important; }
+
+    /* Background image: remove on mobile (section background_color shows through) */
+    {%- if section.settings.image_as_background -%}
+    .blocky-iwi-{{ section.id }} { background-image: none !important; }
+    {%- endif -%}
+
+    /* If mobile image is set in column mode: hide desktop column */
+    {%- if section.settings.mobile_image != blank and section.settings.image_as_background == false -%}
+    .blocky-iwi-{{ section.id }} .blocky-iwi-desktop-media { display: none; }
+    {%- endif -%}
+
+    /* Fix iwt-container width (pre-blocky sets 33% for grid layout) */
+    .blocky-iwi-{{ section.id }} .iwt-container { width: 100%; flex-direction: row!important; align-items: center; }
+    .blocky-iwi-{{ section.id }} .iwt-container.iwt-flex-reverse { flex-direction: row-reverse!important; }
+
+    /* Show mobile image */
+    .blocky-iwi-{{ section.id }} .blocky-iwi-mobile-media {
+      display: block;
+      width: 100%;
+      margin-top: 0;
+      margin-bottom: var(--text-container-gap, 2rem);
+    }
+    .blocky-iwi-{{ section.id }} .blocky-iwi-mobile-media img {
+      width: 100%;
+      height: auto;
+      display: block;
+      border-radius: 0;
+    }
+
+    .blocky-ct-{{ section.id }}__container {
+      display: flex;
+      flex-direction: column-reverse;
+      padding: 0;
+    }
+
+    .blocky-ct-{{ section.id }}__container .blocky-flex-container {
+      padding: 0 1.5rem;
+    }
+
+    {%- for block in section.blocks -%}
+    .blocky-iwi-{{ section.id }} .iwt-container-{{ forloop.index }} .iwt-heading {
+      font-size: {{ block.settings.mobile_title_size }}px !important;
+    }
+    .blocky-iwi-{{ section.id }} .iwt-container-{{ forloop.index }} .iwt-description > p {
+      font-size: {{ block.settings.mobile_desc_size }}px !important;
+    }
+    .blocky-iwi-{{ section.id }} .iwt-container-{{ forloop.index }} .iwt-icon-container {
+      width: {{ block.settings.mobile_icon_size }}px !important;
+      height: {{ block.settings.mobile_icon_size }}px !important;
+      padding: {{ block.settings.mobile_icon_padding }}px !important;
+      box-sizing: border-box !important;
+    }
+    .blocky-iwi-{{ section.id }} .iwt-container-{{ forloop.index }} .material-icons,
+    .blocky-iwi-{{ section.id }} .iwt-container-{{ forloop.index }} .material-symbols-outlined {
+      font-size: calc({{ block.settings.mobile_icon_size }}px - {{ block.settings.mobile_icon_padding }}px * 2) !important;
+      max-width: calc({{ block.settings.mobile_icon_size }}px - {{ block.settings.mobile_icon_padding }}px * 2) !important;
+    }
+    {%- endfor -%}
+  }
+</style>
+
+<div
+  class="blocky blocky-iwi-{{ section.id }} blocky-padding background-wrapper"
+  style="--padding-top: {{ section.settings.padding_top }}; --padding-bottom: {{ section.settings.padding_bottom }}; --background-color: {{ section.settings.background_color }}; --section-page-width: {{ section.settings.page_width | divided_by: 10 }}rem;{% if section.settings.image_as_background and section.settings.image != blank %} background-image: url('{{ section.settings.image | image_url: width: 2000 }}'); background-size: cover; background-position: center;{% endif %}"
+>
+  <div class="blocky-page-width blocky-ct-{{ section.id }}__container">
+    <div class="blocky-flex-container blocky-mob-flex-{{ section.settings.mobile_layout }} blocky-des-flex-{{ section.settings.layout }}">
+
+      <!-- -- Content Side -- -->
+      <div class="blocky-flex-child blocky-flex-child-2 blocky-iwi-content-col">
+        <div class="blocky-media-text-container blocky-itw{{ section.id }}-text-container blocky-align-center blocky-text-container-desktop-{{ section.settings.desktop_content_alignment }} blocky-text-container-mobile-{{ section.settings.mobile_content_alignment }}">
+
+          {% render 'blocky-titlel', block: section %}
+          {% render 'blocky-bodyl', block: section %}
+
+          {%- if section.blocks.size > 0 -%}
+            <ul class="blocky-iwi-list">
+              {%- for block in section.blocks -%}
+                {%- assign icon_side = 0 -%}
+                {%- if block.settings.icon_side == 'left' -%}{%- assign icon_side = 1 -%}{%- endif -%}
+                <li class="blocky-iwi-item" {{ block.shopify_attributes }}>
+                  {% render 'blocky-icon-with-textl', block: block, side: icon_side, index: forloop.index, icon_position: 'next-to' %}
+                </li>
+              {%- endfor -%}
+            </ul>
+          {%- endif -%}
+
+        </div>
+      </div>
+
+      <!-- -- Media Side (only when image is not section background) -- -->
+      {%- unless section.settings.image_as_background -%}
+        <div class="blocky-flex-child blocky-flex-child-medium blocky-justify-center blocky-iwi-desktop-media">
+          {%- if section.settings.image != blank -%}
+            <div class="blocky-iwi-image-wrap">
+              {{- section.settings.image | image_url: width: 800 | image_tag: loading: 'lazy', alt: section.settings.image.alt -}}
+            </div>
+          {%- endif -%}
+        </div>
+      {%- endunless -%}
+
+    </div>
+
+    <!-- -- Mobile image -- -->
+    {%- assign mobile_src = section.settings.mobile_image | default: section.settings.image -%}
+    {%- if mobile_src != blank -%}
+      {%- if section.settings.image_as_background or section.settings.mobile_image != blank -%}
+        <div class="blocky-iwi-mobile-media">
+          {{- mobile_src | image_url: width: 800 | image_tag: loading: 'lazy', alt: mobile_src.alt -}}
+        </div>
+      {%- endif -%}
+    {%- endif -%}
+
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "BKY - Image With Icons",
+  "tag": "section",
+  "disabled_on": {
+    "groups": [
+      "header",
+      "footer"
+    ]
+  },
+  "settings": [
+    {
+      "type": "header",
+      "content": "Image"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image"
+    },
+    {
+      "type": "checkbox",
+      "id": "image_as_background",
+      "label": "Use as background image",
+      "default": false,
+      "info": "When enabled, the image becomes the background of the entire section. When disabled, it appears as a regular image on the side."
+    },
+    {
+      "type": "range",
+      "id": "content_width",
+      "label": "Content column width (desktop)",
+      "min": 30,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "default": 50,
+      "info": "Only applies when image is used as background.",
+      "visible_if": "{{ section.settings.image_as_background == true }}"
+    },
+    {
+      "type": "range",
+      "id": "image_border_radius",
+      "label": "Image border radius (px)",
+      "min": 0,
+      "max": 40,
+      "step": 1,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "image_picker",
+      "id": "mobile_image",
+      "label": "Mobile image",
+      "info": "Shown on mobile. If not set, the main image is used."
+    },
+    {
+      "type": "header",
+      "content": "Feature Cards"
+    },
+    {
+      "type": "color",
+      "id": "card_background",
+      "label": "Card background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "card_border_color",
+      "label": "Card border color",
+      "default": "#e8e8e8"
+    },
+    {
+      "type": "range",
+      "id": "card_border_width",
+      "label": "Card border width (px)",
+      "min": 0,
+      "max": 5,
+      "step": 1,
+      "unit": "px",
+      "default": 1
+    },
+    {
+      "type": "range",
+      "id": "card_border_radius",
+      "label": "Card border radius (px)",
+      "min": 0,
+      "max": 40,
+      "step": 1,
+      "unit": "px",
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "card_content_gap",
+      "label": "Title & description gap (px)",
+      "min": 0,
+      "max": 32,
+      "step": 2,
+      "unit": "px",
+      "default": 6
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "select",
+      "id": "layout",
+      "label": "Desktop layout",
+      "default": "row",
+      "options": [
+        {
+          "value": "row",
+          "label": "Content first"
+        },
+        {
+          "value": "row-reverse",
+          "label": "Image first"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "mobile_layout",
+      "label": "Mobile layout",
+      "default": "col",
+      "options": [
+        {
+          "value": "col",
+          "label": "Content first"
+        },
+        {
+          "value": "col-reverse",
+          "label": "Image first"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "desktop_content_alignment",
+      "label": "Desktop content alignment",
+      "default": "left",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "mobile_content_alignment",
+      "label": "Mobile content alignment",
+      "default": "left",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ]
+    },
+    {
+      "type": "header",
+      "content": "Title"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "title",
+      "label": "Title",
+      "default": "Made With Nothing To Hide."
+    },
+    {
+      "type": "range",
+      "id": "title_size",
+      "label": "Font size desktop (px)",
+      "min": 20,
+      "max": 72,
+      "step": 1,
+      "unit": "px",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "mobile_heading_size",
+      "label": "Font size mobile (px)",
+      "min": 16,
+      "max": 48,
+      "step": 1,
+      "unit": "px",
+      "default": 28
+    },
+    {
+      "type": "color",
+      "id": "title_color",
+      "label": "Color",
+      "default": "#2D2B6B"
+    },
+    {
+      "type": "header",
+      "content": "Subheading"
+    },
+    {
+      "type": "richtext",
+      "id": "body_text",
+      "label": "Text",
+      "default": "<p>We believe you deserve to know exactly what you're sleeping on.</p>"
+    },
+    {
+      "type": "range",
+      "id": "body_size",
+      "label": "Font size desktop (px)",
+      "min": 12,
+      "max": 32,
+      "step": 1,
+      "unit": "px",
+      "default": 18
+    },
+    {
+      "type": "range",
+      "id": "mobile_body_size",
+      "label": "Font size mobile (px)",
+      "min": 10,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "default": 14
+    },
+    {
+      "type": "color",
+      "id": "body_color",
+      "label": "Color",
+      "default": "#3B3B3B"
+    },
+    {
+      "type": "header",
+      "content": "Section size"
+    },
+    {
+      "type": "range",
+      "id": "page_width",
+      "unit": "px",
+      "step": 100,
+      "min": 800,
+      "max": 1600,
+      "default": 1200,
+      "label": "Section width"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Top padding",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Bottom padding",
+      "default": 36
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "default": "#ffffff"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "icon",
+      "name": "Feature",
+      "settings": [
+        {
+          "type": "select",
+          "id": "icon_choice",
+          "label": "Icon type",
+          "default": "icon",
+          "options": [
+            {
+              "value": "image",
+              "label": "Image"
+            },
+            {
+              "value": "icon",
+              "label": "Icon"
+            }
+          ]
+        },
+        {
+          "type": "image_picker",
+          "id": "icon_image",
+          "label": "Icon image",
+          "info": "Recommended size: 60x60.",
+          "visible_if": "{{ block.settings.icon_choice == 'image' }}"
+        },
+        {
+          "type": "text",
+          "id": "icon_code",
+          "label": "Icon code",
+          "default": "check_circle",
+          "info": "Get icon codes from [this link](https://fonts.google.com/icons/).",
+          "visible_if": "{{ block.settings.icon_choice == 'icon' }}"
+        },
+        {
+          "type": "range",
+          "id": "icon_size",
+          "label": "Icon size desktop (px)",
+          "min": 20,
+          "max": 100,
+          "step": 1,
+          "unit": "px",
+          "default": 50
+        },
+        {
+          "type": "range",
+          "id": "mobile_icon_size",
+          "label": "Icon size mobile (px)",
+          "min": 16,
+          "max": 60,
+          "step": 1,
+          "unit": "px",
+          "default": 28
+        },
+        {
+          "type": "range",
+          "id": "icon_padding",
+          "label": "Icon padding desktop (px)",
+          "min": 0,
+          "max": 30,
+          "step": 1,
+          "unit": "px",
+          "default": 0
+        },
+        {
+          "type": "range",
+          "id": "mobile_icon_padding",
+          "label": "Icon padding mobile (px)",
+          "min": 0,
+          "max": 20,
+          "step": 1,
+          "unit": "px",
+          "default": 0
+        },
+        {
+          "type": "color",
+          "id": "icon_color",
+          "label": "Icon color",
+          "default": "#ffffff"
+        },
+        {
+          "type": "color",
+          "id": "icon_bg_color",
+          "label": "Icon background color",
+          "default": "#2D2B6B"
+        },
+        {
+          "type": "select",
+          "id": "icon_side",
+          "label": "Icon position",
+          "default": "left",
+          "options": [
+            {
+              "value": "left",
+              "label": "Left"
+            },
+            {
+              "value": "right",
+              "label": "Right"
+            }
+          ]
+        },
+        {
+          "type": "select",
+          "id": "text_alignment",
+          "label": "Text alignment",
+          "default": "left",
+          "options": [
+            {
+              "value": "left",
+              "label": "Left"
+            },
+            {
+              "value": "center",
+              "label": "Center"
+            },
+            {
+              "value": "right",
+              "label": "Right"
+            }
+          ]
+        },
+        {
+          "type": "inline_richtext",
+          "id": "icon_heading",
+          "label": "Title",
+          "default": "Feature Title"
+        },
+        {
+          "type": "range",
+          "id": "title_size",
+          "label": "Title font size desktop (px)",
+          "min": 12,
+          "max": 32,
+          "step": 1,
+          "unit": "px",
+          "default": 18
+        },
+        {
+          "type": "range",
+          "id": "mobile_title_size",
+          "label": "Title font size mobile (px)",
+          "min": 10,
+          "max": 24,
+          "step": 1,
+          "unit": "px",
+          "default": 14
+        },
+        {
+          "type": "checkbox",
+          "id": "title_bold",
+          "label": "Bold title",
+          "default": true
+        },
+        {
+          "type": "color",
+          "id": "icon_heading_color",
+          "label": "Title color",
+          "default": "#2D2B6B"
+        },
+        {
+          "type": "richtext",
+          "id": "icon_description",
+          "label": "Description",
+          "default": "<p>Feature description goes here.</p>"
+        },
+        {
+          "type": "range",
+          "id": "desc_size",
+          "label": "Description font size desktop (px)",
+          "min": 10,
+          "max": 28,
+          "step": 1,
+          "unit": "px",
+          "default": 16
+        },
+        {
+          "type": "range",
+          "id": "mobile_desc_size",
+          "label": "Description font size mobile (px)",
+          "min": 10,
+          "max": 20,
+          "step": 1,
+          "unit": "px",
+          "default": 13
+        },
+        {
+          "type": "color",
+          "id": "icon_text_color",
+          "label": "Description color",
+          "default": "#3B3B3B"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "BKY - Image With Icons",
+      "blocks": [
+        {
+          "type": "icon",
+          "settings": {
+            "icon_code": "cloud",
+            "icon_heading": "CloudSoft Core",
+            "icon_description": "<p>Shape-retaining memory foam that provides the essential structural fill for long-term neck support.</p>"
+          }
+        },
+        {
+          "type": "icon",
+          "settings": {
+            "icon_code": "verified_user",
+            "icon_heading": "OEKO-TEX® Certified Cover",
+            "icon_description": "<p>Hypoallergenic, breathable outer fabric rigorously tested safe from over 350 harmful substances.</p>"
+          }
+        },
+        {
+          "type": "icon",
+          "settings": {
+            "icon_code": "layers",
+            "icon_heading": "Multi-zone Contouring",
+            "icon_description": "<p>A supportive dense core paired with softer outer layers to achieve that signature cloud-like responsive feel.</p>"
+          }
+        },
+        {
+          "type": "icon",
+          "settings": {
+            "icon_code": "ac_unit",
+            "icon_heading": "Cooling Tech Integration",
+            "icon_description": "<p>Heat-dispersing, fast-drying, and moisture-wicking fabric woven directly into the pillow surface.</p>"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

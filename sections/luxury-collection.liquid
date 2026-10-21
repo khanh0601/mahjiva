@@ -1,0 +1,996 @@
+<style>
+  #PermanentCollectionSection, #PermanentCollectionSection * {
+    box-sizing: border-box !important;
+  }
+
+  #PermanentCollectionSection {
+    background-color: #FCFAF8;
+    padding: 72px 0 88px;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    border-top: 0.5px solid #ECE8E1;
+  }
+
+  .pcs-container {
+    max-width: {{ section.settings.container_max_width | default: 1180 }}px;
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+
+  @media (min-width: 1024px) {
+    .pcs-container {
+      padding: 0 24px;
+    }
+  }
+
+  /* Header Section: Tight & Cohesive typography */
+  .pcs-header {
+    text-align: center;
+    max-width: 660px;
+    margin: 0 auto 32px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .pcs-eyebrow {
+    font-size: 10px;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: #B89768;
+    font-weight: 700;
+    margin: 0 !important;
+    padding: 0 !important;
+    line-height: 1.2 !important;
+    display: inline-block;
+  }
+
+  .pcs-heading {
+    font-family: "Cormorant Garamond", Garamond, Georgia, serif;
+    font-size: 36px;
+    font-weight: 500;
+    color: #141517;
+    line-height: 1.15;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  @media (min-width: 768px) {
+    .pcs-heading {
+      font-size: 42px;
+    }
+  }
+
+  .pcs-description {
+    font-size: 13px;
+    font-weight: 450;
+    color: #3A3D45;
+    line-height: 1.55;
+    margin: 8px 0 0 !important;
+    padding: 0 !important;
+  }
+
+  /* Base Grid Setup */
+  .pcs-grid {
+    gap: {{ section.settings.card_gap_mobile | default: 12 }}px;
+  }
+
+  .pcs-grid::-webkit-scrollbar {
+    display: none;
+  }
+  .pcs-grid {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  /* 1. Mobile Vertical 1-Column Layout (Vertical Single Column Stack) */
+  @media (max-width: 1023px) {
+    .pcs-grid.pcs-grid--mobile-vertical_1 {
+      display: flex !important;
+      flex-direction: column !important;
+      overflow-x: visible !important;
+      gap: {{ section.settings.card_gap_mobile | default: 16 }}px !important;
+      padding-bottom: 0 !important;
+      max-width: 540px !important;
+      margin: 0 auto !important;
+      width: 100% !important;
+    }
+    .pcs-grid.pcs-grid--mobile-vertical_1 .pcs-card {
+      flex: 1 1 auto !important;
+      width: 100% !important;
+      max-width: 100% !important;
+    }
+
+    /* 2. Mobile Vertical 2-Column Grid */
+    .pcs-grid.pcs-grid--mobile-vertical_2 {
+      display: grid !important;
+      grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+      overflow-x: visible !important;
+      gap: {{ section.settings.card_gap_mobile | default: 12 }}px !important;
+      padding-bottom: 0 !important;
+      width: 100% !important;
+    }
+    .pcs-grid.pcs-grid--mobile-vertical_2 .pcs-card {
+      flex: none !important;
+      width: 100% !important;
+      max-width: 100% !important;
+    }
+    .pcs-grid.pcs-grid--mobile-vertical_2 .pcs-card-body {
+      padding: 12px 12px 14px !important;
+      gap: 8px !important;
+    }
+    .pcs-grid.pcs-grid--mobile-vertical_2 .pcs-title {
+      font-size: 15px !important;
+    }
+    .pcs-grid.pcs-grid--mobile-vertical_2 .pcs-materials {
+      display: none !important;
+    }
+    .pcs-grid.pcs-grid--mobile-vertical_2 .pcs-price {
+      font-size: 14px !important;
+    }
+    .pcs-grid.pcs-grid--mobile-vertical_2 .pcs-inquire-btn {
+      padding: 6px 10px !important;
+      font-size: 10px !important;
+    }
+
+    /* 3. Mobile Horizontal Slider */
+    .pcs-grid.pcs-grid--mobile-slider {
+      display: flex !important;
+      flex-direction: row !important;
+      gap: {{ section.settings.card_gap_mobile | default: 12 }}px !important;
+      overflow-x: auto !important;
+      scroll-snap-type: x mandatory !important;
+      -webkit-overflow-scrolling: touch !important;
+      padding-bottom: 14px !important;
+      justify-content: flex-start !important;
+      width: 100% !important;
+    }
+    .pcs-grid.pcs-grid--mobile-slider .pcs-card {
+      flex: 0 0 78vw !important;
+      max-width: 320px !important;
+      scroll-snap-align: start !important;
+    }
+
+    /* 4. Horizontal Card Style inside Vertical Stack */
+    .pcs-grid--mobile-vertical_1.pcs-card--style-card_horizontal .pcs-card {
+      flex-direction: row !important;
+      align-items: stretch !important;
+      min-height: 140px !important;
+    }
+    .pcs-grid--mobile-vertical_1.pcs-card--style-card_horizontal .pcs-card-media {
+      width: 42% !important;
+      aspect-ratio: auto !important;
+      flex: 0 0 42% !important;
+      min-height: 100% !important;
+    }
+    .pcs-grid--mobile-vertical_1.pcs-card--style-card_horizontal .pcs-card-body {
+      width: 58% !important;
+      flex: 1 1 58% !important;
+      padding: 12px 14px 14px 14px !important;
+      justify-content: space-between !important;
+    }
+    .pcs-grid--mobile-vertical_1.pcs-card--style-card_horizontal .pcs-title {
+      font-size: 16px !important;
+      line-height: 1.25 !important;
+      margin-bottom: 4px !important;
+    }
+    .pcs-grid--mobile-vertical_1.pcs-card--style-card_horizontal .pcs-materials {
+      font-size: 11px !important;
+      -webkit-line-clamp: 2 !important;
+      display: -webkit-box !important;
+      -webkit-box-orient: vertical !important;
+      overflow: hidden !important;
+      margin-bottom: 8px !important;
+    }
+    .pcs-grid--mobile-vertical_1.pcs-card--style-card_horizontal .pcs-card-footer {
+      margin-top: auto !important;
+      padding-top: 8px !important;
+    }
+  }
+
+  /* Desktop Grid (Always multi-column grid flowing vertically down) */
+  @media (min-width: 1024px) {
+    .pcs-grid {
+      display: grid !important;
+      grid-template-columns: repeat({{ section.settings.columns_desktop | default: 4 }}, minmax(0, 1fr)) !important;
+      gap: {{ section.settings.card_gap_desktop | default: 16 }}px !important;
+      overflow-x: visible !important;
+      padding-bottom: 0 !important;
+      width: 100% !important;
+    }
+    .pcs-card {
+      flex: 1 1 0 !important;
+      max-width: none !important;
+      flex-direction: column !important;
+    }
+    .pcs-card-media {
+      width: 100% !important;
+      aspect-ratio: 4 / 3.1 !important;
+      flex: none !important;
+    }
+    .pcs-card-body {
+      width: 100% !important;
+      flex: 1 1 auto !important;
+    }
+  }
+
+  /* Tile-Morphic Card: Base Styling */
+  .pcs-card {
+    background-color: #FFFFFF;
+    border: 0.5px solid #ECE8E1;
+    border-radius: 14px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    box-shadow: 0 6px 20px -6px rgba(0, 0, 0, 0.05);
+    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+    text-decoration: none;
+  }
+
+  .pcs-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 14px 30px -6px rgba(20, 21, 23, 0.08);
+    border-color: rgba(184, 151, 104, 0.6);
+  }
+
+  /* Media Frame */
+  .pcs-card-media {
+    width: 100%;
+    aspect-ratio: 4 / 3.1;
+    background-color: #FAF8F5;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .pcs-card-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+    display: block;
+  }
+
+  .pcs-card:hover .pcs-card-img {
+    transform: scale(1.04);
+  }
+
+  .pcs-placeholder-box {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: radial-gradient(circle, #FAF8F5 0%, #EFEBE3 100%);
+    color: #B89768;
+    text-align: center;
+    padding: 16px;
+  }
+
+  .pcs-placeholder-seal {
+    width: 36px;
+    height: 36px;
+    border: 1px solid #B89768;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    font-family: "Cormorant Garamond", Georgia, serif;
+    margin-bottom: 8px;
+    background: rgba(184, 151, 104, 0.06);
+  }
+
+  .pcs-badge {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background: rgba(253, 251, 248, 0.94);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    color: #141517;
+    font-size: 8.5px;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    font-weight: 700;
+    padding: 3px 8px;
+    border-radius: 4px;
+    border: 0.5px solid #ECE8E1;
+    z-index: 2;
+    line-height: 1.2;
+  }
+
+  /* Card Body: Compact, filled & cohesive */
+  .pcs-card-body {
+    padding: 16px 16px 18px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    flex: 1;
+    gap: 12px;
+  }
+
+  .pcs-category {
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: #737782;
+    font-weight: 600;
+    margin-bottom: 5px;
+    display: block;
+    line-height: 1.2;
+  }
+
+  .pcs-title {
+    font-family: "Cormorant Garamond", Georgia, serif;
+    font-size: 18px;
+    font-weight: 500;
+    color: #141517;
+    line-height: 1.22;
+    margin: 0 0 6px 0;
+  }
+
+  .pcs-title a {
+    color: inherit;
+    text-decoration: none;
+    transition: color 0.2s ease;
+  }
+
+  .pcs-card:hover .pcs-title a {
+    color: #B89768;
+  }
+
+  .pcs-materials {
+    font-size: 11.5px;
+    color: #555861;
+    line-height: 1.45;
+    margin: 0;
+  }
+
+  /* Card Footer */
+  .pcs-card-footer {
+    border-top: 0.5px solid #ECE8E1;
+    padding-top: 13px;
+    margin-top: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .pcs-price {
+    font-size: 13.5px;
+    font-weight: 700;
+    color: #141517;
+    letter-spacing: 0.02em;
+  }
+
+  .pcs-inquire-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 6px 12px;
+    border-radius: 6px;
+    border: 1px solid #141517;
+    background: transparent;
+    color: #141517;
+    font-size: 9.5px;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.25s ease;
+    cursor: pointer;
+    line-height: 1;
+    white-space: nowrap;
+  }
+
+  .pcs-inquire-btn:hover {
+    background-color: #141517;
+    color: #FAF8F5;
+  }
+
+  .pcs-btn-svg {
+    width: 12px !important;
+    height: 12px !important;
+    stroke: currentColor !important;
+    stroke-width: 1.4 !important;
+    fill: none !important;
+    display: block !important;
+  }
+</style>
+
+<section id="PermanentCollectionSection" aria-label="The Permanent Collection">
+  <div class="pcs-container">
+
+    <div class="pcs-header">
+      {%- if section.settings.eyebrow != blank -%}
+        <span class="pcs-eyebrow">{{ section.settings.eyebrow }}</span>
+      {%- endif -%}
+      {%- if section.settings.heading != blank -%}
+        <h2 class="pcs-heading">{{ section.settings.heading }}</h2>
+      {%- endif -%}
+      {%- if section.settings.description != blank -%}
+        <p class="pcs-description">{{ section.settings.description }}</p>
+      {%- endif -%}
+    </div>
+
+    <div class="pcs-grid pcs-grid--mobile-{{ section.settings.mobile_layout | default: 'vertical_1' }} pcs-card--style-{{ section.settings.card_style_mobile | default: 'card_vertical' }}">
+      {%- assign btn_text = section.settings.btn_label | default: "INQUIRE" -%}
+      {%- assign limit = section.settings.products_to_show | default: 4 -%}
+      {%- assign mode = section.settings.display_mode | default: "best_of_each" -%}
+
+      {%- comment -%}
+        =============================================================================
+        MODE 1: CUSTOM BY BLOCKS (Add Curated Collections or Dedicated Products)
+        =============================================================================
+      {%- endcomment -%}
+      {%- if section.blocks.size > 0 and mode == "blocks" -%}
+        {%- for block in section.blocks limit: limit -%}
+          {%- if block.type == "collection_item" -%}
+            {%- assign col = block.settings.collection -%}
+            {%- if col != blank and col.products.size > 0 -%}
+              {%- assign prod = col.products.first -%}
+              {%- assign card_badge = block.settings.badge | default: col.title -%}
+              {%- assign card_materials = block.settings.materials | default: prod.metafields.custom.materials.value | default: prod.metafields.custom.materials | default: prod.description | strip_html | truncatewords: 15 -%}
+              {%- assign card_btn = block.settings.btn_label | default: btn_text -%}
+
+              <article class="pcs-card" {{ block.shopify_attributes }}>
+                <div class="pcs-card-media">
+                  {%- if card_badge != blank -%}
+                    <span class="pcs-badge">{{ card_badge | upcase }}</span>
+                  {%- endif -%}
+
+                  {%- if prod.featured_image != blank -%}
+                    <a href="{{ prod.url }}" tabindex="-1" style="display: block; width: 100%; height: 100%;">
+                      <img 
+                        src="{{ prod.featured_image | image_url: width: 900 }}" 
+                        alt="{{ prod.title | escape }}" 
+                        class="pcs-card-img" 
+                        loading="lazy"
+                        width="{{ prod.featured_image.width | default: 900 }}"
+                        height="{{ prod.featured_image.height | default: 675 }}"
+                        onerror="this.style.display='none'; if(this.parentElement && this.parentElement.nextElementSibling) this.parentElement.nextElementSibling.style.display='flex';"
+                      >
+                    </a>
+                    <div class="pcs-placeholder-box" style="display: none;">
+                      <span class="pcs-placeholder-seal" aria-hidden="true">玉</span>
+                      <span style="font-size:11px; letter-spacing:0.12em; text-transform:uppercase; font-weight:600;">{{ prod.title }}</span>
+                    </div>
+                  {%- else -%}
+                    <div class="pcs-placeholder-box">
+                      <span class="pcs-placeholder-seal" aria-hidden="true">玉</span>
+                      <span style="font-size:11px; letter-spacing:0.12em; text-transform:uppercase; font-weight:600;">{{ prod.title }}</span>
+                    </div>
+                  {%- endif -%}
+                </div>
+
+                <div class="pcs-card-body">
+                  <div>
+                    {%- if prod.type != blank -%}
+                      <span class="pcs-category">{{ prod.type }}</span>
+                    {%- elsif card_badge != blank -%}
+                      <span class="pcs-category">{{ card_badge }}</span>
+                    {%- endif -%}
+                    <h3 class="pcs-title"><a href="{{ prod.url }}">{{ prod.title }}</a></h3>
+                    {%- if card_materials != blank -%}
+                      <p class="pcs-materials">{{ card_materials }}</p>
+                    {%- endif -%}
+                  </div>
+                  <div class="pcs-card-footer">
+                    <span class="pcs-price">{{ prod.price | money }}</span>
+                    <a href="{{ prod.url }}" class="pcs-inquire-btn">
+                      <span>{{ card_btn }}</span>
+                      <svg class="pcs-btn-svg" viewBox="0 0 24 24">
+                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                        <polyline points="12 5 19 12 12 19"></polyline>
+                      </svg>
+                    </a>
+                  </div>
+                </div>
+              </article>
+            {%- endif -%}
+
+          {%- elsif block.type == "product_item" -%}
+            {%- assign prod = block.settings.product -%}
+            {%- if prod != blank -%}
+              {%- assign card_badge = block.settings.badge | default: prod.collections.first.title | default: section.settings.heading | default: shop.name -%}
+              {%- assign card_materials = block.settings.materials | default: prod.metafields.custom.materials.value | default: prod.metafields.custom.materials | default: prod.description | strip_html | truncatewords: 15 -%}
+              {%- assign card_btn = block.settings.btn_label | default: btn_text -%}
+
+              <article class="pcs-card" {{ block.shopify_attributes }}>
+                <div class="pcs-card-media">
+                  {%- if card_badge != blank -%}
+                    <span class="pcs-badge">{{ card_badge | upcase }}</span>
+                  {%- endif -%}
+
+                  {%- if prod.featured_image != blank -%}
+                    <a href="{{ prod.url }}" tabindex="-1" style="display: block; width: 100%; height: 100%;">
+                      <img 
+                        src="{{ prod.featured_image | image_url: width: 900 }}" 
+                        alt="{{ prod.title | escape }}" 
+                        class="pcs-card-img" 
+                        loading="lazy"
+                        width="{{ prod.featured_image.width | default: 900 }}"
+                        height="{{ prod.featured_image.height | default: 675 }}"
+                        onerror="this.style.display='none'; if(this.parentElement && this.parentElement.nextElementSibling) this.parentElement.nextElementSibling.style.display='flex';"
+                      >
+                    </a>
+                    <div class="pcs-placeholder-box" style="display: none;">
+                      <span class="pcs-placeholder-seal" aria-hidden="true">玉</span>
+                      <span style="font-size:11px; letter-spacing:0.12em; text-transform:uppercase; font-weight:600;">{{ prod.title }}</span>
+                    </div>
+                  {%- else -%}
+                    <div class="pcs-placeholder-box">
+                      <span class="pcs-placeholder-seal" aria-hidden="true">玉</span>
+                      <span style="font-size:11px; letter-spacing:0.12em; text-transform:uppercase; font-weight:600;">{{ prod.title }}</span>
+                    </div>
+                  {%- endif -%}
+                </div>
+
+                <div class="pcs-card-body">
+                  <div>
+                    {%- if prod.type != blank -%}
+                      <span class="pcs-category">{{ prod.type }}</span>
+                    {%- elsif card_badge != blank -%}
+                      <span class="pcs-category">{{ card_badge }}</span>
+                    {%- endif -%}
+                    <h3 class="pcs-title"><a href="{{ prod.url }}">{{ prod.title }}</a></h3>
+                    {%- if card_materials != blank -%}
+                      <p class="pcs-materials">{{ card_materials }}</p>
+                    {%- endif -%}
+                  </div>
+                  <div class="pcs-card-footer">
+                    <span class="pcs-price">{{ prod.price | money }}</span>
+                    <a href="{{ prod.url }}" class="pcs-inquire-btn">
+                      <span>{{ card_btn }}</span>
+                      <svg class="pcs-btn-svg" viewBox="0 0 24 24">
+                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                        <polyline points="12 5 19 12 12 19"></polyline>
+                      </svg>
+                    </a>
+                  </div>
+                </div>
+              </article>
+            {%- endif -%}
+          {%- endif -%}
+        {%- endfor -%}
+
+      {%- comment -%}
+        =============================================================================
+        MODE 2: SINGLE COLLECTION VIEW (All Products from Selected Collection)
+        =============================================================================
+      {%- endcomment -%}
+      {%- elsif mode == "single_collection" and section.settings.collection != blank -%}
+        {%- assign col = section.settings.collection -%}
+        {%- for prod in col.products limit: limit -%}
+          {%- assign card_badge = prod.collections.first.title | default: col.title -%}
+          {%- assign card_materials = prod.metafields.custom.materials.value | default: prod.metafields.custom.materials | default: prod.description | strip_html | truncatewords: 15 -%}
+
+          <article class="pcs-card">
+            <div class="pcs-card-media">
+              {%- if card_badge != blank -%}
+                <span class="pcs-badge">{{ card_badge | upcase }}</span>
+              {%- endif -%}
+
+              {%- if prod.featured_image != blank -%}
+                <a href="{{ prod.url }}" tabindex="-1" style="display: block; width: 100%; height: 100%;">
+                  <img 
+                    src="{{ prod.featured_image | image_url: width: 900 }}" 
+                    alt="{{ prod.title | escape }}" 
+                    class="pcs-card-img" 
+                    loading="lazy"
+                    width="{{ prod.featured_image.width | default: 900 }}"
+                    height="{{ prod.featured_image.height | default: 675 }}"
+                    onerror="this.style.display='none'; if(this.parentElement && this.parentElement.nextElementSibling) this.parentElement.nextElementSibling.style.display='flex';"
+                  >
+                </a>
+                <div class="pcs-placeholder-box" style="display: none;">
+                  <span class="pcs-placeholder-seal" aria-hidden="true">玉</span>
+                  <span style="font-size:11px; letter-spacing:0.12em; text-transform:uppercase; font-weight:600;">{{ prod.title }}</span>
+                </div>
+              {%- else -%}
+                <div class="pcs-placeholder-box">
+                  <span class="pcs-placeholder-seal" aria-hidden="true">玉</span>
+                  <span style="font-size:11px; letter-spacing:0.12em; text-transform:uppercase; font-weight:600;">{{ prod.title }}</span>
+                </div>
+              {%- endif -%}
+            </div>
+
+            <div class="pcs-card-body">
+              <div>
+                {%- if prod.type != blank -%}
+                  <span class="pcs-category">{{ prod.type }}</span>
+                {%- elsif card_badge != blank -%}
+                  <span class="pcs-category">{{ card_badge }}</span>
+                {%- endif -%}
+                <h3 class="pcs-title"><a href="{{ prod.url }}">{{ prod.title }}</a></h3>
+                {%- if card_materials != blank -%}
+                  <p class="pcs-materials">{{ card_materials }}</p>
+                {%- endif -%}
+              </div>
+              <div class="pcs-card-footer">
+                <span class="pcs-price">{{ prod.price | money }}</span>
+                <a href="{{ prod.url }}" class="pcs-inquire-btn">
+                  <span>{{ btn_text }}</span>
+                  <svg class="pcs-btn-svg" viewBox="0 0 24 24">
+                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                    <polyline points="12 5 19 12 12 19"></polyline>
+                  </svg>
+                </a>
+              </div>
+            </div>
+          </article>
+        {%- endfor -%}
+
+      {%- comment -%}
+        =============================================================================
+        MODE 3 (DEFAULT): CURATED LEAD PRODUCT FROM EACH COLLECTION
+        =============================================================================
+      {%- endcomment -%}
+      {%- else -%}
+        {%- assign rendered_product_ids = "" -%}
+        {%- assign rendered_count = 0 -%}
+
+        {%- for col in collections -%}
+          {%- if col.products.size > 0 and col.handle != 'all' -%}
+            {%- for prod in col.products -%}
+              {%- assign p_id_str = prod.id | append: "," -%}
+              {%- unless rendered_product_ids contains p_id_str -%}
+                {%- if rendered_count < limit -%}
+                  {%- assign rendered_product_ids = rendered_product_ids | append: p_id_str -%}
+                  {%- assign rendered_count = rendered_count | plus: 1 -%}
+                  {%- assign card_badge = col.title -%}
+                  {%- assign card_materials = prod.metafields.custom.materials.value | default: prod.metafields.custom.materials | default: prod.description | strip_html | truncatewords: 15 -%}
+
+                  <article class="pcs-card">
+                    <div class="pcs-card-media">
+                      {%- if card_badge != blank -%}
+                        <span class="pcs-badge">{{ card_badge | upcase }}</span>
+                      {%- endif -%}
+
+                      {%- if prod.featured_image != blank -%}
+                        <a href="{{ prod.url }}" tabindex="-1" style="display: block; width: 100%; height: 100%;">
+                          <img 
+                            src="{{ prod.featured_image | image_url: width: 900 }}" 
+                            alt="{{ prod.title | escape }}" 
+                            class="pcs-card-img" 
+                            loading="lazy"
+                            width="{{ prod.featured_image.width | default: 900 }}"
+                            height="{{ prod.featured_image.height | default: 675 }}"
+                            onerror="this.style.display='none'; if(this.parentElement && this.parentElement.nextElementSibling) this.parentElement.nextElementSibling.style.display='flex';"
+                          >
+                        </a>
+                        <div class="pcs-placeholder-box" style="display: none;">
+                          <span class="pcs-placeholder-seal" aria-hidden="true">玉</span>
+                          <span style="font-size:11px; letter-spacing:0.12em; text-transform:uppercase; font-weight:600;">{{ prod.title }}</span>
+                        </div>
+                      {%- else -%}
+                        <div class="pcs-placeholder-box">
+                          <span class="pcs-placeholder-seal" aria-hidden="true">玉</span>
+                          <span style="font-size:11px; letter-spacing:0.12em; text-transform:uppercase; font-weight:600;">{{ prod.title }}</span>
+                        </div>
+                      {%- endif -%}
+                    </div>
+
+                    <div class="pcs-card-body">
+                      <div>
+                        {%- if prod.type != blank -%}
+                          <span class="pcs-category">{{ prod.type }}</span>
+                        {%- elsif card_badge != blank -%}
+                          <span class="pcs-category">{{ card_badge }}</span>
+                        {%- endif -%}
+                        <h3 class="pcs-title"><a href="{{ prod.url }}">{{ prod.title }}</a></h3>
+                        {%- if card_materials != blank -%}
+                          <p class="pcs-materials">{{ card_materials }}</p>
+                        {%- endif -%}
+                      </div>
+                      <div class="pcs-card-footer">
+                        <span class="pcs-price">{{ prod.price | money }}</span>
+                        <a href="{{ prod.url }}" class="pcs-inquire-btn">
+                          <span>{{ btn_text }}</span>
+                          <svg class="pcs-btn-svg" viewBox="0 0 24 24">
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                            <polyline points="12 5 19 12 12 19"></polyline>
+                          </svg>
+                        </a>
+                      </div>
+                    </div>
+                  </article>
+                  {%- break -%} {%- comment -%} Pick first/lead product from each collection {%- endcomment -%}
+                {%- endif -%}
+              {%- endunless -%}
+            {%- endfor -%}
+          {%- endif -%}
+        {%- endfor -%}
+
+        {%- comment -%} Supplement with additional catalog products to balance grid {%- endcomment -%}
+        {%- if rendered_count < limit -%}
+          {%- for prod in collections.all.products -%}
+            {%- assign p_id_str = prod.id | append: "," -%}
+            {%- unless rendered_product_ids contains p_id_str -%}
+              {%- if rendered_count < limit -%}
+                {%- assign rendered_product_ids = rendered_product_ids | append: p_id_str -%}
+                {%- assign rendered_count = rendered_count | plus: 1 -%}
+                {%- assign card_badge = prod.collections.first.title | default: section.settings.heading | default: shop.name -%}
+                {%- assign card_materials = prod.metafields.custom.materials.value | default: prod.metafields.custom.materials | default: prod.description | strip_html | truncatewords: 15 -%}
+
+                <article class="pcs-card">
+                  <div class="pcs-card-media">
+                    {%- if card_badge != blank -%}
+                      <span class="pcs-badge">{{ card_badge | upcase }}</span>
+                    {%- endif -%}
+
+                    {%- if prod.featured_image != blank -%}
+                      <a href="{{ prod.url }}" tabindex="-1" style="display: block; width: 100%; height: 100%;">
+                        <img 
+                          src="{{ prod.featured_image | image_url: width: 900 }}" 
+                          alt="{{ prod.title | escape }}" 
+                          class="pcs-card-img" 
+                          loading="lazy"
+                          width="{{ prod.featured_image.width | default: 900 }}"
+                          height="{{ prod.featured_image.height | default: 675 }}"
+                          onerror="this.style.display='none'; if(this.parentElement && this.parentElement.nextElementSibling) this.parentElement.nextElementSibling.style.display='flex';"
+                        >
+                      </a>
+                      <div class="pcs-placeholder-box" style="display: none;">
+                        <span class="pcs-placeholder-seal" aria-hidden="true">玉</span>
+                        <span style="font-size:11px; letter-spacing:0.12em; text-transform:uppercase; font-weight:600;">{{ prod.title }}</span>
+                      </div>
+                    {%- else -%}
+                      <div class="pcs-placeholder-box">
+                        <span class="pcs-placeholder-seal" aria-hidden="true">玉</span>
+                        <span style="font-size:11px; letter-spacing:0.12em; text-transform:uppercase; font-weight:600;">{{ prod.title }}</span>
+                      </div>
+                    {%- endif -%}
+                  </div>
+
+                  <div class="pcs-card-body">
+                    <div>
+                      {%- if prod.type != blank -%}
+                        <span class="pcs-category">{{ prod.type }}</span>
+                      {%- elsif card_badge != blank -%}
+                        <span class="pcs-category">{{ card_badge }}</span>
+                      {%- endif -%}
+                      <h3 class="pcs-title"><a href="{{ prod.url }}">{{ prod.title }}</a></h3>
+                      {%- if card_materials != blank -%}
+                        <p class="pcs-materials">{{ card_materials }}</p>
+                      {%- endif -%}
+                    </div>
+                    <div class="pcs-card-footer">
+                      <span class="pcs-price">{{ prod.price | money }}</span>
+                      <a href="{{ prod.url }}" class="pcs-inquire-btn">
+                        <span>{{ btn_text }}</span>
+                        <svg class="pcs-btn-svg" viewBox="0 0 24 24">
+                          <line x1="5" y1="12" x2="19" y2="12"></line>
+                          <polyline points="12 5 19 12 12 19"></polyline>
+                        </svg>
+                      </a>
+                    </div>
+                  </div>
+                </article>
+              {%- endif -%}
+            {%- endunless -%}
+          {%- endfor -%}
+        {%- endif -%}
+      {%- endif -%}
+    </div>
+
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Permanent Collection",
+  "tag": "section",
+  "class": "section-luxury-collection",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Section Dossier"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow Subheading",
+      "default": "THE EDITIONS"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Main Heading",
+      "default": "The Permanent Collection"
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Section Description"
+    },
+    {
+      "type": "header",
+      "content": "Collection & Product Display Mode"
+    },
+    {
+      "type": "select",
+      "id": "display_mode",
+      "label": "Display Mode",
+      "options": [
+        {
+          "value": "best_of_each",
+          "label": "Curated Lead from Each Collection"
+        },
+        {
+          "value": "single_collection",
+          "label": "All Products from Single Collection"
+        },
+        {
+          "value": "blocks",
+          "label": "Manual Custom Blocks"
+        }
+      ],
+      "default": "best_of_each",
+      "info": "Card badge automatically displays the name of the corresponding collection."
+    },
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Select Collection (For Single Collection mode)"
+    },
+    {
+      "type": "range",
+      "id": "products_to_show",
+      "min": 2,
+      "max": 12,
+      "step": 1,
+      "label": "Max Products to Display",
+      "default": 4
+    },
+    {
+      "type": "text",
+      "id": "btn_label",
+      "label": "Button Label",
+      "default": "INQUIRE"
+    },
+    {
+      "type": "header",
+      "content": "Card Layout & Spacing"
+    },
+    {
+      "type": "select",
+      "id": "mobile_layout",
+      "label": "Mobile Display Layout",
+      "options": [
+        {
+          "value": "vertical_1",
+          "label": "Vertical Single Column Stack"
+        },
+        {
+          "value": "vertical_2",
+          "label": "Vertical 2-Column Grid"
+        },
+        {
+          "value": "slider",
+          "label": "Horizontal Swipe Slider"
+        }
+      ],
+      "default": "vertical_1",
+      "info": "Select 'Vertical Single Column Stack' for sequential vertical scroll."
+    },
+    {
+      "type": "select",
+      "id": "card_style_mobile",
+      "label": "Card Architecture (When Vertical)",
+      "options": [
+        {
+          "value": "card_vertical",
+          "label": "Vertical Card (Image top, text bottom)"
+        },
+        {
+          "value": "card_horizontal",
+          "label": "Horizontal Card (Image left, text right)"
+        }
+      ],
+      "default": "card_vertical"
+    },
+    {
+      "type": "range",
+      "id": "container_max_width",
+      "min": 1000,
+      "max": 1400,
+      "step": 20,
+      "unit": "px",
+      "label": "Container Max Width",
+      "default": 1180
+    },
+    {
+      "type": "range",
+      "id": "columns_desktop",
+      "min": 3,
+      "max": 5,
+      "step": 1,
+      "label": "Desktop Columns",
+      "default": 4
+    },
+    {
+      "type": "range",
+      "id": "card_gap_desktop",
+      "min": 10,
+      "max": 30,
+      "step": 2,
+      "unit": "px",
+      "label": "Card Gap (Desktop)",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "card_gap_mobile",
+      "min": 8,
+      "max": 24,
+      "step": 2,
+      "unit": "px",
+      "label": "Card Gap (Mobile)",
+      "default": 12
+    }
+  ],
+  "blocks": [
+    {
+      "type": "collection_item",
+      "name": "Curated Collection",
+      "settings": [
+        {
+          "type": "collection",
+          "id": "collection",
+          "label": "Select Collection (Pulls lead product)"
+        },
+        {
+          "type": "text",
+          "id": "badge",
+          "label": "Card Badge Tag (Blank for collection title)"
+        },
+        {
+          "type": "textarea",
+          "id": "materials",
+          "label": "Custom Materials / Description (Optional)"
+        },
+        {
+          "type": "text",
+          "id": "btn_label",
+          "label": "Custom Button Label (Optional)"
+        }
+      ]
+    },
+    {
+      "type": "product_item",
+      "name": "Product Allocation",
+      "settings": [
+        {
+          "type": "product",
+          "id": "product",
+          "label": "Select Real Product"
+        },
+        {
+          "type": "text",
+          "id": "badge",
+          "label": "Card Badge Tag (Blank for product collection)"
+        },
+        {
+          "type": "textarea",
+          "id": "materials",
+          "label": "Custom Materials / Description (Optional)"
+        },
+        {
+          "type": "text",
+          "id": "btn_label",
+          "label": "Custom Button Label (Optional)"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Permanent Collection"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,149 @@
+{% comment %}theme-check-disable ImgLazyLoading{% endcomment %}
+{{ 'component-collection-hero.css' | asset_url | stylesheet_tag }}
+
+{%- style -%}
+  .collection-hero {
+    background: transparent !important;
+    width: 100% !important;
+    padding: 0 !important;
+  }
+
+  .collection-hero__inner.page-width {
+    max-width: 1360px !important;
+    width: 100% !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    padding-left: 36px !important;
+    padding-right: 36px !important;
+    box-sizing: border-box !important;
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: flex-start !important;
+    justify-content: flex-start !important;
+    text-align: left !important;
+  }
+
+  @media screen and (max-width: 1023px) {
+    .collection-hero__inner.page-width {
+      padding-left: 20px !important;
+      padding-right: 20px !important;
+    }
+  }
+
+  .collection-hero__text-wrapper {
+    flex: 1 1 100% !important;
+    width: 100% !important;
+    text-align: left !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  .collection-hero__title {
+    text-align: left !important;
+    margin: 32px 0 16px 0 !important;
+    padding: 0 !important;
+    font-family: "Cormorant Garamond", Georgia, serif !important;
+    font-size: 38px !important;
+    font-weight: 500 !important;
+    line-height: 1.15 !important;
+    letter-spacing: -0.01em !important;
+    color: #111111 !important;
+  }
+
+  @media screen and (max-width: 749px) {
+    .collection-hero__title {
+      font-size: 28px !important;
+      margin: 20px 0 12px 0 !important;
+    }
+    .collection-hero--with-image .collection-hero__inner {
+      padding-bottom: calc({{ settings.media_shadow_vertical_offset | at_least: 0 }}px + 2rem);
+    }
+  }
+
+  .collection-hero__description {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+    text-align: left !important;
+    max-width: 800px !important;
+    margin: 0 0 20px 0 !important;
+    font-size: 1.45rem !important;
+    color: #555555 !important;
+    line-height: 1.5 !important;
+  }
+
+  .collection-hero__description:empty {
+    display: none !important;
+  }
+{%- endstyle -%}
+
+<div class="collection-hero{% if section.settings.show_collection_image and collection.image %} collection-hero--with-image{% endif %} color-{{ section.settings.color_scheme }} gradient">
+  <div class="collection-hero__inner page-width {% if settings.animations_reveal_on_scroll %} scroll-trigger animate--fade-in{% endif %}">
+    <div class="collection-hero__text-wrapper">
+      {%- assign collection_heading = collection.title -%}
+      {%- assign heading_down = collection_heading | downcase | strip -%}
+      {%- if collection.handle == 'all' or heading_down == 'products' or heading_down == 'all products' -%}
+        {%- assign collection_heading = 'All Products' -%}
+      {%- endif -%}
+      <h1 class="collection-hero__title">
+        <span class="visually-hidden">{{ 'sections.collection_template.title' | t }}: </span>
+        {{- collection_heading | escape -}}
+      </h1>
+
+      {%- if section.settings.show_collection_description -%}
+        <div class="collection-hero__description rte">{{ collection.description }}</div>
+      {%- endif -%}
+    </div>
+
+    {%- if section.settings.show_collection_image and collection.image -%}
+      <div class="collection-hero__image-container media gradient">
+        <img
+          srcset="
+            {%- if collection.image.width >= 165 -%}{{ collection.image | image_url: width: 165 }} 165w,{%- endif -%}
+            {%- if collection.image.width >= 360 -%}{{ collection.image | image_url: width: 360 }} 360w,{%- endif -%}
+            {%- if collection.image.width >= 535 -%}{{ collection.image | image_url: width: 535 }} 535w,{%- endif -%}
+            {%- if collection.image.width >= 750 -%}{{ collection.image | image_url: width: 750 }} 750w,{%- endif -%}
+            {%- if collection.image.width >= 1070 -%}{{ collection.image | image_url: width: 1070 }} 1070w,{%- endif -%}
+            {%- if collection.image.width >= 1500 -%}{{ collection.image | image_url: width: 1500 }} 1500w,{%- endif -%}
+            {{ collection.image | image_url }} {{ collection.image.width }}w
+          "
+          src="{{ collection.image | image_url: width: 750 }}"
+          sizes="(min-width: {{ settings.page_width }}px) {{ settings.page_width | minus: 100 | divided_by: 2 }}px, (min-width: 750px) calc(50vw - 130px), calc(50vw - 55px)"
+          alt="{{ collection.image.alt | escape }}"
+          width="{{ collection.image.width }}"
+          height="{{ collection.image.height }}"
+        >
+      </div>
+    {%- endif -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "t:sections.main-collection-banner.name",
+  "class": "section",
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "t:sections.main-collection-banner.settings.paragraph.content"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_collection_description",
+      "default": true,
+      "label": "t:sections.main-collection-banner.settings.show_collection_description.label"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_collection_image",
+      "default": false,
+      "label": "t:sections.main-collection-banner.settings.show_collection_image.label",
+      "info": "t:sections.main-collection-banner.settings.show_collection_image.info"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:sections.all.colors.label",
+      "default": "scheme-1"
+    }
+  ]
+}
+{% endschema %}

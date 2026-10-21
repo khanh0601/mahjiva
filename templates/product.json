@@ -1,0 +1,210 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "luxury-main-product",
+      "blocks": {
+        "selleasy_lb_upsell_widget_ba_tmVjCT": {
+          "type": "shopify://apps/selleasy/blocks/lb-upsell-widget-ba/790c1a03-a71f-4bc1-9869-00dad526d3c2",
+          "settings": {}
+        }
+      },
+      "block_order": [
+        "selleasy_lb_upsell_widget_ba_tmVjCT"
+      ],
+      "settings": {
+        "bg_color": "#fcfaf8",
+        "container_max_width": 1360,
+        "padding_top": 24,
+        "padding_bottom": 60,
+        "show_pdp_faq_section": false,
+        "enable_bundle_deals": false,
+        "show_payment_guarantee": true,
+        "guarantee_1": "30-day returns",
+        "guarantee_2": "Ships in 1–2 days",
+        "guarantee_3": "Free U.S. shipping"
+      }
+    },
+    "related-products": {
+      "type": "related-products",
+      "disabled": true,
+      "settings": {
+        "heading": "You may also like",
+        "heading_size": "h2",
+        "products_to_show": 2,
+        "columns_desktop": 4,
+        "color_scheme": "scheme-1",
+        "image_ratio": "portrait",
+        "image_shape": "default",
+        "show_secondary_image": true,
+        "show_vendor": false,
+        "show_rating": false,
+        "columns_mobile": "2",
+        "padding_top": 0,
+        "padding_bottom": 60
+      }
+    },
+    "blocky_faq_yqVYJ6": {
+      "type": "blocky-faq",
+      "blocks": {
+        "question_qDwyzL": {
+          "type": "question",
+          "settings": {
+            "question": "1. What products does MAHJIVA offer?",
+            "content": "<p>MAHJIVA offers a curated collection of American Mahjong essentials, including tile sets, tile bags, playing mats, racks, and dice. Each piece is thoughtfully selected to bring elegance, personality, and style to your Mahjong experience.</p>",
+            "default_open": false,
+            "icon_code": "",
+            "icon_color": "#000000"
+          }
+        },
+        "question_KCjHrw": {
+          "type": "question",
+          "settings": {
+            "question": "2. Are MAHJIVA Mahjong tiles compatible with American Mahjong?",
+            "content": "<p>Our American Mahjong tile sets are designed for American Mahjong play. Tile counts and included pieces may vary by collection, so please check the individual product description for details.</p>",
+            "default_open": false,
+            "icon_code": "",
+            "icon_color": "#000000"
+          }
+        },
+        "question_yjzJ7T": {
+          "type": "question",
+          "settings": {
+            "question": "3. Can I purchase Mahjong accessories separately?",
+            "content": "<p>Absolutely! Our tile bags, mats, racks, and dice are available separately, making it easy to mix and match your favorites to create a Mahjong setup that reflects your personal style.</p>",
+            "default_open": false,
+            "icon_code": "",
+            "icon_color": "#000000"
+          }
+        },
+        "question_Rh4gde": {
+          "type": "question",
+          "settings": {
+            "question": "4. How do I choose the right Mahjong products?",
+            "content": "<p>Start with your favorite tile set, then explore our coordinating accessories to complete your table. Each product page includes details to help you find the perfect pieces for your Mahjong experience.</p>",
+            "default_open": false,
+            "icon_code": "",
+            "icon_color": "#000000"
+          }
+        },
+        "question_mjJHCr": {
+          "type": "question",
+          "settings": {
+            "question": "5. How long does shipping take?",
+            "content": "<p>Shipping times vary depending on your location and the items ordered. Please refer to our Shipping Policy for the latest processing times, delivery estimates, and shipping information.</p>",
+            "default_open": false,
+            "icon_code": "",
+            "icon_color": "#000000"
+          }
+        },
+        "question_ret_6": {
+          "type": "question",
+          "settings": {
+            "question": "6. What if I need to return or exchange an item?",
+            "content": "<p>We want you to feel confident shopping with MAHJIVA. Return and exchange eligibility is outlined in our Return & Refund Policy. Please review the policy for details before making a request.</p>",
+            "default_open": false,
+            "icon_code": "",
+            "icon_color": "#000000"
+          }
+        },
+        "question_con_7": {
+          "type": "question",
+          "settings": {
+            "question": "7. How can I contact MAHJIVA?",
+            "content": "<p>We're always happy to help! Whether you have a product question, need assistance with an order, or want help choosing your Mahjong essentials, feel free to reach out through our Contact Us page.</p>",
+            "default_open": false,
+            "icon_code": "",
+            "icon_color": "#000000"
+          }
+        }
+      },
+      "block_order": [
+        "question_qDwyzL",
+        "question_KCjHrw",
+        "question_yjzJ7T",
+        "question_Rh4gde",
+        "question_mjJHCr",
+        "question_ret_6",
+        "question_con_7"
+      ],
+      "name": "Blocky FAQ",
+      "settings": {
+        "title": "Frequently Asked Questions",
+        "title_size": 40,
+        "title_color": "#000000",
+        "body_text": "<p>Everything you need to know before joining the table.</p>",
+        "body_size": 16,
+        "body_color": "#000000",
+        "button_label": "<p><strong>Contact Us</strong></p>",
+        "button_link": "/pages/contact",
+        "button_border_radius": "curved",
+        "button_background_color": "#000000",
+        "button_text_color": "#ffffff",
+        "faq_layout": "row",
+        "question_padding": 15,
+        "faq_border_radius": 15,
+        "faq_container_background": "#ffffff",
+        "faq_container_border_color": "rgba(0,0,0,0)",
+        "show_container_shadow": true,
+        "question_font_size": 18,
+        "answer_font_size": 16,
+        "question_text_color": "#000000",
+        "answer_text_color": "#606367",
+        "layout": "row-reverse",
+        "columns": 1,
+        "desktop_faq_width": "large",
+        "desktop_content_alignment": "left",
+        "mobile_content_alignment": "center",
+        "text_vertical_alignment": "middle",
+        "chevron_style": "chevron",
+        "chevron_position": "end",
+        "text_container_gap": "2rem",
+        "background_color": "#ffffff",
+        "page_width": 1200,
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "17923938290993c0f7": {
+      "type": "apps",
+      "blocks": {
+        "judge_me_reviews_review_widget_GBCgwL": {
+          "type": "shopify://apps/judge-me-reviews/blocks/review_widget/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
+          "settings": {
+            "review_data": "sample_data",
+            "max_width": 1200,
+            "show_shop_reviews": false,
+            "empty_state": "empty_widget"
+          }
+        }
+      },
+      "block_order": [
+        "judge_me_reviews_review_widget_GBCgwL"
+      ],
+      "settings": {
+        "include_margins": true
+      }
+    },
+    "1792490839b32cf546": {
+      "type": "apps",
+      "settings": {
+        "include_margins": true
+      }
+    }
+  },
+  "order": [
+    "main",
+    "related-products",
+    "blocky_faq_yqVYJ6",
+    "17923938290993c0f7",
+    "1792490839b32cf546"
+  ]
+}

@@ -1,0 +1,251 @@
+{%- style -%}
+  .mahjong-marquee-wrapper-{{ section.id }} {
+    background-color: {{ section.settings.bg_color }};
+    overflow: hidden;
+    white-space: nowrap;
+    position: relative;
+    z-index: 101;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    height: 40px !important;
+    min-height: 40px !important;
+    max-height: 40px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    box-sizing: border-box !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    line-height: normal;
+  }
+
+  .mahjong-marquee-track-{{ section.id }} {
+    display: flex !important;
+    align-items: center !important;
+    height: 100% !important;
+    width: max-content;
+    margin: 0 !important;
+    padding: 0 !important;
+    animation: mahjongMarqueeScroll-{{ section.id }} {{ section.settings.speed }}s linear infinite !important;
+    will-change: transform;
+    pointer-events: auto;
+  }
+
+  /* Continuous 100% marquee scroll, never pauses on hover */
+  .mahjong-marquee-wrapper-{{ section.id }}:hover .mahjong-marquee-track-{{ section.id }},
+  .mahjong-marquee-track-{{ section.id }}:hover,
+  .mahjong-marquee-group:hover,
+  .mahjong-tile-item:hover {
+    animation-play-state: running !important;
+  }
+
+  @keyframes mahjongMarqueeScroll-{{ section.id }} {
+    0% {
+      transform: translateX(0);
+    }
+    100% {
+      transform: translateX(-50%);
+    }
+  }
+
+  .mahjong-marquee-group {
+    display: flex !important;
+    align-items: center !important;
+    height: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    flex-shrink: 0;
+  }
+
+  /* Mahjong tile capsule wrapping text, centered within 40px bar */
+  .mahjong-tile-item {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    background-color: {{ section.settings.tile_color | default: '#FAF7F2' }} !important;
+    color: {{ section.settings.text_color | default: '#1A2920' }} !important;
+    height: 24px !important;
+    min-height: 24px !important;
+    max-height: 24px !important;
+    padding: 0 12px !important;
+    margin: 0 8px !important;
+    border-radius: 4px !important;
+    font-size: 10.5px !important;
+    font-weight: 700 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 1px !important;
+    text-decoration: none !important;
+    line-height: 1 !important;
+    border: 1px solid rgba(27, 56, 43, 0.14) !important;
+    border-top: 1px solid #FFFFFF !important;
+    box-shadow: 0 1px 0 #D1C7B7, 0 2px 0 #12241B, 0 3px 5px rgba(0, 0, 0, 0.12) !important;
+    box-sizing: border-box !important;
+    vertical-align: middle !important;
+    cursor: default !important;
+    user-select: none !important;
+    transform: none !important;
+  }
+
+  .mahjong-tile-item span {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    line-height: 1 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    transform: translateY(0.5px);
+  }
+
+  .mahjong-tile-item:hover {
+    background-color: #FAF7F2 !important;
+    transform: none !important;
+  }
+
+  .mahjong-tile-item:active {
+    transform: none !important;
+  }
+
+  .mahjong-marquee-divider {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    color: {{ section.settings.icon_color }} !important;
+    font-size: 10px !important;
+    margin: 0 6px !important;
+    user-select: none !important;
+    line-height: 1 !important;
+    vertical-align: middle !important;
+  }
+{%- endstyle -%}
+
+<div class="mahjong-marquee-wrapper-{{ section.id }}" role="region" aria-label="Announcement Marquee">
+  <div class="mahjong-marquee-track-{{ section.id }}">
+    {%- capture marquee_group_items -%}
+      {%- for i in (1..6) -%}
+        {%- for block in section.blocks -%}
+          {%- if block.settings.text != blank -%}
+            {%- if block.settings.link != blank -%}
+              <a href="{{ block.settings.link }}" class="mahjong-tile-item" {{ block.shopify_attributes }}>
+                <span>{{ block.settings.text | escape }}</span>
+              </a>
+            {%- else -%}
+              <div class="mahjong-tile-item" {{ block.shopify_attributes }}>
+                <span>{{ block.settings.text | escape }}</span>
+              </div>
+            {%- endif -%}
+            <span class="mahjong-marquee-divider" aria-hidden="true">&#10022;</span>
+          {%- endif -%}
+        {%- endfor -%}
+      {%- endfor -%}
+    {%- endcapture -%}
+
+    <div class="mahjong-marquee-group">
+      {{ marquee_group_items }}
+    </div>
+    <div class="mahjong-marquee-group" aria-hidden="true">
+      {{ marquee_group_items }}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Mahjong Marquee",
+  "class": "section-mahjong-marquee",
+  "settings": [
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background Color",
+      "default": "#1B382B"
+    },
+    {
+      "type": "color",
+      "id": "tile_color",
+      "label": "Tile Color",
+      "default": "#FAF7F2"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text Color",
+      "default": "#1A2920"
+    },
+    {
+      "type": "color",
+      "id": "icon_color",
+      "label": "Divider Star Color",
+      "default": "#D4AF37"
+    },
+    {
+      "type": "range",
+      "id": "speed",
+      "min": 20,
+      "max": 100,
+      "step": 5,
+      "unit": "s",
+      "label": "Scroll Speed",
+      "default": 50
+    },
+    {
+      "type": "range",
+      "id": "padding_y",
+      "min": 6,
+      "max": 20,
+      "step": 2,
+      "unit": "px",
+      "label": "Vertical Padding",
+      "default": 10
+    }
+  ],
+  "blocks": [
+    {
+      "type": "announcement_item",
+      "name": "Announcement Item",
+      "settings": [
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Announcement Text",
+          "default": "Free Worldwide Shipping On Orders Over $150"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Mahjong Marquee",
+      "blocks": [
+        {
+          "type": "announcement_item",
+          "settings": {
+            "text": "Complimentary Shipping Over $150"
+          }
+        },
+        {
+          "type": "announcement_item",
+          "settings": {
+            "text": "Handcrafted Luxury Mahjong Sets"
+          }
+        },
+        {
+          "type": "announcement_item",
+          "settings": {
+            "text": "Limited Edition Autumn Collection"
+          }
+        },
+        {
+          "type": "announcement_item",
+          "settings": {
+            "text": "Join The Mahjong Row Club"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,199 @@
+{%- comment -%}
+  © BlockyApps. You are permitted to use this content within your store. Redistribution or use in any other application is strictly prohibited.
+  Unauthorized copying, distribution, or reproduction in any form will result in legal action.
+{% endcomment %}
+
+<div
+  id="blocky-timer-{{ section_id }}"
+  class="blocky-timer"
+  style="--timer-background: {{ timer_background }}; --timer-number-color: {{ timer_number_color }}; --timer-legend-color: {{ timer_legend_color }}; --timer-number-weight: {{ timer_number_font_weight }}; --timer-legend-weight: {{ timer_legend_font_weight }}; --border-radius: {{ border_radius }}px;"
+>
+  {%- if show_days == true -%}
+    <div class="blocky-timer-cell">
+      <div class="blocky-timer-value">
+        <span class="blocky-timer-number" data-blocky-timer-days>00</span>
+      </div>
+      <div class="blocky-timer-legend">Days</div>
+    </div>
+  {%- endif -%}
+
+  {%- if show_hours != false -%}
+    <div class="blocky-timer-cell">
+      <div class="blocky-timer-value">
+        <span class="blocky-timer-number" data-blocky-timer-hours>00</span>
+      </div>
+      <div class="blocky-timer-legend">Hrs</div>
+    </div>
+  {%- endif -%}
+
+  {%- if show_minutes != false -%}
+    <div class="blocky-timer-cell">
+      <div class="blocky-timer-value">
+        <span class="blocky-timer-number" data-blocky-timer-minutes>00</span>
+      </div>
+      <div class="blocky-timer-legend">Mins</div>
+    </div>
+  {%- endif -%}
+
+  {%- if show_seconds != false -%}
+    <div class="blocky-timer-cell">
+      <div class="blocky-timer-value">
+        <span class="blocky-timer-number" data-blocky-timer-seconds>00</span>
+      </div>
+      <div class="blocky-timer-legend">Secs</div>
+    </div>
+  {%- endif -%}
+</div>
+
+<script>
+(function () {
+
+  var MODE = "{{ mode }}";
+  var HOURS = {{ hours | default: 4 }};
+  var FIXED_END = "{{ fixed_end }}";
+  var ID = "{{ section_id }}";
+  var RESET_SCOPE = "{{ reset_scope }}";
+  var STORAGE_KEY = "blocky-timer:" + ID + ":" + HOURS;
+
+  function getStorage() {
+    try {
+      return RESET_SCOPE === "session" ? window.sessionStorage : window.localStorage;
+    } catch (storageAccessError) {
+      console.log("[blocky-timer] storage access threw:", storageAccessError);
+      return null;
+    }
+  }
+  var STORAGE = getStorage();
+  console.log("[blocky-timer] STORAGE available:", !!STORAGE);
+
+  function getFixedEnd() {
+    if (!FIXED_END) {
+      console.log("[blocky-timer] getFixedEnd: FIXED_END is blank");
+      return null;
+    }
+    var parsed = new Date(FIXED_END.replace(" ", "T")).getTime() || null;
+    console.log("[blocky-timer] getFixedEnd: FIXED_END=", FIXED_END, "parsed=", parsed);
+    return parsed;
+  }
+
+  function readStoredEndTimestamp() {
+    if (!STORAGE) return null;
+
+    var storedValue;
+    try {
+      storedValue = STORAGE.getItem(STORAGE_KEY);
+    } catch (storageReadError) {
+      return null;
+    }
+    if (!storedValue) return null;
+
+    var storedEndTimestamp = parseInt(storedValue, 10);
+    if (isNaN(storedEndTimestamp) || storedEndTimestamp <= Date.now()) return null;
+
+    return storedEndTimestamp;
+  }
+
+  function writeStoredEndTimestamp(endTimestamp) {
+    if (!STORAGE) return;
+    try {
+      STORAGE.setItem(STORAGE_KEY, String(endTimestamp));
+    } catch (storageWriteError) {}
+  }
+
+  function getRelativeEnd() {
+    var storedEndTimestamp = readStoredEndTimestamp();
+    if (storedEndTimestamp !== null) return storedEndTimestamp;
+
+    var endTimestamp = Date.now() + HOURS * 60 * 60 * 1000;
+    writeStoredEndTimestamp(endTimestamp);
+    return endTimestamp;
+  }
+
+  function getEndTime() {
+    switch (MODE) {
+      case "fixed":
+        return getFixedEnd();
+      case "relative":
+        return getRelativeEnd();
+      default:
+        return null;
+    }
+  }
+
+  function formatWithLeadingZero(number) {
+    return String(Math.max(0, number)).padStart(2, "0");
+  }
+
+  function updateTimerDisplay(timerElements, endTimestamp) {
+    var secondsRemaining = Math.max(0, Math.floor((endTimestamp - Date.now()) / 1000));
+    var secondsLeftToDistribute = secondsRemaining;
+
+    if (timerElements.daysElement) {
+      var daysValue = Math.floor(secondsLeftToDistribute / 86400);
+      secondsLeftToDistribute -= daysValue * 86400;
+      timerElements.daysElement.textContent = formatWithLeadingZero(daysValue);
+    }
+
+    if (timerElements.hoursElement) {
+      var hoursValue = Math.floor(secondsLeftToDistribute / 3600);
+      secondsLeftToDistribute -= hoursValue * 3600;
+      timerElements.hoursElement.textContent = formatWithLeadingZero(hoursValue);
+    }
+
+    if (timerElements.minutesElement) {
+      var minutesValue = Math.floor(secondsLeftToDistribute / 60);
+      secondsLeftToDistribute -= minutesValue * 60;
+      timerElements.minutesElement.textContent = formatWithLeadingZero(minutesValue);
+    }
+
+    if (timerElements.secondsElement) {
+      timerElements.secondsElement.textContent = formatWithLeadingZero(secondsLeftToDistribute);
+    }
+
+    return secondsRemaining > 0;
+  }
+
+  function startCountdown(timerElements, endTimestamp) {
+    if (!updateTimerDisplay(timerElements, endTimestamp)) return;
+
+    var intervalId = setInterval(function () {
+      if (!updateTimerDisplay(timerElements, endTimestamp)) clearInterval(intervalId);
+    }, 1000);
+  }
+
+  function initializeTimer() {
+    console.log("[blocky-timer] initializeTimer() called, ID=", ID, "MODE=", MODE, "HOURS=", HOURS, "FIXED_END=", FIXED_END, "RESET_SCOPE=", RESET_SCOPE);
+
+    var timerContainer = document.getElementById("blocky-timer-" + ID);
+    console.log("[blocky-timer] timerContainer found:", !!timerContainer);
+    if (!timerContainer) return;
+
+    var endTimestamp = getEndTime();
+    console.log("[blocky-timer] endTimestamp:", endTimestamp, endTimestamp === null ? "(null - will not start)" : new Date(endTimestamp).toString());
+    if (endTimestamp === null) return;
+
+    var timerElements = {
+      daysElement: timerContainer.querySelector("[data-blocky-timer-days]"),
+      hoursElement: timerContainer.querySelector("[data-blocky-timer-hours]"),
+      minutesElement: timerContainer.querySelector("[data-blocky-timer-minutes]"),
+      secondsElement: timerContainer.querySelector("[data-blocky-timer-seconds]")
+    };
+    console.log("[blocky-timer] timerElements found:", {
+      days: !!timerElements.daysElement,
+      hours: !!timerElements.hoursElement,
+      minutes: !!timerElements.minutesElement,
+      seconds: !!timerElements.secondsElement
+    });
+
+    startCountdown(timerElements, endTimestamp);
+    console.log("[blocky-timer] startCountdown called");
+  }
+
+  initializeTimer();
+
+  // Shopify's theme editor swaps section HTML via innerHTML on every save/edit,
+  // which does not re-execute inline scripts - re-run initializeTimer so the new
+  // elements get their own countdown instead of staying frozen at the static markup.
+  document.addEventListener("shopify:section:load", initializeTimer);
+})();
+</script>

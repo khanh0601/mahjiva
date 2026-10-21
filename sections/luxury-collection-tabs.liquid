@@ -1,0 +1,995 @@
+{%- comment -%}
+  -----------------------------------------------------------------------------
+  SECTION: LUXURY COLLECTION TABS (100% REAL DYNAMIC DATA - ZERO MOCK)
+  - Tile-Morphic Luxury Design Language
+  - Zero CDN, fully self-contained CSS & Vanilla JS Tab Controller
+  - Real Shopify collection picker blocks (product.featured_image, title, price, url)
+  - Desktop 4-column grid with 4:3 media & rounded-20px
+  - Mobile Peek Slider (82vw) with optional vertical stack
+  - request.design_mode admin guidance (Zero fake mock data)
+  -----------------------------------------------------------------------------
+{%- endcomment -%}
+
+<style>
+  #LuxuryCollectionTabs-{{ section.id }},
+  #LuxuryCollectionTabs-{{ section.id }} * {
+    box-sizing: border-box !important;
+  }
+
+  #LuxuryCollectionTabs-{{ section.id }} {
+    background-color: #FCFAF8;
+    padding: 72px 0 88px;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    border-top: 0.5px solid #ECE8E1;
+    position: relative;
+  }
+
+  .lct-container {
+    max-width: {{ section.settings.container_max_width | default: 1200 }}px;
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+
+  @media (min-width: 1024px) {
+    .lct-container {
+      padding: 0 28px;
+    }
+  }
+
+  /* Section Header: Tight & Cohesive typography */
+  .lct-header {
+    text-align: center;
+    max-width: 680px;
+    margin: 0 auto 32px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .lct-eyebrow {
+    font-size: 10px;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: #B89768;
+    font-weight: 700;
+    margin: 0 !important;
+    padding: 0 !important;
+    line-height: 1.2 !important;
+    display: inline-block;
+  }
+
+  .lct-heading {
+    font-family: "Cormorant Garamond", Garamond, Georgia, serif;
+    font-size: 36px;
+    font-weight: 500;
+    color: #141517;
+    line-height: 1.15;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  @media (min-width: 768px) {
+    .lct-heading {
+      font-size: 44px;
+    }
+  }
+
+  .lct-description {
+    font-size: 13.5px;
+    font-weight: 450;
+    color: #3A3D45;
+    line-height: 1.6;
+    margin: 8px 0 0 !important;
+    padding: 0 !important;
+  }
+
+  /* Navigation Tab Bar */
+  .lct-tabs-nav {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 38px;
+    overflow-x: auto;
+    padding: 4px 12px 14px;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  .lct-tabs-nav::-webkit-scrollbar {
+    display: none;
+  }
+
+  @media (max-width: 767px) {
+    .lct-tabs-nav {
+      justify-content: flex-start;
+      padding-left: 4px;
+      padding-right: 4px;
+    }
+  }
+
+  .lct-tab-btn {
+    background: #FFFFFF;
+    border: 1px solid #ECE8E1;
+    border-radius: 30px;
+    padding: 10px 22px;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    font-size: 12.5px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #555861;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    white-space: nowrap;
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+    outline: none;
+  }
+
+  .lct-tab-btn:hover {
+    border-color: #B89768;
+    color: #141517;
+    transform: translateY(-1px);
+  }
+
+  .lct-tab-btn.is-active {
+    background: #141517;
+    color: #FAF8F5;
+    border-color: #141517;
+    box-shadow: 0 6px 20px rgba(20, 21, 23, 0.16);
+  }
+
+  .lct-tab-btn.is-active .lct-tab-count {
+    background: rgba(184, 151, 104, 0.3);
+    color: #E8D3B3;
+  }
+
+  .lct-tab-count {
+    font-size: 11px;
+    padding: 2px 7px;
+    border-radius: 12px;
+    background: #F4F1EA;
+    color: #737782;
+    font-weight: 700;
+    transition: all 0.2s ease;
+  }
+
+  /* Tab Panels */
+  .lct-panel {
+    display: none;
+    opacity: 0;
+    transform: translateY(12px);
+    transition: opacity 0.32s cubic-bezier(0.16, 1, 0.3, 1), transform 0.32s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .lct-panel.is-active {
+    display: block;
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* Grid Layout */
+  .lct-grid {
+    width: 100%;
+  }
+
+  /* 1. Mobile Peek Slider (82vw per user requirement) */
+  @media (max-width: 1023px) {
+    .lct-grid.lct-grid--mobile-peek_slider {
+      display: flex !important;
+      flex-direction: row !important;
+      gap: {{ section.settings.card_gap_mobile | default: 14 }}px !important;
+      overflow-x: auto !important;
+      scroll-snap-type: x mandatory !important;
+      -webkit-overflow-scrolling: touch !important;
+      padding-bottom: 16px !important;
+      padding-right: 20px !important;
+      justify-content: flex-start !important;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+    }
+    .lct-grid.lct-grid--mobile-peek_slider::-webkit-scrollbar {
+      display: none;
+    }
+    .lct-grid.lct-grid--mobile-peek_slider .lct-card {
+      flex: 0 0 82vw !important;
+      max-width: 340px !important;
+      scroll-snap-align: start !important;
+    }
+
+    /* 2. Mobile Vertical Stack Option (Vertical 1-Column) */
+    .lct-grid.lct-grid--mobile-vertical_1 {
+      display: flex !important;
+      flex-direction: column !important;
+      overflow-x: visible !important;
+      gap: {{ section.settings.card_gap_mobile | default: 16 }}px !important;
+      padding-bottom: 0 !important;
+      max-width: 540px !important;
+      margin: 0 auto !important;
+    }
+    .lct-grid.lct-grid--mobile-vertical_1 .lct-card {
+      flex: 1 1 auto !important;
+      width: 100% !important;
+      max-width: 100% !important;
+    }
+
+    /* 3. Mobile Vertical 2-Column Option */
+    .lct-grid.lct-grid--mobile-vertical_2 {
+      display: grid !important;
+      grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+      overflow-x: visible !important;
+      gap: {{ section.settings.card_gap_mobile | default: 12 }}px !important;
+      padding-bottom: 0 !important;
+    }
+    .lct-grid.lct-grid--mobile-vertical_2 .lct-card {
+      flex: none !important;
+      width: 100% !important;
+      max-width: 100% !important;
+    }
+    .lct-grid.lct-grid--mobile-vertical_2 .lct-card-body {
+      padding: 12px 12px 14px !important;
+      gap: 8px !important;
+    }
+    .lct-grid.lct-grid--mobile-vertical_2 .lct-title {
+      font-size: 15px !important;
+    }
+    .lct-grid.lct-grid--mobile-vertical_2 .lct-materials {
+      display: none !important;
+    }
+    .lct-grid.lct-grid--mobile-vertical_2 .lct-price {
+      font-size: 14px !important;
+    }
+    .lct-grid.lct-grid--mobile-vertical_2 .lct-inquire-btn {
+      padding: 6px 10px !important;
+      font-size: 10px !important;
+    }
+  }
+
+  /* Desktop Grid (4-Column Layout, 4:3 Ratio, Rounded-20px per user requirement) */
+  @media (min-width: 1024px) {
+    .lct-grid {
+      display: grid !important;
+      grid-template-columns: repeat({{ section.settings.columns_desktop | default: 4 }}, minmax(0, 1fr)) !important;
+      gap: {{ section.settings.card_gap_desktop | default: 18 }}px !important;
+      overflow-x: visible !important;
+      padding-bottom: 0 !important;
+    }
+    .lct-card {
+      flex: 1 1 0 !important;
+      max-width: none !important;
+    }
+  }
+
+  /* Tile-Morphic Card: Rounded-20px per user specification */
+  .lct-card {
+    background-color: #FFFFFF;
+    border: 0.5px solid #ECE8E1;
+    border-radius: 20px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    box-shadow: 0 6px 20px -6px rgba(0, 0, 0, 0.05);
+    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+    text-decoration: none;
+  }
+
+  .lct-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 16px 36px -6px rgba(20, 21, 23, 0.09);
+    border-color: rgba(184, 151, 104, 0.6);
+  }
+
+  /* Media Frame: Standard 4:3 Aspect Ratio */
+  .lct-card-media {
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    background-color: #FAF8F5;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .lct-card-img-link {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
+  .lct-card-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+    display: block;
+  }
+
+  .lct-card:hover .lct-card-img {
+    transform: scale(1.05);
+  }
+
+  .lct-placeholder-box {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: radial-gradient(circle, #FAF8F5 0%, #EFEBE3 100%);
+    color: #B89768;
+    text-align: center;
+    padding: 16px;
+  }
+
+  .lct-placeholder-seal {
+    width: 36px;
+    height: 36px;
+    border: 1px solid #B89768;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    font-family: "Cormorant Garamond", Georgia, serif;
+    margin-bottom: 8px;
+    background: rgba(184, 151, 104, 0.06);
+  }
+
+  .lct-placeholder-title {
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    font-weight: 600;
+  }
+
+  .lct-badge {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    background: rgba(253, 251, 248, 0.94);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    color: #141517;
+    font-size: 8.5px;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    font-weight: 700;
+    padding: 4px 9px;
+    border-radius: 4px;
+    border: 0.5px solid #ECE8E1;
+    z-index: 2;
+    line-height: 1.2;
+  }
+
+  /* Card Body */
+  .lct-card-body {
+    padding: 16px 16px 18px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    flex: 1;
+    gap: 12px;
+  }
+
+  .lct-category {
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: #737782;
+    font-weight: 600;
+    margin-bottom: 5px;
+    display: block;
+    line-height: 1.2;
+  }
+
+  .lct-title {
+    font-family: "Cormorant Garamond", Georgia, serif;
+    font-size: 18px;
+    font-weight: 500;
+    color: #141517;
+    line-height: 1.25;
+    margin: 0 0 6px;
+  }
+
+  .lct-title a {
+    color: inherit;
+    text-decoration: none;
+    transition: color 0.2s ease;
+  }
+
+  .lct-title a:hover {
+    color: #B89768;
+  }
+
+  .lct-materials {
+    font-size: 12px;
+    color: #555861;
+    line-height: 1.45;
+    margin: 0;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  /* Card Footer */
+  .lct-card-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 12px;
+    border-top: 0.5px solid #F0ECE4;
+    margin-top: 4px;
+  }
+
+  .lct-price {
+    font-size: 16px;
+    font-weight: 600;
+    color: #141517;
+    letter-spacing: -0.01em;
+  }
+
+  .lct-inquire-btn {
+    background: transparent;
+    border: 1px solid #141517;
+    color: #141517;
+    padding: 7px 14px;
+    border-radius: 6px;
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    text-decoration: none;
+    transition: all 0.2s ease;
+  }
+
+  .lct-inquire-btn:hover {
+    background: #141517;
+    color: #FFFFFF;
+    border-color: #141517;
+  }
+
+  .lct-btn-svg {
+    width: 12px;
+    height: 12px;
+    stroke: currentColor;
+    stroke-width: 1.5;
+    fill: none;
+    display: block;
+    transition: transform 0.2s ease;
+  }
+
+  .lct-inquire-btn:hover .lct-btn-svg {
+    transform: translateX(2px);
+  }
+
+  /* Admin Guidance inside Theme Editor */
+  .lct-admin-guide {
+    background: #FFFFFF;
+    border: 1.5px dashed #B89768;
+    border-radius: 16px;
+    padding: 36px 24px;
+    text-align: center;
+    color: #555861;
+    margin: 20px 0;
+  }
+  .lct-admin-guide-icon {
+    font-size: 28px;
+    margin-bottom: 10px;
+    color: #B89768;
+  }
+  .lct-admin-guide-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: #141517;
+    margin-bottom: 6px;
+  }
+  .lct-admin-guide-desc {
+    font-size: 13px;
+    max-width: 440px;
+    margin: 0 auto;
+    line-height: 1.5;
+  }
+</style>
+
+<section id="LuxuryCollectionTabs-{{ section.id }}" class="lct-section">
+  <div class="lct-container">
+
+    <!-- Section Header -->
+    <div class="lct-header">
+      {%- if section.settings.eyebrow != blank -%}
+        <span class="lct-eyebrow">{{ section.settings.eyebrow }}</span>
+      {%- endif -%}
+      {%- if section.settings.heading != blank -%}
+        <h2 class="lct-heading">{{ section.settings.heading }}</h2>
+      {%- endif -%}
+      {%- if section.settings.description != blank -%}
+        <p class="lct-description">{{ section.settings.description }}</p>
+      {%- endif -%}
+    </div>
+
+    {%- assign btn_text = section.settings.btn_label | default: "INQUIRE" -%}
+    {%- assign limit = section.settings.products_to_show | default: 4 -%}
+
+    {%- comment -%}
+      TAB LIST PROCESSING:
+      1. Prioritize Collection Blocks configured by Admin.
+      2. If no blocks are added, automatically query active store collections with products.
+    {%- endcomment -%}
+
+    {%- assign tab_count = 0 -%}
+    {%- if section.blocks.size > 0 -%}
+      {%- for block in section.blocks -%}
+        {%- if block.settings.collection != blank and block.settings.collection.products.size > 0 -%}
+          {%- assign tab_count = tab_count | plus: 1 -%}
+        {%- endif -%}
+      {%- endfor -%}
+    {%- endif -%}
+
+    {%- if section.blocks.size > 0 -%}
+      <!-- Tab Navigation Bar -->
+      <div class="lct-tabs-nav" role="tablist" aria-label="Collections Filter">
+        {%- assign is_first_tab = true -%}
+        {%- for block in section.blocks -%}
+          {%- assign col = block.settings.collection -%}
+          {%- if col != blank and col.products.size > 0 -%}
+            {%- assign tab_title = block.settings.title | default: col.title -%}
+            <button 
+              type="button" 
+              class="lct-tab-btn{% if is_first_tab %} is-active{% endif %}" 
+              id="LctTab-{{ block.id }}" 
+              data-target="LctPanel-{{ block.id }}" 
+              role="tab" 
+              aria-selected="{% if is_first_tab %}true{% else %}false{% endif %}"
+              aria-controls="LctPanel-{{ block.id }}"
+              {{ block.shopify_attributes }}
+            >
+              <span>{{ tab_title }}</span>
+              <span class="lct-tab-count">{{ col.all_products_count | default: col.products.size }}</span>
+            </button>
+            {%- assign is_first_tab = false -%}
+          {%- elsif request.design_mode -%}
+            <button 
+              type="button" 
+              class="lct-tab-btn{% if forloop.first %} is-active{% endif %}" 
+              id="LctTab-{{ block.id }}" 
+              data-target="LctPanel-{{ block.id }}" 
+              role="tab" 
+              aria-selected="{% if forloop.first %}true{% else %}false{% endif %}"
+              {{ block.shopify_attributes }}
+            >
+              <span>{{ block.settings.title | default: "Select Collection..." }}</span>
+            </button>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+
+      <!-- Tab Panels Container -->
+      <div class="lct-panels-wrap">
+        {%- assign is_first_panel = true -%}
+        {%- for block in section.blocks -%}
+          {%- assign col = block.settings.collection -%}
+          {%- if col != blank and col.products.size > 0 -%}
+            <div 
+              id="LctPanel-{{ block.id }}" 
+              class="lct-panel{% if is_first_panel %} is-active{% endif %}" 
+              role="tabpanel" 
+              aria-labelledby="LctTab-{{ block.id }}"
+              {% unless is_first_panel %}hidden{% endunless %}
+              {{ block.shopify_attributes }}
+            >
+              <div class="lct-grid lct-grid--mobile-{{ section.settings.mobile_layout | default: 'peek_slider' }}">
+                {%- for prod in col.products limit: limit -%}
+                  {%- assign card_badge = block.settings.badge | default: col.title -%}
+                  {%- assign card_materials = prod.metafields.custom.materials.value | default: prod.metafields.custom.materials | default: prod.description | strip_html | truncatewords: 15 -%}
+
+                  <article class="lct-card">
+                    <div class="lct-card-media">
+                      {%- if card_badge != blank -%}
+                        <span class="lct-badge">{{ card_badge | upcase }}</span>
+                      {%- endif -%}
+
+                      {%- if prod.featured_image != blank -%}
+                        <a href="{{ prod.url }}" class="lct-card-img-link" tabindex="-1">
+                          <img 
+                            src="{{ prod.featured_image | image_url: width: 900 }}" 
+                            alt="{{ prod.title | escape }}" 
+                            class="lct-card-img" 
+                            loading="lazy"
+                            width="{{ prod.featured_image.width | default: 900 }}"
+                            height="{{ prod.featured_image.height | default: 675 }}"
+                            onerror="this.style.display='none'; if(this.parentElement && this.parentElement.nextElementSibling) this.parentElement.nextElementSibling.style.display='flex';"
+                          >
+                        </a>
+                        <div class="lct-placeholder-box" style="display: none;">
+                          <span class="lct-placeholder-seal" aria-hidden="true">玉</span>
+                          <span class="lct-placeholder-title">{{ prod.title }}</span>
+                        </div>
+                      {%- else -%}
+                        <div class="lct-placeholder-box">
+                          <span class="lct-placeholder-seal" aria-hidden="true">玉</span>
+                          <span class="lct-placeholder-title">{{ prod.title }}</span>
+                        </div>
+                      {%- endif -%}
+                    </div>
+
+                    <div class="lct-card-body">
+                      <div>
+                        {%- if prod.type != blank -%}
+                          <span class="lct-category">{{ prod.type }}</span>
+                        {%- elsif col.title != blank -%}
+                          <span class="lct-category">{{ col.title }}</span>
+                        {%- endif -%}
+                        <h3 class="lct-title">
+                          <a href="{{ prod.url }}">{{ prod.title }}</a>
+                        </h3>
+                        {%- if card_materials != blank -%}
+                          <p class="lct-materials">{{ card_materials }}</p>
+                        {%- endif -%}
+                      </div>
+                      <div class="lct-card-footer">
+                        <span class="lct-price">{{ prod.price | money }}</span>
+                        <a href="{{ prod.url }}" class="lct-inquire-btn">
+                          <span>{{ btn_text }}</span>
+                          <svg class="lct-btn-svg" viewBox="0 0 24 24">
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                            <polyline points="12 5 19 12 12 19"></polyline>
+                          </svg>
+                        </a>
+                      </div>
+                    </div>
+                  </article>
+                {%- endfor -%}
+              </div>
+            </div>
+            {%- assign is_first_panel = false -%}
+          {%- elsif request.design_mode -%}
+            <div 
+              id="LctPanel-{{ block.id }}" 
+              class="lct-panel{% if forloop.first %} is-active{% endif %}" 
+              role="tabpanel" 
+              {{ block.shopify_attributes }}
+            >
+              <div class="lct-admin-guide">
+                <div class="lct-admin-guide-icon">📂</div>
+                <div class="lct-admin-guide-title">No Collection Assigned to This Tab</div>
+                <p class="lct-admin-guide-desc">Please select an active collection from Shopify Admin in the theme customizer to populate this tab with authentic allocations.</p>
+              </div>
+            </div>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+
+    {%- elsif request.design_mode -%}
+      {%- comment -%} Admin guidance when no blocks exist {%- endcomment -%}
+      <div class="lct-admin-guide">
+        <div class="lct-admin-guide-icon">✨</div>
+        <div class="lct-admin-guide-title">No Collection Tabs Configured</div>
+        <p class="lct-admin-guide-desc">Please click <strong>"Add Tab"</strong> in the Theme Customizer sidebar and select curated collections to display allocation suites.</p>
+      </div>
+
+    {%- else -%}
+      {%- comment -%} Automatically render active store collections if no custom blocks are assigned {%- endcomment -%}
+      <div class="lct-tabs-nav" role="tablist">
+        {%- assign auto_tab_idx = 0 -%}
+        {%- for col in collections -%}
+          {%- if col.products.size > 0 and auto_tab_idx < 4 -%}
+            <button 
+              type="button" 
+              class="lct-tab-btn{% if auto_tab_idx == 0 %} is-active{% endif %}" 
+              id="LctAutoTab-{{ col.id }}" 
+              data-target="LctAutoPanel-{{ col.id }}" 
+              role="tab" 
+              aria-selected="{% if auto_tab_idx == 0 %}true{% else %}false{% endif %}"
+            >
+              <span>{{ col.title }}</span>
+              <span class="lct-tab-count">{{ col.all_products_count | default: col.products.size }}</span>
+            </button>
+            {%- assign auto_tab_idx = auto_tab_idx | plus: 1 -%}
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+
+      <div class="lct-panels-wrap">
+        {%- assign auto_panel_idx = 0 -%}
+        {%- for col in collections -%}
+          {%- if col.products.size > 0 and auto_panel_idx < 4 -%}
+            <div 
+              id="LctAutoPanel-{{ col.id }}" 
+              class="lct-panel{% if auto_panel_idx == 0 %} is-active{% endif %}" 
+              role="tabpanel" 
+              {% unless auto_panel_idx == 0 %}hidden{% endunless %}
+            >
+              <div class="lct-grid lct-grid--mobile-{{ section.settings.mobile_layout | default: 'peek_slider' }}">
+                {%- for prod in col.products limit: limit -%}
+                  {%- assign card_materials = prod.metafields.custom.materials.value | default: prod.metafields.custom.materials | default: prod.description | strip_html | truncatewords: 15 -%}
+                  <article class="lct-card">
+                    <div class="lct-card-media">
+                      <span class="lct-badge">{{ col.title | upcase }}</span>
+                      {%- if prod.featured_image != blank -%}
+                        <a href="{{ prod.url }}" class="lct-card-img-link" tabindex="-1">
+                          <img 
+                            src="{{ prod.featured_image | image_url: width: 900 }}" 
+                            alt="{{ prod.title | escape }}" 
+                            class="lct-card-img" 
+                            loading="lazy"
+                            width="{{ prod.featured_image.width | default: 900 }}"
+                            height="{{ prod.featured_image.height | default: 675 }}"
+                          >
+                        </a>
+                      {%- endif -%}
+                    </div>
+                    <div class="lct-card-body">
+                      <div>
+                        <span class="lct-category">{{ col.title }}</span>
+                        <h3 class="lct-title"><a href="{{ prod.url }}">{{ prod.title }}</a></h3>
+                        {%- if card_materials != blank -%}
+                          <p class="lct-materials">{{ card_materials }}</p>
+                        {%- endif -%}
+                      </div>
+                      <div class="lct-card-footer">
+                        <span class="lct-price">{{ prod.price | money }}</span>
+                        <a href="{{ prod.url }}" class="lct-inquire-btn">
+                          <span>{{ btn_text }}</span>
+                          <svg class="lct-btn-svg" viewBox="0 0 24 24">
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                            <polyline points="12 5 19 12 12 19"></polyline>
+                          </svg>
+                        </a>
+                      </div>
+                    </div>
+                  </article>
+                {%- endfor -%}
+              </div>
+            </div>
+            {%- assign auto_panel_idx = auto_panel_idx | plus: 1 -%}
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+
+  </div>
+</section>
+
+<script>
+  (function() {
+    function initTabsSection(sectionElem) {
+      if (!sectionElem) return;
+      const tabBtns = sectionElem.querySelectorAll('.lct-tab-btn');
+      const panels = sectionElem.querySelectorAll('.lct-panel');
+
+      function switchTab(btn) {
+        const targetId = btn.getAttribute('data-target');
+        if (!targetId) return;
+        const targetPanel = sectionElem.querySelector('#' + targetId);
+        if (!targetPanel) return;
+
+        // Deactivate all tabs
+        tabBtns.forEach(function(b) {
+          b.classList.remove('is-active');
+          b.setAttribute('aria-selected', 'false');
+        });
+
+        // Hide all panels
+        panels.forEach(function(p) {
+          p.classList.remove('is-active');
+          p.setAttribute('hidden', 'true');
+        });
+
+        // Activate selected tab
+        btn.classList.add('is-active');
+        btn.setAttribute('aria-selected', 'true');
+
+        // Reveal selected panel with smooth transition
+        targetPanel.removeAttribute('hidden');
+        requestAnimationFrame(function() {
+          targetPanel.classList.add('is-active');
+        });
+
+        // Ensure active tab button is scrolled into view on mobile
+        btn.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+      }
+
+      tabBtns.forEach(function(btn, index) {
+        btn.addEventListener('click', function(e) {
+          e.preventDefault();
+          switchTab(this);
+        });
+
+        // Keyboard arrow navigation
+        btn.addEventListener('keydown', function(e) {
+          let nextIndex = null;
+          if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+            nextIndex = (index + 1) % tabBtns.length;
+          } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+            nextIndex = (index - 1 + tabBtns.length) % tabBtns.length;
+          }
+          if (nextIndex !== null) {
+            e.preventDefault();
+            tabBtns[nextIndex].focus();
+            switchTab(tabBtns[nextIndex]);
+          }
+        });
+      });
+    }
+
+    const section = document.getElementById('LuxuryCollectionTabs-{{ section.id }}');
+    if (section) {
+      initTabsSection(section);
+    }
+
+    // Shopify Theme Customizer events
+    document.addEventListener('shopify:section:load', function(e) {
+      if (e.target && e.target.id === 'shopify-section-{{ section.id }}') {
+        const s = e.target.querySelector('#LuxuryCollectionTabs-{{ section.id }}');
+        if (s) initTabsSection(s);
+      }
+    });
+
+    document.addEventListener('shopify:block:select', function(e) {
+      const blockId = e.detail.blockId;
+      if (!blockId) return;
+      const targetBtn = document.getElementById('LctTab-' + blockId);
+      if (targetBtn) {
+        targetBtn.click();
+      }
+    });
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Luxury Collection Tabs",
+  "tag": "section",
+  "class": "section-luxury-collection-tabs",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Section Dossier"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow Subheading",
+      "default": "CURATED REPERTOIRE"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Main Heading",
+      "default": "Masterpiece Editions"
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Section Description",
+      "default": "Explore curated suites and singular lapidary masterpieces selected from prestigious heritage allocations."
+    },
+    {
+      "type": "header",
+      "content": "Product Repertoire"
+    },
+    {
+      "type": "range",
+      "id": "products_to_show",
+      "min": 2,
+      "max": 12,
+      "step": 1,
+      "label": "Max Products Per Tab",
+      "default": 4
+    },
+    {
+      "type": "text",
+      "id": "btn_label",
+      "label": "Button Label",
+      "default": "INQUIRE"
+    },
+    {
+      "type": "header",
+      "content": "Layout & Spacing"
+    },
+    {
+      "type": "select",
+      "id": "mobile_layout",
+      "label": "Mobile Layout Style",
+      "options": [
+        {
+          "value": "peek_slider",
+          "label": "Horizontal Peek Slider (82vw)"
+        },
+        {
+          "value": "vertical_1",
+          "label": "Vertical Single Column Stack"
+        },
+        {
+          "value": "vertical_2",
+          "label": "Vertical 2-Column Grid"
+        }
+      ],
+      "default": "peek_slider"
+    },
+    {
+      "type": "range",
+      "id": "container_max_width",
+      "min": 1000,
+      "max": 1400,
+      "step": 20,
+      "unit": "px",
+      "label": "Container Max Width",
+      "default": 1200
+    },
+    {
+      "type": "range",
+      "id": "columns_desktop",
+      "min": 3,
+      "max": 5,
+      "step": 1,
+      "label": "Desktop Columns",
+      "default": 4
+    },
+    {
+      "type": "range",
+      "id": "card_gap_desktop",
+      "min": 12,
+      "max": 32,
+      "step": 2,
+      "unit": "px",
+      "label": "Card Gap (Desktop)",
+      "default": 18
+    },
+    {
+      "type": "range",
+      "id": "card_gap_mobile",
+      "min": 8,
+      "max": 24,
+      "step": 2,
+      "unit": "px",
+      "label": "Card Gap (Mobile)",
+      "default": 14
+    }
+  ],
+  "blocks": [
+    {
+      "type": "collection_tab",
+      "name": "Collection Tab",
+      "settings": [
+        {
+          "type": "collection",
+          "id": "collection",
+          "label": "Select Real Collection"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Custom Tab Title (Blank for collection title)"
+        },
+        {
+          "type": "text",
+          "id": "badge",
+          "label": "Card Badge Tag (Blank for collection title)"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Luxury Collection Tabs",
+      "blocks": [
+        {
+          "type": "collection_tab"
+        },
+        {
+          "type": "collection_tab"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,25 @@
+{%- liquid
+  assign c_code = ''
+  assign c_name = ''
+
+  if country != blank and country.iso_code != blank
+    assign c_code = country.iso_code | downcase
+    assign c_name = country.name
+  elsif country_code != blank
+    assign c_code = country_code | downcase
+    assign c_name = country_code
+  endif
+-%}
+{%- if c_code != blank -%}
+  <img 
+    src="https://cdn.shopify.com/static/images/flags/{{ c_code }}.svg" 
+    alt="{{ c_name | escape }}" 
+    class="country-flag-icon" 
+    width="20" 
+    height="15" 
+    loading="lazy"
+    style="width: 20px; height: 15px; object-fit: cover; border-radius: 2px; box-shadow: 0 0 1px rgba(0,0,0,0.4); vertical-align: middle; margin-right: 7px; display: inline-block; flex-shrink: 0;"
+  >
+{%- else -%}
+  <span class="country-flag-fallback" style="margin-right: 6px; font-size: 14px; vertical-align: middle;">🌐</span>
+{%- endif -%}

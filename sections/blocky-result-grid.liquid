@@ -1,0 +1,788 @@
+{%- comment -%}
+  © BlockyApps. You are permitted to use this content within your store. Redistribution or use in any other application is strictly prohibited. 
+  Unauthorized copying, distribution, or reproduction in any form will result in legal action.
+{% endcomment %}
+
+{% stylesheet %}
+  .blocky-rg .blocky-rg-inner {
+    max-width: calc(var(--columns-desktop) * 330px);
+    margin-inline: auto;
+  }
+
+  .blocky-rg .blocky-rg-header {
+    text-align: center;
+    margin-bottom: var(--header-gap);
+  }
+
+  .blocky-rg .blocky-rg-grid {
+    display: grid;
+    grid-template-columns: repeat(var(--columns-desktop), minmax(0, 1fr));
+    gap: var(--card-gap);
+    margin-bottom: var(--cards-gap);
+  }
+
+  .blocky-rg .blocky-rg-card {
+    background: var(--card-bg);
+    border-radius: var(--corner-radius);
+    border: var(--border-width) solid var(--border-color);
+    box-shadow: var(--card-shadow);
+    padding: 35px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    gap: var(--inner-gap);
+    aspect-ratio: 1 / 1;
+  }
+
+  .blocky-rg .blocky-rg-circle-wrap {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    margin: 0 auto;
+  }
+
+  .blocky-rg .blocky-rg-circle-wrap svg {
+    width: 100%;
+    height: 100%;
+    transform: rotate(-90deg);
+    transform-origin: 50% 50%;
+    display: block;
+  }
+
+  .blocky-rg .blocky-rg-circle-bg {
+    fill: transparent;
+  }
+
+  .blocky-rg .blocky-rg-circle-fg {
+    fill: transparent;
+  }
+
+  .blocky-rg .blocky-rg-circle-value {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-weight: 700;
+    line-height: 1;
+    pointer-events: none;
+  }
+
+  .blocky-rg .blocky-rg-card-text {
+    line-height: 1.5;
+    margin: 0;
+  }
+
+  .blocky-rg .blocky-rg-cta {
+    text-align: center;
+  }
+
+  .blocky-rg .blocky-rg-cta .blocky-button {
+    width: min(100%, var(--button-width));
+  }
+
+  .blocky-rg .blocky-rg-cta .blocky-button:not(.blocky-button-regular) {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0 3rem;
+    min-width: 128px;
+    min-height: 50px;
+    background: transparent;
+    border: 1px solid var(--button-text-color);
+    color: var(--button-text-color);
+  }
+
+  @media screen and (max-width: 749px) {
+    .blocky-rg .blocky-rg-grid {
+      grid-template-columns: repeat(var(--columns-mobile), minmax(0, 1fr));
+    }
+  }
+{% endstylesheet %}
+
+<div
+  class="blocky blocky-rg blocky-padding background-wrapper"
+  style="
+    --padding-top: {{ section.settings.padding_top }};
+    --padding-bottom: {{ section.settings.padding_bottom }};
+    --background-color: {{ section.settings.background_color }};
+    --section-page-width: {{ section.settings.page_width | divided_by: 10 }}rem;
+    --header-gap: {{ section.settings.header_gap }}px;
+    --columns-desktop: {{ section.settings.columns_desktop }};
+    --columns-mobile: {{ section.settings.columns_mobile }};
+    --card-gap: {{ section.settings.card_gap }}px;
+    --cards-gap: {{ section.settings.cards_gap }}px;
+    --card-bg: {{ section.settings.card_bg }};
+    --corner-radius: {{ section.settings.corner_radius }}px;
+    --border-width: {{ section.settings.border_width }}px;
+    --border-color: {{ section.settings.border_color }};
+    --inner-gap: {{ section.settings.inner_gap }}px;
+    --button-width: {{ section.settings.button_width }}px;
+    --card-shadow: {% if section.settings.show_card_shadow %}0 4px 16px rgba(0, 0, 0, 0.08){% else %}none{% endif %};
+  "
+>
+  <div class="blocky-page-width">
+    <div class="blocky-rg-inner">
+
+    <div class="blocky-rg-header blocky-media-text-container blocky-text-container-desktop-center blocky-text-container-mobile-center">
+      {%- if section.settings.show_title -%}
+        {% render 'blocky-titlel', block: section %}
+      {%- endif -%}
+      {%- if section.settings.show_body -%}
+        {% render 'blocky-bodyl', block: section %}
+      {%- endif -%}
+    </div>
+
+    <div class="blocky-rg-grid" id="blocky-rg-grid-{{ section.id }}">
+      {%- for block in section.blocks -%}
+        {%- assign circle_size = block.settings.size -%}
+        {%- assign stroke_w = block.settings.ring_width -%}
+        {%- assign radius = circle_size | divided_by: 2 | minus: stroke_w -%}
+        <div
+          class="blocky-rg-card"
+          data-pcs-card
+          data-percent="{{ block.settings.percentage }}"
+          data-duration="{{ block.settings.duration }}"
+          {{ block.shopify_attributes }}
+        >
+          <div class="blocky-rg-circle-wrap" style="max-width:{{ circle_size }}px;">
+            <svg
+              viewBox="0 0 {{ circle_size }} {{ circle_size }}"
+            >
+              <circle
+                class="blocky-rg-circle-bg"
+                cx="{{ circle_size | divided_by: 2 }}"
+                cy="{{ circle_size | divided_by: 2 }}"
+                r="{{ radius }}"
+                stroke="{{ block.settings.track_color }}"
+                stroke-width="{{ stroke_w }}"
+              />
+              <circle
+                class="blocky-rg-circle-fg"
+                data-pcs-fg
+                cx="{{ circle_size | divided_by: 2 }}"
+                cy="{{ circle_size | divided_by: 2 }}"
+                r="{{ radius }}"
+                stroke="{{ block.settings.ring_color }}"
+                stroke-width="{{ stroke_w }}"
+                stroke-linecap="{{ block.settings.ring_cap }}"
+              />
+            </svg>
+            <div
+              class="blocky-rg-circle-value"
+              data-pcs-label
+              style="font-size: {{ block.settings.pct_size }}px; color: {{ block.settings.pct_color }};"
+            >0%</div>
+          </div>
+
+          {%- if block.settings.card_text != blank -%}
+            <div
+              class="blocky-rg-card-text"
+              style="font-size: {{ block.settings.text_size }}px; color: {{ block.settings.text_color }};"
+            >{{ block.settings.card_text }}</div>
+          {%- endif -%}
+        </div>
+      {%- endfor -%}
+    </div>
+
+    {%- if section.settings.show_button -%}
+      <div class="blocky-rg-cta">
+        {% render 'blocky-buttonl', block: section %}
+      </div>
+    {%- endif -%}
+
+    </div>
+  </div>
+</div>
+
+<script>
+(function() {
+  var grid = document.getElementById('blocky-rg-grid-{{ section.id }}');
+  if (!grid) return;
+
+  var cards = Array.from(grid.querySelectorAll('[data-pcs-card]'));
+
+  function easeInOutQuad(t) {
+    return t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
+  }
+
+  var animators = cards.map(function(card) {
+    var target = parseFloat(card.dataset.percent) || 0;
+    var dur    = parseInt(card.dataset.duration) || 1000;
+    var fg     = card.querySelector('[data-pcs-fg]');
+    var label  = card.querySelector('[data-pcs-label]');
+    var r      = parseFloat(fg.getAttribute('r'));
+    var C      = 2 * Math.PI * r;
+
+    fg.style.strokeDasharray  = C + ' ' + C;
+    fg.style.strokeDashoffset = C;
+
+    function setProgress(pct) {
+      fg.style.strokeDashoffset = C - (pct / 100) * C;
+      label.textContent = Math.round(pct) + '%';
+    }
+
+    return { run: function() {
+      var start = null;
+      function frame(ts) {
+        if (!start) start = ts;
+        var elapsed = ts - start;
+        var t = Math.min(elapsed / dur, 1);
+        setProgress(easeInOutQuad(t) * target);
+        if (t < 1) requestAnimationFrame(frame);
+      }
+      requestAnimationFrame(frame);
+    }};
+  });
+
+  var stagger   = {{ section.settings.stagger }};
+  var triggered = false;
+
+  var observer = new IntersectionObserver(function(entries) {
+    if (entries[0].isIntersecting && !triggered) {
+      triggered = true;
+      animators.forEach(function(a, i) {
+        setTimeout(function() { a.run(); }, i * stagger);
+      });
+      observer.disconnect();
+    }
+  }, { threshold: {{ section.settings.threshold }} });
+
+  if (cards[0]) observer.observe(cards[0]);
+})();
+</script>
+
+{% schema %}
+{
+  "name": "BKY - Result Grid",
+  "disabled_on": {
+    "groups": [
+      "header",
+      "footer"
+    ]
+  },
+  "settings": [
+    {
+      "type": "header",
+      "content": "Title"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_title",
+      "label": "Show title",
+      "default": true
+    },
+    {
+      "type": "inline_richtext",
+      "id": "title",
+      "label": "Title",
+      "default": "<b>Trusted By Thousands Of Happy Sleepers</b>",
+      "visible_if": "{{ section.settings.show_title == true }}"
+    },
+    {
+      "type": "range",
+      "id": "title_size",
+      "label": "Title size",
+      "min": 20,
+      "max": 80,
+      "step": 1,
+      "unit": "px",
+      "default": 40,
+      "visible_if": "{{ section.settings.show_title == true }}"
+    },
+    {
+      "type": "color",
+      "id": "title_color",
+      "label": "Title color",
+      "default": "#4d4184",
+      "visible_if": "{{ section.settings.show_title == true }}"
+    },
+    {
+      "type": "header",
+      "content": "Subtitle"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_body",
+      "label": "Show subtitle",
+      "default": true
+    },
+    {
+      "type": "richtext",
+      "id": "body_text",
+      "label": "Subtitle",
+      "default": "<p>Real people are sleeping deeper, cooler, and more comfortably with mellow.</p>",
+      "visible_if": "{{ section.settings.show_body == true }}"
+    },
+    {
+      "type": "range",
+      "id": "body_size",
+      "label": "Subtitle size",
+      "min": 10,
+      "max": 30,
+      "step": 1,
+      "unit": "px",
+      "default": 16,
+      "visible_if": "{{ section.settings.show_body == true }}"
+    },
+    {
+      "type": "color",
+      "id": "body_color",
+      "label": "Subtitle color",
+      "default": "#4d4184",
+      "visible_if": "{{ section.settings.show_body == true }}"
+    },
+    {
+      "type": "header",
+      "content": "Button"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_button",
+      "label": "Show button",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button label",
+      "default": "Shop Now",
+      "visible_if": "{{ section.settings.show_button == true }}"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button link",
+      "visible_if": "{{ section.settings.show_button == true }}"
+    },
+    {
+      "type": "select",
+      "id": "button_border_radius",
+      "label": "Button shape",
+      "default": "extra-round",
+      "options": [
+        {
+          "value": "flat",
+          "label": "Flat"
+        },
+        {
+          "value": "curved",
+          "label": "Curved"
+        },
+        {
+          "value": "round",
+          "label": "Round"
+        },
+        {
+          "value": "extra-round",
+          "label": "Extra Round"
+        }
+      ],
+      "visible_if": "{{ section.settings.show_button == true }}"
+    },
+    {
+      "type": "select",
+      "id": "button_style",
+      "label": "Button style",
+      "default": "regular",
+      "options": [
+        {
+          "value": "outline",
+          "label": "Outline"
+        },
+        {
+          "value": "regular",
+          "label": "Regular"
+        }
+      ],
+      "visible_if": "{{ section.settings.show_button == true }}"
+    },
+    {
+      "type": "color",
+      "id": "button_background_color",
+      "label": "Button background",
+      "default": "#4d4184",
+      "visible_if": "{{ section.settings.show_button == true }}"
+    },
+    {
+      "type": "color",
+      "id": "button_text_color",
+      "label": "Button text color",
+      "default": "#ffffff",
+      "visible_if": "{{ section.settings.show_button == true }}"
+    },
+    {
+      "type": "range",
+      "id": "button_width",
+      "label": "Button width",
+      "min": 120,
+      "max": 600,
+      "step": 10,
+      "unit": "px",
+      "default": 240,
+      "visible_if": "{{ section.settings.show_button == true }}"
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "default": "#efefff"
+    },
+    {
+      "type": "range",
+      "id": "columns_desktop",
+      "label": "Columns (desktop)",
+      "min": 1,
+      "max": 6,
+      "step": 1,
+      "default": 3
+    },
+    {
+      "type": "range",
+      "id": "columns_mobile",
+      "label": "Columns (mobile)",
+      "min": 1,
+      "max": 3,
+      "step": 1,
+      "default": 1
+    },
+    {
+      "type": "range",
+      "id": "card_gap",
+      "label": "Gap between cards (px)",
+      "min": 0,
+      "max": 60,
+      "step": 4,
+      "default": 44
+    },
+    {
+      "type": "range",
+      "id": "header_gap",
+      "label": "Header → cards gap (px)",
+      "min": 8,
+      "max": 80,
+      "step": 4,
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "cards_gap",
+      "label": "Cards → button gap (px)",
+      "min": 0,
+      "max": 80,
+      "step": 4,
+      "default": 32
+    },
+    {
+      "type": "header",
+      "content": "Card style"
+    },
+    {
+      "type": "color",
+      "id": "card_bg",
+      "label": "Card background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "range",
+      "id": "border_width",
+      "label": "Border width (px)",
+      "min": 0,
+      "max": 8,
+      "step": 1,
+      "default": 1
+    },
+    {
+      "type": "color",
+      "id": "border_color",
+      "label": "Border color",
+      "default": "#e0ddf5"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_card_shadow",
+      "label": "Show card shadow",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "corner_radius",
+      "label": "Corner radius (px)",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "inner_gap",
+      "label": "Circle → text gap (px)",
+      "min": 0,
+      "max": 60,
+      "step": 4,
+      "default": 16
+    },
+    {
+      "type": "header",
+      "content": "Animation"
+    },
+    {
+      "type": "range",
+      "id": "stagger",
+      "label": "Stagger delay (ms)",
+      "min": 0,
+      "max": 800,
+      "step": 50,
+      "default": 250
+    },
+    {
+      "type": "select",
+      "id": "threshold",
+      "label": "Scroll trigger",
+      "options": [
+        {
+          "value": "0.1",
+          "label": "10% visible"
+        },
+        {
+          "value": "0.25",
+          "label": "25% visible"
+        },
+        {
+          "value": "0.5",
+          "label": "50% visible"
+        },
+        {
+          "value": "0.75",
+          "label": "75% visible"
+        }
+      ],
+      "default": "0.25"
+    },
+    {
+      "type": "header",
+      "content": "Section size"
+    },
+    {
+      "type": "range",
+      "id": "page_width",
+      "label": "Section width",
+      "unit": "px",
+      "min": 600,
+      "max": 1600,
+      "step": 20,
+      "default": 1100
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Top padding",
+      "unit": "px",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Bottom padding",
+      "unit": "px",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "default": 60
+    }
+  ],
+  "blocks": [
+    {
+      "type": "stat",
+      "name": "Stat Card",
+      "settings": [
+        {
+          "type": "header",
+          "content": "Percentage"
+        },
+        {
+          "type": "range",
+          "id": "percentage",
+          "label": "Percentage",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "default": 95
+        },
+        {
+          "type": "range",
+          "id": "duration",
+          "label": "Animation duration (ms)",
+          "min": 200,
+          "max": 3000,
+          "step": 100,
+          "default": 800
+        },
+        {
+          "type": "header",
+          "content": "Circle"
+        },
+        {
+          "type": "range",
+          "id": "size",
+          "label": "Circle size (px)",
+          "min": 80,
+          "max": 220,
+          "step": 2,
+          "default": 194
+        },
+        {
+          "type": "range",
+          "id": "ring_width",
+          "label": "Ring width (px)",
+          "min": 4,
+          "max": 30,
+          "step": 1,
+          "default": 12
+        },
+        {
+          "type": "select",
+          "id": "ring_cap",
+          "label": "Ring cap",
+          "options": [
+            {
+              "value": "round",
+              "label": "Round"
+            },
+            {
+              "value": "butt",
+              "label": "Flat"
+            },
+            {
+              "value": "square",
+              "label": "Square"
+            }
+          ],
+          "default": "butt"
+        },
+        {
+          "type": "color",
+          "id": "ring_color",
+          "label": "Ring color",
+          "default": "#837ba9"
+        },
+        {
+          "type": "color",
+          "id": "track_color",
+          "label": "Track color",
+          "default": "#e0ddf5"
+        },
+        {
+          "type": "header",
+          "content": "Percentage label"
+        },
+        {
+          "type": "range",
+          "id": "pct_size",
+          "label": "Font size (px)",
+          "min": 12,
+          "max": 72,
+          "step": 1,
+          "default": 32
+        },
+        {
+          "type": "color",
+          "id": "pct_color",
+          "label": "Color",
+          "default": "#8b8bc1"
+        },
+        {
+          "type": "header",
+          "content": "Card text"
+        },
+        {
+          "type": "richtext",
+          "id": "card_text",
+          "label": "Text",
+          "default": "<p>of <strong>mellow</strong> Sleep at their ideal temperature</p>"
+        },
+        {
+          "type": "range",
+          "id": "text_size",
+          "label": "Font size (px)",
+          "min": 11,
+          "max": 28,
+          "step": 1,
+          "default": 17
+        },
+        {
+          "type": "color",
+          "id": "text_color",
+          "label": "Color",
+          "default": "#333333"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "BKY - Result Grid",
+      "settings": {
+        "show_title": true,
+        "show_body": true,
+        "show_button": true
+      },
+      "blocks": [
+        {
+          "type": "stat",
+          "settings": {
+            "percentage": 95,
+            "ring_color": "#8b8bc1",
+            "track_color": "#e0ddf5",
+            "pct_color": "#8b8bc1",
+            "card_text": "<p>of <strong>mellow</strong> Sleep at their ideal temperature</p>",
+            "size": 194,
+            "ring_width": 12,
+            "pct_size": 32,
+            "text_size": 17,
+            "duration": 800
+          }
+        },
+        {
+          "type": "stat",
+          "settings": {
+            "percentage": 97,
+            "ring_color": "#8b8bc1",
+            "track_color": "#e0ddf5",
+            "pct_color": "#8b8bc1",
+            "card_text": "<p>would recommend <strong>mellow</strong> to their family and friends</p>",
+            "size": 194,
+            "ring_width": 12,
+            "pct_size": 32,
+            "text_size": 17,
+            "duration": 800
+          }
+        },
+        {
+          "type": "stat",
+          "settings": {
+            "percentage": 99,
+            "ring_color": "#8b8bc1",
+            "track_color": "#e0ddf5",
+            "pct_color": "#8b8bc1",
+            "card_text": "<p>of <strong>mellow</strong> customers have left 5 star reviews</p>",
+            "size": 194,
+            "ring_width": 12,
+            "pct_size": 32,
+            "text_size": 17,
+            "duration": 800
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

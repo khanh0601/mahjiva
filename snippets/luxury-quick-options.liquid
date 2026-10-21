@@ -1,0 +1,217 @@
+{%- comment -%}
+  -----------------------------------------------------------------------------
+  SNIPPET: LUXURY QUICK OPTIONS MODAL
+  Tailored for products with multiple variants (e.g. Tile Bags, Gemstone Dices)
+  - 100% Real Shopify Data (Zero Mock)
+  - Smooth Variant Switching with instant image, price & discount sync
+  - Direct AJAX Add-to-Cart with Cart Drawer integration
+  -----------------------------------------------------------------------------
+{%- endcomment -%}
+
+{%- liquid
+  assign current_variant = card_product.selected_or_first_available_variant | default: card_product.variants[0]
+  assign is_on_sale = false
+  if current_variant.compare_at_price > current_variant.price
+    assign is_on_sale = true
+    assign discount_diff = current_variant.compare_at_price | minus: current_variant.price
+    assign discount_pct = discount_diff | times: 100.0 | divided_by: current_variant.compare_at_price | round
+  endif
+
+  assign preview_image = current_variant.featured_image | default: card_product.featured_image
+-%}
+
+<div class="luxury-quick-add" id="lqa-root-{{ card_product.id }}" data-product-id="{{ card_product.id }}">
+  <div class="lqa-container">
+    
+    <!-- Left Column: Variant Preview Image -->
+    <div class="lqa-media-col">
+      <div class="lqa-media-box">
+        {%- if preview_image != blank -%}
+          <img 
+            id="lqa-img-{{ card_product.id }}"
+            src="{{ preview_image | image_url: width: 700 }}"
+            alt="{{ card_product.title | escape }}"
+            class="lqa-img"
+            loading="lazy"
+            width="350"
+            height="350"
+          />
+        {%- else -%}
+          {{ 'product-1' | placeholder_svg_tag: 'lqa-img' }}
+        {%- endif -%}
+
+        <span 
+          id="lqa-badge-{{ card_product.id }}" 
+          class="lqa-sale-badge" 
+          style="{% unless is_on_sale %}display:none;{% endunless %}"
+        >
+          SALE
+        </span>
+      </div>
+    </div>
+
+    <!-- Right Column: Product Info & Variant Form -->
+    <div class="lqa-details-col">
+      <!-- Eyebrow & Title -->
+      <div class="lqa-eyebrow">
+        {{ card_product.metafields.custom.subtitle.value | default: card_product.type | default: 'MAHJIVA ATELIER' | upcase }}
+      </div>
+      <h3 class="lqa-title">{{ card_product.title | escape }}</h3>
+
+      <!-- Price Row -->
+      <div class="lqa-price-row">
+        <span class="lqa-price-regular" id="lqa-price-{{ card_product.id }}">
+          {{ current_variant.price | money }}
+        </span>
+        <span 
+          class="lqa-price-compare" 
+          id="lqa-compare-{{ card_product.id }}" 
+          style="{% unless is_on_sale %}display:none;{% endunless %}"
+        >
+          {{ current_variant.compare_at_price | money }}
+        </span>
+        <span 
+          class="lqa-discount-pill" 
+          id="lqa-discount-{{ card_product.id }}" 
+          style="{% unless is_on_sale %}display:none;{% endunless %}"
+        >
+          {%- if is_on_sale -%}-{{ discount_pct }}%{%- endif -%}
+        </span>
+      </div>
+
+      <!-- Variant Selectors -->
+      <div class="lqa-options-list">
+        {%- for option in card_product.options_with_values -%}
+          {%- assign opt_idx = forloop.index0 -%}
+          <div class="lqa-option-group" data-option-index="{{ opt_idx }}">
+            <div class="lqa-option-label-row">
+              <span class="lqa-option-label">{{ option.name }}:</span>
+              <span class="lqa-option-active-val" id="lqa-active-val-{{ card_product.id }}-{{ opt_idx }}">
+                {{ current_variant.options[opt_idx] }}
+              </span>
+            </div>
+            
+            <div class="lqa-pills-wrap">
+              {%- for value in option.values -%}
+                {%- liquid
+                  assign is_active = false
+                  if current_variant.options[opt_idx] == value
+                    assign is_active = true
+                  endif
+
+                  # Check swatch color
+                  assign val_lower = value | downcase
+                  assign swatch_color = '#eae5dc'
+                  case val_lower
+                    when 'black'
+                      assign swatch_color = '#1a1a1a'
+                    when 'blush pink' or 'pink'
+                      assign swatch_color = '#f4c2c2'
+                    when 'cream beige' or 'beige' or 'cream'
+                      assign swatch_color = '#f5f2eb'
+                    when 'pastel lavender' or 'lavender'
+                      assign swatch_color = '#e6e6fa'
+                    when 'white'
+                      assign swatch_color = '#ffffff'
+                    when 'amethyst'
+                      assign swatch_color = '#9966cc'
+                    when 'aventurine'
+                      assign swatch_color = '#55a07e'
+                    when 'clear quartz' or 'quartz'
+                      assign swatch_color = '#ebf4f6'
+                    when 'lapis lazuli' or 'lapis'
+                      assign swatch_color = '#26619c'
+                    when 'moss agate'
+                      assign swatch_color = '#476a47'
+                    when 'obsidian'
+                      assign swatch_color = '#232b2b'
+                    when 'opal'
+                      assign swatch_color = '#faf0e6'
+                    when 'red jasper' or 'jasper'
+                      assign swatch_color = '#d9534f'
+                    when 'rose quartz'
+                      assign swatch_color = '#f7cac9'
+                    when 'tiger eye'
+                      assign swatch_color = '#b8860b'
+                    when 'unakite'
+                      assign swatch_color = '#7e8a63'
+                    when 'yellow jade' or 'jade'
+                      assign swatch_color = '#e8b83a'
+                  endcase
+                -%}
+                <button 
+                  type="button" 
+                  class="lqa-pill{% if is_active %} is-active{% endif %}"
+                  data-option-index="{{ opt_idx }}"
+                  data-option-value="{{ value | escape }}"
+                  onclick="lqaSelectOption(this, '{{ card_product.id }}', {{ opt_idx }}, '{{ value | escape }}')"
+                >
+                  <span class="lqa-swatch-dot" style="background-color: {{ swatch_color }};"></span>
+                  <span class="lqa-pill-text">{{ value }}</span>
+                </button>
+              {%- endfor -%}
+            </div>
+          </div>
+        {%- endfor -%}
+      </div>
+
+      <!-- Quantity + Add To Cart Row -->
+      <div class="lqa-action-row">
+        <div class="lqa-stepper">
+          <button type="button" class="lqa-step-btn" onclick="lqaChangeQty('{{ card_product.id }}', -1)" aria-label="Decrease quantity">−</button>
+          <input type="number" id="lqa-qty-{{ card_product.id }}" class="lqa-qty-val" value="1" min="1" max="99" readonly />
+          <button type="button" class="lqa-step-btn" onclick="lqaChangeQty('{{ card_product.id }}', 1)" aria-label="Increase quantity">+</button>
+        </div>
+
+        <button 
+          type="button" 
+          id="lqa-atc-{{ card_product.id }}"
+          class="lqa-atc-btn{% unless current_variant.available %} is-disabled{% endunless %}"
+          data-variant-id="{{ current_variant.id }}"
+          {% unless current_variant.available %}disabled{% endunless %}
+          onclick="lqaAddToCart(this, '{{ card_product.id }}')"
+        >
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/>
+            <line x1="3" y1="6" x2="21" y2="6"/>
+            <path d="M16 10a4 4 0 0 1-8 0"/>
+          </svg>
+          <span class="lqa-btn-label">
+            {%- if current_variant.available -%}
+              Add to cart
+            {%- else -%}
+              Sold out
+            {%- endif -%}
+          </span>
+        </button>
+      </div>
+
+      <!-- Link to full product page -->
+      <a href="{{ card_product.url }}" class="lqa-details-link">
+        View product details →
+      </a>
+
+    </div>
+
+  </div>
+
+  <!-- Variants JSON Registry -->
+  <script type="application/json" id="lqa-data-{{ card_product.id }}">
+    [
+      {%- for v in card_product.variants -%}
+        {
+          "id": {{ v.id | json }},
+          "title": {{ v.title | json }},
+          "options": {{ v.options | json }},
+          "price": {{ v.price | money | json }},
+          "price_raw": {{ v.price | json }},
+          "compare_at_price": {{ v.compare_at_price | money | json }},
+          "on_sale": {%- if v.compare_at_price > v.price -%}true{%- else -%}false{%- endif -%},
+          "discount_pct": {%- if v.compare_at_price > v.price -%}"-{{ v.compare_at_price | minus: v.price | times: 100.0 | divided_by: v.compare_at_price | round }}%"{%- else -%}""{%- endif -%},
+          "available": {{ v.available | json }},
+          "image": {%- if v.featured_image != blank -%}{{ v.featured_image | image_url: width: 700 | json }}{%- elsif card_product.featured_image != blank -%}{{ card_product.featured_image | image_url: width: 700 | json }}{%- else -%}""{%- endif -%}
+        }{%- unless forloop.last -%},{%- endunless -%}
+      {%- endfor -%}
+    ]
+  </script>
+</div>

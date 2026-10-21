@@ -1,0 +1,420 @@
+{%- comment -%}
+  -----------------------------------------------------------------------------
+  SNIPPET: MAHJOVA RETURNS, EXCHANGES & REFUNDS POLICY
+  - 100% Real Store Policy Data
+  - Elegant Atelier / Luxury Typography & Responsive Table
+  -----------------------------------------------------------------------------
+{%- endcomment -%}
+
+<style>
+  .mp-container {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 56px 24px 88px;
+    color: #2c2d30;
+    font-family: var(--font-body-family, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif);
+    font-size: 15px;
+    line-height: 1.68;
+  }
+
+  .mp-eyebrow {
+    display: inline-block;
+    font-size: 11.5px;
+    font-weight: 700;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: #8C7355;
+    margin-bottom: 12px;
+  }
+
+  .mp-title {
+    font-family: var(--font-heading-family, "Cormorant Garamond", Georgia, serif);
+    font-size: 38px;
+    font-weight: 600;
+    line-height: 1.18;
+    color: #163327;
+    margin: 0 0 10px 0;
+    letter-spacing: -0.01em;
+  }
+
+  @media (min-width: 768px) {
+    .mp-title {
+      font-size: 46px;
+    }
+  }
+
+  .mp-updated {
+    font-size: 13.5px;
+    color: #7A7570;
+    font-style: italic;
+    margin: 0 0 28px 0;
+    display: block;
+  }
+
+  .mp-lead {
+    font-size: 16px;
+    line-height: 1.72;
+    color: #33312E;
+    margin-bottom: 18px;
+  }
+
+  .mp-section-title {
+    font-family: var(--font-heading-family, "Cormorant Garamond", Georgia, serif);
+    font-size: 26px;
+    font-weight: 600;
+    color: #163327;
+    margin: 38px 0 14px 0;
+    line-height: 1.25;
+  }
+
+  .mp-container p {
+    margin: 0 0 16px 0;
+  }
+
+  .mp-container strong {
+    color: #163327;
+    font-weight: 600;
+  }
+
+  .mp-container a {
+    color: #163327;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    transition: color 0.2s ease;
+  }
+
+  .mp-container a:hover {
+    color: #8C7355;
+  }
+
+  /* Table: Your Options at a Glance */
+  .mp-table-wrapper {
+    margin: 24px 0 12px 0;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid #E5E0D8;
+    background: #FFFFFF;
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.03);
+  }
+
+  .mp-table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+    font-size: 14px;
+  }
+
+  .mp-table th {
+    background-color: #F7F5F1;
+    color: #163327;
+    font-weight: 600;
+    padding: 14px 18px;
+    border-bottom: 1px solid #E5E0D8;
+    font-size: 13.5px;
+    letter-spacing: 0.03em;
+  }
+
+  .mp-table td {
+    padding: 16px 18px;
+    border-bottom: 1px solid #EFECE6;
+    vertical-align: top;
+    line-height: 1.55;
+  }
+
+  .mp-table tr:last-child td {
+    border-bottom: none;
+  }
+
+  .mp-table td:first-child {
+    font-weight: 600;
+    color: #163327;
+    width: 32%;
+    background-color: #FAFAF8;
+  }
+
+  .mp-table td:last-child {
+    color: #403E3A;
+  }
+
+  .mp-table-note {
+    font-size: 13px;
+    color: #7A7570;
+    margin: 8px 0 32px 0;
+  }
+
+  /* List */
+  .mp-list {
+    margin: 12px 0 20px 24px;
+    padding: 0;
+    list-style-type: disc;
+  }
+
+  .mp-list li {
+    margin-bottom: 8px;
+    padding-left: 4px;
+    color: #3C3A36;
+  }
+
+  /* Notice Callout Box */
+  .mp-callout {
+    background-color: #F8F6F2;
+    border-left: 3px solid #8C7355;
+    padding: 16px 20px;
+    border-radius: 0 10px 10px 0;
+    margin: 22px 0;
+    font-size: 14.5px;
+  }
+
+  /* Business & Contact Card */
+  .mp-company-card {
+    background: #FCFAF8;
+    border: 1px solid #EAE5DC;
+    border-radius: 14px;
+    padding: 32px;
+    margin-top: 48px;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 28px;
+  }
+
+  @media (min-width: 768px) {
+    .mp-company-card {
+      grid-template-columns: 1fr 1fr;
+      gap: 36px;
+    }
+  }
+
+  .mp-card-col h4 {
+    font-family: var(--font-heading-family, "Cormorant Garamond", Georgia, serif);
+    font-size: 21px;
+    font-weight: 600;
+    color: #163327;
+    margin: 0 0 12px 0;
+    letter-spacing: 0.01em;
+  }
+
+  .mp-card-col p {
+    font-size: 13.5px;
+    line-height: 1.6;
+    color: #4A4642;
+    margin-bottom: 10px;
+  }
+
+  .mp-card-col ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .mp-card-col ul li {
+    font-size: 13.5px;
+    line-height: 1.65;
+    color: #4A4642;
+    margin-bottom: 6px;
+  }
+
+  .mp-card-about {
+    grid-column: 1 / -1;
+    border-top: 1px solid #EFECE6;
+    padding-top: 24px;
+  }
+</style>
+
+<div class="mp-container">
+  <span class="mp-eyebrow">POLICY</span>
+  <h1 class="mp-title">Returns, Exchanges &amp; Refunds</h1>
+  <span class="mp-updated">Updated October 2026</span>
+
+  <p class="mp-lead">
+    Finding the right pieces for your Mahjong table should feel good. If your purchase isn’t quite right, our team is here to help you explore the next steps.
+  </p>
+
+  <p>
+    Mahjiva accepts eligible return and exchange requests within <strong>30 days of delivery</strong>. This policy applies to our tile sets, mats, racks, dice, and tile bags, alongside any additional rights provided by applicable consumer law.
+  </p>
+
+  <h2 class="mp-section-title">Your Options at a Glance</h2>
+
+  <div class="mp-table-wrapper">
+    <table class="mp-table" role="table">
+      <thead>
+        <tr>
+          <th>Your situation</th>
+          <th>How we can help</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>You’ve changed your mind</td>
+          <td>Request a return within 30 days. The item must be unused, complete, and in its original packaging. Return shipping is your responsibility.</td>
+        </tr>
+        <tr>
+          <td>You’d prefer another design or color</td>
+          <td>Contact us within 30 days to arrange an eligible exchange, subject to availability.</td>
+        </tr>
+        <tr>
+          <td>Something arrived damaged, faulty, incorrect, or incomplete</td>
+          <td>Send us your order details and photos. We’ll review the issue and arrange an appropriate solution at no cost to you.</td>
+        </tr>
+        <tr>
+          <td>You need to cancel before dispatch</td>
+          <td>Contact us promptly. Cancellation is confirmed only when our team confirms that the order has been stopped.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="mp-table-note">These are our voluntary return terms. They do not restrict mandatory consumer rights.</p>
+
+  <h2 class="mp-section-title">Start with a Message</h2>
+  <p>
+    Email <a href="mailto:care@mahjiva.com">care@mahjiva.com</a> or use our <a href="/pages/contact"><strong>Contact Us</strong></a> page before returning an item.
+  </p>
+  <p>Please include:</p>
+  <ul class="mp-list">
+    <li>Your order number or another proof of purchase;</li>
+    <li>The product you’re contacting us about;</li>
+    <li>Whether you’d prefer a return, exchange, or help with an issue; and</li>
+    <li>Clear photos where relevant.</li>
+  </ul>
+  <p>
+    Our team will review your request and provide the next steps, including the correct return address when a return is required.
+  </p>
+  <div class="mp-callout">
+    <strong>Please wait for our instructions before sending a parcel.</strong> Sending an item without contacting us may delay processing or affect eligibility under our voluntary policy, without limiting your statutory rights.
+  </div>
+
+  <h2 class="mp-section-title">Returning an Item You No Longer Want</h2>
+  <p>
+    For a change-of-mind return, contact us within 30 days of receiving your order. Please keep the item unused and return it with its original packaging and everything supplied with it.
+  </p>
+  <p>
+    For tile sets, this includes all tiles and included components. For accessories, please include all parts supplied with the product.
+  </p>
+  <p>
+    You are responsible for return postage. Original delivery charges, if paid, are not refundable for change-of-mind returns unless the law requires otherwise.
+  </p>
+  <p>
+    Pack the item securely and retain proof of postage. A tracked return service is recommended.
+  </p>
+  <p>
+    If an item is returned used, damaged after delivery, or incomplete, we may decline the voluntary return or offer a reduced refund. We will explain our assessment before confirming the outcome.
+  </p>
+
+  <h2 class="mp-section-title">When Something Isn’t Right</h2>
+  <p>
+    Please inspect your order after delivery and let us know promptly if you notice damage, a defect, an incorrect item, or missing components.
+  </p>
+  <p>
+    Send your order number and clear photos to <a href="mailto:care@mahjiva.com">care@mahjiva.com</a>. We will assess the issue and arrange a suitable remedy, which may include a replacement component, replacement product, or refund, taking account of your applicable rights.
+  </p>
+  <p>
+    Mahjiva covers necessary shipping costs for an agreed remedy involving damaged, defective, or incorrect goods.
+  </p>
+  <p>
+    Keep the affected item and any available packaging while we review your request. We will tell you whether a return is needed—please do not ship or dispose of it beforehand.
+  </p>
+  <p>
+    Our standard support window is 30 days from delivery. Rights relating to faulty goods may continue beyond that period under applicable law.
+  </p>
+
+  <h2 class="mp-section-title">Choosing Something Different</h2>
+  <p>
+    If you would like another design, color, or product, contact us within 30 days of delivery.
+  </p>
+  <p>
+    We will confirm eligibility, replacement availability, any price difference, and applicable shipping charges before arranging the exchange. Change-of-mind exchanges follow the same condition requirements as change-of-mind returns.
+  </p>
+  <p>
+    You may also request an eligible refund and place a separate order.
+  </p>
+
+  <h2 class="mp-section-title">Receiving Your Refund</h2>
+  <p>
+    When a return is required, we will inspect it after arrival and email you the result.
+  </p>
+  <p>
+    Approved refunds are sent to the <strong>original payment method within 10 business days</strong>, unless a shorter legal deadline applies. Your bank or payment provider may need additional time to display the credit.
+  </p>
+  <p>
+    If your refund has not appeared more than <strong>15 business days after approval</strong>, contact us so we can help check its status.
+  </p>
+
+  <h2 class="mp-section-title">Before Your Order Ships</h2>
+  <p>
+    Cancellation requests should be sent as soon as possible. We will try to stop an order before dispatch, but a request alone does not confirm cancellation.
+  </p>
+  <p>
+    If the parcel has already shipped, you can request a return after delivery under this policy. Any statutory cancellation rights remain available.
+  </p>
+
+  <h2 class="mp-section-title">A Note on Appearance and Final-Sale Items</h2>
+  <p>
+    Lighting, photography, and screen settings can make colors appear slightly lighter or darker in person. Minor visual differences alone do not establish a defect. If your item appears materially different from its description, please contact us for review.
+  </p>
+  <p>
+    Gift cards and products clearly identified as <strong>final sale</strong> or <strong>non-returnable</strong> before checkout are excluded from voluntary change-of-mind returns, except where the law provides otherwise. Discounted pricing alone does not make a product final sale.
+  </p>
+  <p>
+    Our standard artwork collections are not considered personalized simply because they feature a distinctive design.
+  </p>
+  <p>
+    These exclusions do not remove rights concerning faulty, damaged, incorrect, or misdescribed goods.
+  </p>
+
+  <h2 class="mp-section-title">Your Consumer Rights</h2>
+  <p>
+    This policy supplements—not replaces—consumer rights that cannot legally be excluded.
+  </p>
+  <p>
+    <strong>For customers covered by EU distance-selling rules:</strong> You generally have 14 days after delivery to notify us that you wish to withdraw without giving a reason, followed by another 14 days to send the goods back.
+  </p>
+  <p>
+    You may inspect an item as you would in a shop. Handling beyond what is necessary to establish its nature, characteristics, and functioning may result in a deduction for diminished value.
+  </p>
+  <p>
+    Applicable refunds include standard outbound delivery charges, but not additional charges for an upgraded delivery service. Return postage is your responsibility where disclosed before purchase.
+  </p>
+  <p>
+    Refunds are generally due within 14 days of your withdrawal notice. We may withhold reimbursement until the goods arrive or you provide evidence of return, whichever happens first.
+  </p>
+  <p>
+    <strong>For customers in other regions:</strong> Mandatory protections, including those under Australian Consumer Law and applicable U.S., Canadian, and other consumer laws, continue to apply. These may provide remedies beyond our voluntary 30-day window.
+  </p>
+
+  <h2 class="mp-section-title">Need Help?</h2>
+  <p>
+    Contact <a href="mailto:care@mahjiva.com">care@mahjiva.com</a> or visit our <a href="/pages/contact"><strong>Contact Us</strong></a> page.
+  </p>
+  <p>
+    We welcome the opportunity to resolve order concerns directly. You remain free to contact your bank or payment provider, and contacting us does not change their dispute deadlines or your lawful dispute rights.
+  </p>
+
+  <!-- Business & Contact Information Card -->
+  <div class="mp-company-card">
+    <div class="mp-card-col">
+      <h4>Business Information</h4>
+      <p>
+        Mahjiva is owned and operated by <strong>TAY Global Commerce LLC</strong>, a legally registered business entity in the United States. All products, transactions, and customer support are managed under this entity.
+      </p>
+    </div>
+
+    <div class="mp-card-col">
+      <h4>Contact Information</h4>
+      <ul>
+        <li><strong>Operated by:</strong> TAY Global Commerce LLC</li>
+        <li><strong>Email:</strong> <a href="mailto:care@mahjiva.com">care@mahjiva.com</a></li>
+        <li><strong>Phone / WhatsApp:</strong> <a href="tel:+13212333336">+1 321-233-3336</a></li>
+        <li><strong>Address:</strong> 530-B HARKLE ROAD STE 100, Santa Fe, NM 87505</li>
+        <li><strong>Email &amp; WhatsApp:</strong> 7 days a week — we reply within 24 hours</li>
+        <li><strong>Phone hours:</strong> Monday to Friday, 07:00–11:00 ET</li>
+      </ul>
+    </div>
+
+    <div class="mp-card-about">
+      <h4>About Mahjiva</h4>
+      <p>
+        Mahjiva brings elegance and personality to your Mahjong table through distinctive tile sets and coordinating accessories. From choosing a favorite design to gathering with friends, we celebrate the details that make each game feel special. Beautiful tables, familiar faces, and moments worth sharing—this is <strong>Grace in Every Hand</strong>.
+      </p>
+    </div>
+  </div>
+</div>

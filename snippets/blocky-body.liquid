@@ -1,0 +1,22 @@
+{%- comment -%}
+  © BlockyApps. You are permitted to use this content within your store. Redistribution or use in any other application is strictly prohibited. 
+  Unauthorized copying, distribution, or reproduction in any form will result in legal action.
+{% endcomment %}
+
+{%- if body_text != blank -%}
+  <div 
+    class="blocky-body-text"
+    style="--body-color: {{ body_color }};{% if body_size%}--body-font-size: {{ body_size }}px{% endif %}"
+    {{ block-attributes }}
+  >
+    {% assign body = body_text | replace: "<br/>", "<div></div>"%}
+    {% assign body = body | replace: "<p></p>", "<br/>" %}
+    {% assign body = body | replace: "<h1></h1>", "<br/>" %}
+    {% assign body = body | replace: "<h2></h2>", "<br/>" %}
+    {% assign body = body | replace: "<h3></h3>", "<br/>" %}
+    {% assign body = body | replace: "<h4></h4>", "<br/>" %}
+    {% assign body = body | replace: "<h5></h5>", "<br/>" %}
+    {% assign body = body | replace: "<h6></h6>", "<br/>" %}
+    {{ body }}
+  </div>
+{% endif %}

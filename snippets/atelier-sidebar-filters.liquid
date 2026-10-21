@@ -1,0 +1,163 @@
+{% comment %}
+  =============================================================================
+  ATELIER SIDEBAR FILTERS (Luxury Left Column Filter)
+  Compliant with AGENTS.md (100% Real Shopify Data):
+  - Product type accordion with live counts
+  - Color dropdown filter with luxury border box
+  - Price range accordion
+  - Availability accordion
+  =============================================================================
+{% endcomment %}
+
+{%- liquid
+  assign in_stock_count = 0
+  assign out_of_stock_count = 0
+
+  assign prod_items = collection.products | default: results.products
+
+  for p in prod_items
+    if p.available
+      assign in_stock_count = in_stock_count | plus: 1
+    else
+      assign out_of_stock_count = out_of_stock_count | plus: 1
+    endif
+  endfor
+-%}
+
+<div class="atelier-sidebar-filters">
+  <!-- Active Filter Reset Bar -->
+  <div class="atelier-active-filters-bar" id="AtelierActiveFiltersBar" style="display: none;">
+    <span class="atelier-active-filters-label">Active filters</span>
+    <button type="button" class="atelier-clear-all-link" id="AtelierClearAllFilters">Clear all</button>
+  </div>
+
+  <!-- 1. All Products Filter (Open by default, 100% Real Shopify Collections) -->
+  <details class="atelier-filter-group" open>
+    <summary class="atelier-filter-summary">
+      <span>All Products</span>
+      <svg class="atelier-caret-icon" width="10" height="6" viewBox="0 0 10 6" fill="currentColor">
+        <path fill-rule="evenodd" clip-rule="evenodd" d="M9.354.646a.5.5 0 00-.708 0L5 4.293 1.354.646a.5.5 0 00-.708.708l4 4a.5.5 0 00.708 0l4-4a.5.5 0 000-.708z"/>
+      </svg>
+    </summary>
+    <ul class="atelier-filter-list">
+      {%- assign is_all_products_page = false -%}
+      {%- if collection.handle == 'all' or collection.handle == blank or request.path contains '/collections/all' -%}
+        {%- assign is_all_products_page = true -%}
+      {%- endif -%}
+
+      {%- assign rendered_handles = '' -%}
+      {%- assign priority_handles = 'mahjong-set,mats,racks,tile-bag,dices,new-array,best-seller' | split: ',' -%}
+
+      {%- for handle in priority_handles -%}
+        {%- if handle == 'new-array' and is_all_products_page == false and collection.handle != 'new-array' -%}
+          {%- continue -%}
+        {%- endif -%}
+        {%- if handle == 'best-seller' and is_all_products_page == false and collection.handle != 'best-seller' -%}
+          {%- continue -%}
+        {%- endif -%}
+        {%- assign col = collections[handle] -%}
+        {%- if col != blank and col.all_products_count > 0 -%}
+          {%- assign rendered_handles = rendered_handles | append: col.handle | append: ',' -%}
+          {%- assign is_current_col = false -%}
+          {%- if collection.handle == col.handle -%}
+            {%- assign is_current_col = true -%}
+          {%- endif -%}
+          {%- assign target_col_url = col.url -%}
+          {%- if col.handle == 'new-array' or col.handle == 'new-arrivals' -%}
+            {%- assign target_col_url = col.url | append: '?sort_by=created-descending' -%}
+          {%- endif -%}
+          <li class="atelier-filter-item atelier-filter-type-item{% if is_current_col %} is-active{% endif %}" data-val="{{ col.handle }}" data-url="{{ target_col_url }}">
+            <a href="{{ target_col_url }}" class="atelier-filter-link">
+              <span class="atelier-filter-name">{{ col.title }}</span>
+              <span class="atelier-filter-count">({{ col.all_products_count }})</span>
+            </a>
+          </li>
+        {%- endif -%}
+      {%- endfor -%}
+
+      {%- for col in collections -%}
+        {%- assign allow_col = true -%}
+        {%- if col.handle == 'best-seller' or col.handle == 'new-array' or rendered_handles contains col.handle or col.handle == 'all' or col.handle == 'frontpage' -%}
+          {%- assign allow_col = false -%}
+        {%- endif -%}
+        {%- if allow_col and col.all_products_count > 0 -%}
+          {%- assign is_current_col = false -%}
+          {%- if collection.handle == col.handle -%}
+            {%- assign is_current_col = true -%}
+          {%- endif -%}
+          {%- assign target_col_url = col.url -%}
+          {%- if col.handle == 'new-array' or col.handle == 'new-arrivals' -%}
+            {%- assign target_col_url = col.url | append: '?sort_by=created-descending' -%}
+          {%- endif -%}
+          <li class="atelier-filter-item atelier-filter-type-item{% if is_current_col %} is-active{% endif %}" data-val="{{ col.handle }}" data-url="{{ target_col_url }}">
+            <a href="{{ target_col_url }}" class="atelier-filter-link">
+              <span class="atelier-filter-name">{{ col.title }}</span>
+              <span class="atelier-filter-count">({{ col.all_products_count }})</span>
+            </a>
+          </li>
+        {%- endif -%}
+      {%- endfor -%}
+    </ul>
+  </details>
+
+  <!-- 2. Color Filter (Rectangular border box as in screenshot) -->
+  <div class="atelier-color-filter-wrapper">
+    <div class="atelier-color-custom-select">
+      <select id="AtelierColorFilter" class="atelier-color-select" aria-label="Filter by color">
+        <option value="">Color</option>
+        <option value="white">White / Ivory</option>
+        <option value="pink">Blush Pink</option>
+        <option value="green">Green / Jade</option>
+        <option value="gold">Gold / Yellow</option>
+        <option value="black">Black / Obsidian</option>
+        <option value="cream">Cream / Beige</option>
+        <option value="lavender">Lavender / Amethyst</option>
+        <option value="quartz">Clear Quartz</option>
+        <option value="crimson">Crimson Red</option>
+      </select>
+      <svg class="atelier-color-caret" width="10" height="6" viewBox="0 0 10 6" fill="currentColor">
+        <path fill-rule="evenodd" clip-rule="evenodd" d="M9.354.646a.5.5 0 00-.708 0L5 4.293 1.354.646a.5.5 0 00-.708.708l4 4a.5.5 0 00.708 0l4-4a.5.5 0 000-.708z"/>
+      </svg>
+    </div>
+  </div>
+
+  <!-- 3. Price Filter (Closed by default as in screenshot) -->
+  <details class="atelier-filter-group">
+    <summary class="atelier-filter-summary">
+      <span>Price</span>
+      <svg class="atelier-caret-icon" width="10" height="6" viewBox="0 0 10 6" fill="currentColor">
+        <path fill-rule="evenodd" clip-rule="evenodd" d="M9.354.646a.5.5 0 00-.708 0L5 4.293 1.354.646a.5.5 0 00-.708.708l4 4a.5.5 0 00.708 0l4-4a.5.5 0 000-.708z"/>
+      </svg>
+    </summary>
+    <div class="atelier-price-box">
+      <div class="atelier-price-inputs">
+        <span class="atelier-price-currency">$</span>
+        <input type="number" id="AtelierPriceMin" class="atelier-price-input" placeholder="Min" min="0">
+        <span class="atelier-price-separator">–</span>
+        <span class="atelier-price-currency">$</span>
+        <input type="number" id="AtelierPriceMax" class="atelier-price-input" placeholder="Max" min="0">
+      </div>
+      <button type="button" id="AtelierPriceFilterBtn" class="atelier-price-btn">Apply</button>
+    </div>
+  </details>
+
+  <!-- 4. Availability Filter (Closed by default as in screenshot) -->
+  <details class="atelier-filter-group">
+    <summary class="atelier-filter-summary">
+      <span>Availability</span>
+      <svg class="atelier-caret-icon" width="10" height="6" viewBox="0 0 10 6" fill="currentColor">
+        <path fill-rule="evenodd" clip-rule="evenodd" d="M9.354.646a.5.5 0 00-.708 0L5 4.293 1.354.646a.5.5 0 00-.708.708l4 4a.5.5 0 00.708 0l4-4a.5.5 0 000-.708z"/>
+      </svg>
+    </summary>
+    <ul class="atelier-filter-list">
+      <li class="atelier-filter-item atelier-filter-avail-item" data-avail="true">
+        <span class="atelier-filter-name">In stock</span>
+        <span class="atelier-filter-count">({{ in_stock_count }})</span>
+      </li>
+      <li class="atelier-filter-item atelier-filter-avail-item" data-avail="false">
+        <span class="atelier-filter-name">Out of stock</span>
+        <span class="atelier-filter-count">({{ out_of_stock_count }})</span>
+      </li>
+    </ul>
+  </details>
+</div>

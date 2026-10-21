@@ -1,0 +1,649 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "blocky_main_product_inJazX": {
+      "type": "blocky-main-product",
+      "blocks": {
+        "sku_hxFhUz": {
+          "type": "sku",
+          "settings": {
+            "text_style": "body",
+            "text_color": "#000000",
+            "text_size": 14,
+            "text_alignment": "left",
+            "margin_top": 0,
+            "margin_bottom": 0
+          }
+        },
+        "price_NChhm9": {
+          "type": "price",
+          "settings": {
+            "price_color": "#6845b9",
+            "compare_price_color": "#6845b9",
+            "price_size": 22,
+            "price_bold": true,
+            "show_sale_badge": false,
+            "sale_badge_label": "SAVE NOW",
+            "sale_badge_use_gradient": false,
+            "sale_badge_bg": "#8b5cf6",
+            "sale_badge_gradient": "linear-gradient(to right, #e53e3e, #e07b39)",
+            "sale_badge_text_color": "#ffffff",
+            "sale_badge_border_radius": 100,
+            "sale_badge_font_size": 14,
+            "text_alignment": "flex-start"
+          }
+        },
+        "title_CnYfR7": {
+          "type": "title",
+          "settings": {
+            "title_color": "#6845b9",
+            "title_size": 42
+          }
+        },
+        "buy_buttons_DTrUHp": {
+          "type": "buy_buttons",
+          "settings": {
+            "show_dynamic_checkout": false,
+            "cart_action": "cart_drawer",
+            "button_background": "#6845b9",
+            "button_border_color": "#6845b9",
+            "button_text_color": "#ffffff",
+            "dynamic_button_background_color": "#8b5cf6",
+            "dynamic_button_text_color": "#ffffff",
+            "dynamic_button_border_color": "",
+            "button_height": 52,
+            "button_text_size": 16,
+            "add_to_cart_text": "Add to cart",
+            "sold_out_text": "Sold out",
+            "unavailable_text": "Unavailable",
+            "margin_top": 1.5,
+            "margin_bottom": 1.5
+          }
+        },
+        "description_7eH7Q8": {
+          "type": "description",
+          "settings": {
+            "text_style": "body",
+            "text_color": "#000000",
+            "text_size": 14,
+            "text_alignment": "left",
+            "margin_top": 0,
+            "margin_bottom": 0,
+            "line_height": 0,
+            "letter_spacing": 0
+          }
+        },
+        "review_stars_VJpcaH": {
+          "type": "review-stars",
+          "settings": {
+            "rating": 5,
+            "star_color": "#ffa38b",
+            "review_text_color": "#000000",
+            "empty_stars_style": "hidden",
+            "review_text": "500+ Reviews",
+            "review_font_size": 20,
+            "review_alignment": "flex-start",
+            "show_badge": false,
+            "badge_text": "Top Rated Gear",
+            "badge_icon_code": "workspace_premium",
+            "badge_bg_color": "#8b5cf6",
+            "badge_text_color": "#ffffff",
+            "badge_text_size": 14,
+            "line_height": 0,
+            "letter_spacing": 0
+          }
+        },
+        "icon_with_text_dyqUCt": {
+          "type": "icon-with-text",
+          "settings": {
+            "layout": "vertical",
+            "desktop_icon_size": 27,
+            "desktop_font_size": 13,
+            "mobile_icon_size": 30,
+            "mobile_font_size": 12,
+            "icon_1": "fitness_center",
+            "image_1": "",
+            "heading_1": "Full Body Toning",
+            "icon_2": "house",
+            "image_2": "",
+            "heading_2": "Home Gym Essential",
+            "icon_3": "eco",
+            "image_3": "",
+            "heading_3": "Natural Latex Tension Tubes",
+            "icon_4": "luggage",
+            "image_4": "",
+            "heading_4": "Travel-Friendly Lightweight Design"
+          }
+        },
+        "variant_picker_ah9biM": {
+          "type": "variant_picker",
+          "settings": {
+            "input_background_color": "#ffffff",
+            "input_text_color": "#6845b9",
+            "input_border_color": "#d8d8d8",
+            "input_border_radius": 6,
+            "picker_type": "button",
+            "show_color_swatches": false,
+            "color_swatch_mapping": "Rose Gold: #b76e79\nMidnight: #111827\nCream White: #f4efe6"
+          }
+        },
+        "collapsible_tab_PBmxrP": {
+          "type": "collapsible_tab",
+          "settings": {
+            "heading": "Simple Setup",
+            "icon": "",
+            "heading_size": 16,
+            "content": "<p>Slide your feet into the contoured pedals and grip the foam handles. This versatile tool can be used sitting or standing to target different areas of the body. For a seated row, simply sit with legs extended, place feet in pedals, and pull toward your chest. For standing curls, step into the pedals and lift the handles toward your shoulders. It is designed for intuitive, fluid movement in any space.</p>",
+            "content_size": 14,
+            "page": "",
+            "open_by_default": false,
+            "bg_color": "",
+            "text_color": "",
+            "row_padding": 8,
+            "letter_spacing": 0
+          }
+        },
+        "collapsible_tab_eEW77G": {
+          "type": "collapsible_tab",
+          "settings": {
+            "heading": "Easy Care",
+            "icon": "",
+            "heading_size": 16,
+            "content": "<p>Wipe down with a damp cloth after use. Store in a cool, dry place away from direct sunlight to maintain elasticity.</p>",
+            "content_size": 14,
+            "page": "",
+            "open_by_default": false,
+            "bg_color": "",
+            "text_color": "",
+            "row_padding": 8,
+            "letter_spacing": 0
+          }
+        },
+        "collapsible_tab_rdVHdi": {
+          "type": "collapsible_tab",
+          "settings": {
+            "heading": "Safety First",
+            "icon": "",
+            "heading_size": 16,
+            "content": "<p>Ensure your footwear is secure in the pedals before beginning. Check the bands for any wear before each session to ensure a smooth, worry-free workout.</p>",
+            "content_size": 14,
+            "page": "",
+            "open_by_default": false,
+            "bg_color": "",
+            "text_color": "",
+            "row_padding": 8,
+            "letter_spacing": 0
+          }
+        },
+        "review_carousel_tDYEYD": {
+          "type": "review_carousel",
+          "settings": {
+            "popup_featured_product": "",
+            "heading": "What Our Community Says",
+            "heading_font_size": 18,
+            "slides_to_show": 4,
+            "card_height": 0,
+            "play_circle_color": "#ffffff",
+            "play_icon_color": "#000000",
+            "collection_1": "",
+            "collection_2": "",
+            "collection_3": "",
+            "collection_4": "",
+            "collection_5": "",
+            "collection_6": ""
+          }
+        },
+        "product_reviews_2_CEpBRw": {
+          "type": "product_reviews_2",
+          "settings": {
+            "show_placeholder_image": false,
+            "heading_1": "",
+            "reviewer_1": "Sarah J.",
+            "text_1": "<p>Finally, a way to tone my legs while watching TV. The foot pedals are actually comfortable, and the resistance feels smooth. I love how compact it is for my small apartment.</p>",
+            "heading_2": "Better than the gym",
+            "reviewer_2": "Emma L.",
+            "text_2": "<p>So easy to use for quick morning stretches and toning.</p>",
+            "heading_3": "High Quality",
+            "reviewer_3": "Megan R.",
+            "text_3": "<p>Durable materials and the handle grip feels very secure.</p>",
+            "show_verified": true,
+            "verified_text": "Verified Buyer",
+            "verified_text_size": 14,
+            "display_stars": true,
+            "star_color": "#e0a458",
+            "star_size": 20,
+            "card_bg_color": "#efeffe",
+            "card_border_color": "#efeffe",
+            "card_border_radius": 20,
+            "accent_color": "#8b5cf6",
+            "bar_color": "#efeffe",
+            "heading_color": "#000000",
+            "heading_size": 22,
+            "text_color": "#000000",
+            "text_size": 16,
+            "reviewer_color": "#000000",
+            "reviewer_text_size": 16,
+            "avatar_size": 56,
+            "avatar_border_width": 2,
+            "hide_arrows": true,
+            "show_on_left": true,
+            "hide_on_mobile": false
+          }
+        }
+      },
+      "block_order": [
+        "product_reviews_2_CEpBRw",
+        "review_stars_VJpcaH",
+        "title_CnYfR7",
+        "price_NChhm9",
+        "variant_picker_ah9biM",
+        "icon_with_text_dyqUCt",
+        "sku_hxFhUz",
+        "description_7eH7Q8",
+        "buy_buttons_DTrUHp",
+        "review_carousel_tDYEYD",
+        "collapsible_tab_PBmxrP",
+        "collapsible_tab_eEW77G",
+        "collapsible_tab_rdVHdi"
+      ],
+      "name": "BKY Main Product",
+      "settings": {
+        "product_source": "current",
+        "product": "",
+        "content_gap": 48,
+        "mobile_content_gap": 28,
+        "content_vertical_gap": 14,
+        "media_size": 45,
+        "media_fit": "contain",
+        "media_aspect_ratio": "adapt",
+        "media_position": "left",
+        "media_border_radius": 16,
+        "media_shadow": false,
+        "show_media_border": false,
+        "media_border_color": "#000000",
+        "thumbnail_layout": "carousel",
+        "thumbnail_slides_per_column": 6,
+        "thumbnail_border_radius": 6,
+        "thumbnail_border_color": "#d8d8d8",
+        "thumbnail_active_border_color": "#000000",
+        "background_color": "#ffffff",
+        "desktop_content_alignment": "left",
+        "mobile_content_alignment": "left",
+        "page_width": 1200,
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "blocky_scrolling_image_bar_pQrPhB": {
+      "type": "blocky-scrolling-image-bar",
+      "blocks": {
+        "image_P97fwy": {
+          "type": "image",
+          "settings": {
+            "image": ""
+          }
+        },
+        "image_Wxikqe": {
+          "type": "image",
+          "settings": {
+            "image": ""
+          }
+        },
+        "image_Xi84p9": {
+          "type": "image",
+          "settings": {
+            "image": ""
+          }
+        },
+        "image_aXgQhG": {
+          "type": "image",
+          "settings": {
+            "image": ""
+          }
+        },
+        "image_c4NVef": {
+          "type": "image",
+          "settings": {
+            "image": ""
+          }
+        }
+      },
+      "block_order": [
+        "image_Xi84p9",
+        "image_Wxikqe",
+        "image_aXgQhG",
+        "image_c4NVef",
+        "image_P97fwy"
+      ],
+      "name": "Blocky Scrolling Image Bar",
+      "settings": {
+        "image_height": 18,
+        "image_shape": "adapt",
+        "image_spacing": 2,
+        "border_radius": 15,
+        "speed": 1,
+        "background_color": "#6845b9",
+        "show_shadow": false,
+        "show_blur": true,
+        "disable_carousel": false,
+        "title": "",
+        "title_size": 36,
+        "title_color": "#000000",
+        "body_text": "",
+        "body_size": 20,
+        "body_color": "#000000",
+        "text_background_color": "#454545",
+        "text_padding": 3,
+        "hide_mobile": false,
+        "desktop_position": "over-text",
+        "mobile_position": "over-text",
+        "padding_top": 16,
+        "padding_bottom": 16
+      }
+    },
+    "blocky_multiimage_timeline_VNXYVH": {
+      "type": "blocky-multiimage-timeline",
+      "blocks": {
+        "step_7kJDpE": {
+          "type": "step",
+          "settings": {
+            "step_number": "Step 04",
+            "title": "<p>Full Body Glow</p>",
+            "description": "<p>Target arms, waist, and legs with one tool. Feel more energized and toned after just a few minutes of daily movement.</p>"
+          }
+        },
+        "step_EDADUg": {
+          "type": "step",
+          "settings": {
+            "step_number": "Step 01",
+            "title": "<p>Secure Your Stance</p>",
+            "description": "<p>Slip your feet into the ergonomic pedals for a stable base that stays put during every move.</p>"
+          }
+        },
+        "step_Lrjbzw": {
+          "type": "step",
+          "settings": {
+            "step_number": "Step 02",
+            "title": "<p>Grip with Comfort</p>",
+            "description": "<p>The soft, sweat-absorbent foam handles ensure a slip-free grip while you focus on your form.</p>"
+          }
+        },
+        "step_RkNKWj": {
+          "type": "step",
+          "settings": {
+            "step_number": "Step 03",
+            "title": "<p>Smooth Controlled Tension</p>",
+            "description": "<p>Engage the high-elasticity tubes for consistent resistance that feels fluid and natural.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "step_EDADUg",
+        "step_Lrjbzw",
+        "step_RkNKWj",
+        "step_7kJDpE"
+      ],
+      "name": "BKY - MultiImage Timeline",
+      "settings": {
+        "image_1": "shopify://shop_images/https_3A_2F_2Fm.media-amazon.com_2Fimages_2FS_2Faplus-media-library-service-media_2Fc72736f0-a1d7-4cde-921b-9aa9bef11f8d_8c790267-a341-4f7a-b338-90020e2d3592.jpg?v=1789491507",
+        "image_2": "shopify://shop_images/https_3A_2F_2Fm.media-amazon.com_2Fimages_2FS_2Faplus-media-library-service-media_2F183783bc-c5f2-4c3f-8a3c-630df680a2df_763d9557-3cbc-41d3-8a55-c1192d99dad9.jpg?v=1789491507",
+        "image_3": "shopify://shop_images/https_3A_2F_2Fm.media-amazon.com_2Fimages_2FS_2Faplus-media-library-service-media_2Faccae958-fbe9-4734-8cb4-c874c2d5049d_7903fa9b-ceed-4ab7-97c0-7e87e0e162c9.jpg?v=1789491507",
+        "image_4": "shopify://shop_images/https_3A_2F_2Fm.media-amazon.com_2Fimages_2FI_2F41AI4-AOnoL_a7226ad2-3a40-4ef2-a02b-6622a41e89c1.jpg?v=1789491507",
+        "image_fit": "cover",
+        "image_border_color": "#e7e4f8",
+        "image_border_width": 6,
+        "image_radius": 20,
+        "image_gap": 8,
+        "media_width": 600,
+        "image_shadow_enabled": false,
+        "title": "<p>Your Routine</p>",
+        "subtitle": "<p>Transform any corner of your home into a personal wellness studio with these four simple moves.</p>",
+        "title_color": "#6845b9",
+        "subtitle_color": "#333333",
+        "title_size": 50,
+        "subtitle_size": 16,
+        "content_alignment": "left",
+        "mobile_content_alignment": "center",
+        "step_circle_color": "#6845b9",
+        "step_title_color": "#6845b9",
+        "step_description_color": "#4b4b4b",
+        "step_circle_border_width": 1,
+        "step_circle_size": 48,
+        "step_number_size": 14,
+        "step_title_size": 18,
+        "step_desc_size": 14,
+        "background_color": "#ffffff",
+        "page_width": 1200,
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "blocky_faq_with_media_2_HaUqkL": {
+      "type": "blocky-faq-with-media-2",
+      "blocks": {
+        "question_HRtUYd": {
+          "type": "question",
+          "settings": {
+            "question": "Is it portable?",
+            "content": "<p>Absolutely. It weighs less than a pound and fits easily into a gym bag or carry-on, making it the perfect companion for maintaining your routine while traveling.</p>",
+            "default_open": false,
+            "icon_code": "",
+            "icon_size": 24,
+            "icon_color": "#000000"
+          }
+        },
+        "question_HzPri9": {
+          "type": "question",
+          "settings": {
+            "question": "What about the pedal grip?",
+            "content": "<p>The high-density NBR foam pedals feature a non-slip texture, providing a secure and comfortable foundation for your feet during high-energy movements.</p>",
+            "default_open": false,
+            "icon_code": "",
+            "icon_size": 24,
+            "icon_color": "#000000"
+          }
+        },
+        "question_Qtw7wd": {
+          "type": "question",
+          "settings": {
+            "question": "Why four tubes?",
+            "content": "<p>Our four-tube design provides superior tensile strength compared to traditional two-tube versions. This ensures even resistance and a longer lifespan for your equipment, so it stays snappy and effective for years of home use.</p>",
+            "default_open": false,
+            "icon_code": "",
+            "icon_size": 24,
+            "icon_color": "#000000"
+          }
+        }
+      },
+      "block_order": [
+        "question_Qtw7wd",
+        "question_HRtUYd",
+        "question_HzPri9"
+      ],
+      "name": "Blocky FAQ with Media 2",
+      "settings": {
+        "image": "shopify://shop_images/https_3A_2F_2Fm.media-amazon.com_2Fimages_2FI_2F51eBWJ6E1uL_7a39521f-2324-45f1-b8ed-ba9e76f54082.jpg?v=1789491507",
+        "video_display_mode": "autoplay",
+        "video_play_button_color": "#ffffff",
+        "height": "adapt",
+        "overlay_opacity": 20,
+        "faq_media_radius": 15,
+        "title": "",
+        "title_size": 16,
+        "title_color": "#8b5cf6",
+        "body_text": "",
+        "body_size": 32,
+        "body_color": "#000000",
+        "button_label": "",
+        "button_link": "",
+        "button_border_radius": "extra-round",
+        "button_background_color": "#8b5cf6",
+        "button_text_color": "#ffffff",
+        "faq_title": "Design Ethics",
+        "faq_title_size": 40,
+        "faq_title_mobile_size": 32,
+        "faq_title_color": "#000000",
+        "faq_subtitle": "<p>Thoughtfully engineered for durability, comfort, and real-world use.</p>",
+        "faq_subtitle_size": 16,
+        "faq_subtitle_mobile_size": 14,
+        "faq_subtitle_color": "#606367",
+        "faq_title_subtitle_gap": 16,
+        "faq_items_gap": 16,
+        "faq_layout": "row",
+        "question_padding": 20,
+        "faq_border_radius": 15,
+        "faq_container_background": "#e7e4f8",
+        "question_font_size": 18,
+        "answer_font_size": 18,
+        "question_text_color": "#000000",
+        "answer_text_color": "#606367",
+        "faq_toggle_icon": "google",
+        "toggle_icon_code": "expand_more",
+        "toggle_icon_color": "#ffffff",
+        "toggle_icon_bg_color": "#8b5cf6",
+        "show_shadow": false,
+        "layout": "row",
+        "mobile_layout": "col",
+        "desktop_faq_width": "medium",
+        "text_align": "vertical-bottom horizontal-left",
+        "text_container_gap": "0",
+        "background_color": "#ffffff",
+        "page_width": 1200,
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "blocky_before_after_grid_F8LkFi": {
+      "type": "blocky-before-after-grid",
+      "blocks": {
+        "comparison_card_6PH4Gk": {
+          "type": "comparison_card",
+          "settings": {
+            "image": "shopify://shop_images/https_3A_2F_2Fm.media-amazon.com_2Fimages_2FS_2Faplus-media-library-service-media_2F59f2f56a-5dab-4ba5-a3e7-4fe89590cd17_f3f00970-f407-4e7a-ae69-e989d6758904.jpg?v=1789491507",
+            "badge_type": "before"
+          }
+        },
+        "comparison_card_C93ErT": {
+          "type": "comparison_card",
+          "settings": {
+            "image": "shopify://shop_images/https_3A_2F_2Fm.media-amazon.com_2Fimages_2FS_2Faplus-media-library-service-media_2Faccae958-fbe9-4734-8cb4-c874c2d5049d_7903fa9b-ceed-4ab7-97c0-7e87e0e162c9.jpg?v=1789491507",
+            "badge_type": "after"
+          }
+        },
+        "comparison_card_PQE78G": {
+          "type": "comparison_card",
+          "settings": {
+            "image": "shopify://shop_images/https_3A_2F_2Fm.media-amazon.com_2Fimages_2FS_2Faplus-media-library-service-media_2F9e8e40a3-fba9-44be-aae9-e73a31b8940a_47ecff65-134a-4ff4-8435-81f19b6bb9de.jpg?v=1789491507",
+            "badge_type": "before"
+          }
+        },
+        "comparison_card_R6LL3W": {
+          "type": "comparison_card",
+          "settings": {
+            "image": "shopify://shop_images/https_3A_2F_2Fm.media-amazon.com_2Fimages_2FI_2F41AI4-AOnoL_a7226ad2-3a40-4ef2-a02b-6622a41e89c1.jpg?v=1789491507",
+            "badge_type": "after"
+          }
+        },
+        "comparison_card_jqQmbG": {
+          "type": "comparison_card",
+          "settings": {
+            "image": "shopify://shop_images/https_3A_2F_2Fm.media-amazon.com_2Fimages_2FI_2F51s_2BAltg5-L_9e06054e-36ac-4c66-b36b-0fb427d777e5.jpg?v=1789491508",
+            "badge_type": "after"
+          }
+        },
+        "comparison_card_tYHd39": {
+          "type": "comparison_card",
+          "settings": {
+            "image": "shopify://shop_images/https_3A_2F_2Fm.media-amazon.com_2Fimages_2FS_2Faplus-media-library-service-media_2F65547550-513a-42dc-8f81-94c0d9dc52a6_96c0e269-fb9e-434a-a5b4-3ba7a1e4deb6.jpg?v=1789491507",
+            "badge_type": "before"
+          }
+        }
+      },
+      "block_order": [
+        "comparison_card_PQE78G",
+        "comparison_card_tYHd39",
+        "comparison_card_6PH4Gk",
+        "comparison_card_C93ErT",
+        "comparison_card_R6LL3W",
+        "comparison_card_jqQmbG"
+      ],
+      "name": "BKY - Before After Grid",
+      "settings": {
+        "title": "<p>Visible Progress</p>",
+        "title_size": 36,
+        "title_color": "#6845b9",
+        "subtitle": "<p>See how consistent resistance training enhances your posture and silhouette.</p>",
+        "subtitle_size": 16,
+        "subtitle_color": "#333333",
+        "desktop_content_alignment": "center",
+        "mobile_content_alignment": "center",
+        "card_height": 1.5,
+        "card_height_mobile": 1,
+        "card_border_radius": 14,
+        "card_shadow": false,
+        "columns_desktop": "3",
+        "columns_mobile": "1",
+        "image_fit": "cover",
+        "mobile_card_order": "paired_by_badge",
+        "grid_gap_horizontal_desktop": 20,
+        "grid_gap_vertical_desktop": 20,
+        "grid_gap_horizontal_mobile": 20,
+        "grid_gap_vertical_mobile": 20,
+        "title_subtitle_spacing": 10,
+        "header_grid_spacing": 32,
+        "badge_position": "middle",
+        "badge_height_position": 8,
+        "badge_size": 16,
+        "badge_shadow": true,
+        "before_badge_text": "Day 1",
+        "after_badge_text": "Day 30",
+        "badge_background_color": "#ffffff",
+        "badge_icon_color": "#ffffff",
+        "before_icon_background_color": "#e84f64",
+        "before_badge_text_color": "#1f1f1f",
+        "after_icon_background_color": "#30bfa5",
+        "after_badge_text_color": "#1f1f1f",
+        "background_color": "#efeffe",
+        "page_width": 1400,
+        "padding_top": 60,
+        "padding_bottom": 60
+      }
+    },
+    "17923938290993c0f7": {
+      "type": "apps",
+      "blocks": {
+        "judge_me_reviews_review_widget_GBCgwL": {
+          "type": "shopify://apps/judge-me-reviews/blocks/review_widget/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
+          "settings": {
+            "review_data": "sample_data",
+            "max_width": 1200,
+            "show_shop_reviews": false,
+            "empty_state": "empty_widget"
+          }
+        }
+      },
+      "block_order": [
+        "judge_me_reviews_review_widget_GBCgwL"
+      ],
+      "settings": {
+        "include_margins": true
+      }
+    }
+  },
+  "order": [
+    "blocky_main_product_inJazX",
+    "blocky_scrolling_image_bar_pQrPhB",
+    "blocky_multiimage_timeline_VNXYVH",
+    "blocky_faq_with_media_2_HaUqkL",
+    "blocky_before_after_grid_F8LkFi",
+    "17923938290993c0f7"
+  ]
+}

@@ -1,0 +1,630 @@
+{% comment %}
+  =============================================================================
+  NEW ARRIVALS UPSELL GRID SECTION
+  Designed for A+ Content & Cross-Sell Placement
+  Features:
+  - 100% Real Shopify Data (Single Source of Truth)
+  - Date: New to Old sorting (Newest products first)
+  - Configurable 4-column 1-row layout (default 4 products) for A+ content
+  - Exact styling from approved design:
+    * Dark rounded card borders (16px radius)
+    * Purple pill SALE badge
+    * Bold prices with compare-at strikethrough
+    * Instant AJAX Add-To-Cart pill button
+  =============================================================================
+{% endcomment %}
+
+<style>
+  #NewArrivalsUpsell-{{ section.id }} {
+    background-color: {{ section.settings.bg_color | default: '#FCFAF8' }};
+    padding-top: {{ section.settings.padding_top | default: 48 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | default: 56 }}px;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  }
+
+  .nau-container {
+    max-width: {{ section.settings.container_max_width | default: 1300 }}px;
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+
+  @media (min-width: 1024px) {
+    .nau-container {
+      padding: 0 28px;
+    }
+  }
+
+  /* Header Typography */
+  .nau-header {
+    margin-bottom: 24px;
+    text-align: left;
+  }
+
+  .nau-title {
+    font-size: 32px;
+    font-weight: 700;
+    color: #111111;
+    margin: 0 0 10px;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+  }
+
+  @media (min-width: 768px) {
+    .nau-title {
+      font-size: 38px;
+    }
+  }
+
+  .nau-subtitle {
+    font-size: 15px;
+    color: #4b5563;
+    margin: 0;
+    line-height: 1.5;
+    max-width: 780px;
+  }
+
+  /* Product Grid */
+  .nau-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+  }
+
+  @media (min-width: 768px) {
+    .nau-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 20px;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .nau-grid {
+      grid-template-columns: repeat({{ section.settings.columns_desktop | default: 4 }}, minmax(0, 1fr));
+      gap: 24px;
+    }
+  }
+
+  /* Card Structure: Matching User Screenshot */
+  .nau-card {
+    background: #ffffff;
+    border: 1px solid #111111;
+    border-radius: 16px;
+    padding: 14px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: transform 0.22s ease, box-shadow 0.22s ease;
+    position: relative;
+  }
+
+  @media (min-width: 768px) {
+    .nau-card {
+      padding: 16px;
+    }
+  }
+
+  .nau-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.08);
+  }
+
+  /* Media & Badges */
+  .nau-media-wrap {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    border-radius: 10px;
+    overflow: hidden;
+    background: #f8f6f3;
+  }
+
+  .nau-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.35s ease;
+  }
+
+  .nau-card:hover .nau-img {
+    transform: scale(1.04);
+  }
+
+  /* Purple SALE Badge from image */
+  .nau-badge-sale {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background-color: #68228B;
+    color: #ffffff;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    border-radius: 9999px;
+    line-height: 1.1;
+    z-index: 2;
+    box-shadow: 0 2px 6px rgba(104, 34, 139, 0.35);
+  }
+
+  /* Details: Title & Price */
+  .nau-info {
+    padding-top: 14px;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+  }
+
+  .nau-prod-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: #111111;
+    line-height: 1.35;
+    margin: 0 0 8px;
+    text-decoration: none;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    min-height: 40px;
+    transition: color 0.15s ease;
+  }
+
+  .nau-prod-title:hover {
+    color: #68228B;
+    text-decoration: underline;
+  }
+
+  .nau-price-row {
+    display: flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 4px 8px;
+    margin-bottom: 14px;
+  }
+
+  .nau-price-regular {
+    font-size: 16px;
+    font-weight: 700;
+    color: #111111;
+    white-space: nowrap;
+  }
+
+  .nau-price-compare {
+    font-size: 13.5px;
+    font-weight: 400;
+    color: #888888;
+    text-decoration: line-through;
+    white-space: nowrap;
+  }
+
+  @media (max-width: 767px) {
+    .nau-card {
+      padding: 12px;
+    }
+
+    .nau-prod-title {
+      font-size: 15px;
+      min-height: 38px;
+      margin-bottom: 6px;
+    }
+
+    .nau-price-row {
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: flex-start;
+      gap: 1px;
+      margin-bottom: 12px;
+      min-height: 38px;
+    }
+
+    .nau-price-regular {
+      font-size: 15px;
+      line-height: 1.2;
+    }
+
+    .nau-price-compare {
+      font-size: 12px;
+      line-height: 1.2;
+      color: #888888;
+    }
+
+    .nau-atc-btn {
+      padding: 8px 12px;
+      min-height: 38px;
+      font-size: 13px;
+    }
+  }
+
+  /* Add To Cart Pill Button */
+  .nau-atc-btn {
+    width: 100%;
+    margin-top: auto;
+    padding: 10px 16px;
+    background: #ffffff;
+    color: #111111;
+    border: 1px solid #111111;
+    border-radius: 9999px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    min-height: 42px;
+    text-decoration: none;
+    outline: none;
+  }
+
+  .nau-atc-btn:hover:not(:disabled) {
+    background: #111111;
+    color: #ffffff;
+  }
+
+  .nau-atc-btn:disabled {
+    background: #f3f4f6;
+    border-color: #d1d5db;
+    color: #9ca3af;
+    cursor: not-allowed;
+  }
+
+  .nau-atc-btn.is-adding {
+    background: #111111;
+    color: #ffffff;
+    opacity: 0.85;
+  }
+
+  .nau-atc-btn.is-added {
+    background: #10b981;
+    border-color: #10b981;
+    color: #ffffff;
+  }
+
+  /* Footer View All Link */
+  .nau-footer {
+    margin-top: 32px;
+    text-align: center;
+  }
+
+  .nau-view-all-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 24px;
+    border: 1px solid #111111;
+    border-radius: 9999px;
+    background: transparent;
+    color: #111111;
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.2s ease;
+  }
+
+  .nau-view-all-link:hover {
+    background: #111111;
+    color: #ffffff;
+  }
+</style>
+
+<div id="NewArrivalsUpsell-{{ section.id }}" class="section-new-arrivals-upsell">
+  <div class="nau-container">
+
+    {%- comment -%} 1. Header Area {%- endcomment -%}
+    <div class="nau-header">
+      {%- if section.settings.heading != blank -%}
+        <h2 class="nau-title">{{ section.settings.heading | escape }}</h2>
+      {%- endif -%}
+
+      {%- if section.settings.subtitle != blank -%}
+        <p class="nau-subtitle">{{ section.settings.subtitle | escape }}</p>
+      {%- endif -%}
+
+    </div>
+
+    {%- comment -%} 2. Product Query & Date Sorting {%- endcomment -%}
+    {%- liquid
+      # Select collection or fallback to 'all'
+      assign target_coll = section.settings.collection
+      if target_coll == blank
+        assign target_coll = collections['all']
+      endif
+
+      # Sort products from newest to oldest
+      assign raw_list = target_coll.products
+      if section.settings.sort_newest
+        assign sorted_list = raw_list | sort: 'published_at' | reverse
+      else
+        assign sorted_list = raw_list
+      endif
+
+      # Products limit: default 4 for exactly 1 row in A+ content!
+      assign limit_num = section.settings.products_to_show | default: 4
+      assign rendered_count = 0
+    -%}
+
+    {%- comment -%} 3. Responsive 4-Column Product Grid {%- endcomment -%}
+    <div class="nau-grid">
+      {%- for prod in sorted_list -%}
+        {%- comment -%} Skip the current product when placed on product page A+ content {%- endcomment -%}
+        {%- if template.name == 'product' and product and prod.id == product.id -%}
+          {%- continue -%}
+        {%- endif -%}
+
+        {%- assign rendered_count = rendered_count | plus: 1 -%}
+        {%- if rendered_count > limit_num -%}
+          {%- break -%}
+        {%- endif -%}
+
+        {%- assign current_var = prod.first_available_variant | default: prod.variants[0] -%}
+        {%- assign is_on_sale = false -%}
+        {%- if prod.compare_at_price > prod.price -%}
+          {%- assign is_on_sale = true -%}
+        {%- endif -%}
+
+        <div class="nau-card" data-product-id="{{ prod.id }}">
+          
+          <!-- Image Container with SALE badge -->
+          <a href="{{ prod.url }}" class="nau-media-wrap" aria-label="{{ prod.title | escape }}">
+            {%- if is_on_sale and section.settings.show_sale_badge -%}
+              <span class="nau-badge-sale">SALE</span>
+            {%- endif -%}
+
+            {%- if prod.featured_image != blank -%}
+              {{ prod.featured_image | image_url: width: 800 | image_tag: class: 'nau-img', loading: 'lazy', alt: prod.title | escape }}
+            {%- else -%}
+              {{ 'product-1' | placeholder_svg_tag: 'nau-img' }}
+            {%- endif -%}
+          </a>
+
+          <!-- Product Information -->
+          <div class="nau-info">
+            <a href="{{ prod.url }}" class="nau-prod-title">
+              {{ prod.title | escape }}
+            </a>
+
+            <div class="nau-price-row">
+              <span class="nau-price-regular">{{ prod.price | money }}</span>
+              {%- if is_on_sale -%}
+                <span class="nau-price-compare">{{ prod.compare_at_price | money }}</span>
+              {%- endif -%}
+            </div>
+
+            <!-- Instant AJAX Add To Cart -->
+            {%- if prod.available -%}
+              <button 
+                type="button" 
+                class="nau-atc-btn" 
+                data-variant-id="{{ current_var.id }}"
+                onclick="nauAddToCart(this, '{{ current_var.id }}')"
+              >
+                <span>Add to cart</span>
+              </button>
+            {%- else -%}
+              <button type="button" class="nau-atc-btn" disabled>
+                <span>Sold out</span>
+              </button>
+            {%- endif -%}
+          </div>
+
+        </div>
+      {%- endfor -%}
+    </div>
+
+    {%- comment -%} 4. View All Link (Optional) {%- endcomment -%}
+    {%- if section.settings.show_view_all -%}
+      <div class="nau-footer">
+        <a 
+          href="{{ section.settings.view_all_link | default: '/collections/all?sort_by=created-descending' }}" 
+          class="nau-view-all-link"
+        >
+          <span>{{ section.settings.view_all_text | default: 'View All New Arrivals' }}</span>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+        </a>
+      </div>
+    {%- endif -%}
+
+  </div>
+</div>
+
+<script>
+  function nauAddToCart(btn, variantId) {
+    if (!variantId || btn.classList.contains('is-adding')) return;
+
+    const originalText = btn.innerHTML;
+    btn.classList.add('is-adding');
+    btn.innerHTML = '<span>Adding...</span>';
+
+    fetch('/cart/add.js', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      },
+      body: JSON.stringify({
+        id: variantId,
+        quantity: 1
+      })
+    })
+    .then(response => {
+      if (!response.ok) throw new Error('Network error');
+      return response.json();
+    })
+    .then(item => {
+      btn.classList.remove('is-adding');
+      btn.classList.add('is-added');
+      btn.innerHTML = '<span>Added ✓</span>';
+
+      // Update cart bubble counter if present in theme
+      fetch('/cart.js')
+        .then(r => r.json())
+        .then(cart => {
+          const bubble = document.querySelector('.cart-count-bubble') || document.querySelector('[data-cart-count]');
+          if (bubble) {
+            bubble.textContent = cart.item_count;
+            bubble.classList.remove('hidden');
+          }
+        })
+        .catch(e => console.error(e));
+
+      // Revert button text after 2.5 seconds
+      setTimeout(() => {
+        btn.classList.remove('is-added');
+        btn.innerHTML = originalText;
+      }, 2500);
+    })
+    .catch(error => {
+      console.error('Error adding to cart:', error);
+      btn.classList.remove('is-adding');
+      btn.innerHTML = '<span>Added!</span>';
+      setTimeout(() => {
+        btn.innerHTML = originalText;
+      }, 2000);
+    });
+  }
+</script>
+
+{% schema %}
+{
+  "name": "New Arrivals Upsell",
+  "tag": "section",
+  "class": "section-new-arrivals-upsell",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Heading & Content"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "New Arrivals"
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Subtitle",
+      "default": "The latest American Mahjong sets at MAHJIVA — fresh designs, NMJL-ready."
+    },
+    {
+      "type": "header",
+      "content": "Products & Sorting"
+    },
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Collection",
+      "info": "Leave blank to automatically pull from all store products"
+    },
+    {
+      "type": "checkbox",
+      "id": "sort_newest",
+      "label": "Sort by Date: New to Old",
+      "default": true,
+      "info": "Ensures the latest arrivals appear first"
+    },
+    {
+      "type": "range",
+      "id": "products_to_show",
+      "min": 4,
+      "max": 24,
+      "step": 4,
+      "default": 4,
+      "label": "Number of products to show",
+      "info": "Set to 4 to display exactly 1 clean row inside A+ content!"
+    },
+    {
+      "type": "range",
+      "id": "columns_desktop",
+      "min": 2,
+      "max": 5,
+      "step": 1,
+      "default": 4,
+      "label": "Columns on desktop"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_sale_badge",
+      "label": "Show Purple SALE Badge",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "View All Link"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_view_all",
+      "label": "Show View All Link",
+      "default": false
+    },
+    {
+      "type": "url",
+      "id": "view_all_link",
+      "label": "View All Link"
+    },
+    {
+      "type": "text",
+      "id": "view_all_text",
+      "label": "View All Button Text",
+      "default": "View All New Arrivals"
+    },
+    {
+      "type": "header",
+      "content": "Section Layout & Styling"
+    },
+    {
+      "type": "range",
+      "id": "container_max_width",
+      "min": 1000,
+      "max": 1600,
+      "step": 20,
+      "default": 1300,
+      "unit": "px",
+      "label": "Container max width"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background Color",
+      "default": "#FCFAF8"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "default": 40,
+      "unit": "px",
+      "label": "Padding Top"
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "default": 56,
+      "unit": "px",
+      "label": "Padding Bottom"
+    }
+  ],
+  "presets": [
+    {
+      "name": "New Arrivals Upsell",
+      "settings": {
+        "heading": "New Arrivals",
+        "subtitle": "The latest American Mahjong sets at MAHJIVA — fresh designs, NMJL-ready.",
+        "products_to_show": 4,
+        "columns_desktop": 4,
+        "sort_newest": true,
+        "show_sale_badge": true
+      }
+    }
+  ]
+}
+{% endschema %}

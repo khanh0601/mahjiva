@@ -1,0 +1,750 @@
+{%- comment -%}
+  Luxury Hero Slider - Pure Real Shopify Data, Zero Mocks
+  Full Screen Viewport Dynamic Slider with 100% Real Customizer Controls
+{%- endcomment -%}
+
+{%- style -%}
+  #LuxuryHero-{{ section.id }},
+  #LuxuryHero-{{ section.id }} * {
+    box-sizing: border-box !important;
+  }
+
+  .luxury-hero-slider {
+    position: relative !important;
+    width: 100% !important;
+    height: {{ section.settings.desktop_height | default: '100vh' }} !important;
+    min-height: 580px !important;
+    overflow: hidden !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    background-color: #0E1210 !important;
+  }
+
+  @media (max-width: 767px) {
+    .luxury-hero-slider {
+      height: {{ section.settings.mobile_height | default: '100vh' }} !important;
+      min-height: 480px !important;
+    }
+  }
+
+  /* Slide Track */
+  .lhs-track {
+    position: relative !important;
+    width: 100% !important;
+    height: 100% !important;
+  }
+
+  /* Individual Slide */
+  .lhs-slide {
+    position: absolute !important;
+    inset: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    opacity: 0 !important;
+    visibility: hidden !important;
+    transition: opacity 0.9s cubic-bezier(0.25, 1, 0.5, 1), visibility 0.9s ease !important;
+    z-index: 1 !important;
+  }
+
+  .lhs-slide.is-active {
+    opacity: 1 !important;
+    visibility: visible !important;
+    z-index: 2 !important;
+  }
+
+  /* Responsive Background Image */
+  .lhs-bg-wrapper {
+    position: absolute !important;
+    inset: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    overflow: hidden !important;
+  }
+
+  .lhs-bg-picture,
+  .lhs-bg-image {
+    position: absolute !important;
+    inset: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    object-position: center !important;
+    display: block !important;
+    transform: scale(1.03) !important;
+    transition: transform 7s ease-out !important;
+  }
+
+  .lhs-slide.is-active .lhs-bg-image,
+  .lhs-slide.is-active .lhs-bg-picture img {
+    transform: scale(1) !important;
+  }
+
+  /* Overlay System */
+  .lhs-overlay {
+    position: absolute !important;
+    inset: 0 !important;
+    background-color: {{ section.settings.overlay_color | default: '#0A120E' }} !important;
+    opacity: {{ section.settings.overlay_opacity | default: 40 | divided_by: 100.0 }} !important;
+    z-index: 2 !important;
+    pointer-events: none !important;
+  }
+
+  /* Slide Content Area */
+  .lhs-content-container {
+    position: absolute !important;
+    inset: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 0 clamp(24px, 4.5vw, 64px) !important;
+    display: flex !important;
+    align-items: flex-end !important;
+    padding-bottom: {{ section.settings.content_padding_bottom | default: 50 }}px !important;
+    z-index: 10 !important;
+    pointer-events: none !important;
+    {% if section.settings.text_alignment == 'center' %}
+      justify-content: center !important;
+      text-align: center !important;
+    {% else %}
+      justify-content: flex-start !important;
+      text-align: left !important;
+    {% endif %}
+  }
+
+  .lhs-content-box {
+    max-width: 780px !important;
+    pointer-events: auto !important;
+    opacity: 0 !important;
+    transform: translateY(20px) !important;
+    transition: opacity 0.8s ease 0.15s, transform 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.15s !important;
+    display: flex !important;
+    flex-direction: column !important;
+    {% if section.settings.text_alignment == 'center' %}
+      align-items: center !important;
+      text-align: center !important;
+      margin: 0 auto !important;
+    {% else %}
+      align-items: flex-start !important;
+      text-align: left !important;
+    {% endif %}
+  }
+
+  .lhs-slide.is-active .lhs-content-box {
+    opacity: 1 !important;
+    transform: translateY(0) !important;
+  }
+
+  .lhs-badge-chip {
+    display: inline-flex !important;
+    align-items: center !important;
+    padding: 6px 16px !important;
+    border-radius: 9999px !important;
+    background: rgba(255, 255, 255, 0.14) !important;
+    backdrop-filter: blur(8px) !important;
+    -webkit-backdrop-filter: blur(8px) !important;
+    border: 0.5px solid rgba(255, 255, 255, 0.3) !important;
+    color: {{ section.settings.accent_color | default: '#B89768' }} !important;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+    font-size: 10px !important;
+    font-weight: 600 !important;
+    letter-spacing: 0.22em !important;
+    text-transform: uppercase !important;
+    margin-bottom: 18px !important;
+  }
+
+  {%- assign hero_title_font = "'Cormorant Garamond', Georgia, serif" -%}
+  {%- case section.settings.title_font_family -%}
+    {%- when 'cinzel' -%}
+      {%- assign hero_title_font = "'Cinzel', Georgia, serif" -%}
+    {%- when 'georgia' -%}
+      {%- assign hero_title_font = "Georgia, serif" -%}
+    {%- when 'sans_serif' -%}
+      {%- assign hero_title_font = "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" -%}
+  {%- endcase -%}
+
+  .lhs-title {
+    font-family: {{ hero_title_font }} !important;
+    font-size: {{ section.settings.title_size_desktop | default: 52 }}px !important;
+    font-weight: {{ section.settings.title_weight | default: '400' }} !important;
+    line-height: 1.15 !important;
+    color: {{ section.settings.title_color | default: '#FFFFFF' }} !important;
+    letter-spacing: -0.01em !important;
+    margin: 0 0 16px 0 !important;
+    text-shadow: 0 2px 12px rgba(0, 0, 0, 0.5) !important;
+  }
+
+  .lhs-title em {
+    font-style: italic !important;
+    color: {{ section.settings.accent_color | default: '#B89768' }} !important;
+  }
+
+  @media (max-width: 767px) {
+    .lhs-title {
+      font-size: {{ section.settings.title_size_mobile | default: 32 }}px !important;
+    }
+  }
+
+  .lhs-subtitle {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+    font-size: 15px !important;
+    font-weight: 450 !important;
+    line-height: 1.6 !important;
+    color: {{ section.settings.subtitle_color | default: 'rgba(255, 255, 255, 0.88)' }} !important;
+    letter-spacing: 0.04em !important;
+    margin: 0 0 24px 0 !important;
+    max-width: 580px !important;
+  }
+
+  .lhs-subtitle p {
+    margin: 0 0 8px 0 !important;
+  }
+
+  .lhs-cta-btn {
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+    padding: 12px 28px !important;
+    border: 1px solid {{ section.settings.btn_border_color | default: 'rgba(255, 255, 255, 0.5)' }} !important;
+    background: {{ section.settings.btn_bg_color | default: 'rgba(0, 0, 0, 0.2)' }} !important;
+    backdrop-filter: blur(8px) !important;
+    -webkit-backdrop-filter: blur(8px) !important;
+    color: {{ section.settings.btn_text_color | default: '#FFFFFF' }} !important;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+    font-size: 11px !important;
+    font-weight: 600 !important;
+    letter-spacing: 0.2em !important;
+    text-transform: uppercase !important;
+    text-decoration: none !important;
+    border-radius: 2px !important;
+    transition: all 0.3s ease !important;
+  }
+
+  .lhs-cta-btn:hover {
+    background: #FFFFFF !important;
+    color: #16181B !important;
+    border-color: #FFFFFF !important;
+    transform: translateY(-2px) !important;
+  }
+
+  /* Slide Capsule Pagination */
+  .lhs-capsule-counter {
+    position: absolute !important;
+    bottom: {{ section.settings.content_padding_bottom | default: 50 }}px !important;
+    right: clamp(24px, 4.5vw, 64px) !important;
+    z-index: 25 !important;
+    background-color: #E8E6E1 !important;
+    border-radius: 9999px !important;
+    padding: 7px 16px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 12px !important;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25) !important;
+    border: 1px solid rgba(255, 255, 255, 0.4) !important;
+  }
+
+  .lhs-progress-bars {
+    display: flex !important;
+    align-items: center !important;
+    gap: 6px !important;
+  }
+
+  .lhs-progress-bar {
+    width: 20px !important;
+    height: 2.5px !important;
+    border-radius: 2px !important;
+    background-color: #C0BEB9 !important;
+    border: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    cursor: pointer !important;
+    transition: background-color 0.4s ease, width 0.4s ease !important;
+  }
+
+  .lhs-progress-bar.is-active {
+    background-color: {{ section.settings.accent_color | default: '#B89768' }} !important;
+    width: 32px !important;
+  }
+
+  .lhs-capsule-arrows {
+    display: flex !important;
+    align-items: center !important;
+    gap: 4px !important;
+    border-left: 1px solid #D5D2CB !important;
+    padding-left: 10px !important;
+    margin-left: 2px !important;
+  }
+
+  .lhs-arrow-btn {
+    background: transparent !important;
+    border: none !important;
+    padding: 2px 4px !important;
+    margin: 0 !important;
+    color: #1C1B1A !important;
+    cursor: pointer !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    opacity: 0.75 !important;
+    transition: opacity 0.2s ease, color 0.2s ease, transform 0.2s ease !important;
+  }
+
+  .lhs-arrow-btn:hover {
+    opacity: 1 !important;
+    color: {{ section.settings.accent_color | default: '#B89768' }} !important;
+    transform: scale(1.1) !important;
+  }
+
+  .lhs-arrow-btn svg {
+    width: 12px !important;
+    height: 12px !important;
+    stroke: currentColor !important;
+  }
+
+  /* Mobile Pagination: Sequential dashes indicator aligned Left / Center / Right per schema */
+  @media (max-width: 767px) {
+    .lhs-capsule-counter {
+      bottom: clamp(18px, 4vw, 30px) !important;
+      padding: 6px 14px !important;
+      gap: 0 !important;
+      {% case section.settings.mobile_pagination_position %}
+        {% when 'left' %}
+          left: clamp(20px, 5vw, 32px) !important;
+          right: auto !important;
+          transform: none !important;
+        {% when 'right' %}
+          right: clamp(20px, 5vw, 32px) !important;
+          left: auto !important;
+          transform: none !important;
+        {% else %}
+          left: 50% !important;
+          right: auto !important;
+          transform: translateX(-50%) !important;
+      {% endcase %}
+    }
+
+    .lhs-capsule-arrows {
+      display: none !important;
+    }
+
+    .lhs-progress-bar {
+      width: 18px !important;
+      height: 2.5px !important;
+    }
+
+    .lhs-progress-bar.is-active {
+      width: 28px !important;
+    }
+  }
+{%- endstyle -%}
+
+{%- assign slide_count = section.blocks.size -%}
+{%- if slide_count > 0 -%}
+  <div class="luxury-hero-slider" id="LuxuryHero-{{ section.id }}" data-section-id="{{ section.id }}" data-autoplay="{{ section.settings.auto_rotate }}" data-duration="{{ section.settings.slide_duration | default: 6 }}">
+    <div class="lhs-track">
+      {%- for block in section.blocks -%}
+        <div class="lhs-slide {% if forloop.first %}is-active{% endif %}" data-slide-index="{{ forloop.index0 }}" {{ block.shopify_attributes }}>
+          <div class="lhs-bg-wrapper">
+            {%- if block.settings.image_mobile != blank -%}
+              <picture class="lhs-bg-picture">
+                <source media="(max-width: 767px)" srcset="{{ block.settings.image_mobile | image_url: width: 800 }} 800w, {{ block.settings.image_mobile | image_url: width: 1200 }} 1200w" sizes="100vw">
+                <img 
+                  src="{{ block.settings.image | default: block.settings.image_mobile | image_url: width: 1920 }}" 
+                  srcset="{{ block.settings.image | image_url: width: 1200 }} 1200w, {{ block.settings.image | image_url: width: 1920 }} 1920w, {{ block.settings.image | image_url: width: 2400 }} 2400w"
+                  sizes="100vw"
+                  alt="{{ block.settings.image.alt | default: block.settings.title | default: shop.name | escape }}" 
+                  class="lhs-bg-image" 
+                  loading="{% if forloop.first %}eager{% else %}lazy{% endif %}"
+                  fetchpriority="{% if forloop.first %}high{% else %}auto{% endif %}"
+                  decoding="{% if forloop.first %}sync{% else %}async{% endif %}"
+                  width="{{ block.settings.image.width | default: 1920 }}"
+                  height="{{ block.settings.image.height | default: 1080 }}"
+                >
+              </picture>
+            {%- elsif block.settings.image != blank -%}
+              <img 
+                src="{{ block.settings.image | image_url: width: 1920 }}" 
+                srcset="{{ block.settings.image | image_url: width: 1000 }} 1000w, {{ block.settings.image | image_url: width: 1600 }} 1600w, {{ block.settings.image | image_url: width: 1920 }} 1920w, {{ block.settings.image | image_url: width: 2400 }} 2400w"
+                sizes="100vw"
+                alt="{{ block.settings.image.alt | default: block.settings.title | default: shop.name | escape }}" 
+                class="lhs-bg-image" 
+                loading="{% if forloop.first %}eager{% else %}lazy{% endif %}"
+                fetchpriority="{% if forloop.first %}high{% else %}auto{% endif %}"
+                decoding="{% if forloop.first %}sync{% else %}async{% endif %}"
+                width="{{ block.settings.image.width }}"
+                height="{{ block.settings.image.height }}"
+              >
+            {%- endif -%}
+            <div class="lhs-overlay"></div>
+          </div>
+
+          {%- assign has_content = false -%}
+          {%- if block.settings.show_badge and block.settings.badge != blank -%}
+            {%- assign has_content = true -%}
+          {%- elsif block.settings.title != blank or block.settings.subtitle != blank or block.settings.button_label != blank -%}
+            {%- assign has_content = true -%}
+          {%- endif -%}
+
+          {%- if has_content -%}
+            <div class="lhs-content-container">
+              <div class="lhs-content-box">
+                {%- if block.settings.show_badge and block.settings.badge != blank -%}
+                  <div class="lhs-badge-chip">{{ block.settings.badge }}</div>
+                {%- endif -%}
+
+                {%- if block.settings.title != blank -%}
+                  <h1 class="lhs-title">{{ block.settings.title }}</h1>
+                {%- endif -%}
+
+                {%- if block.settings.subtitle != blank -%}
+                  <div class="lhs-subtitle">{{ block.settings.subtitle }}</div>
+                {%- endif -%}
+
+                {%- assign btn_label_clean = block.settings.button_label | strip -%}
+                {%- if btn_label_clean != blank -%}
+                  <a href="{{ block.settings.button_link | default: routes.all_products_collection_url }}" class="lhs-cta-btn">
+                    <span>{{ btn_label_clean }}</span>
+                  </a>
+                {%- endif -%}
+              </div>
+            </div>
+          {%- endif -%}
+        </div>
+      {%- endfor -%}
+    </div>
+
+    <!-- Slide Capsule Pagination (Desktop: --- | < >, Mobile: --- only) -->
+    {%- if slide_count > 1 -%}
+      <div class="lhs-capsule-counter" id="lhsCapsule-{{ section.id }}">
+        <div class="lhs-progress-bars" id="lhsProgress-{{ section.id }}">
+          {%- for i in (1..slide_count) -%}
+            <button type="button" class="lhs-progress-bar {% if forloop.first %}is-active{% endif %}" data-target-index="{{ forloop.index0 }}" aria-label="Slide {{ forloop.index }}"></button>
+          {%- endfor -%}
+        </div>
+        <div class="lhs-capsule-arrows">
+          <button type="button" class="lhs-arrow-btn" id="lhsPrev-{{ section.id }}" aria-label="Previous Slide">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+          </button>
+          <button type="button" class="lhs-arrow-btn" id="lhsNext-{{ section.id }}" aria-label="Next Slide">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+          </button>
+        </div>
+      </div>
+    {%- endif -%}
+  </div>
+
+  <script>
+    (function() {
+      function initHero() {
+        const sectionEl = document.getElementById('LuxuryHero-{{ section.id }}');
+        if (!sectionEl) return;
+        const slides = sectionEl.querySelectorAll('.lhs-slide');
+        const progressBars = sectionEl.querySelectorAll('.lhs-progress-bar');
+        const prevBtn = document.getElementById('lhsPrev-{{ section.id }}');
+        const nextBtn = document.getElementById('lhsNext-{{ section.id }}');
+        const total = slides.length;
+        if (total <= 1) return;
+
+        let currentIndex = 0;
+        let timer = null;
+        const autoPlay = sectionEl.getAttribute('data-autoplay') === 'true';
+        const duration = parseInt(sectionEl.getAttribute('data-duration') || '6', 10) * 1000;
+
+        function showSlide(idx) {
+          currentIndex = (idx + total) % total;
+          slides.forEach((s, i) => s.classList.toggle('is-active', i === currentIndex));
+          progressBars.forEach((p, i) => p.classList.toggle('is-active', i === currentIndex));
+        }
+
+        function startAuto() {
+          if (!autoPlay) return;
+          stopAuto();
+          timer = setInterval(() => showSlide(currentIndex + 1), duration);
+        }
+        function stopAuto() { if (timer) { clearInterval(timer); timer = null; } }
+
+        if (nextBtn) nextBtn.addEventListener('click', () => { showSlide(currentIndex + 1); startAuto(); });
+        if (prevBtn) prevBtn.addEventListener('click', () => { showSlide(currentIndex - 1); startAuto(); });
+        progressBars.forEach(b => b.addEventListener('click', function() {
+          showSlide(parseInt(this.getAttribute('data-target-index'), 10));
+          startAuto();
+        }));
+
+        sectionEl.addEventListener('mouseenter', stopAuto);
+        sectionEl.addEventListener('mouseleave', startAuto);
+
+        // Touch swiping on mobile
+        let touchStartX = 0;
+        let touchEndX = 0;
+        sectionEl.addEventListener('touchstart', function(e) {
+          touchStartX = e.changedTouches[0].screenX;
+        }, { passive: true });
+        sectionEl.addEventListener('touchend', function(e) {
+          touchEndX = e.changedTouches[0].screenX;
+          const diff = touchStartX - touchEndX;
+          if (Math.abs(diff) > 40) {
+            if (diff > 0) {
+              showSlide(currentIndex + 1);
+            } else {
+              showSlide(currentIndex - 1);
+            }
+            startAuto();
+          }
+        }, { passive: true });
+
+        startAuto();
+      }
+      if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', initHero);
+      else initHero();
+    })();
+  </script>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Luxury Hero Slider",
+  "tag": "section",
+  "class": "section-luxury-hero-slider",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Slider Dimensions & Autoplay"
+    },
+    {
+      "type": "select",
+      "id": "desktop_height",
+      "label": "Desktop Slider Height",
+      "options": [
+        { "value": "100vh", "label": "Full Viewport (100vh)" },
+        { "value": "90vh", "label": "Sub-Full (90vh)" },
+        { "value": "800px", "label": "Large Fixed (800px)" },
+        { "value": "650px", "label": "Medium Fixed (650px)" }
+      ],
+      "default": "100vh"
+    },
+    {
+      "type": "select",
+      "id": "mobile_height",
+      "label": "Mobile Slider Height",
+      "options": [
+        { "value": "100vh", "label": "Full Viewport (100vh)" },
+        { "value": "85vh", "label": "Sub-Full (85vh)" },
+        { "value": "550px", "label": "Fixed (550px)" }
+      ],
+      "default": "100vh"
+    },
+    {
+      "type": "checkbox",
+      "id": "auto_rotate",
+      "label": "Autoplay Slide Rotation",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "slide_duration",
+      "min": 3,
+      "max": 12,
+      "step": 1,
+      "unit": "s",
+      "label": "Slide Dwell Duration",
+      "default": 6
+    },
+    {
+      "type": "header",
+      "content": "Pagination Navigation"
+    },
+    {
+      "type": "select",
+      "id": "mobile_pagination_position",
+      "label": "Mobile Pagination Alignment",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "header",
+      "content": "Atmospheric Shadow Overlay"
+    },
+    {
+      "type": "color",
+      "id": "overlay_color",
+      "label": "Overlay Color",
+      "default": "#0A120E"
+    },
+    {
+      "type": "range",
+      "id": "overlay_opacity",
+      "min": 0,
+      "max": 80,
+      "step": 5,
+      "unit": "%",
+      "label": "Overlay Opacity",
+      "default": 40
+    },
+    {
+      "type": "header",
+      "content": "Typography & Text Composition"
+    },
+    {
+      "type": "select",
+      "id": "title_font_family",
+      "label": "Heading Typography",
+      "options": [
+        { "value": "cormorant", "label": "Cormorant Garamond (Haute Horlogerie)" },
+        { "value": "cinzel", "label": "Cinzel (Imperial Roman)" },
+        { "value": "georgia", "label": "Georgia (Classic Serif)" },
+        { "value": "sans_serif", "label": "Sans-serif (Modernist)" }
+      ],
+      "default": "cormorant"
+    },
+    {
+      "type": "range",
+      "id": "title_size_desktop",
+      "min": 32,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "label": "Heading Font Size (Desktop)",
+      "default": 52
+    },
+    {
+      "type": "range",
+      "id": "title_size_mobile",
+      "min": 24,
+      "max": 44,
+      "step": 2,
+      "unit": "px",
+      "label": "Heading Font Size (Mobile)",
+      "default": 32
+    },
+    {
+      "type": "select",
+      "id": "title_weight",
+      "label": "Heading Font Weight",
+      "options": [
+        { "value": "300", "label": "Light (300)" },
+        { "value": "400", "label": "Regular (400)" },
+        { "value": "500", "label": "Medium (500)" },
+        { "value": "600", "label": "Semi-bold (600)" }
+      ],
+      "default": "400"
+    },
+    {
+      "type": "select",
+      "id": "text_alignment",
+      "label": "Text Alignment",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "range",
+      "id": "content_padding_bottom",
+      "min": 20,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "label": "Bottom Margin Buffer",
+      "default": 50
+    },
+    {
+      "type": "header",
+      "content": "Editorial Color Palette"
+    },
+    {
+      "type": "color",
+      "id": "title_color",
+      "label": "H1 Heading Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "subtitle_color",
+      "label": "Subtitle Text Color",
+      "default": "#EFEFEF"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Champagne Gold Accent / Badge",
+      "default": "#B89768"
+    },
+    {
+      "type": "color",
+      "id": "btn_bg_color",
+      "label": "Primary CTA Background Color",
+      "default": "rgba(0, 0, 0, 0.2)"
+    },
+    {
+      "type": "color",
+      "id": "btn_border_color",
+      "label": "Primary CTA Border Color",
+      "default": "rgba(255, 255, 255, 0.5)"
+    },
+    {
+      "type": "color",
+      "id": "btn_text_color",
+      "label": "Primary CTA Text Color",
+      "default": "#FFFFFF"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "slide",
+      "name": "Slide",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Desktop Background Artwork"
+        },
+        {
+          "type": "image_picker",
+          "id": "image_mobile",
+          "label": "Dedicated Mobile Artwork (Optional)"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_badge",
+          "label": "Display Badge Chip",
+          "default": true
+        },
+        {
+          "type": "text",
+          "id": "badge",
+          "label": "Badge Chip Content"
+        },
+        {
+          "type": "textarea",
+          "id": "title",
+          "label": "Primary Title (Use <em>...</em> for champagne italic)"
+        },
+        {
+          "type": "richtext",
+          "id": "subtitle",
+          "label": "Subtitle Lead Text"
+        },
+        {
+          "type": "text",
+          "id": "button_label",
+          "label": "Button Label"
+        },
+        {
+          "type": "url",
+          "id": "button_link",
+          "label": "Button Link"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Luxury Hero Slider"
+    }
+  ]
+}
+{% endschema %}

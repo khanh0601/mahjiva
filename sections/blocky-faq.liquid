@@ -1,0 +1,1221 @@
+{%- comment -%}
+  © BlockyApps. You are permitted to use this content within your store. Redistribution or use in any other application is strictly prohibited. 
+  Unauthorized copying, distribution, or reproduction in any form will result in legal action.
+{% endcomment %}
+
+{% style %}
+#blocky-faq-{{ section.id }} {
+  padding-top: {{ section.settings.padding_top }}px;
+  padding-bottom: {{ section.settings.padding_bottom }}px;
+  background-color: {{ section.settings.background_color }};
+}
+#blocky-faq-{{ section.id }} .blocky-page-width {
+  max-width: {{ section.settings.page_width }}px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+  width: 100%;
+  box-sizing: border-box;
+}
+#blocky-faq-{{ section.id }} .blocky-flex-container {
+  display: flex;
+}
+#blocky-faq-{{ section.id }} .blocky-faq-table-under {
+  display: flex;
+  flex-direction: column-reverse;
+  align-items: center;
+  gap: 2.5rem;
+  width: 100%;
+}
+#blocky-faq-{{ section.id }} .blocky-faq-table-under > * {
+  width: 100% !important;
+  max-width: 100%;
+}
+#blocky-faq-{{ section.id }} .blocky-title {
+  font-family: var(--font-heading-family, serif);
+  font-size: {{ section.settings.title_size | default: 42 }}px;
+  color: {{ section.settings.title_color }};
+  text-align: {{ section.settings.desktop_content_alignment }};
+  margin: 0;
+  line-height: 1.25;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+#blocky-faq-{{ section.id }} .blocky-button,
+.blocky-faq .blocky-button {
+  background-color: #163327 !important;
+  color: #ffffff !important;
+  border: 1px solid #163327 !important;
+  box-shadow: 0 2px 6px rgba(22, 51, 39, 0.15);
+  font-weight: 600;
+  letter-spacing: 1.5px;
+}
+#blocky-faq-{{ section.id }} .blocky-button *,
+.blocky-faq .blocky-button * {
+  color: #ffffff !important;
+}
+#blocky-faq-{{ section.id }} .blocky-button:hover,
+.blocky-faq .blocky-button:hover {
+  background-color: #1f4534 !important;
+  color: #ffffff !important;
+  border-color: #1f4534 !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 4px 14px rgba(22, 51, 39, 0.28) !important;
+}
+#blocky-faq-{{ section.id }} .blocky-button:hover *,
+.blocky-faq .blocky-button:hover * {
+  color: #ffffff !important;
+}
+#blocky-faq-{{ section.id }} .blocky-media-text-container {
+  width: 100%;
+  text-align: {{ section.settings.desktop_content_alignment }};
+}
+#blocky-faq-{{ section.id }} .bky-accordion-carot {
+  color: var(--icon-color, #7F5260);
+  flex-shrink: 0;
+  margin-left: 1rem;
+}
+#blocky-faq-{{ section.id }} .blocky-faq-item {
+  border-radius: var(--faq-border-radius);
+  overflow: hidden;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+#blocky-faq-{{ section.id }} .blocky-faq-item:hover {
+  border-color: #d8d0c7;
+}
+#blocky-faq-{{ section.id }} .blocky-faq-question {
+  border-radius: var(--faq-border-radius);
+  transition: background-color 0.15s ease;
+}
+#blocky-faq-{{ section.id }} .blocky-faq-question:hover {
+  background-color: rgba(0, 0, 0, 0.015);
+  opacity: 1;
+}
+#blocky-faq-{{ section.id }} .blocky-faq-question.active {
+  border-radius: var(--faq-border-radius) var(--faq-border-radius) 0px 0px;
+}
+#blocky-faq-{{ section.id }} .blocky-faq-answer {
+  border-radius: 0px 0px var(--faq-border-radius) var(--faq-border-radius);
+}
+#blocky-faq-{{ section.id }} .blocky-faq-question-text {
+  font-family: var(--font-body-family, sans-serif);
+  font-size: {{ section.settings.question_font_size | default: 17 }}px;
+  font-weight: 500;
+  color: {{ section.settings.question_text_color }};
+  letter-spacing: 0.01em;
+}
+#blocky-faq-{{ section.id }} .blocky-faq-question-text span {
+  font-weight: 500;
+}
+@media screen and (max-width: 749px) {
+  #blocky-faq-{{ section.id }} {
+    padding-top: calc({{ section.settings.padding_top }}px * 0.75);
+    padding-bottom: calc({{ section.settings.padding_bottom }}px * 0.75);
+  }
+  #blocky-faq-{{ section.id }} .blocky-title {
+    font-size: calc({{ section.settings.title_size }}px * 0.85);
+    text-align: {{ section.settings.mobile_content_alignment }};
+  }
+  #blocky-faq-{{ section.id }} .blocky-media-text-container {
+    text-align: {{ section.settings.mobile_content_alignment }};
+  }
+}
+
+.blocky-faq-text-align-top {
+  align-self: flex-start;
+}
+.blocky-faq-text-align-middle {
+  align-self: center;
+}
+.blocky-faq-text-align-bottom {
+  align-self: flex-end;
+}
+@media screen and (max-width: 749px) {
+  .blocky-faq-flex {
+    flex-direction: column-reverse !important;
+    row-gap: 3rem !important;
+  }
+  .blocky-faq-flex > * {
+    width: 100% !important;
+    flex-grow: 1 !important;
+  }
+}
+@media screen and (min-width: 750px) {
+  .blocky-faq-table-under {
+    flex-direction: column-reverse;
+    row-gap: 4rem !important;
+  }
+}
+.blocky-faq-table-under > * {
+  width: 100% !important;
+  flex-grow: 1 !important;
+}
+
+@media screen and (min-width: 749px) {
+  .blocky-faq-columns {
+    display: flex;
+    gap: 2rem;
+  }
+}
+
+.blocky-faq-column {
+  flex:1; 
+  min-width:0;
+}
+
+.blocky-faq-question {
+  border: none;
+  width: 100%;
+  padding: var(--question-padding);
+  font-size: 16px;
+  text-align: left;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: all .125s ease-in-out;
+  font-size: calc(var(--question-font-size) * .85);
+  color: var(--question-text-color);
+  font-weight: 400 !important;
+}
+.blocky-faq-question.active {
+  border-radius: 5px 5px 0px 0px;
+}
+.blocky-faq-question.active .bky-accordion-carot {
+  transform: rotate(180deg);
+}
+.blocky-faq-question.active .bar-vertical {
+  display: none;
+}
+.bky-accordion-carot {
+  transition: transform .25s;
+}
+.blocky-faq-question:hover {
+  opacity: 0.65;
+}
+.blocky-faq-question-text {
+  display: flex; 
+  align-items: center; 
+  gap: .7rem;
+  font-weight: 400 !important;
+}
+.blocky-faq-question-text span,
+.blocky-faq-question-text strong,
+.blocky-faq-question-text b {
+  font-weight: 400 !important;
+}
+.blocky-faq-answer {
+  overflow: hidden;
+  border-radius: 0px 0px 5px 5px;
+  transition: all 0.125s ease-in-out;
+  padding: 0px var(--question-padding) 0px var(--question-padding);
+  max-height: 0;
+  font-size: calc(var(--answer-font-size) * .85);
+  color: var(--answer-text-color);
+}
+.blocky-faq-answer.active {
+  max-height: 1000px;
+  padding: var(--question-padding);
+  padding-top: 0px;
+}
+.blocky-faq-icon {
+  font-size: calc(var(--question-font-size)) !important;
+  height: calc(var(--question-font-size));
+  width: calc(var(--question-font-size));          
+}
+@media screen and (min-width: 750px) {
+  .blocky-faq-question {
+    font-size: var(--question-font-size);
+  }
+  .blocky-faq-answer {
+    font-size: var(--answer-font-size);
+  }
+  .blocky-faq-icon {
+    font-size: calc(var(--question-font-size) * 1.2) !important;
+    height: calc(var(--question-font-size) * 1.2);
+    width: calc(var(--question-font-size) * 1.2);
+  }
+}
+.blocky-accordion {
+  height: fit-content;
+}
+.blocky-accordion-row .blocky-faq-item {
+  margin-bottom: 1rem;  
+}
+.blocky-accordion-none .blocky-faq-question {
+  background-color: unset;
+}
+.blocky-accordion-border .blocky-faq-question,
+.blocky-accordion-none .blocky-faq-question {
+  background-color: unset;
+}
+.blocky-accordion-border .blocky-accordion-btn,
+.blocky-accordion-none .blocky-accordion-btn,
+.blocky-accordion-border .blocky-faq-answer,
+.blocky-accordion-none .blocky-faq-answer {
+  padding-right: 0px !important;
+  padding-left: 0px !important;
+}
+.blocky-accordion-border .blocky-faq-item {
+  border-top: solid 1px var(--question-text-color);
+}
+.blocky-accordion-border .blocky-faq-item:first-of-type {
+  border-top: none;
+}
+.blocky-accordion-border .blocky-faq-item:last-of-type {
+  border-bottom: none;
+}
+.blocky-accordion-section,
+.blocky-accordion-row .blocky-faq-item {
+  border: 1px solid var(--faq-border-color);
+}
+#blocky-faq-{{ section.id }} .blocky-accordion-section,
+#blocky-faq-{{ section.id }} .blocky-accordion-row .blocky-faq-item {
+  box-shadow: {% if section.settings.show_container_shadow %}rgba(0, 0, 0, 0.24) 0px 1px 4px, rgba(0, 0, 0, 0.16) 0px 3px 8px{% else %}none{% endif %};
+}
+.blocky-accordion-row .blocky-faq-item,
+.blocky-accordion-row .blocky-faq-question,
+.blocky-accordion-section,
+.blocky-accordion-section .blocky-faq-question {
+  background-color: var(--faq-background);     
+  border-radius: var(--faq-border-radius);
+}
+
+.blocky-faq .blocky-flex-container > .blocky-flex-child-small,
+.blocky-faq .blocky-flex-child-large + .blocky-flex-child {
+  width: 40%;
+}
+@media screen and (min-width: 750px) {
+  .blocky-faq .blocky-flex-child-extra-large + .blocky-flex-child {
+    width: 25%;
+    flex-grow: 0;
+  }
+}
+{% endstyle %}
+
+<script src="{{ 'blocky-accordion.js' | asset_url }}" defer></script>
+
+<div
+  id="blocky-faq-{{ section.id }}"
+  class="blocky blocky-padding background-wrapper blocky-faq"
+  style="--padding-top: {{ section.settings.padding_top }}; --padding-bottom: {{ section.settings.padding_bottom }}; --background-color: {{ section.settings.background_color }}; --section-page-width: {{ section.settings.page_width | divided_by: 10 }}rem; --text-container-gap: {{ section.settings.text_container_gap }};
+    --faq-background: {{ section.settings.faq_container_background }}; --question-padding: {{ section.settings.question_padding }}px; --faq-border-radius: {{ section.settings.faq_border_radius }}px;
+    --question-font-size: {{ section.settings.question_font_size }}px; --answer-font-size: {{ section.settings.answer_font_size }}px; --question-text-color: {{ section.settings.question_text_color }};
+    --answer-text-color: {{ section.settings.answer_text_color }};
+    --faq-border-color: {{ section.settings.faq_container_border_color }};
+  "
+>
+  <div class="blocky-page-width">
+    {%- liquid
+      assign is_product_page = false
+      if request.page_type == 'product' or template.name == 'product'
+        if product != blank
+          assign is_product_page = true
+        endif
+      endif
+
+      assign is_collection_page = false
+      if collection != blank or template.name == 'collection'
+        assign is_collection_page = true
+      endif
+
+      assign target_cat = ''
+      assign target_label = ''
+
+      if is_product_page and product
+        assign cat_name = ''
+        if product.category and product.category.name
+          assign cat_name = product.category.name | downcase
+        endif
+        assign p_type = product.type | downcase
+        assign p_handle = product.handle | downcase
+        assign p_title = product.title | downcase
+        
+        assign tag_str = ''
+        for t in product.tags
+          assign t_down = t | downcase
+          assign tag_str = tag_str | append: ' ' | append: t_down
+        endfor
+
+        assign coll_str = ''
+        for c in product.collections
+          assign c_h = c.handle | downcase
+          assign c_t = c.title | downcase
+          assign coll_str = coll_str | append: ' ' | append: c_h | append: ' ' | append: c_t
+        endfor
+
+        if p_type contains 'bag' or cat_name contains 'bag' or coll_str contains 'bag' or p_handle contains 'bag' or p_title contains 'bag' or tag_str contains 'bag' or p_type contains 'túi' or p_title contains 'túi' or coll_str contains 'tui'
+          assign target_cat = 'bags'
+          assign target_label = 'Tile Carrying Bags'
+        elsif p_type contains 'mat' or cat_name contains 'mat' or coll_str contains 'mat' or p_handle contains 'mat' or p_title contains 'mat' or tag_str contains 'mat' or p_type contains 'thảm' or p_title contains 'thảm' or coll_str contains 'tham'
+          assign target_cat = 'mats'
+          assign target_label = 'Table Playing Mats'
+        elsif p_type contains 'rack' or cat_name contains 'rack' or coll_str contains 'rack' or p_handle contains 'rack' or p_title contains 'rack' or tag_str contains 'rack' or p_type contains 'khay' or p_title contains 'khay'
+          assign target_cat = 'racks'
+          assign target_label = 'Mahjong Racks & Pushers'
+        elsif p_type contains 'dice' or cat_name contains 'dice' or coll_str contains 'dice' or p_handle contains 'dice' or p_title contains 'dice' or tag_str contains 'dice' or p_type contains 'xúc xắc' or p_title contains 'xúc xắc' or coll_str contains 'xuc-xac'
+          assign target_cat = 'dices'
+          assign target_label = 'Artisanal Dice Sets'
+        elsif p_type contains 'tile' or cat_name contains 'tile' or coll_str contains 'tile' or p_handle contains 'tile' or p_title contains 'tile' or tag_str contains 'tile' or p_type contains 'set' or coll_str contains 'set' or p_title contains 'set' or p_handle contains 'set' or p_type contains 'quân' or p_title contains 'quân'
+          assign target_cat = 'tiles'
+          assign target_label = 'American Mahjong Sets'
+        else
+          assign target_cat = ''
+          assign target_label = ''
+        endif
+      endif
+    -%}
+        <div class="blocky-flex-container blocky-flex-{{ section.settings.layout }}{% if section.settings.layout == 'under-text' %} blocky-faq-table-under{% endif %} blocky-faq-flex">
+      <div class="blocky-flex-child blocky-flex-child-{{ section.settings.desktop_faq_width }} blocky-justify-center">
+        <blocky-accordion class="blocky-accordion blocky-w-full blocky-accordion-{{ section.settings.faq_layout }}">
+          {% if section.settings.layout == 'under-text' and section.settings.columns > 1 %}
+            <div class="blocky-faq-columns">
+              {% assign questions = section.blocks | where: "type", "question" %}
+
+              {% assign col_count = section.settings.columns | default: 1 %}
+              {% assign total = questions.size %}
+
+              {% assign base = total | divided_by: col_count %}
+              {% assign extra = total | modulo: col_count %}
+
+              {% assign current_index = 0 %}
+
+              {% for col in (1..col_count) %}
+                {% if col <= extra %}
+                  {% assign items_in_col = base | plus: 1 %}
+                {% else %}
+                  {% assign items_in_col = base %}
+                {% endif %}
+
+                <div class="blocky-faq-column">
+                  {% assign last_index_for_col = current_index | plus: items_in_col | minus: 1 %}
+
+                  {% for i in (current_index..last_index_for_col) %}
+                    {% assign block = questions[i] %}
+                    {% if block %}
+                      <div class="blocky-faq-item blocky-overflow-hidden" {{ block.shopify_attributes }} style="--icon-color: {{ block.settings.icon_color }};">
+                        <button class="blocky-accordion-btn blocky-faq-question{% if block.settings.default_open %} active{% endif %}">
+                          <div class="blocky-faq-question-text" {% if section.settings.chevron_position == 'end' %}style="justify-content: space-between;"{% endif %}>
+                            {% if section.settings.chevron_position == 'front' %}
+                              {% if section.settings.chevron_style == 'plusminus' %}
+                                  <svg class="bky-accordion-carot" height="16" width="16" viewBox="0 0 16 16">
+                                    <rect x="3" y="7" width="10" height="2" fill="currentColor"/>
+                                    <rect class="bar-vertical" x="7" y="3" width="2" height="10" fill="currentColor"/>
+                                  </svg>
+                              {% else %}
+                                <svg class="bky-accordion-carot" height="16" width="16" viewBox="0 0 10 6"><path fill="currentColor" fill-rule="evenodd" d="M9.354.646a.5.5 0 0 0-.708 0L5 4.293 1.354.646a.5.5 0 0 0-.708.708l4 4a.5.5 0 0 0 .708 0l4-4a.5.5 0 0 0 0-.708" clip-rule="evenodd"/></svg>
+                              {% endif %}
+                            {% endif %}
+                            <div class="blocky-faq-question-text">
+                              {% if block.settings.image != null %}
+                                <img src="{{ block.settings.image | image_url }}" alt="{{ block.settings.question }}" class="blocky-faq-icon"/>
+                              {% elsif block.settings.icon_code != blank %}
+                                <span class="material-icons material-symbols-outlined blocky-icon blocky-faq-icon"> {{ block.settings.icon_code }} </span>
+                              {% endif %}
+                              <span>{{ block.settings.question | replace: '<strong>', '' | replace: '</strong>', '' | replace: '<b>', '' | replace: '</b>', '' }}</span>
+                            </div>
+                            {% if section.settings.chevron_position != 'front' %}
+                              {% if section.settings.chevron_style == 'plusminus' %}
+                                  <svg class="bky-accordion-carot" height="16" width="16" viewBox="0 0 16 16">
+                                    <rect x="3" y="7" width="10" height="2" fill="currentColor"/>
+                                    <rect class="bar-vertical" x="7" y="3" width="2" height="10" fill="currentColor"/>
+                                  </svg>
+                              {% else %}
+                                <svg class="bky-accordion-carot" height="16" width="16" viewBox="0 0 10 6"><path fill="currentColor" fill-rule="evenodd" d="M9.354.646a.5.5 0 0 0-.708 0L5 4.293 1.354.646a.5.5 0 0 0-.708.708l4 4a.5.5 0 0 0 .708 0l4-4a.5.5 0 0 0 0-.708" clip-rule="evenodd"/></svg>
+                              {% endif %}
+                            {% endif %}
+                          </div>
+                        </button>
+                        <div class="blocky-faq-answer{% if block.settings.default_open %} active{% endif %}">
+                          {{ block.settings.content }}
+                        </div>
+                      </div>
+                    {% endif %}
+                  {% endfor %}
+                  {% assign current_index = last_index_for_col | plus: 1 %}
+                </div>
+              {% endfor %}
+            </div>
+          {% else %}
+            {%- if target_cat != blank -%}
+                          {%- case target_cat -%}
+              {%- when 'tiles' -%}
+                {%- assign faq_sec_title = "A FEW THINGS BEFORE YOU PURCHASE" -%}
+                {%- assign q1 = "1. Are Mahjiva sets ready for American Mahjong?" -%}
+                {%- assign a1 = "<p>Yes! Every Mahjiva tile set is NMJL-ready for American Mahjong. For the exact tile count and configuration, check the Details section of your chosen set.</p>" -%}
+                {%- assign q2 = "2. What’s included with my set?" -%}
+                {%- assign a2 = "<p>Each product page lists the tiles and accessories included with your purchase. Mats, racks, bags, and dice featured in lifestyle photos are included only when specifically listed.</p>" -%}
+                {%- assign q3 = "3. Is the artwork engraved or printed?" -%}
+                {%- assign a3 = "<p>Most Mahjiva sets feature hand-engraved artwork, while select designs use high-quality printing. We stand behind the colorfast finish of both—our tile artwork is guaranteed not to fade. Check your chosen set’s description for its specific finish.</p>" -%}
+                {%- assign q4 = "4. Will the colors look exactly like the photos?" -%}
+                {%- assign a4 = "<p>Colors may appear slightly lighter or darker in person due to lighting, photography, and screen settings. These subtle differences are normal and don’t indicate fading or a product defect.</p>" -%}
+                {%- assign q5 = "5. When will my order arrive, and what if something isn’t right?" -%}
+                {%- assign a5 = "<p>All orders arrive within 1–2 weeks. If your order arrives damaged, incorrect, or has another issue, please contact us with your order number and photos. We offer returns and exchanges within 30 days of delivery.</p>" -%}
+              {%- when 'bags' -%}
+                {%- assign faq_sec_title = "A FEW THINGS BEFORE YOU PURCHASE" -%}
+                {%- assign q1 = "1. How do I know if my tiles will fit?" -%}
+                {%- assign a1 = "<p>Compare your tile set’s measurements with the dimensions and capacity listed on the product page. If you’re unsure, send us your tile size and the bag you’re considering—we’re happy to help.</p>" -%}
+                {%- assign q2 = "2. Are tiles or accessories included with the bag?" -%}
+                {%- assign a2 = "<p>Check the product description for exactly what’s included. Tiles, racks, dice, and other accessories shown in styled photos are included only when specifically listed.</p>" -%}
+                {%- assign q3 = "3. How should I clean my tile bag?" -%}
+                {%- assign a3 = "<p>For light cleaning, gently wipe with a soft, slightly damp cloth and let it air-dry before storing. Avoid soaking or harsh cleaners, and follow any care instructions provided for your chosen style.</p>" -%}
+                {%- assign q4 = "4. When will my order arrive?" -%}
+                {%- assign a4 = "<p>Orders arrive within 1–2 weeks. If you’re shopping for a gift or an upcoming gathering, contact us before ordering if you need help with timing.</p>" -%}
+                {%- assign q5 = "5. What if my bag arrives damaged or incorrect?" -%}
+                {%- assign a5 = "<p>Contact us with your order number and clear photos so we can help resolve the issue. We offer returns and exchanges within 30 days of delivery.</p>" -%}
+              {%- when 'mats' -%}
+                {%- assign faq_sec_title = "A FEW THINGS BEFORE YOU PURCHASE" -%}
+                {%- assign q1 = "1. Can I use a Mahjiva mat for American Mahjong?" -%}
+                {%- assign a1 = "<p>Yes! Our mats are designed for your Mahjong table and can be paired with your American Mahjong tiles and racks. Check each design’s photos to see its layout and any printed playing guides.</p>" -%}
+                {%- assign q2 = "2. How do I know if the mat will fit my table?" -%}
+                {%- assign a2 = "<p>Our current mats measure approximately 31.5 × 31.5 inches (80 × 80 cm). Measure your tabletop before ordering to make sure the mat can lie flat, with room for your preferred playing setup.</p>" -%}
+                {%- assign q3 = "3. How should I clean my mat?" -%}
+                {%- assign a3 = "<p>For light cleaning, gently wipe the water-resistant surface with a soft, damp cloth. Let your mat air-dry completely before storing, and avoid harsh cleaners or abrasive scrubbing.</p>" -%}
+                {%- assign q4 = "4. Can you help me coordinate a mat with my tiles?" -%}
+                {%- assign a4 = "<p>Absolutely. Choose a design that complements your tiles’ colors, or mix patterns for a more personal look. If you’re deciding between styles, contact us—we’re happy to help you put your table together.</p>" -%}
+                {%- assign q5 = "5. When will my mat arrive, and what if there’s an issue?" -%}
+                {%- assign a5 = "<p>Orders arrive within 1–2 weeks. We offer returns and exchanges within 30 days of delivery. If your mat arrives damaged or incorrect, contact us with your order number and clear photos so we can help.</p>" -%}
+              {%- when 'racks' -%}
+                {%- assign faq_sec_title = "A FEW THINGS BEFORE YOU PURCHASE" -%}
+                {%- assign q1 = "1. Will the racks fit my tiles?" -%}
+                {%- assign a1 = "<p>Check the rack dimensions on the product page against your tiles and playing row. If you’re unsure, send us your tile measurements—we’re happy to help.</p>" -%}
+                {%- assign q2 = "2. What does a pusher do?" -%}
+                {%- assign a2 = "<p>A pusher helps move your tile wall into position in one smooth motion. Your chosen product’s description explains whether pushers are included and how they attach.</p>" -%}
+                {%- assign q3 = "3. What’s included in the set?" -%}
+                {%- assign a3 = "<p>Each product page lists the number of racks and any included accessories. Tiles, mats, and other items shown in styled photos are included only when specifically listed.</p>" -%}
+                {%- assign q4 = "4. When will my order arrive?" -%}
+                {%- assign a4 = "<p>Orders arrive within 1–2 weeks. Shopping for a gift or an upcoming game night? Contact us before ordering if you need help with timing.</p>" -%}
+                {%- assign q5 = "5. What if something arrives damaged or incorrect?" -%}
+                {%- assign a5 = "<p>Contact us with your order number and clear photos so we can help resolve the issue. We offer returns and exchanges within 30 days of delivery.</p>" -%}
+              {%- when 'dices' -%}
+                {%- assign faq_sec_title = "A FEW THINGS BEFORE YOU PURCHASE" -%}
+                {%- assign q1 = "1. Can I use these dice with my existing Mahjong set?" -%}
+                {%- assign a1 = "<p>Yes! Our dice can be paired with your American Mahjong tiles. Choose a style you love, and check the product page for the dimensions before ordering.</p>" -%}
+                {%- assign q2 = "2. How many dice are used for Mahjong?" -%}
+                {%- assign a2 = "<p>American Mahjong typically uses two dice. Each product page lists the quantity included, so you’ll know exactly what you’re receiving and whether you’ll have extras.</p>" -%}
+                {%- assign q3 = "3. How should I care for my dice?" -%}
+                {%- assign a3 = "<p>Gently wipe with a soft cloth to keep them looking their best. Avoid harsh cleaners and abrasive scrubbing, and store them somewhere dry between games.</p>" -%}
+                {%- assign q4 = "4. When will my order arrive?" -%}
+                {%- assign a4 = "<p>Orders arrive within 1–2 weeks. If you’re shopping for a gift or a planned gathering, contact us before ordering if you need help with timing.</p>" -%}
+                {%- assign q5 = "5. What if my dice arrive damaged or incorrect?" -%}
+                {%- assign a5 = "<p>Contact us with your order number and clear photos so we can help resolve the issue. We offer returns and exchanges within 30 days of delivery.</p>" -%}
+            {%- endcase -%}
+
+              {%- assign q_list = "1,2,3,4,5" | split: "," -%}
+              {%- for item_num in q_list -%}
+                {%- assign q_text = "" -%}
+                {%- assign a_text = "" -%}
+                {%- case item_num -%}
+                  {%- when "1" -%}{%- assign q_text = q1 -%}{%- assign a_text = a1 -%}
+                  {%- when "2" -%}{%- assign q_text = q2 -%}{%- assign a_text = a2 -%}
+                  {%- when "3" -%}{%- assign q_text = q3 -%}{%- assign a_text = a3 -%}
+                  {%- when "4" -%}{%- assign q_text = q4 -%}{%- assign a_text = a4 -%}
+                  {%- when "5" -%}{%- assign q_text = q5 -%}{%- assign a_text = a5 -%}
+                {%- endcase -%}
+                {%- if q_text != blank -%}
+                  <div class="blocky-faq-item blocky-overflow-hidden">
+                    <button class="blocky-accordion-btn blocky-faq-question{% if forloop.first %} active{% endif %}">
+                      <div class="blocky-faq-question-text" {% if section.settings.chevron_position == 'end' %}style="justify-content: space-between;"{% endif %}>
+                        {% if section.settings.chevron_position == 'front' %}
+                          {% if section.settings.chevron_style == 'plusminus' %}
+                            <svg class="bky-accordion-carot" height="16" width="16" viewBox="0 0 16 16">
+                              <rect x="3" y="7" width="10" height="2" fill="currentColor"/>
+                              <rect class="bar-vertical" x="7" y="3" width="2" height="10" fill="currentColor"/>
+                            </svg>
+                          {% else %}
+                            <svg class="bky-accordion-carot" height="16" width="16" viewBox="0 0 10 6"><path fill="currentColor" fill-rule="evenodd" d="M9.354.646a.5.5 0 0 0-.708 0L5 4.293 1.354.646a.5.5 0 0 0-.708.708l4 4a.5.5 0 0 0 0-.708" clip-rule="evenodd"/></svg>
+                          {% endif %}
+                        {% endif %}
+                        <div class="blocky-faq-question-text">
+                          <span>{{ q_text }}</span>
+                        </div>
+                        {% if section.settings.chevron_position != 'front' %}
+                          {% if section.settings.chevron_style == 'plusminus' %}
+                            <svg class="bky-accordion-carot" height="16" width="16" viewBox="0 0 16 16">
+                              <rect x="3" y="7" width="10" height="2" fill="currentColor"/>
+                              <rect class="bar-vertical" x="7" y="3" width="2" height="10" fill="currentColor"/>
+                            </svg>
+                          {% else %}
+                            <svg class="bky-accordion-carot" height="16" width="16" viewBox="0 0 10 6"><path fill="currentColor" fill-rule="evenodd" d="M9.354.646a.5.5 0 0 0-.708 0L5 4.293 1.354.646a.5.5 0 0 0-.708.708l4 4a.5.5 0 0 0 0-.708" clip-rule="evenodd"/></svg>
+                          {% endif %}
+                        {% endif %}
+                      </div>
+                    </button>
+                    <div class="blocky-faq-answer{% if forloop.first %} active{% endif %}">
+                      {{ a_text }}
+                    </div>
+                  </div>
+                {%- endif -%}
+              {%- endfor -%}
+
+              {%- for block in section.blocks -%}
+                {%- assign b_id = block.id -%}
+                {%- unless b_id contains 'question_qDwyzL' or b_id contains 'question_KCjHrw' or b_id contains 'question_yjzJ7T' or b_id contains 'question_Rh4gde' or b_id contains 'question_mjJHCr' or b_id contains 'question_ret_6' or b_id contains 'question_con_7' -%}
+                  <div class="blocky-faq-item blocky-overflow-hidden" {{ block.shopify_attributes }} style="--icon-color: {{ block.settings.icon_color }};">
+                    <button class="blocky-accordion-btn blocky-faq-question{% if block.settings.default_open %} active{% endif %}">
+                      <div class="blocky-faq-question-text" {% if section.settings.chevron_position == 'end' %}style="justify-content: space-between;"{% endif %}>
+                        {% if section.settings.chevron_position == 'front' %}
+                          {% if section.settings.chevron_style == 'plusminus' %}
+                            <svg class="bky-accordion-carot" height="16" width="16" viewBox="0 0 16 16">
+                              <rect x="3" y="7" width="10" height="2" fill="currentColor"/>
+                              <rect class="bar-vertical" x="7" y="3" width="2" height="10" fill="currentColor"/>
+                            </svg>
+                          {% else %}
+                            <svg class="bky-accordion-carot" height="16" width="16" viewBox="0 0 10 6"><path fill="currentColor" fill-rule="evenodd" d="M9.354.646a.5.5 0 0 0-.708 0L5 4.293 1.354.646a.5.5 0 0 0-.708.708l4 4a.5.5 0 0 0 0-.708" clip-rule="evenodd"/></svg>
+                          {% endif %}
+                        {% endif %}
+                        <div class="blocky-faq-question-text">
+                          {% if block.settings.image != null %}
+                            <img src="{{ block.settings.image | image_url }}" alt="{{ block.settings.question }}" class="blocky-faq-icon"/>
+                          {% elsif block.settings.icon_code != blank %}
+                            <span class="material-icons material-symbols-outlined blocky-icon blocky-faq-icon"> {{ block.settings.icon_code }} </span>
+                          {% endif %}
+                          <span>{{ block.settings.question }}</span>
+                        </div>
+                        {% if section.settings.chevron_position != 'front' %}
+                          {% if section.settings.chevron_style == 'plusminus' %}
+                            <svg class="bky-accordion-carot" height="16" width="16" viewBox="0 0 16 16">
+                              <rect x="3" y="7" width="10" height="2" fill="currentColor"/>
+                              <rect class="bar-vertical" x="7" y="3" width="2" height="10" fill="currentColor"/>
+                            </svg>
+                          {% else %}
+                            <svg class="bky-accordion-carot" height="16" width="16" viewBox="0 0 10 6"><path fill="currentColor" fill-rule="evenodd" d="M9.354.646a.5.5 0 0 0-.708 0L5 4.293 1.354.646a.5.5 0 0 0-.708.708l4 4a.5.5 0 0 0 0-.708" clip-rule="evenodd"/></svg>
+                          {% endif %}
+                        {% endif %}
+                      </div>
+                    </button>
+                    <div class="blocky-faq-answer{% if block.settings.default_open %} active{% endif %}"> {{ block.settings.content }} </div>
+                  </div>
+                {%- endunless -%}
+              {%- endfor -%}
+
+                        {%- else -%}
+              {% assign q_blocks = section.blocks | where: "type", "question" %}
+              {% if q_blocks.size > 0 %}
+                {% for block in q_blocks %}
+                  <div class="blocky-faq-item blocky-overflow-hidden" {{ block.shopify_attributes }} style="--icon-color: {{ block.settings.icon_color }};">
+                    <button class="blocky-accordion-btn blocky-faq-question{% if block.settings.default_open %} active{% endif %}">
+                      <div class="blocky-faq-question-text" {% if section.settings.chevron_position == 'end' %}style="justify-content: space-between;"{% endif %}>
+                        {% if section.settings.chevron_position == 'front' %}
+                          {% if section.settings.chevron_style == 'plusminus' %}
+                            <svg class="bky-accordion-carot" height="16" width="16" viewBox="0 0 16 16">
+                              <rect x="3" y="7" width="10" height="2" fill="currentColor"/>
+                              <rect class="bar-vertical" x="7" y="3" width="2" height="10" fill="currentColor"/>
+                            </svg>
+                          {% else %}
+                            <svg class="bky-accordion-carot" height="16" width="16" viewBox="0 0 10 6"><path fill="currentColor" fill-rule="evenodd" d="M9.354.646a.5.5 0 0 0-.708 0L5 4.293 1.354.646a.5.5 0 0 0-.708.708l4 4a.5.5 0 0 0 .708 0l4-4a.5.5 0 0 0 0-.708" clip-rule="evenodd"/></svg>
+                          {% endif %}
+                        {% endif %}
+                        <div class="blocky-faq-question-text">
+                          {% if block.settings.image != null %}
+                            <img src="{{ block.settings.image | image_url }}" alt="{{ block.settings.question }}" class="blocky-faq-icon"/>
+                          {% elsif block.settings.icon_code != blank %}
+                            <span class="material-icons material-symbols-outlined blocky-icon blocky-faq-icon"> {{ block.settings.icon_code }} </span>
+                          {% endif %}
+                          <span>{{ block.settings.question | replace: '<strong>', '' | replace: '</strong>', '' | replace: '<b>', '' | replace: '</b>', '' }}</span>
+                        </div>
+                        {% if section.settings.chevron_position != 'front' %}
+                          {% if section.settings.chevron_style == 'plusminus' %}
+                            <svg class="bky-accordion-carot" height="16" width="16" viewBox="0 0 16 16">
+                              <rect x="3" y="7" width="10" height="2" fill="currentColor"/>
+                              <rect class="bar-vertical" x="7" y="3" width="2" height="10" fill="currentColor"/>
+                            </svg>
+                          {% else %}
+                            <svg class="bky-accordion-carot" height="16" width="16" viewBox="0 0 10 6"><path fill="currentColor" fill-rule="evenodd" d="M9.354.646a.5.5 0 0 0-.708 0L5 4.293 1.354.646a.5.5 0 0 0-.708.708l4 4a.5.5 0 0 0 .708 0l4-4a.5.5 0 0 0 0-.708" clip-rule="evenodd"/></svg>
+                          {% endif %}
+                        {% endif %}
+                      </div>
+                    </button>
+                    <div class="blocky-faq-answer{% if block.settings.default_open %} active{% endif %}"> {{ block.settings.content }} </div>
+                  </div>
+                {% endfor %}
+              {% else %}
+                {%- comment -%} 7 General store-wide questions from Toàn web sheet {%- endcomment -%}
+                <div class="blocky-faq-item blocky-overflow-hidden">
+                  <button class="blocky-accordion-btn blocky-faq-question active">
+                    <div class="blocky-faq-question-text" style="justify-content: space-between;">
+                      <div class="blocky-faq-question-text"><span>1. What products does MAHJIVA offer?</span></div>
+                      <svg class="bky-accordion-carot" height="16" width="16" viewBox="0 0 10 6"><path fill="currentColor" fill-rule="evenodd" d="M9.354.646a.5.5 0 0 0-.708 0L5 4.293 1.354.646a.5.5 0 0 0-.708.708l4 4a.5.5 0 0 0 .708 0l4-4a.5.5 0 0 0 0-.708" clip-rule="evenodd"/></svg>
+                    </div>
+                  </button>
+                  <div class="blocky-faq-answer active"><p>MAHJIVA offers a curated collection of American Mahjong essentials, including tile sets, tile bags, playing mats, racks, and dice. Each piece is thoughtfully selected to bring elegance, personality, and style to your Mahjong experience.</p></div>
+                </div>
+                <div class="blocky-faq-item blocky-overflow-hidden">
+                  <button class="blocky-accordion-btn blocky-faq-question">
+                    <div class="blocky-faq-question-text" style="justify-content: space-between;">
+                      <div class="blocky-faq-question-text"><span>2. Are MAHJIVA Mahjong tiles compatible with American Mahjong?</span></div>
+                      <svg class="bky-accordion-carot" height="16" width="16" viewBox="0 0 10 6"><path fill="currentColor" fill-rule="evenodd" d="M9.354.646a.5.5 0 0 0-.708 0L5 4.293 1.354.646a.5.5 0 0 0-.708.708l4 4a.5.5 0 0 0 .708 0l4-4a.5.5 0 0 0 0-.708" clip-rule="evenodd"/></svg>
+                    </div>
+                  </button>
+                  <div class="blocky-faq-answer"><p>Our American Mahjong tile sets are designed for American Mahjong play. Tile counts and included pieces may vary by collection, so please check the individual product description for details.</p></div>
+                </div>
+                <div class="blocky-faq-item blocky-overflow-hidden">
+                  <button class="blocky-accordion-btn blocky-faq-question">
+                    <div class="blocky-faq-question-text" style="justify-content: space-between;">
+                      <div class="blocky-faq-question-text"><span>3. Can I purchase Mahjong accessories separately?</span></div>
+                      <svg class="bky-accordion-carot" height="16" width="16" viewBox="0 0 10 6"><path fill="currentColor" fill-rule="evenodd" d="M9.354.646a.5.5 0 0 0-.708 0L5 4.293 1.354.646a.5.5 0 0 0-.708.708l4 4a.5.5 0 0 0 .708 0l4-4a.5.5 0 0 0 0-.708" clip-rule="evenodd"/></svg>
+                    </div>
+                  </button>
+                  <div class="blocky-faq-answer"><p>Absolutely! Our tile bags, mats, racks, and dice are available separately, making it easy to mix and match your favorites to create a Mahjong setup that reflects your personal style.</p></div>
+                </div>
+                <div class="blocky-faq-item blocky-overflow-hidden">
+                  <button class="blocky-accordion-btn blocky-faq-question">
+                    <div class="blocky-faq-question-text" style="justify-content: space-between;">
+                      <div class="blocky-faq-question-text"><span>4. How do I choose the right Mahjong products?</span></div>
+                      <svg class="bky-accordion-carot" height="16" width="16" viewBox="0 0 10 6"><path fill="currentColor" fill-rule="evenodd" d="M9.354.646a.5.5 0 0 0-.708 0L5 4.293 1.354.646a.5.5 0 0 0-.708.708l4 4a.5.5 0 0 0 .708 0l4-4a.5.5 0 0 0 0-.708" clip-rule="evenodd"/></svg>
+                    </div>
+                  </button>
+                  <div class="blocky-faq-answer"><p>Start with your favorite tile set, then explore our coordinating accessories to complete your table. Each product page includes details to help you find the perfect pieces for your Mahjong experience.</p></div>
+                </div>
+                <div class="blocky-faq-item blocky-overflow-hidden">
+                  <button class="blocky-accordion-btn blocky-faq-question">
+                    <div class="blocky-faq-question-text" style="justify-content: space-between;">
+                      <div class="blocky-faq-question-text"><span>5. How long does shipping take?</span></div>
+                      <svg class="bky-accordion-carot" height="16" width="16" viewBox="0 0 10 6"><path fill="currentColor" fill-rule="evenodd" d="M9.354.646a.5.5 0 0 0-.708 0L5 4.293 1.354.646a.5.5 0 0 0-.708.708l4 4a.5.5 0 0 0 .708 0l4-4a.5.5 0 0 0 0-.708" clip-rule="evenodd"/></svg>
+                    </div>
+                  </button>
+                  <div class="blocky-faq-answer"><p>Shipping times vary depending on your location and the items ordered. Please refer to our Shipping Policy for the latest processing times, delivery estimates, and shipping information.</p></div>
+                </div>
+                <div class="blocky-faq-item blocky-overflow-hidden">
+                  <button class="blocky-accordion-btn blocky-faq-question">
+                    <div class="blocky-faq-question-text" style="justify-content: space-between;">
+                      <div class="blocky-faq-question-text"><span>6. What if I need to return or exchange an item?</span></div>
+                      <svg class="bky-accordion-carot" height="16" width="16" viewBox="0 0 10 6"><path fill="currentColor" fill-rule="evenodd" d="M9.354.646a.5.5 0 0 0-.708 0L5 4.293 1.354.646a.5.5 0 0 0-.708.708l4 4a.5.5 0 0 0 .708 0l4-4a.5.5 0 0 0 0-.708" clip-rule="evenodd"/></svg>
+                    </div>
+                  </button>
+                  <div class="blocky-faq-answer"><p>We want you to feel confident shopping with MAHJIVA. Return and exchange eligibility is outlined in our Return & Refund Policy. Please review the policy for details before making a request.</p></div>
+                </div>
+                <div class="blocky-faq-item blocky-overflow-hidden">
+                  <button class="blocky-accordion-btn blocky-faq-question">
+                    <div class="blocky-faq-question-text" style="justify-content: space-between;">
+                      <div class="blocky-faq-question-text"><span>7. How can I contact MAHJIVA?</span></div>
+                      <svg class="bky-accordion-carot" height="16" width="16" viewBox="0 0 10 6"><path fill="currentColor" fill-rule="evenodd" d="M9.354.646a.5.5 0 0 0-.708 0L5 4.293 1.354.646a.5.5 0 0 0-.708.708l4 4a.5.5 0 0 0 .708 0l4-4a.5.5 0 0 0 0-.708" clip-rule="evenodd"/></svg>
+                    </div>
+                  </button>
+                  <div class="blocky-faq-answer"><p>We're always happy to help! Whether you have a product question, need assistance with an order, or want help choosing your Mahjong essentials, feel free to reach out through our Contact Us page.</p></div>
+                </div>
+              {% endif %}
+            {%- endif -%}
+          {% endif %}
+        </blocky-accordion>
+      </div>
+      {% unless section.settings.title == blank and section.settings.body_text == blank and section.settings.button_label == blank %}
+        <div class="blocky-flex-child blocky-faq-text-align-{{ section.settings.text_vertical_alignment }}">
+          <div class="blocky-media-text-container blocky-align-center blocky-text-container-desktop-{{ section.settings.desktop_content_alignment }} blocky-text-container-mobile-{{ section.settings.mobile_content_alignment }}">
+            {% if is_product_page and faq_sec_title != blank %}
+              <h2 class="blocky-title" style="--title-color: {{ section.settings.title_color }}; --title-size: {{ section.settings.title_size }}px;">
+                {{ faq_sec_title }}
+              </h2>
+            {% else %}
+              {% render 'blocky-titlel', block: section %}
+            {% endif %}
+            {% if target_label != blank and is_product_page %}
+              <div class="blocky-body-text" style="--body-color: {{ section.settings.body_color }};{% if section.settings.body_size %}--body-font-size: {{ section.settings.body_size }}px{% endif %}">
+                <p>Everything you need to know about our handcrafted {{ target_label | downcase }} and concierge care.</p>
+              </div>
+            {% else %}
+              {% render 'blocky-bodyl', block: section %}
+            {% endif %}
+            {% render 'blocky-buttonl', block: section %}          
+          </div>
+        </div>
+      {% endunless %}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+
+{
+  "name": "BKY - FAQ",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Text"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "title",
+      "default": "<b>Frequently Asked Questions</b>",
+      "label": "Title",
+      "info": "Leave the text blank to hide the title."
+    },
+    {
+      "type": "range",
+      "id": "title_size",
+      "label": "Title size",
+      "default": 40,
+      "min": 15,
+      "max": 80,
+      "unit": "px"
+    },
+    {
+      "type": "color",
+      "id": "title_color",
+      "label": "Title color",
+      "default": "#000000"
+    },
+    {
+      "type": "richtext",
+      "id": "body_text",
+      "default": "<p>Provide your customers with quick, easy-to-access answers, enhancing their understanding and satisfaction with your product</p>",
+      "label": "Body",
+      "info": "Leave the text blank to hide the body."
+    },
+    {
+      "type": "range",
+      "id": "body_size",
+      "label": "Body size",
+      "default": 16,
+      "min": 10,
+      "max": 30,
+      "unit": "px"
+    },
+    {
+      "type": "color",
+      "id": "body_color",
+      "label": "Body color",
+      "default": "#000000"
+    },
+    {
+      "type": "richtext",
+      "id": "button_label",
+      "label": "Button label",
+      "info": "Leave the text blank to hide the button.",
+      "default": "<p><b>Contact Us</b></p>"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button link"
+    },
+    {
+      "type": "select",
+      "id": "button_border_radius",
+      "label": "Button border radius",
+      "default": "curved",
+      "options": [
+        {
+          "value": "flat",
+          "label": "Flat"
+        },
+        {
+          "value": "curved",
+          "label": "Curved"
+        },
+        {
+          "value": "round",
+          "label": "Round"
+        },
+        {
+          "value": "extra-round",
+          "label": "Extra Round"
+        }
+      ]
+    },
+    {
+      "type": "color",
+      "id": "button_background_color",
+      "label": "Button background color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "button_text_color",
+      "label": "Button text color",
+      "default": "#FFFFFF"
+    },
+
+    
+
+    {
+      "type": "header",
+      "content": "FAQ Layout",
+    },
+    {
+      "type": "select",
+      "id": "faq_layout",
+      "label": "FAQ Layout",
+      "options": [
+        {
+          "value": "none",
+          "label": "No container"
+        },
+        {
+          "value": "border",
+          "label": "No container with borders"
+        },
+        {
+          "value": "row",
+          "label": "Row container"
+        },
+        {
+          "value": "section",
+          "label": "Section container"
+        }
+      ],
+      "default": "row"
+    },
+    {
+      "type": "range",
+      "id": "question_padding",
+      "min": 0,
+      "max": 30,
+      "step": 1,
+      "unit": "px",
+      "label": "Container padding",
+      "default": 15
+    },
+    {
+      "type": "range",
+      "id": "faq_border_radius",
+      "min": 0,
+      "max": 50,
+      "step": 1,
+      "unit": "px",
+      "label": "Container border radius",
+      "default": 15,
+      "visible_if": "{{ section.settings.faq_layout != 'none' and section.settings.faq_layout != 'border' }}"
+    },
+    {
+      "type": "color",
+      "id": "faq_container_background",
+      "label": "Container background",
+      "default": "#FFFFFF",
+      "visible_if": "{{ section.settings.faq_layout != 'none' and section.settings.faq_layout != 'border' }}"
+    },
+    {
+      "type": "color",
+      "id": "faq_container_border_color",
+      "label": "Container border color",
+      "default": "transparent",
+      "visible_if": "{{ section.settings.faq_layout != 'none' and section.settings.faq_layout != 'border' }}"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_container_shadow",
+      "label": "Show container shadow",
+      "default": true,
+      "visible_if": "{{ section.settings.faq_layout != 'none' and section.settings.faq_layout != 'border' }}"
+    },
+    
+    {
+      "type": "range",
+      "id": "question_font_size",
+      "min": 8,
+      "max": 30,
+      "step": 1,
+      "unit": "px",
+      "label": "Question font size",
+      "default": 18
+    },
+    {
+      "type": "range",
+      "id": "answer_font_size",
+      "min": 8,
+      "max": 30,
+      "step": 1,
+      "unit": "px",
+      "label": "Answer font size",
+      "default": 16
+    },
+    {
+      "type": "color",
+      "id": "question_text_color",
+      "label": "Question text color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "answer_text_color",
+      "label": "Answer text color",
+      "default": "#606367"
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "select",
+      "id": "layout",
+      "options": [
+        {
+          "value": "row",
+          "label": "FAQ first"
+        },
+        {
+          "value": "row-reverse",
+          "label": "Text first"
+        },
+       {
+          "value": "under-text",
+          "label": "FAQ under text"
+        }
+      ],
+      "default": "row-reverse",
+      "label": "FAQ placement",
+      "info": "FAQ is placed under text for mobile"
+    },
+      {
+        "type": "range",
+        "id": "columns",
+        "label": "Columns",
+        "min": 1,
+        "max": 3,
+        "step": 1,
+        "default": 1,
+        "visible_if": "{{ section.settings.layout == 'under-text' }}"
+      },
+    {
+      "type": "select",
+      "id": "desktop_faq_width",
+      "options": [
+        {
+          "value": "small",
+          "label": "Small"
+        },
+        {
+          "value": "medium",
+          "label": "Medium"
+        },
+        {
+          "value": "large",
+          "label": "Large"
+        },
+        {
+          "value": "extra-large",
+          "label": "Extra Large"
+        }
+      ],
+      "default": "large",
+      "label": "FAQ width",
+      "visible_if": "{{ section.settings.layout != 'under-text' }}"
+    },
+    {
+      "type": "select",
+      "id": "desktop_content_alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "left",
+      "label": "Desktop content alignment"
+    },
+    {
+      "type": "select",
+      "id": "mobile_content_alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "center",
+      "label": "Mobile content alignment"
+    },
+    {
+      "type": "select",
+      "id": "text_vertical_alignment",
+      "options": [
+        {
+          "value": "top",
+          "label": "Top"
+        },
+        {
+          "value": "middle",
+          "label": "Middle"
+        },
+        {
+          "value": "bottom",
+          "label": "Bottom"
+        }
+      ],
+      "default": "middle",
+      "label": "Text vertical alignment",
+      "visible_if": "{{ section.settings.layout != 'under-text' }}"
+    },
+    {
+      "type": "select",
+      "id": "chevron_style",
+      "label": "Chevron Style",
+      "options": [
+        { "value": "chevron", "label": "Chevron (Down/Up)" },
+        { "value": "plusminus", "label": "Plus/Minus" }
+      ],
+      "default": "chevron"
+    },
+    {
+      "type": "select",
+      "id": "chevron_position",
+      "label": "Chevron Position",
+      "options": [
+        { "value": "end", "label": "End" },
+        { "value": "front", "label": "Front" }
+      ],
+      "default": "end"
+    },
+    {
+      "type": "select",
+      "id": "text_container_gap",
+      "label": "Space between text",
+      "default": "2rem",
+      "options": [
+        {
+          "label": "None",
+          "value": "0"
+        },
+        {
+          "label": "Small",
+          "value": "0.5rem"
+        },
+        {
+          "label": "Medium",
+          "value": "1rem"
+        },
+        {
+          "label": "Large",
+          "value": "1.5rem"
+        },
+        {
+          "label": "Extra Large",
+          "value": "2rem"
+        },
+      ]
+    },  
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "default": "#FFFFFF"
+    },
+    
+    {
+      "type": "header",
+        "content": "Section size",
+    },
+    {
+      "type": "range",
+      "id": "page_width",
+      "unit": "px",
+      "step": 100,
+      "min": 800,
+      "max": 1600,
+      "default": 1200,
+      "label": "Section width",
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Top padding",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Bottom padding",
+      "default": 36
+    }
+  ],
+  "blocks": [
+    {
+      "type": "question",
+      "name": "Question",
+      "settings": [
+         
+        {
+          "type": "inline_richtext",
+          "id": "question",
+          "default": "<b>Question</b>",
+          "label": "Question",
+        },
+        {
+          "type": "richtext",
+          "id": "content",
+          "default": "<p>Answer</p>",
+          "label": "Answer",
+        },
+        {
+          "type": "checkbox",
+          "id": "default_open",
+          "default": false,
+          "label": "Opened by default"
+        },
+
+        {
+          "type": "header",
+          "content": "Image/Icon"
+        },
+        {
+           "type": "image_picker",
+           "id": "image",
+           "label": "Icon",
+        },
+        {
+          "type": "text",
+          "id": "icon_code",
+          "label": "Icon Code",
+          "info": "Get icon codes from [this link](https://fonts.google.com/icons/). example: 'check_circle', 'search', 'home'. For help adding icons, you can click [here](/admin/apps/blocky-apps/icons)"
+        },
+        {
+          "type": "color",
+          "id": "icon_color",
+          "label": "Icon Color",
+          "default": "#000000"
+        } 
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Blocky FAQ",
+      "blocks": [
+        {
+          "type": "question"
+        },
+        {
+          "type": "question"
+        },
+        {
+          "type": "question"
+        },
+        {
+          "type": "question"
+        },
+        {
+          "type": "question"
+        }
+      ]
+    }
+  ],
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  }
+}
+
+{% endschema %}

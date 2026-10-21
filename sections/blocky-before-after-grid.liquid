@@ -1,0 +1,738 @@
+{%- comment -%}
+  © BlockyApps. You are permitted to use this content within your store. Redistribution or use in any other application is strictly prohibited.
+  Unauthorized copying, distribution, or reproduction in any form will result in legal action.
+{% endcomment %}
+
+{% style %}
+  #blocky-before-after-comparison-grid-{{ section.id }} .bky-bacg-header {
+    margin-bottom: var(--bky-bacg-header-grid-spacing);
+    gap: var(--bky-bacg-title-subtitle-spacing);
+  }
+
+  #blocky-before-after-comparison-grid-{{ section.id }} .bky-bacg-grid {
+    display: grid;
+    grid-template-columns: repeat(var(--bky-bacg-desktop-columns), minmax(0, 1fr));
+    column-gap: var(--bky-bacg-grid-column-gap);
+    row-gap: var(--bky-bacg-grid-row-gap);
+    align-items: stretch;
+  }
+
+  #blocky-before-after-comparison-grid-{{ section.id }} .bky-bacg-card {
+    position: relative;
+    aspect-ratio: var(--bky-bacg-card-aspect-ratio);
+    border-radius: var(--bky-bacg-card-radius);
+    overflow: hidden;
+  }
+
+  #blocky-before-after-comparison-grid-{{ section.id }} .bky-bacg-card img,
+  #blocky-before-after-comparison-grid-{{ section.id }} .bky-bacg-card svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: var(--bky-bacg-image-fit);
+  }
+
+  #blocky-before-after-comparison-grid-{{ section.id }} .bky-bacg-badge {
+    position: absolute;
+    bottom: var(--bky-bacg-badge-bottom);
+    left: var(--bky-bacg-badge-left);
+    right: var(--bky-bacg-badge-right);
+    transform: var(--bky-bacg-badge-transform);
+    display: inline-flex;
+    align-items: center;
+    gap: calc(var(--bky-bacg-badge-size) * 0.5);
+    max-width: calc(100% - 24px);
+    min-height: calc(var(--bky-bacg-badge-size) * 2.5);
+    padding: calc(var(--bky-bacg-badge-size) * 0.38) calc(var(--bky-bacg-badge-size) * 0.88) calc(var(--bky-bacg-badge-size) * 0.38) calc(var(--bky-bacg-badge-size) * 0.5);
+    border-radius: 999px;
+    background: var(--bky-bacg-badge-bg);
+    color: var(--bky-bacg-badge-text-color);
+    font-size: var(--bky-bacg-badge-size);
+    line-height: 1.1;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+
+  #blocky-before-after-comparison-grid-{{ section.id }} .bky-bacg-badge-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: calc(var(--bky-bacg-badge-size) * 1.5);
+    height: calc(var(--bky-bacg-badge-size) * 1.5);
+    flex: 0 0 calc(var(--bky-bacg-badge-size) * 1.5);
+    border-radius: 50%;
+    background: var(--bky-bacg-icon-bg);
+    color: var(--bky-bacg-icon-color);
+  }
+
+  #blocky-before-after-comparison-grid-{{ section.id }} .bky-bacg-badge-icon svg {
+    width: calc(var(--bky-bacg-badge-size) * 0.88);
+    height: calc(var(--bky-bacg-badge-size) * 0.88);
+    display: block;
+  }
+
+  #blocky-before-after-comparison-grid-{{ section.id }} .bky-bacg-badge-icon img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+  }
+
+  #blocky-before-after-comparison-grid-{{ section.id }} .bky-bacg-badge-icon--image {
+    background: transparent;
+  }
+
+  @media screen and (max-width: 989px) {
+    #blocky-before-after-comparison-grid-{{ section.id }} .bky-bacg-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media screen and (max-width: 749px) {
+    #blocky-before-after-comparison-grid-{{ section.id }} .bky-bacg-grid {
+      grid-template-columns: repeat(var(--bky-bacg-mobile-columns), minmax(0, 1fr));
+      column-gap: var(--bky-bacg-grid-column-gap-mobile);
+      row-gap: var(--bky-bacg-grid-row-gap-mobile);
+    }
+
+    #blocky-before-after-comparison-grid-{{ section.id }} .bky-bacg-card {
+      order: var(--bky-bacg-mobile-order, 0);
+    }
+
+    #blocky-before-after-comparison-grid-{{ section.id }} .bky-bacg-card {
+      aspect-ratio: var(--bky-bacg-card-aspect-ratio-mobile);
+    }
+  }
+{% endstyle %}
+
+<div
+  id="blocky-before-after-comparison-grid-{{ section.id }}"
+  class="blocky blocky-before-after-comparison-grid blocky-padding background-wrapper"
+  style="
+    --padding-top: {{ section.settings.padding_top }};
+    --padding-bottom: {{ section.settings.padding_bottom }};
+    --background-color: {{ section.settings.background_color }};
+    --section-page-width: {{ section.settings.page_width }}px;
+    --title-color: {{ section.settings.title_color }};
+    --title-size: {{ section.settings.title_size }};
+    --body-color: {{ section.settings.subtitle_color }};
+    --body-font-size: {{ section.settings.subtitle_size }}px;
+    --bky-bacg-title-subtitle-spacing: {{ section.settings.title_subtitle_spacing }}px;
+    --bky-bacg-header-grid-spacing: {{ section.settings.header_grid_spacing }}px;
+    --bky-bacg-grid-column-gap: {{ section.settings.grid_gap_horizontal_desktop }}px;
+    --bky-bacg-grid-row-gap: {{ section.settings.grid_gap_vertical_desktop }}px;
+    --bky-bacg-grid-column-gap-mobile: {{ section.settings.grid_gap_horizontal_mobile }}px;
+    --bky-bacg-grid-row-gap-mobile: {{ section.settings.grid_gap_vertical_mobile }}px;
+    --bky-bacg-desktop-columns: {{ section.settings.columns_desktop }};
+    --bky-bacg-mobile-columns: {{ section.settings.columns_mobile }};
+    --bky-bacg-card-radius: {{ section.settings.card_border_radius }}px;
+    --bky-bacg-card-aspect-ratio: {{ section.settings.card_height }};
+    --bky-bacg-card-aspect-ratio-mobile: {{ section.settings.card_height_mobile }};
+    --bky-bacg-image-fit: {{ section.settings.image_fit }};
+    --bky-bacg-badge-bottom: {{ section.settings.badge_height_position }}%;
+    --bky-bacg-badge-left: {% if section.settings.badge_position == 'right' %}auto{% elsif section.settings.badge_position == 'middle' %}50%{% else %}16px{% endif %};
+    --bky-bacg-badge-right: {% if section.settings.badge_position == 'right' %}16px{% else %}auto{% endif %};
+    --bky-bacg-badge-transform: {% if section.settings.badge_position == 'middle' %}translateX(-50%){% endif %};
+    --bky-bacg-badge-size: {{ section.settings.badge_size }}px;
+    --bky-bacg-badge-bg: {{ section.settings.badge_background_color }};
+    --bky-bacg-icon-color: {{ section.settings.badge_icon_color }};
+  "
+>
+  <div class="blocky-page-width">
+    {%- if section.settings.title != blank or section.settings.subtitle != blank -%}
+      <div class="bky-bacg-header blocky-media-text-container blocky-text-container-desktop-{{ section.settings.desktop_content_alignment }} blocky-text-container-mobile-{{ section.settings.mobile_content_alignment }}">
+        {%- if section.settings.title != blank -%}
+          <h2 class="blocky-title">{{ section.settings.title }}</h2>
+        {%- endif -%}
+
+        {%- if section.settings.subtitle != blank -%}
+          <div class="blocky-body-text">{{ section.settings.subtitle }}</div>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+
+    <div class="bky-bacg-grid">
+      {%- liquid
+        assign before_count = 0
+        assign after_count = 0
+      -%}
+
+      {%- for block in section.blocks -%}
+        {%- liquid
+          assign badge_type = block.settings.badge_type
+          assign badge_icon = 'x'
+          assign image_class = 'blocky-image-' | append: section.settings.image_fit
+          assign mobile_order = forloop.index
+
+          if badge_type == 'after'
+            assign badge_text = section.settings.after_badge_text
+            assign badge_icon = 'check'
+          else
+            assign badge_text = section.settings.before_badge_text
+          endif
+
+          if badge_text == blank
+            assign badge_text = badge_type | capitalize
+          endif
+
+          if section.settings.mobile_card_order == 'paired_by_badge'
+            if badge_type == 'after'
+              assign after_count = after_count | plus: 1
+              assign mobile_order = after_count | times: 2
+            else
+              assign before_count = before_count | plus: 1
+              assign mobile_order = before_count | times: 2 | minus: 1
+            endif
+          endif
+        -%}
+
+        <div
+          class="bky-bacg-card blocky-overflow-hidden{% if section.settings.card_shadow %} blocky-shadow{% endif %}"
+          style="--bky-bacg-mobile-order: {{ mobile_order }};"
+          {{ block.shopify_attributes }}
+        >
+          {%- if block.settings.image != blank -%}
+            {{
+              block.settings.image
+              | image_url: width: 1200
+              | image_tag:
+                loading: 'lazy',
+                widths: '375, 550, 750, 900, 1100, 1200',
+                sizes: '(min-width: 990px) 33vw, (min-width: 750px) 50vw, 100vw',
+                alt: badge_text,
+                class: image_class
+            }}
+          {%- else -%}
+            {{ 'lifestyle-1' | placeholder_svg_tag: 'placeholder-svg' }}
+          {%- endif -%}
+
+          <div
+            class="bky-bacg-badge{% if section.settings.badge_shadow %} blocky-shadow{% endif %}"
+            style="
+              --bky-bacg-badge-text-color: {% if badge_type == 'after' %}{{ section.settings.after_badge_text_color }}{% else %}{{ section.settings.before_badge_text_color }}{% endif %};
+              --bky-bacg-icon-bg: {% if badge_type == 'after' %}{{ section.settings.after_icon_background_color }}{% else %}{{ section.settings.before_icon_background_color }}{% endif %};
+            "
+          >
+            <span class="bky-bacg-badge-icon{% if block.settings.badge_icon_image != blank %} bky-bacg-badge-icon--image{% endif %}" aria-hidden="true">
+              {%- if block.settings.badge_icon_image != blank -%}
+                {{
+                  block.settings.badge_icon_image
+                  | image_url: width: 80
+                  | image_tag:
+                    loading: 'lazy',
+                    widths: '40, 60, 80',
+                    alt: ''
+                }}
+              {%- else -%}
+                {%- case badge_icon -%}
+                  {%- when 'check' -%}
+                    <svg viewBox="0 0 16 16" fill="none" focusable="false">
+                      <path d="M3.25 8.25 6.5 11.5l6.25-7" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                  {%- when 'plus' -%}
+                    <svg viewBox="0 0 16 16" fill="none" focusable="false">
+                      <path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/>
+                    </svg>
+                  {%- else -%}
+                    <svg viewBox="0 0 16 16" fill="none" focusable="false">
+                      <path d="m4 4 8 8M12 4l-8 8" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/>
+                    </svg>
+                {%- endcase -%}
+              {%- endif -%}
+            </span>
+            <span>{{ badge_text }}</span>
+          </div>
+        </div>
+      {%- endfor -%}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "BKY - Before After Grid",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "The Science of Better Sleep"
+    },
+    {
+      "type": "range",
+      "id": "title_size",
+      "label": "Title size",
+      "min": 24,
+      "max": 72,
+      "step": 1,
+      "default": 36,
+      "unit": "px"
+    },
+    {
+      "type": "color",
+      "id": "title_color",
+      "label": "Title color",
+      "default": "#4B4386"
+    },
+    {
+      "type": "richtext",
+      "id": "subtitle",
+      "label": "Subtitle",
+      "default": "<p>Experience the transformative difference between standard cushioning and clinical-grade ergonomic support.</p>"
+    },
+    {
+      "type": "range",
+      "id": "subtitle_size",
+      "label": "Subtitle size",
+      "min": 12,
+      "max": 28,
+      "step": 1,
+      "default": 16,
+      "unit": "px"
+    },
+    {
+      "type": "color",
+      "id": "subtitle_color",
+      "label": "Subtitle color",
+      "default": "#333333"
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "select",
+      "id": "desktop_content_alignment",
+      "label": "Desktop alignment",
+      "default": "center",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "mobile_content_alignment",
+      "label": "Mobile alignment",
+      "default": "center",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "card_height",
+      "label": "Card aspect ratio",
+      "min": 0.3,
+      "max": 3,
+      "step": 0.1,
+      "default": 1
+    },
+    {
+      "type": "range",
+      "id": "card_height_mobile",
+      "label": "Card aspect ratio on mobile",
+      "min": 0.3,
+      "max": 3,
+      "step": 0.1,
+      "default": 1
+    },
+    {
+      "type": "range",
+      "id": "card_border_radius",
+      "label": "Card border radius",
+      "min": 0,
+      "max": 40,
+      "step": 1,
+      "default": 14,
+      "unit": "px"
+    },
+    {
+      "type": "checkbox",
+      "id": "card_shadow",
+      "label": "Show card shadow",
+      "default": false
+    },
+    {
+      "type": "select",
+      "id": "columns_desktop",
+      "label": "Cards per row on desktop",
+      "default": "3",
+      "options": [
+        {
+          "value": "1",
+          "label": "1"
+        },
+        {
+          "value": "2",
+          "label": "2"
+        },
+        {
+          "value": "3",
+          "label": "3"
+        },
+        {
+          "value": "4",
+          "label": "4"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "columns_mobile",
+      "label": "Cards per row on mobile",
+      "default": "1",
+      "options": [
+        {
+          "value": "1",
+          "label": "1"
+        },
+        {
+          "value": "2",
+          "label": "2"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "image_fit",
+      "label": "Image fit",
+      "default": "cover",
+      "options": [
+        {
+          "value": "cover",
+          "label": "Cover"
+        },
+        {
+          "value": "contain",
+          "label": "Contain"
+        },
+        {
+          "value": "fill",
+          "label": "Fill"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "mobile_card_order",
+      "label": "Mobile card order",
+      "default": "paired_by_badge",
+      "options": [
+        {
+          "value": "paired_by_badge",
+          "label": "Pair Before/After by badge"
+        },
+        {
+          "value": "editor_order",
+          "label": "Editor order"
+        }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "grid_gap_horizontal_desktop",
+      "label": "Horizontal grid gap on desktop",
+      "min": 0,
+      "max": 48,
+      "step": 1,
+      "default": 20,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "grid_gap_vertical_desktop",
+      "label": "Vertical grid gap on desktop",
+      "min": 0,
+      "max": 48,
+      "step": 1,
+      "default": 20,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "grid_gap_horizontal_mobile",
+      "label": "Horizontal grid gap on mobile",
+      "min": 0,
+      "max": 48,
+      "step": 1,
+      "default": 20,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "grid_gap_vertical_mobile",
+      "label": "Vertical grid gap on mobile",
+      "min": 0,
+      "max": 48,
+      "step": 1,
+      "default": 20,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "title_subtitle_spacing",
+      "label": "Title/subtitle spacing",
+      "min": 0,
+      "max": 40,
+      "step": 1,
+      "default": 10,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "header_grid_spacing",
+      "label": "Header/grid spacing",
+      "min": 0,
+      "max": 80,
+      "step": 1,
+      "default": 32,
+      "unit": "px"
+    },
+    {
+      "type": "header",
+      "content": "Badge"
+    },
+    {
+      "type": "select",
+      "id": "badge_position",
+      "label": "Badge position",
+      "default": "middle",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "middle",
+          "label": "Middle"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "badge_height_position",
+      "label": "Badge height position",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "default": 86,
+      "unit": "%"
+    },
+    {
+      "type": "range",
+      "id": "badge_size",
+      "label": "Badge size",
+      "min": 10,
+      "max": 28,
+      "step": 1,
+      "default": 16,
+      "unit": "px"
+    },
+    {
+      "type": "checkbox",
+      "id": "badge_shadow",
+      "label": "Show badge shadow",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "before_badge_text",
+      "label": "Before badge text",
+      "default": "Before"
+    },
+    {
+      "type": "text",
+      "id": "after_badge_text",
+      "label": "After badge text",
+      "default": "After"
+    },
+    {
+      "type": "color",
+      "id": "badge_background_color",
+      "label": "Badge background color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "badge_icon_color",
+      "label": "Badge icon color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "before_icon_background_color",
+      "label": "Before icon circle color",
+      "default": "#E84F64"
+    },
+    {
+      "type": "color",
+      "id": "before_badge_text_color",
+      "label": "Before badge text color",
+      "default": "#1F1F1F"
+    },
+    {
+      "type": "color",
+      "id": "after_icon_background_color",
+      "label": "After icon circle color",
+      "default": "#30BFA5"
+    },
+    {
+      "type": "color",
+      "id": "after_badge_text_color",
+      "label": "After badge text color",
+      "default": "#1F1F1F"
+    },
+    {
+      "type": "header",
+      "content": "Section background"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "default": "#F0EFFB"
+    },
+    {
+      "type": "header",
+      "content": "Section size"
+    },
+    {
+      "type": "range",
+      "id": "page_width",
+      "label": "Section width",
+      "min": 800,
+      "max": 1600,
+      "step": 100,
+      "default": 1400,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Top padding",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "default": 60,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Bottom padding",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "default": 60,
+      "unit": "px"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "comparison_card",
+      "name": "Comparison card",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "select",
+          "id": "badge_type",
+          "label": "Badge type",
+          "default": "before",
+          "options": [
+            {
+              "value": "before",
+              "label": "Before"
+            },
+            {
+              "value": "after",
+              "label": "After"
+            }
+          ]
+        },
+        {
+          "type": "image_picker",
+          "id": "badge_icon_image",
+          "label": "Badge icon override (optional)"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "BKY - Before After Grid",
+      "blocks": [
+        {
+          "type": "comparison_card",
+          "settings": {
+            "badge_type": "before"
+          }
+        },
+        {
+          "type": "comparison_card",
+          "settings": {
+            "badge_type": "before"
+          }
+        },
+        {
+          "type": "comparison_card",
+          "settings": {
+            "badge_type": "before"
+          }
+        },
+        {
+          "type": "comparison_card",
+          "settings": {
+            "badge_type": "after"
+          }
+        },
+        {
+          "type": "comparison_card",
+          "settings": {
+            "badge_type": "after"
+          }
+        },
+        {
+          "type": "comparison_card",
+          "settings": {
+            "badge_type": "after"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,1414 @@
+{%- comment -%}
+  -----------------------------------------------------------------------------
+  SECTION: ATELIER LUXURY FOOTER ("The Maison Atelier")
+  - Warm Luxury Linen/Ivory Background (#F7F4EE) for high contrast and readability
+  - Synchronized Header Logo (settings.logo / MAHJIVA Emerald Wordmark)
+  - Layout Inspired by Reference (Follow on Shop, Payment Icons, Trustpilot, DMCA)
+  - 4 Navigation Columns: Information, Customer Service, Policies, Help & Contact
+  - Real Support & Contact Information: 24/7 Support, Email, Phone/WhatsApp
+  - Submit a ticket CTA button
+  - Bottom Bar: Shopify Native Currency/Country Selector, Copyright, Social Icons
+  -----------------------------------------------------------------------------
+{%- endcomment -%}
+
+{%- style -%}
+  #AtelierFooter-{{ section.id }} {
+    background-color: {{ section.settings.bg_color | default: '#F7F4EE' }};
+    color: {{ section.settings.text_color | default: '#2B2927' }};
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    position: relative;
+    border-top: 1px solid rgba(22, 51, 39, 0.12);
+    overflow: hidden;
+  }
+
+  #AtelierFooter-{{ section.id }} * {
+    box-sizing: border-box;
+  }
+
+  .af-container {
+    max-width: {{ section.settings.container_max_width | default: 1360 }}px;
+    margin: 0 auto;
+    padding-top: {{ section.settings.padding_top | default: 40 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | default: 56 }}px;
+    padding-left: 28px;
+    padding-right: 28px;
+  }
+
+  /* Main 5-Column Grid */
+  .af-main-grid {
+    display: grid;
+    grid-template-columns: 1.3fr 1fr 1fr 1fr 1.35fr;
+    gap: 48px 44px;
+    align-items: flex-start;
+  }
+
+  @media (max-width: 1280px) {
+    .af-main-grid {
+      grid-template-columns: 1.3fr 1fr 1fr 1fr 1.35fr;
+      gap: 40px 32px;
+    }
+  }
+
+  @media (max-width: 1100px) {
+    .af-main-grid {
+      grid-template-columns: 1.35fr 1fr 1fr 1fr;
+      gap: 36px 28px;
+    }
+    .af-col-contact {
+      grid-column: span 4;
+      margin-top: 24px;
+    }
+  }
+
+  @media (max-width: 900px) {
+    .af-main-grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 36px 28px;
+    }
+    .af-col-brand {
+      grid-column: span 2;
+    }
+    .af-col-contact {
+      grid-column: span 2;
+      margin-top: 0;
+    }
+  }
+
+  @media (max-width: 600px) {
+    .af-main-grid {
+      grid-template-columns: 1fr;
+      gap: 32px;
+    }
+    .af-col-brand,
+    .af-col-contact {
+      grid-column: span 1;
+    }
+    .af-container {
+      padding-top: {{ section.settings.padding_top | default: 40 | times: 0.75 | round }}px;
+      padding-bottom: {{ section.settings.padding_bottom | default: 56 | times: 0.65 | round }}px;
+      padding-left: 18px;
+      padding-right: 18px;
+    }
+  }
+
+  /* Column 1: Brand & Badges */
+  .af-col-brand {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .af-logo-link {
+    display: inline-block;
+    text-decoration: none;
+    line-height: 1;
+  }
+
+  .af-logo-img {
+    max-width: 145px;
+    height: auto;
+    display: block;
+    object-fit: contain;
+  }
+
+  .af-logo-text {
+    font-family: "Cormorant Garamond", Georgia, serif;
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    color: #163327;
+    text-transform: uppercase;
+  }
+
+  /* About Mahjiva Block */
+  .af-about-block {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 2px;
+    margin-bottom: 2px;
+  }
+
+  .af-about-title {
+    font-family: "Cormorant Garamond", Georgia, serif;
+    font-size: 18px;
+    font-weight: 700;
+    color: #163327;
+    margin: 0;
+    letter-spacing: -0.01em;
+  }
+
+  .af-about-text {
+    font-size: 12.5px;
+    line-height: 1.6;
+    color: #5A5650;
+    margin: 0;
+  }
+
+  /* Follow on Shop Button */
+  .af-shop-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    background-color: #5A31F4;
+    color: #FFFFFF !important;
+    text-decoration: none !important;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 7px 16px;
+    border-radius: 999px;
+    width: fit-content;
+    box-shadow: 0 3px 10px rgba(90, 49, 244, 0.22);
+    transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+  }
+
+  .af-shop-btn svg {
+    width: 13px;
+    height: 13px;
+  }
+
+  .af-shop-btn:hover {
+    background-color: #4A24DB;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 14px rgba(90, 49, 244, 0.3);
+  }
+
+  /* Payment Icons Grid */
+  .af-payments-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    margin-top: 2px;
+    max-width: 250px;
+  }
+
+  .af-payment-pill {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: #FFFFFF;
+    border: 1px solid #E5DFD3;
+    border-radius: 4px;
+    padding: 2px 4px;
+    height: 22px;
+    width: 36px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+  }
+
+  .af-payment-pill svg,
+  .af-payment-pill img,
+  .af-pay-svg {
+    max-width: 28px;
+    max-height: 14px;
+    width: auto;
+    height: 100%;
+    display: block;
+  }
+
+  /* Trust Badges */
+  .af-trust-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+    margin-top: 6px;
+  }
+
+  .af-trustpilot-box {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 11.5px;
+    font-weight: 700;
+    color: #141517;
+    text-decoration: none;
+  }
+
+  .af-tp-star-icon {
+    color: #00B67A;
+    font-size: 14px;
+  }
+
+  .af-tp-stars-row {
+    display: inline-flex;
+    gap: 2px;
+  }
+
+  .af-tp-star-box {
+    width: 13px;
+    height: 13px;
+    background-color: #00B67A;
+    color: #FFFFFF;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 9.5px;
+    line-height: 1;
+    border-radius: 2px;
+  }
+
+  .af-tp-count {
+    color: #00B67A;
+    font-weight: 700;
+    text-decoration: underline;
+    margin-left: 2px;
+  }
+
+  .af-dmca-badge {
+    display: inline-flex;
+    align-items: center;
+    width: fit-content;
+    border-radius: 3px;
+    overflow: hidden;
+    font-size: 9.5px;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    border: 1px solid #163327;
+  }
+
+  .af-dmca-left {
+    background-color: #00B67A;
+    color: #FFFFFF;
+    padding: 2px 5px;
+  }
+
+  .af-dmca-right {
+    background-color: #163327;
+    color: #FFFFFF;
+    padding: 2px 5px;
+  }
+
+  /* Navigation Columns */
+  .af-col-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .af-col-title {
+    font-family: "Cormorant Garamond", Georgia, serif !important;
+    font-size: 16.5px;
+    font-weight: 600;
+    color: #163327;
+    margin: 0;
+    letter-spacing: 0.02em;
+  }
+
+  .af-nav-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .af-nav-link {
+    font-size: 13px;
+    line-height: 1.45;
+    color: #4A4743;
+    text-decoration: none;
+    transition: color 0.2s ease, transform 0.2s ease;
+    display: inline-block;
+  }
+
+  a.af-nav-link:hover {
+    color: #163327;
+    transform: translateX(2px);
+  }
+
+  .af-nav-static {
+    cursor: default;
+    user-select: text;
+  }
+
+  .af-nav-static:hover {
+    color: #4A4743 !important;
+    transform: none !important;
+  }
+
+  /* Help & Contact Column */
+  .af-col-contact {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    background: transparent;
+    padding: 0;
+    border: none;
+    box-shadow: none;
+  }
+
+  .af-contact-heading-group {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #EFEAE0;
+  }
+
+  .af-contact-title {
+    font-family: "Cormorant Garamond", Georgia, serif !important;
+    font-size: 16.5px;
+    font-weight: 600;
+    color: #163327;
+    margin: 0;
+  }
+
+  .af-contact-sub {
+    font-size: 12px;
+    color: #5A5650;
+    font-weight: 600;
+    margin: 0;
+    line-height: 1.4;
+  }
+
+  .af-contact-section {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+  }
+
+  .af-contact-section-title {
+    font-size: 10.5px;
+    font-weight: 700;
+    color: #163327;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin: 0 0 2px 0;
+  }
+
+  .af-contact-rows {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    font-size: 11.5px;
+    line-height: 1.5;
+    color: #383633;
+  }
+
+  .af-contact-row strong {
+    color: #163327;
+  }
+
+  .af-contact-row a {
+    color: #163327;
+    text-decoration: underline;
+    font-weight: 600;
+  }
+
+  .af-contact-row a:hover {
+    color: #B89768;
+  }
+
+  .af-contact-biz-desc {
+    font-size: 11.5px;
+    line-height: 1.6;
+    color: #5A5650;
+    margin: 0;
+  }
+
+  .af-contact-note {
+    font-size: 11px;
+    line-height: 1.4;
+    color: #75716A;
+    margin: 0;
+    font-style: italic;
+  }
+
+  .af-contact-operated {
+    font-size: 11px;
+    font-weight: 700;
+    color: #163327;
+    letter-spacing: 0.04em;
+    margin: 0;
+    padding-top: 10px;
+    border-top: 1px dashed #E5DFD3;
+  }
+
+  /* Middle CTA: Submit a ticket */
+  .af-ticket-section {
+    margin: 48px auto 32px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    text-align: center;
+  }
+
+  .af-ticket-btn {
+    display: inline-block;
+    padding: 10px 32px;
+    border: 1.5px solid #163327;
+    border-radius: 999px;
+    background: transparent;
+    color: #163327 !important;
+    text-decoration: none !important;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    transition: all 0.25s ease;
+  }
+
+  .af-ticket-btn:hover {
+    background-color: #163327;
+    color: #FFFFFF !important;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(22, 51, 39, 0.2);
+  }
+
+  .af-ticket-note {
+    font-size: 12px;
+    color: #6E6A63;
+    margin: 0;
+    font-weight: 500;
+  }
+
+  /* Bottom Bar */
+  .af-bottom-bar {
+    margin-top: 32px;
+    padding-top: 24px;
+    border-top: 1px solid #E5DFD3;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 18px;
+    font-size: 12px;
+    color: #6E6A63;
+  }
+
+  @media (max-width: 820px) {
+    .af-bottom-bar {
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 16px;
+    }
+  }
+
+  /* Currency / Country Selector Dropup */
+  .af-currency-box {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+  }
+
+  .af-curr-form {
+    margin: 0;
+    padding: 0;
+    position: relative;
+  }
+
+  .af-curr-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: #FFFFFF;
+    border: 1px solid #DCD6CA;
+    border-radius: 999px;
+    padding: 7px 16px;
+    font-size: 12px;
+    font-weight: 600;
+    color: #163327;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
+    line-height: 1.2;
+    font-family: inherit;
+  }
+
+  .af-curr-btn:hover {
+    border-color: #B89768;
+    background: #FCFAF8;
+    box-shadow: 0 2px 8px rgba(184, 151, 104, 0.12);
+  }
+
+  .af-curr-arrow {
+    transition: transform 0.25s ease;
+    color: #706C66;
+  }
+
+  .af-curr-btn[aria-expanded="true"] .af-curr-arrow {
+    transform: rotate(180deg);
+  }
+
+  .af-curr-menu {
+    position: absolute;
+    bottom: calc(100% + 10px);
+    left: 0;
+    background: #FFFFFF;
+    border-radius: 12px;
+    box-shadow: 0 -12px 36px rgba(0, 0, 0, 0.14), 0 2px 8px rgba(0, 0, 0, 0.04);
+    border: 1px solid #ECE8E1;
+    min-width: 280px;
+    max-width: 330px;
+    padding: 8px 0;
+    z-index: 100005;
+    animation: afFadeInUp 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  @keyframes afFadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(6px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .af-curr-menu[hidden] {
+    display: none !important;
+  }
+
+  .af-curr-header {
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: #8C857B;
+    padding: 6px 14px 10px;
+    border-bottom: 1px solid #F2EEE7;
+    user-select: none;
+    text-align: left;
+  }
+
+  .af-curr-search-box {
+    padding: 8px 12px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+    position: sticky;
+    top: 0;
+    background: #FFFFFF;
+    z-index: 2;
+  }
+
+  .af-curr-search-input {
+    width: 100%;
+    padding: 7px 11px;
+    font-size: 12px;
+    border-radius: 7px;
+    border: 1px solid rgba(0, 0, 0, 0.12);
+    outline: none;
+    background: #FAF8F5;
+    color: #141517;
+    box-sizing: border-box;
+    transition: border-color 0.2s ease, background 0.2s ease;
+  }
+
+  .af-curr-search-input:focus {
+    border-color: #B89768;
+    background: #FFFFFF;
+    box-shadow: 0 0 0 3px rgba(184, 151, 104, 0.12);
+  }
+
+  .af-curr-options {
+    list-style: none;
+    margin: 0;
+    padding: 4px 0;
+    max-height: 220px;
+    overflow-y: auto;
+  }
+
+  .af-curr-option-item {
+    list-style: none;
+    margin: 0;
+    padding: 0 4px;
+  }
+
+  .af-curr-select-btn {
+    width: 100%;
+    background: transparent;
+    border: none;
+    padding: 7px 12px;
+    border-radius: 6px;
+    text-align: left;
+    font-family: inherit;
+    cursor: pointer;
+    transition: background 0.15s ease, color 0.15s ease;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-sizing: border-box;
+  }
+
+  .af-curr-btn-left {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    min-width: 0;
+  }
+
+  .af-curr-country-name {
+    font-size: 12px;
+    color: #141517;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-weight: 500;
+  }
+
+  .af-curr-currency-tag {
+    font-size: 11px;
+    font-weight: 600;
+    color: #8C857B;
+    background: #F5F2EC;
+    padding: 2px 6px;
+    border-radius: 4px;
+    flex-shrink: 0;
+    margin-left: 8px;
+  }
+
+  .af-curr-select-btn:hover {
+    background: #FAF7F2;
+  }
+
+  .af-curr-select-btn:hover .af-curr-country-name {
+    color: #B89768;
+  }
+
+  .af-curr-select-btn:hover .af-curr-currency-tag {
+    background: #EFE9DE;
+    color: #141517;
+  }
+
+  .af-curr-select-btn.is-active {
+    background: #FDF9F3;
+  }
+
+  .af-curr-select-btn.is-active .af-curr-country-name {
+    color: #B89768;
+    font-weight: 600;
+  }
+
+  .af-curr-select-btn.is-active .af-curr-currency-tag {
+    background: #B89768;
+    color: #FFFFFF;
+  }
+
+
+
+  /* Legal Links & Copyright */
+  .af-bottom-legal {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .af-bottom-legal a {
+    color: #5A5650;
+    text-decoration: none;
+    transition: color 0.2s ease;
+  }
+
+  .af-bottom-legal a:hover {
+    color: #163327;
+    text-decoration: underline;
+  }
+
+  .af-dot {
+    color: #B89768;
+  }
+
+  /* Social Icons */
+  .af-socials {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .af-social-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: 1px solid #DCD6CA;
+    background: #FFFFFF;
+    color: #163327;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    transition: all 0.25s ease;
+  }
+
+  .af-social-icon:hover {
+    background-color: #163327;
+    border-color: #163327;
+    color: #FFFFFF;
+    transform: translateY(-2px);
+  }
+
+  /* =========================================================================
+     NEWSLETTER SIGNUP BANNER (Enjoy 10% Off Your First Order)
+     ========================================================================= */
+  .af-newsletter-wrap {
+    width: 100%;
+    max-width: 680px;
+    margin: 0 auto;
+    text-align: center;
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+
+  .af-newsletter-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .af-newsletter-heading {
+    font-family: "Cormorant Garamond", Garamond, Georgia, serif;
+    font-size: 32px;
+    font-weight: 500;
+    color: #163327;
+    line-height: 1.2;
+    margin: 0 0 14px 0;
+    letter-spacing: -0.01em;
+  }
+
+  @media (min-width: 768px) {
+    .af-newsletter-heading {
+      font-size: 38px;
+    }
+  }
+
+  .af-newsletter-sub {
+    font-size: 14px;
+    line-height: 1.6;
+    color: #5A5650;
+    margin: 0 auto 28px;
+    max-width: 580px;
+  }
+
+  .af-newsletter-form {
+    width: 100%;
+    max-width: 520px;
+    margin: 0 auto;
+  }
+
+  .af-newsletter-input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    width: 100%;
+  }
+
+  @media (min-width: 560px) {
+    .af-newsletter-input-group {
+      flex-direction: row;
+      gap: 12px;
+      align-items: stretch;
+    }
+  }
+
+  .af-newsletter-input {
+    flex: 1 1 auto;
+    height: 48px;
+    padding: 0 20px;
+    border-radius: 999px;
+    background: #FFFFFF;
+    border: 1.5px solid rgba(22, 51, 39, 0.22);
+    color: #163327;
+    font-size: 13.5px;
+    outline: none;
+    box-sizing: border-box;
+    transition: all 0.22s ease;
+  }
+
+  .af-newsletter-input::placeholder {
+    color: #8C867D;
+  }
+
+  .af-newsletter-input:focus {
+    border-color: #163327;
+    background: #FFFFFF;
+    box-shadow: 0 0 0 3px rgba(22, 51, 39, 0.1);
+  }
+
+  .af-newsletter-btn {
+    height: 48px;
+    padding: 0 28px;
+    border-radius: 999px;
+    background-color: #163327;
+    border: 1px solid #163327;
+    color: #FAF8F5;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    cursor: pointer;
+    white-space: nowrap;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: 0 4px 14px rgba(22, 51, 39, 0.18);
+  }
+
+  .af-newsletter-btn:hover {
+    background-color: #1f4535;
+    border-color: #B89768;
+    color: #FFFFFF;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 18px rgba(22, 51, 39, 0.26);
+  }
+
+  .af-newsletter-feedback {
+    margin-top: 14px;
+    font-size: 13px;
+    line-height: 1.5;
+    padding: 10px 18px;
+    border-radius: 999px;
+    width: 100%;
+    text-align: center;
+  }
+
+  .af-newsletter-success {
+    background: #E8F4EC;
+    color: #163327;
+    border: 1px solid #B4DEC1;
+  }
+
+  .af-newsletter-error {
+    background: #FDF0F0;
+    color: #B3261E;
+    border: 1px solid #F8C4C1;
+  }
+
+  .af-newsletter-divider {
+    display: block !important;
+    width: 100% !important;
+    height: 1px !important;
+    background: linear-gradient(90deg, rgba(22, 51, 39, 0) 0%, rgba(22, 51, 39, 0.15) 20%, rgba(22, 51, 39, 0.15) 80%, rgba(22, 51, 39, 0) 100%) !important;
+    margin: 38px 0 44px !important;
+    font-size: 0 !important;
+    line-height: 0 !important;
+  }
+
+  @media (max-width: 767px) {
+    .af-newsletter-divider {
+      margin: 28px 0 34px !important;
+    }
+  }
+{%- endstyle -%}
+
+<footer id="AtelierFooter-{{ section.id }}" class="af-footer" role="contentinfo">
+  <div class="af-container">
+
+    {%- if section.settings.enable_newsletter != false -%}
+      <!-- 0. NEWSLETTER SIGNUP BANNER (Enjoy 10% Off Your First Order) -->
+      <div class="af-newsletter-wrap" id="afNewsletterWrap-{{ section.id }}">
+        <div class="af-newsletter-content">
+          <h3 class="af-newsletter-heading">{{ section.settings.newsletter_heading | default: 'Enjoy 10% Off Your First Order' }}</h3>
+          <p class="af-newsletter-sub">{{ section.settings.newsletter_subtext | default: 'Join the Mahjiva circle for new arrivals, table inspiration, and special offers. Sign up with your email to receive your 10% off welcome code.' }}</p>
+          
+          {%- form 'customer', class: 'af-newsletter-form', id: 'FooterNewsletterForm' -%}
+            <input type="hidden" name="contact[tags]" value="newsletter,welcome-10">
+            <div class="af-newsletter-input-group">
+              <input 
+                type="email" 
+                name="contact[email]" 
+                class="af-newsletter-input" 
+                id="FooterNewsletterEmail"
+                value="{{ form.email }}"
+                placeholder="{{ section.settings.newsletter_placeholder | default: 'Enter your email' }}"
+                aria-label="{{ section.settings.newsletter_placeholder | default: 'Enter your email' }}"
+                autocorrect="off"
+                autocapitalize="off"
+                autocomplete="email"
+                required
+              >
+              <button type="submit" class="af-newsletter-btn" name="commit" id="FooterNewsletterSubmit">
+                <span>{{ section.settings.newsletter_button_text | default: 'Get My 10% Off →' | remove: '→' | remove: '->' | strip }}</span>
+                <span aria-hidden="true">→</span>
+              </button>
+            </div>
+
+            {%- if form.posted_successfully? -%}
+              <div class="af-newsletter-feedback af-newsletter-success" role="status">
+                Welcome to the Mahjiva circle! Your 10% off code will arrive in your inbox shortly.
+              </div>
+            {%- elsif form.errors -%}
+              <div class="af-newsletter-feedback af-newsletter-error" role="alert">
+                {{ form.errors.translated_fields.email | capitalize }} {{ form.errors.messages.email }}
+              </div>
+            {%- endif -%}
+          {%- endform -%}
+        </div>
+      </div>
+
+      <div class="af-newsletter-divider" aria-hidden="true">&nbsp;</div>
+    {%- endif -%}
+
+    <!-- 1. MAIN 5-COLUMN GRID -->
+    <div class="af-main-grid">
+
+      <!-- COLUMN 1: Logo, About & Trust Badges -->
+      <div class="af-col-brand">
+        {%- assign footer_logo = section.settings.logo | default: settings.logo -%}
+        <a href="{{ routes.root_url }}" class="af-logo-link" aria-label="{{ shop.name }}">
+          {%- if footer_logo != blank -%}
+            <img 
+              src="{{ footer_logo | image_url: width: 400 }}" 
+              alt="{{ footer_logo.alt | default: shop.name | escape }}" 
+              class="af-logo-img" 
+              loading="lazy" 
+              width="145" 
+              height="auto"
+            >
+          {%- else -%}
+            <span class="af-logo-text">{{ shop.name | default: 'MAHJIVA' }}</span>
+          {%- endif -%}
+        </a>
+
+        <!-- About Mahjiva -->
+        <div class="af-about-block">
+          <h4 class="af-about-title">{{ section.settings.about_heading | default: 'About Mahjiva' }}</h4>
+          <p class="af-about-text">
+            {{ section.settings.about_text | default: 'Mahjiva brings elegance and personality to your Mahjong table through distinctive tile sets and coordinating accessories. From choosing a favorite design to gathering with friends, we celebrate the details that make each game feel special. Beautiful tables, familiar faces, and moments worth sharing—this is Grace in Every Hand.' }}
+          </p>
+        </div>
+
+        <!-- Follow on Shop Button -->
+        <a href="https://shop.app" target="_blank" rel="noopener noreferrer" class="af-shop-btn" aria-label="Follow MAHJIVA on Shop">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+          </svg>
+          <span>Follow on shop</span>
+        </a>
+
+        <!-- Payment Icons Grid (100% Dynamic from Shopify Server shop.enabled_payment_types) -->
+        {%- unless shop.enabled_payment_types == empty -%}
+          <div class="af-payments-grid" aria-label="Accepted Payment Methods">
+            {%- for type in shop.enabled_payment_types -%}
+              {%- liquid
+                assign type_title = type | replace: '_', ' ' | capitalize
+                if type == 'american_express'
+                  assign type_title = 'American Express'
+                elsif type == 'apple_pay'
+                  assign type_title = 'Apple Pay'
+                elsif type == 'google_pay'
+                  assign type_title = 'Google Pay'
+                elsif type == 'shopify_pay'
+                  assign type_title = 'Shop Pay'
+                elsif type == 'master'
+                  assign type_title = 'Mastercard'
+                elsif type == 'diners_club'
+                  assign type_title = 'Diners Club'
+                elsif type == 'unionpay'
+                  assign type_title = 'UnionPay'
+                elsif type == 'ideal'
+                  assign type_title = 'iDEAL'
+                elsif type == 'jcb'
+                  assign type_title = 'JCB'
+                elsif type == 'blik'
+                  assign type_title = 'BLIK'
+                elsif type == 'mbway'
+                  assign type_title = 'MB WAY'
+                elsif type == 'bancontact'
+                  assign type_title = 'Bancontact'
+                endif
+              -%}
+              <span class="af-payment-pill" title="{{ type_title }}">
+                {{ type | payment_type_svg_tag: class: 'af-pay-svg' }}
+              </span>
+            {%- endfor -%}
+          </div>
+        {%- endunless -%}
+
+        <!-- Trust Badges (Trustpilot & DMCA) -->
+        <div class="af-trust-wrapper">
+          <a href="https://www.trustpilot.com" target="_blank" rel="noopener noreferrer" class="af-trustpilot-box" aria-label="Trustpilot Reviews">
+            <span class="af-tp-star-icon">★</span>
+            <span>Trustpilot</span>
+            <span class="af-tp-stars-row">
+              <span class="af-tp-star-box">★</span>
+              <span class="af-tp-star-box">★</span>
+              <span class="af-tp-star-box">★</span>
+              <span class="af-tp-star-box">★</span>
+              <span class="af-tp-star-box">★</span>
+            </span>
+            <span class="af-tp-count">13,578</span>
+          </a>
+
+          <div class="af-dmca-badge" aria-label="DMCA Protected">
+            <span class="af-dmca-left">DMCA</span>
+            <span class="af-dmca-right">PROTECTED</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- COLUMN 2: More Infor -->
+      <div class="af-col-nav">
+        <h4 class="af-col-title">More Infor</h4>
+        <ul class="af-nav-list" role="list">
+          <li><a href="/policies/contact-information" class="af-nav-link">About Us</a></li>
+          <li><span class="af-nav-link af-nav-static">Search</span></li>
+          <li><span class="af-nav-link af-nav-static">Contact Us</span></li>
+          <li><span class="af-nav-link af-nav-static">Track Order</span></li>
+        </ul>
+      </div>
+
+      <!-- COLUMN 3: Customer Service -->
+      <div class="af-col-nav">
+        <h4 class="af-col-title">Customer Service</h4>
+        <ul class="af-nav-list" role="list">
+          <li><span class="af-nav-link af-nav-static">Track Order</span></li>
+          <li><span class="af-nav-link af-nav-static">Cancellation &amp; Modification</span></li>
+          <li><span class="af-nav-link af-nav-static">Refund &amp; Replacement</span></li>
+          <li><span class="af-nav-link af-nav-static">Shipping And Delivery</span></li>
+        </ul>
+      </div>
+
+      <!-- COLUMN 4: Policies -->
+      <div class="af-col-nav">
+        <h4 class="af-col-title">Policies</h4>
+        <ul class="af-nav-list" role="list">
+          <li><span class="af-nav-link af-nav-static">Terms of Service</span></li>
+          <li><span class="af-nav-link af-nav-static">Privacy Policy</span></li>
+          <li><a href="/pages/refund-policy" class="af-nav-link">Refund Policy</a></li>
+          <li><a href="/policies/shipping-policy" class="af-nav-link">Shipping Policy</a></li>
+          <li><span class="af-nav-link af-nav-static">Disclaimer Regarding Fake Websites</span></li>
+        </ul>
+      </div>
+
+      <!-- COLUMN 5: Contact Information & Business Information -->
+      <div class="af-col-contact">
+        <div class="af-contact-heading-group">
+          <h4 class="af-contact-title">Contact Information</h4>
+          <p class="af-contact-sub">Mahjiva, operated by TAY Global Commerce LLC</p>
+        </div>
+
+        <div class="af-contact-section">
+          <div class="af-contact-rows">
+            <div class="af-contact-row">
+              <strong>Email:</strong> <a href="mailto:care@mahjiva.com">care@mahjiva.com</a>
+            </div>
+            <div class="af-contact-row">
+              <strong>Phone / WhatsApp:</strong> <a href="tel:+13212333336">+1 321-233-3336</a>
+            </div>
+            <div class="af-contact-row">
+              <strong>Address:</strong> 530-B HARKLE ROAD STE 100, Santa Fe, NM 87505
+            </div>
+            <div class="af-contact-row">
+              <strong>Email and WhatsApp:</strong> 7 days a week — we reply within 24 hours
+            </div>
+            <div class="af-contact-row">
+              <strong>Phone hours:</strong> Monday to Friday, 07:00–11:00 ET
+            </div>
+          </div>
+        </div>
+
+        <div class="af-contact-section">
+          <h5 class="af-contact-section-title">Business Information</h5>
+          <div class="af-contact-rows">
+            <div class="af-contact-row af-contact-biz-desc">
+              Mahjiva is owned and operated by TAY Global Commerce LLC, a legally registered business entity in the United States. All products, transactions, and customer support are managed under this entity.
+            </div>
+          </div>
+        </div>
+
+        <p class="af-contact-operated">
+          Operated by TAY Global Commerce LLC
+        </p>
+      </div>
+
+    </div>
+
+    <!-- 2. CENTER ACTION CTA: Contact us -->
+    <div class="af-ticket-section">
+      <span class="af-ticket-btn" style="cursor: default;">Contact us</span>
+      <p class="af-ticket-note">Support time: 24/7 (US, AU &amp; CA) — Real Support</p>
+    </div>
+
+    <!-- 3. BOTTOM BAR -->
+    <div class="af-bottom-bar">
+
+      <!-- Left: Native Shopify Localization / Currency Dropup Selector -->
+      <div class="af-currency-box">
+        {%- form 'localization', id: 'FooterLocalizationForm', class: 'af-curr-form' -%}
+          <input type="hidden" name="country_code" id="FooterCountryCode" value="{{ localization.country.iso_code }}">
+          
+          <button 
+            type="button" 
+            class="af-curr-btn" 
+            id="afCurrencyToggle" 
+            aria-expanded="false" 
+            aria-label="Shipping Destination & Currency"
+            {% if localization.available_countries.size <= 1 %}style="cursor: default;"{% endif %}
+          >
+            <span class="af-curr-flag">{% render 'country-flag', country: localization.country, country_code: localization.country.iso_code %}</span>
+            <span class="af-curr-text">{{ localization.country.name }} | {{ localization.country.currency.symbol }}({{ localization.country.currency.iso_code }})</span>
+            {%- if localization.available_countries.size > 1 -%}
+              <svg class="af-curr-arrow" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <polyline points="18 15 12 9 6 15"></polyline>
+              </svg>
+            {%- endif -%}
+          </button>
+
+          {%- if localization.available_countries.size > 1 -%}
+            <div class="af-curr-menu" id="afCurrencyMenu" hidden>
+              <div class="af-curr-header">Shipping Destination &amp; Currency</div>
+              
+              <div class="af-curr-search-box">
+                <input 
+                  type="search" 
+                  class="af-curr-search-input" 
+                  id="afCurrSearch" 
+                  placeholder="Search region or currency..." 
+                  aria-label="Search region or currency"
+                  autocomplete="off"
+                >
+              </div>
+
+              <ul class="af-curr-options" role="list">
+                {%- for country in localization.available_countries -%}
+                  <li class="af-curr-option-item">
+                    <button 
+                      type="button" 
+                      class="af-curr-select-btn{% if country.iso_code == localization.country.iso_code %} is-active{% endif %}"
+                      data-country-code="{{ country.iso_code }}"
+                      data-currency="{{ country.currency.iso_code }}"
+                    >
+                      <div class="af-curr-btn-left">
+                        {% render 'country-flag', country: country, country_code: country.iso_code %}
+                        <span class="af-curr-country-name">{{ country.name }}</span>
+                      </div>
+                      <span class="af-curr-currency-tag">
+                        {{ country.currency.iso_code }} {{ country.currency.symbol }}
+                      </span>
+                    </button>
+                  </li>
+                {%- endfor -%}
+              </ul>
+            </div>
+          {%- endif -%}
+        {%- endform -%}
+      </div>
+
+      <!-- Center: Legal Links & Copyright -->
+      <div class="af-bottom-legal">
+        <span>&copy; {{ 'now' | date: '%Y' }}, Mahjiva</span>
+        <span class="af-dot">&bull;</span>
+        <a href="/policies/contact-information">About us</a>
+        <span class="af-dot">&bull;</span>
+        <a href="/pages/refund-policy">Policy</a>
+        <span class="af-dot">&bull;</span>
+        <a href="/policies/shipping-policy">Shipping policy</a>
+      </div>
+
+      <!-- Right: Social Links -->
+      <div class="af-socials">
+        {%- assign fb_link = settings.social_facebook_link | default: 'https://www.facebook.com/profile.php?id=61594947969448' -%}
+        {%- if fb_link == 'https://facebook.com' or fb_link == blank -%}
+          {%- assign fb_link = 'https://www.facebook.com/profile.php?id=61594947969448' -%}
+        {%- endif -%}
+        <a href="{{ fb_link }}" target="_blank" rel="noopener noreferrer" class="af-social-icon" aria-label="Facebook">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M22 12c0-5.52-4.48-10-10-10S2 6.48 2 12c0 4.84 3.44 8.87 8 9.8V15H8v-3h2V9.5C10 7.57 11.57 6 13.5 6H16v3h-2c-.55 0-1 .45-1 1v2h3v3h-3v6.95c5.05-.5 9-4.76 9-9.95z"/>
+          </svg>
+        </a>
+
+        {%- assign insta_link = settings.social_instagram_link | default: 'https://www.instagram.com/mahjiva' -%}
+        {%- if insta_link == 'https://instagram.com' or insta_link == blank -%}
+          {%- assign insta_link = 'https://www.instagram.com/mahjiva' -%}
+        {%- endif -%}
+        <a href="{{ insta_link }}" target="_blank" rel="noopener noreferrer" class="af-social-icon" aria-label="Instagram">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+            <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+            <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+          </svg>
+        </a>
+      </div>
+
+    </div>
+
+  </div>
+</footer>
+
+<script>
+  (function() {
+    function initFooterCurrency() {
+      var toggle = document.getElementById('afCurrencyToggle');
+      var menu = document.getElementById('afCurrencyMenu');
+      var codeInput = document.getElementById('FooterCountryCode');
+      var form = document.getElementById('FooterLocalizationForm');
+      var searchInput = document.getElementById('afCurrSearch');
+
+      if (!toggle || !menu) return;
+
+      toggle.addEventListener('click', function(e) {
+        e.stopPropagation();
+        var isHidden = menu.hasAttribute('hidden');
+        if (isHidden) {
+          menu.removeAttribute('hidden');
+          toggle.setAttribute('aria-expanded', 'true');
+          if (searchInput) {
+            setTimeout(function() { searchInput.focus(); }, 60);
+          }
+        } else {
+          menu.setAttribute('hidden', 'true');
+          toggle.setAttribute('aria-expanded', 'false');
+        }
+      });
+
+      menu.addEventListener('click', function(e) {
+        e.stopPropagation();
+      });
+
+      document.addEventListener('click', function(e) {
+        if (!menu.hasAttribute('hidden')) {
+          menu.setAttribute('hidden', 'true');
+          toggle.setAttribute('aria-expanded', 'false');
+        }
+      });
+
+      var optionBtns = menu.querySelectorAll('.af-curr-select-btn');
+      optionBtns.forEach(function(btn) {
+        btn.addEventListener('click', function(e) {
+          e.preventDefault();
+          var code = this.getAttribute('data-country-code');
+          if (code && codeInput && form) {
+            codeInput.value = code;
+            form.submit();
+          }
+        });
+      });
+
+      if (searchInput) {
+        searchInput.addEventListener('input', function() {
+          var q = this.value.toLowerCase().trim();
+          var items = menu.querySelectorAll('.af-curr-option-item');
+          items.forEach(function(item) {
+            var text = item.textContent.toLowerCase();
+            item.style.display = text.indexOf(q) !== -1 ? '' : 'none';
+          });
+        });
+      }
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initFooterCurrency);
+    } else {
+      initFooterCurrency();
+    }
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Atelier Luxury Footer",
+  "tag": "footer",
+  "class": "section-atelier-footer",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Newsletter Signup"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_newsletter",
+      "label": "Enable Newsletter Signup",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "newsletter_heading",
+      "label": "Newsletter Heading",
+      "default": "Enjoy 10% Off Your First Order"
+    },
+    {
+      "type": "textarea",
+      "id": "newsletter_subtext",
+      "label": "Newsletter Subtext",
+      "default": "Join the Mahjiva circle for new arrivals, table inspiration, and special offers. Sign up with your email to receive your 10% off welcome code."
+    },
+    {
+      "type": "text",
+      "id": "newsletter_placeholder",
+      "label": "Email Input Placeholder",
+      "default": "Enter your email"
+    },
+    {
+      "type": "text",
+      "id": "newsletter_button_text",
+      "label": "Button Label",
+      "default": "Get My 10% Off →"
+    },
+    {
+      "type": "header",
+      "content": "Footer Branding & Layout"
+    },
+    {
+      "type": "text",
+      "id": "about_heading",
+      "label": "About Heading",
+      "default": "About Mahjiva"
+    },
+    {
+      "type": "textarea",
+      "id": "about_text",
+      "label": "About Description",
+      "default": "Mahjiva brings elegance and personality to your Mahjong table through distinctive tile sets and coordinating accessories. From choosing a favorite design to gathering with friends, we celebrate the details that make each game feel special. Beautiful tables, familiar faces, and moments worth sharing—this is Grace in Every Hand."
+    },
+    {
+      "type": "image_picker",
+      "id": "logo",
+      "label": "Custom Footer Logo (Leave empty to use main header logo)"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Footer Background Color",
+      "default": "#F7F4EE"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text Color",
+      "default": "#2B2927"
+    },
+    {
+      "type": "range",
+      "id": "container_max_width",
+      "min": 1100,
+      "max": 1600,
+      "step": 20,
+      "default": 1360,
+      "unit": "px",
+      "label": "Container Max Width"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 24,
+      "max": 140,
+      "step": 4,
+      "default": 40,
+      "unit": "px",
+      "label": "Padding Top"
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 24,
+      "max": 100,
+      "step": 4,
+      "default": 48,
+      "unit": "px",
+      "label": "Padding Bottom"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Atelier Luxury Footer"
+    }
+  ]
+}
+{% endschema %}

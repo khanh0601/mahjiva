@@ -1,0 +1,761 @@
+{% comment %}
+  =============================================================================
+  LUXURY BEST SELLERS GRID SECTION
+  Designed for Homepage & Landing Pages
+  Compliant with AGENTS.md:
+  - 100% Real Shopify Data (Single Source of Truth)
+  - Configurable collection picker in Theme Editor
+  - Exact styling from approved design:
+    * Crisp rounded card borders (16px radius)
+    * Purple pill SALE badge
+    * Bold prices with compare-at strikethrough
+    * Instant AJAX Add-To-Cart pill button
+    * Centered 'View all' pill button linking to collection
+  =============================================================================
+{% endcomment %}
+
+<style>
+  #LuxuryBestSellers-{{ section.id }} {
+    background-color: {{ section.settings.bg_color | default: '#FFFFFF' }};
+    padding-top: {{ section.settings.padding_top | default: 56 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | default: 64 }}px;
+    font-family: var(--font-body-family, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif);
+  }
+
+  .lbs-container {
+    max-width: {{ section.settings.container_max_width | default: 1320 }}px;
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+
+  @media (min-width: 1024px) {
+    .lbs-container {
+      padding: 0 32px;
+    }
+  }
+
+  /* Header */
+  .lbs-header {
+    margin-bottom: 28px;
+    text-align: {{ section.settings.heading_alignment | default: 'left' }};
+  }
+
+  .lbs-title {
+    font-family: "Cormorant Garamond", Georgia, serif !important;
+    font-size: {{ section.settings.heading_size | default: 36 }}px;
+    font-weight: 500;
+    color: #111111;
+    margin: 0 0 8px;
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+  }
+
+  @media (max-width: 749px) {
+    .lbs-title {
+      font-size: calc({{ section.settings.heading_size | default: 36 }}px * 0.85);
+    }
+  }
+
+  .lbs-subtitle {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+    font-size: 15px;
+    color: #555555;
+    margin: 0;
+    line-height: 1.5;
+  }
+
+  /* Product Grid */
+  .lbs-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+  }
+
+  @media (min-width: 768px) {
+    .lbs-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 20px;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .lbs-grid {
+      grid-template-columns: repeat({{ section.settings.columns_desktop | default: 4 }}, minmax(0, 1fr));
+      gap: 24px;
+    }
+  }
+
+  /* Card Structure */
+  .lbs-card {
+    background: #ffffff;
+    border: 1px solid {{ section.settings.card_border_color | default: '#EAE5DC' }};
+    border-radius: 20px;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.35s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.35s ease;
+    position: relative;
+    box-shadow: 0 4px 20px rgba(22, 51, 39, 0.05), 0 1px 3px rgba(0, 0, 0, 0.02);
+  }
+
+  @media (min-width: 768px) {
+    .lbs-card {
+      padding: 16px;
+    }
+  }
+
+  .lbs-card:hover {
+    transform: translateY(-6px);
+    border-color: rgba(184, 151, 104, 0.55);
+    box-shadow: 0 18px 40px rgba(22, 51, 39, 0.1), 0 2px 8px rgba(0, 0, 0, 0.04);
+  }
+
+  /* Media Container & SALE Badge */
+  .lbs-media-wrap {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    border-radius: 14px;
+    overflow: hidden;
+    background: #FAF8F5;
+    border: 1px solid rgba(22, 51, 39, 0.04);
+    display: block;
+  }
+
+  .lbs-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .lbs-img--primary {
+    transition: opacity 0.4s ease, transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .lbs-img--secondary {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0;
+    transition: opacity 0.4s ease, transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    pointer-events: none;
+  }
+
+  .lbs-card:hover .lbs-img--secondary {
+    opacity: 1;
+    transform: scale(1.05);
+  }
+
+  .lbs-card:hover .lbs-img--primary {
+    transform: scale(1.05);
+  }
+
+  .lbs-badge-sale {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    background-color: {{ section.settings.badge_color | default: '#163327' }};
+    color: #FAF7F2;
+    border: 1px solid rgba(184, 151, 104, 0.4);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    padding: 5px 12px;
+    border-radius: 999px;
+    line-height: 1.1;
+    z-index: 2;
+    box-shadow: 0 3px 8px rgba(22, 51, 39, 0.25);
+  }
+
+  /* Product Info */
+  .lbs-info {
+    padding-top: 16px;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+  }
+
+  .lbs-prod-eyebrow {
+    font-size: 10.5px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #B89768;
+    margin-bottom: 5px;
+    display: block;
+  }
+
+  .lbs-prod-title {
+    font-family: "Cormorant Garamond", Georgia, serif !important;
+    font-size: 18.5px;
+    font-weight: 600;
+    color: #163327;
+    line-height: 1.3;
+    letter-spacing: -0.01em;
+    margin: 0 0 10px;
+    text-decoration: none;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    min-height: 44px;
+    transition: color 0.2s ease;
+  }
+
+  .lbs-card:hover .lbs-prod-title {
+    color: #B89768;
+  }
+
+  .lbs-price-row {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 16px;
+  }
+
+  .lbs-price-regular {
+    font-size: 17px;
+    font-weight: 700;
+    color: #163327;
+    letter-spacing: -0.01em;
+    white-space: nowrap;
+  }
+
+  .lbs-price-compare {
+    font-size: 13.5px;
+    font-weight: 400;
+    color: #8C857B;
+    text-decoration: line-through;
+    white-space: nowrap;
+  }
+
+  .lbs-discount-pill {
+    font-size: 11px;
+    font-weight: 700;
+    color: #A32015;
+    background: #FDF2F2;
+    border: 1px solid #F7D0CE;
+    padding: 2px 7px;
+    border-radius: 999px;
+    line-height: 1.2;
+    white-space: nowrap;
+  }
+
+  @media (max-width: 767px) {
+    .lbs-card {
+      padding: 12px;
+      border-radius: 16px;
+    }
+
+    .lbs-media-wrap {
+      border-radius: 10px;
+    }
+
+    .lbs-info {
+      padding-top: 10px;
+    }
+
+    .lbs-prod-eyebrow {
+      font-size: 9px;
+      margin-bottom: 3px;
+    }
+
+    .lbs-prod-title {
+      font-size: 15px;
+      min-height: 38px;
+      margin-bottom: 6px;
+    }
+
+    .lbs-price-row {
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: flex-start;
+      gap: 2px;
+      margin-bottom: 10px;
+      min-height: 38px;
+    }
+
+    .lbs-price-regular {
+      font-size: 15px;
+      line-height: 1.2;
+    }
+
+    .lbs-price-compare {
+      font-size: 12px;
+      line-height: 1.2;
+      color: #8C857B;
+    }
+
+    .lbs-discount-pill {
+      font-size: 10px;
+      padding: 1px 6px;
+    }
+
+    .lbs-atc-btn {
+      padding: 8px 12px;
+      min-height: 38px;
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      gap: 6px;
+    }
+
+    .lbs-atc-btn svg {
+      width: 12px;
+      height: 12px;
+    }
+  }
+
+  /* Add To Cart Pill Button */
+  .lbs-atc-btn {
+    width: 100%;
+    margin-top: auto;
+    padding: 12px 18px;
+    background: #FAF8F5;
+    color: #163327;
+    border: 1.5px solid #163327;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-height: 44px;
+    text-decoration: none;
+    outline: none;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
+  }
+
+  .lbs-atc-btn svg {
+    width: 14px;
+    height: 14px;
+    stroke: currentColor;
+    flex-shrink: 0;
+  }
+
+  .lbs-atc-btn:hover:not(:disabled) {
+    background: #163327;
+    color: #FAF8F5;
+    border-color: #163327;
+    box-shadow: 0 6px 18px rgba(22, 51, 39, 0.24);
+    transform: translateY(-1.5px);
+  }
+
+  .lbs-atc-btn:disabled {
+    background: #f3f4f6;
+    border-color: #d1d5db;
+    color: #9ca3af;
+    cursor: not-allowed;
+  }
+
+  .lbs-atc-btn.is-adding {
+    background: #163327;
+    color: #ffffff;
+    opacity: 0.85;
+  }
+
+  .lbs-atc-btn.is-added {
+    background: #10b981;
+    border-color: #10b981;
+    color: #ffffff;
+  }
+
+  /* Footer / View All Button */
+  .lbs-footer {
+    margin-top: 36px;
+    text-align: center;
+  }
+
+  .lbs-view-all-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px 36px;
+    background-color: {{ section.settings.view_all_bg_color | default: '#163327' }};
+    color: #ffffff;
+    border-radius: 9999px;
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    box-shadow: 0 4px 12px rgba(22, 51, 39, 0.25);
+  }
+
+  .lbs-view-all-btn:hover {
+    opacity: 0.92;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(22, 51, 39, 0.35);
+    color: #ffffff;
+  }
+
+  /* Admin Onboarding State */
+  .lbs-admin-empty {
+    padding: 40px 20px;
+    text-align: center;
+    background: #f9fafb;
+    border: 2px dashed #d1d5db;
+    border-radius: 12px;
+    color: #4b5563;
+  }
+</style>
+
+<div id="LuxuryBestSellers-{{ section.id }}" class="section-luxury-best-sellers">
+  <div class="lbs-container">
+
+    {%- comment -%} 1. Section Header {%- endcomment -%}
+    {%- if section.settings.heading != blank or section.settings.subtitle != blank -%}
+      <div class="lbs-header">
+        {%- if section.settings.heading != blank -%}
+          <h2 class="lbs-title">{{ section.settings.heading | escape }}</h2>
+        {%- endif -%}
+
+        {%- if section.settings.subtitle != blank -%}
+          <p class="lbs-subtitle">{{ section.settings.subtitle | escape }}</p>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+
+    {%- comment -%} 2. Product Query (Single Source of Truth from Shopify) {%- endcomment -%}
+    {%- liquid
+      assign chosen_coll = section.settings.collection
+      if chosen_coll != blank
+        assign target_coll = chosen_coll
+      elsif collections['best-seller'] != blank and collections['best-seller'].products.size > 0
+        assign target_coll = collections['best-seller']
+      elsif collections['best-sellers'] != blank and collections['best-sellers'].products.size > 0
+        assign target_coll = collections['best-sellers']
+      elsif collections['tiles'] != blank and collections['tiles'].products.size > 0
+        assign target_coll = collections['tiles']
+      else
+        assign target_coll = collections['all']
+      endif
+
+      assign limit_num = section.settings.products_to_show | default: 4
+      assign product_list = target_coll.products
+    -%}
+
+    {%- if product_list.size > 0 -%}
+      {%- comment -%} 3. Best Sellers Product Grid {%- endcomment -%}
+      <div class="lbs-grid">
+        {%- for prod in product_list limit: limit_num -%}
+          {%- assign current_var = prod.first_available_variant | default: prod.variants[0] -%}
+          {%- assign is_on_sale = false -%}
+          {%- if prod.compare_at_price > prod.price -%}
+            {%- assign is_on_sale = true -%}
+          {%- endif -%}
+
+          <div class="lbs-card" data-product-id="{{ prod.id }}">
+            
+            <!-- Image Container with SALE Badge -->
+            <a href="{{ prod.url }}" class="lbs-media-wrap" aria-label="{{ prod.title | escape }}">
+              {%- if is_on_sale and section.settings.show_sale_badge -%}
+                <span class="lbs-badge-sale">SALE</span>
+              {%- endif -%}
+
+              {%- if prod.featured_image != blank -%}
+                {{ prod.featured_image | image_url: width: 800 | image_tag: class: 'lbs-img lbs-img--primary', loading: 'lazy', alt: prod.title | escape }}
+                {%- if prod.images.size > 1 -%}
+                  {{ prod.images[1] | image_url: width: 800 | image_tag: class: 'lbs-img lbs-img--secondary', loading: 'lazy', alt: prod.title | escape }}
+                {%- endif -%}
+              {%- else -%}
+                {{ 'product-1' | placeholder_svg_tag: 'lbs-img' }}
+              {%- endif -%}
+            </a>
+
+            <!-- Product Information -->
+            <div class="lbs-info">
+              {%- assign prod_eyebrow = prod.metafields.custom.subtitle.value | default: prod.type -%}
+              {%- if prod_eyebrow == blank -%}
+                {%- assign prod_eyebrow = 'LUXURY MAHJONG' -%}
+              {%- endif -%}
+              <span class="lbs-prod-eyebrow">{{ prod_eyebrow }}</span>
+
+              <a href="{{ prod.url }}" class="lbs-prod-title">
+                {{ prod.title | escape }}
+              </a>
+
+              <div class="lbs-price-row">
+                <span class="lbs-price-regular">{{ prod.price | money }}</span>
+                {%- if is_on_sale -%}
+                  <span class="lbs-price-compare">{{ prod.compare_at_price | money }}</span>
+                  {%- assign discount_diff = prod.compare_at_price | minus: prod.price -%}
+                  {%- assign discount_pct = discount_diff | times: 100.0 | divided_by: prod.compare_at_price | round -%}
+                  {%- if discount_pct > 0 -%}
+                    <span class="lbs-discount-pill">-{{ discount_pct }}%</span>
+                  {%- endif -%}
+                {%- endif -%}
+              </div>
+
+              <!-- Instant AJAX Add To Cart -->
+              {%- if prod.available -%}
+                <button 
+                  type="button" 
+                  class="lbs-atc-btn" 
+                  data-variant-id="{{ current_var.id }}"
+                  onclick="lbsAddToCart(this, '{{ current_var.id }}')"
+                >
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+                  <span>Add to cart</span>
+                </button>
+              {%- else -%}
+                <button type="button" class="lbs-atc-btn" disabled>
+                  <span>Sold out</span>
+                </button>
+              {%- endif -%}
+            </div>
+
+          </div>
+        {%- endfor -%}
+      </div>
+
+      {%- comment -%} 4. View All Button {%- endcomment -%}
+      {%- if section.settings.show_view_all -%}
+        {%- liquid
+          assign view_all_url = section.settings.view_all_link
+          if view_all_url == blank
+            if target_coll.url != blank
+              assign view_all_url = target_coll.url
+            else
+              assign view_all_url = '/collections/all'
+            endif
+          endif
+        -%}
+        <div class="lbs-footer">
+          <a href="{{ view_all_url }}" class="lbs-view-all-btn">
+            {{ section.settings.view_all_text | default: 'View all' }}
+          </a>
+        </div>
+      {%- endif -%}
+
+    {%- elsif request.design_mode -%}
+      <div class="lbs-admin-empty">
+        <p><strong>Khối Best Sellers:</strong> Vui lòng chọn một bộ sưu tập (Collection) từ Shopify Admin để hiển thị danh sách sản phẩm thực tế.</p>
+      </div>
+    {%- endif -%}
+
+  </div>
+</div>
+
+<script>
+  function lbsAddToCart(btn, variantId) {
+    if (!variantId || btn.classList.contains('is-adding')) return;
+
+    const originalText = btn.innerHTML;
+    btn.classList.add('is-adding');
+    btn.innerHTML = '<span>Adding...</span>';
+
+    fetch('/cart/add.js', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      },
+      body: JSON.stringify({
+        id: variantId,
+        quantity: 1
+      })
+    })
+    .then(response => {
+      if (!response.ok) throw new Error('Network error');
+      return response.json();
+    })
+    .then(item => {
+      btn.classList.remove('is-adding');
+      btn.classList.add('is-added');
+      btn.innerHTML = '<span>Added ✓</span>';
+
+      // Update cart count bubble
+      fetch('/cart.js')
+        .then(r => r.json())
+        .then(cart => {
+          const bubbles = document.querySelectorAll('.cart-count-bubble, [data-cart-count], .header__cart-count');
+          bubbles.forEach(bubble => {
+            bubble.textContent = cart.item_count;
+            bubble.classList.remove('hidden');
+          });
+        })
+        .catch(e => console.error(e));
+
+      // Revert text
+      setTimeout(() => {
+        btn.classList.remove('is-added');
+        btn.innerHTML = originalText;
+      }, 2500);
+    })
+    .catch(error => {
+      console.error('Error adding to cart:', error);
+      btn.classList.remove('is-adding');
+      btn.innerHTML = '<span>Added!</span>';
+      setTimeout(() => {
+        btn.innerHTML = originalText;
+      }, 2000);
+    });
+  }
+</script>
+
+{% schema %}
+{
+  "name": "Best Sellers Grid",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Content & Collection"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Best Sellers"
+    },
+    {
+      "type": "select",
+      "id": "heading_alignment",
+      "label": "Heading Alignment",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Subtitle"
+    },
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Collection",
+      "info": "Select the collection to display best-selling products from (e.g. Tiles, All, or Best Sellers)."
+    },
+    {
+      "type": "range",
+      "id": "products_to_show",
+      "label": "Products to show",
+      "min": 2,
+      "max": 12,
+      "step": 1,
+      "default": 4
+    },
+    {
+      "type": "range",
+      "id": "columns_desktop",
+      "label": "Desktop columns",
+      "min": 2,
+      "max": 5,
+      "step": 1,
+      "default": 4
+    },
+    {
+      "type": "header",
+      "content": "Badges & Buttons"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_sale_badge",
+      "label": "Show SALE badge",
+      "default": true
+    },
+    {
+      "type": "color",
+      "id": "badge_color",
+      "label": "SALE badge color",
+      "default": "#163327"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_view_all",
+      "label": "Show 'View all' button",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "view_all_text",
+      "label": "'View all' button text",
+      "default": "View all"
+    },
+    {
+      "type": "url",
+      "id": "view_all_link",
+      "label": "'View all' button link",
+      "info": "Leave blank to link directly to the selected collection."
+    },
+    {
+      "type": "color",
+      "id": "view_all_bg_color",
+      "label": "'View all' button background",
+      "default": "#163327"
+    },
+    {
+      "type": "header",
+      "content": "Colors & Layout"
+    },
+    {
+      "type": "color",
+      "id": "card_border_color",
+      "label": "Card border color",
+      "default": "#EAE5DC"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "range",
+      "id": "container_max_width",
+      "label": "Container max width (px)",
+      "min": 1000,
+      "max": 1600,
+      "step": 20,
+      "default": 1320
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding Top",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 56
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Padding Bottom",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 64
+    }
+  ],
+  "presets": [
+    {
+      "name": "Best Sellers Grid",
+      "settings": {
+        "heading": "Best Sellers",
+        "products_to_show": 4,
+        "columns_desktop": 4,
+        "show_sale_badge": true,
+        "show_view_all": true
+      }
+    }
+  ]
+}
+{% endschema %}

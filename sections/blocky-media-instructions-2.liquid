@@ -1,0 +1,849 @@
+{%- comment -%}
+  © BlockyApps. You are permitted to use this content within your store. Redistribution or use in any other application is strictly prohibited.
+  Unauthorized copying, distribution, or reproduction in any form will result in legal action.
+{% endcomment %}
+
+<script src="{{ 'blocky-video.js' | asset_url }}" defer></script>
+
+<style>
+  .blocky-mi-{{ section.id }} .blocky-media-instructions-wrapper {
+    --_spacing: var(--media-spacing, 1rem);
+    grid-column: span 2;
+  }
+
+  .blocky-mi-{{ section.id }} .blocky-ivs-text-container {
+    gap: var(--bky-mi-title-body-gap);
+    margin-bottom: var(--bky-mi-content-below-spacing);
+  }
+
+  .blocky-mi-{{ section.id }} .blocky-media-instructions-media img {
+    width: 100%;
+    height: 100%;
+    border-radius: var(--border-radius, 15px);
+    border: calc(var(--show-border) * var(--bky-mi-border-width, 1px)) solid var(--border-color, #000000);
+  }
+
+  .blocky-mi-{{ section.id }} .blocky-media-instructions-media {
+    background: #fff;
+    height: 100%;
+  }
+
+  .blocky-mi-{{ section.id }} .blocky-media-instructions-grid {
+    display: grid;
+  }
+
+  .blocky-mi-{{ section.id }}.blocky .blocky-media-instructions-title {
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-top: 0;
+    margin-bottom: var(--bky-mi-title-gap, 0.5em);
+    line-height: 1.4;
+  }
+
+  .blocky-mi-{{ section.id }} .blocky-media-instructions-description {
+    font-size: 1rem;
+    line-height: 1.6;
+  }
+
+  .blocky-mi-{{ section.id }} .blocky-media-instructions-item {
+    margin-bottom: var(--bky-mi-image-gap, 1rem);
+    border-radius: var(--border-radius, 15px);
+  }
+
+  .blocky-mi-{{ section.id }} .blocky-media-instructions-media img.img-fit-fit {
+    object-fit: fill;
+  }
+
+  .blocky-mi-{{ section.id }} .blocky-media-instructions-media img.img-fit-zoomed {
+    object-fit: cover;
+  }
+
+  .blocky-mi-{{ section.id }} .blocky-media-instructions-media img.img-fit-contained {
+    object-fit: contain;
+  }
+
+  .blocky-mi-{{ section.id }} .blocky-media-instructions-wrapper.card-style .blocky-media-instructions-title,
+  .blocky-mi-{{ section.id }} .blocky-media-instructions-wrapper.card-style .blocky-media-instructions-description {
+    padding: 0 1rem;
+  }
+
+  .blocky-mi-{{ section.id }} .blocky-media-instructions-wrapper.card-style .blocky-media-instructions-description {
+    padding-bottom: 1rem;
+  }
+
+  .blocky-mi-{{ section.id }} .blocky-media-instructions-wrapper.card-style .blocky-media-instructions-item {
+    margin-bottom: var(--bky-mi-image-gap, 0.5rem);
+  }
+
+  .blocky-mi-{{ section.id }} .blocky-media-instructions-wrapper.card-style {
+    border-radius: var(--border-radius, 15px);
+    border: calc(var(--show-border) * var(--bky-mi-border-width, 1px)) solid var(--border-color, #000000);
+  }
+
+  .blocky-mi-{{ section.id }} .blocky-media-instructions-wrapper.card-style img,
+  .blocky-mi-{{ section.id }} .blocky-media-instructions-wrapper.card-style video,
+  .blocky-mi-{{ section.id }} .blocky-media-instructions-wrapper.card-style .blocky-media-instructions-item {
+    border-radius: var(--border-radius, 15px) var(--border-radius, 15px) 0 0;
+  }
+
+  .blocky-mi-{{ section.id }} .blocky-media-instructions-wrapper.card-style .blocky-media-instructions-media img {
+    border: none;
+  }
+
+  @media (min-width: 750px) {
+    .blocky-mi-{{ section.id }} .blocky-media-instructions-grid {
+      grid-template-columns: repeat(var(--desktop-columns), 1fr);
+    }
+  }
+
+  @media (max-width: 749px) {
+    .blocky-mi-{{ section.id }} .blocky-media-instructions-grid {
+      grid-template-columns: repeat(var(--mobile-columns), 1fr);
+    }
+  }
+
+  @media (max-width: 749px) {
+    .blocky-mi-{{ section.id }} .blocky-mi-{{ section.id }} .blocky-title { --title-size: {{ section.settings.mobile_title_size }} !important; }
+    .blocky-mi-{{ section.id }} .blocky-mi-{{ section.id }} .blocky-body-text { --body-font-size: {{ section.settings.mobile_body_size }}px !important; }
+    .blocky-mi-{{ section.id }} .blocky-mi-{{ section.id }} .blocky-media-instructions-title { font-size: {{ section.settings.mobile_instruction_title_size }}px !important; }
+    .blocky-mi-{{ section.id }} .blocky-mi-{{ section.id }} .blocky-media-instructions-description { font-size: {{ section.settings.mobile_instruction_desc_size }}px !important; }
+  }
+</style>
+
+<div class="blocky blocky-padding background-wrapper blocky-media-instructions blocky-mi-{{ section.id }} blocky-relative"
+     style="--padding-top: {{ section.settings.padding_top }}; --padding-bottom: {{ section.settings.padding_bottom }}; --background-color: {{ section.settings.background_color }};
+             --title-color: {{ section.settings.title_color }}; --description-color: {{ section.settings.body_color }}; --section-page-width: {{ section.settings.page_width | divided_by: 10 }}rem;
+             --media-spacing: {{ section.settings.media_spacing }}px; --desktop-columns: {{ section.settings.desktop_steps_per_row | times: 2 }}; --mobile-columns: {{ section.settings.mobile_steps_per_row | times: 2 }};
+             --show-border: {% if section.settings.show_border %}1{% else %}0{% endif %}; --border-color: {{ section.settings.border_color }}; --bky-mi-border-width: {{ section.settings.border_width }}px; --border-radius: {{ section.settings.border_radius }}px;
+             --bky-mi-image-gap: {{ section.settings.image_title_gap }}px; --bky-mi-title-gap: {{ section.settings.title_desc_gap }}px;
+             --bky-mi-title-body-gap: {{ section.settings.title_body_gap }}px; --bky-mi-content-below-spacing: {{ section.settings.content_below_spacing }}px;
+             "
+>
+    <div class="blocky-ivs-text-container blocky-text-container-mobile-{{ section.settings.mobile_content_alignment }} blocky-text-container-desktop-{{ section.settings.desktop_content_alignment }} page-width{% if section.settings.show_shadow %} blocky-ivs-text-container-shadow{% endif %} blocky-page-width">
+        {% render 'blocky-titlel', block: section %}
+        {% render 'blocky-bodyl', block: section %}
+    </div>
+    <div class="blocky-media-instructions-container blocky-page-width">
+        <blocky-media-instructions class="blocky-media-instructions-grid" data-id={{ section.id }} style="gap: var(--media-spacing);">
+            {% capture other_classes %}blocky-desktop-{{ section.settings.media_size }} blocky-mobile-{{ section.settings.mobile_media_size }}{% endcapture %}
+            {% for block in section.blocks %}
+                <div class="blocky-media-instructions-wrapper blocky-flex blocky-flex-col{% if section.settings.card_style %} card-style{% endif %}{% if section.settings.card_style and section.settings.show_shadow %} blocky-shadow{% endif %}" style="background-color: {{ section.settings.instruction_background_color }};" {{ block.shopify_attributes }}>
+
+                  {% if section.settings.card_style %}
+                    <div class="blocky-media-instructions-item blocky-overflow-hidden{% if section.settings.show_shadow and section.settings.card_style == false %} blocky-shadow{% endif %}">
+                        <div class="blocky-media-instructions-media">
+                        {% if block.settings.link %}<a class="blocky-media-instructions-link" href={{ block.settings.link }}>{% endif %}
+                                {% if block.type == "image" %}
+                                    {% if block.settings.image %}
+                                        <img
+                                                class="img-fit-{{ block.settings.media_fit }} {{ other_classes }}"
+                                                src="{{ block.settings.image | image_url: height: 750 }}"
+                                                {% if block.settings.link %}class="blocky-media-instructions-img-link" data-url={{ block.settings.link }}{% endif %}
+                                                alt="{{ block.settings.title | default: 'Media instruction image' }}"
+                                        >
+                                    {% else %}
+                                        {{ 'image' | placeholder_svg_tag: other_classes }}
+                                    {% endif %}
+                                {% endif %}
+                                {% if block.type == "video" %}
+                                    {% render "blocky-video", video: block.settings.video, video_fit: block.settings.media_fit, placeholder: 1, autoplay: block.settings.autoplay, button_color: block.settings.play_button_color, background_button_color: block.settings.play_button_background_color, other_classes: other_classes %}
+                                {% endif %}
+                        {% if block.settings.link %}</a>{% endif %}
+                        </div>
+                    </div>
+
+                    {% if block.settings.title != blank %}
+                        <div class="blocky-media-instructions-title" style="color: {{ section.settings.instruction_title_color }}; font-size: {{ section.settings.instruction_title_size }}px; text-align: {{ section.settings.instruction_title_alignment }};">
+                            {{ block.settings.title }}
+                        </div>
+                    {% endif %}
+
+                    {% if block.settings.description != blank %}
+                        <div class="blocky-media-instructions-description" style="color: {{ section.settings.instruction_description_color }}; font-size: {{ section.settings.instruction_description_size }}px; text-align: {{ section.settings.instruction_description_alignment }};">
+                            {{ block.settings.description }}
+                        </div>
+                    {% endif %}
+
+                  {% else %}
+                    {%- capture title_html -%}
+                      {% if block.settings.title != blank %}
+                        <div class="blocky-media-instructions-title" style="color: {{ section.settings.instruction_title_color }}; font-size: {{ section.settings.instruction_title_size }}px; text-align: {{ section.settings.instruction_title_alignment }};">
+                            {{ block.settings.title }}
+                        </div>
+                      {% endif %}
+                    {%- endcapture -%}
+
+                    {% unless section.settings.title_below_image %}{{ title_html }}{% endunless %}
+
+                    <div class="blocky-media-instructions-item blocky-overflow-hidden{% if section.settings.show_shadow and section.settings.card_style == false %} blocky-shadow{% endif %}">
+                        <div class="blocky-media-instructions-media">
+                        {% if block.settings.link %}<a class="blocky-media-instructions-link" href={{ block.settings.link }}>{% endif %}
+                                {% if block.type == "image" %}
+                                    {% if block.settings.image %}
+                                        <img
+                                                class="img-fit-{{ block.settings.media_fit }} {{ other_classes }}"
+                                                src="{{ block.settings.image | image_url: height: 750 }}"
+                                                {% if block.settings.link %}class="blocky-media-instructions-img-link" data-url={{ block.settings.link }}{% endif %}
+                                                alt="{{ block.settings.title | default: 'Media instruction image' }}"
+                                        >
+                                    {% else %}
+                                        {{ 'image' | placeholder_svg_tag: other_classes }}
+                                    {% endif %}
+                                {% endif %}
+                                {% if block.type == "video" %}
+                                    {% render "blocky-video", video: block.settings.video, video_fit: block.settings.media_fit, placeholder: 1, autoplay: block.settings.autoplay, button_color: block.settings.play_button_color, background_button_color: block.settings.play_button_background_color, other_classes: other_classes %}
+                                {% endif %}
+                        {% if block.settings.link %}</a>{% endif %}
+                        </div>
+                    </div>
+
+                    {% if section.settings.title_below_image %}{{ title_html }}{% endif %}
+
+                    {% if block.settings.description != blank %}
+                        <div class="blocky-media-instructions-description" style="color: {{ section.settings.instruction_description_color }}; font-size: {{ section.settings.instruction_description_size }}px; text-align: {{ section.settings.instruction_description_alignment }};">
+                            {{ block.settings.description }}
+                        </div>
+                    {% endif %}
+                  {% endif %}
+                </div>
+            {% endfor %}
+        </blocky-media-instructions>
+    </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    if (!customElements.get('blocky-media-instructions')) {
+      customElements.define('blocky-media-instructions',
+        class BlockyMediaInstructions extends HTMLElement {
+          constructor() {
+            super()
+
+            this.sectionId = this.getAttribute("data-id")
+            if (this.sectionId) {
+              this.setup()
+            }
+
+            document.querySelectorAll(".blocky-slider-img-link").forEach(t => {
+              const url = t.getAttribute("data-url")
+              if (!url) return
+              t.addEventListener("click", (event) => {
+                window.location.href = url
+              })
+            })
+          }
+
+          setup() {
+            this.centerWidows()
+            window.addEventListener('resize', () => this.centerWidows())
+          }
+
+          centerWidows() {
+            const wrappers = this.querySelectorAll('.blocky-media-instructions-wrapper')
+            if (wrappers.length === 0) return
+
+            const isDesktop = window.innerWidth >= 750
+            const containerStyle = window.getComputedStyle(this)
+            const stepsPerRow = isDesktop
+              ? parseInt(containerStyle.getPropertyValue('--desktop-columns')) / 2
+              : parseInt(containerStyle.getPropertyValue('--mobile-columns')) / 2
+
+            const totalItems = wrappers.length
+
+            wrappers.forEach(wrapper => {
+              wrapper.style.gridColumnStart = ''
+            })
+
+            const completeRows = Math.floor(totalItems / stepsPerRow)
+            const remainingItems = totalItems % stepsPerRow
+
+            if (remainingItems > 0 && remainingItems < stepsPerRow) {
+              const totalColumns = stepsPerRow * 2
+              const firstItemOfLastRow = wrappers[completeRows * stepsPerRow]
+              const totalColumnsUsed = remainingItems * 2
+              const emptyColumns = totalColumns - totalColumnsUsed
+
+              const start = emptyColumns / 2 + 1
+              firstItemOfLastRow.style.gridColumnStart = start
+              firstItemOfLastRow.style.gridColumnEnd = "span 2"
+            }
+          }
+        }
+      )
+    }
+  })
+</script>
+
+{% schema %}
+{
+  "name": "BKY - Media Instrs 2",
+  "tag": "section",
+  "disabled_on": {
+    "groups": [
+      "header",
+      "footer"
+    ]
+  },
+  "settings": [
+    {
+      "type": "header",
+      "content": "Text"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "title",
+      "default": "<b>How to use your product</b>",
+      "label": "Title",
+      "info": "Leave the text blank to hide the title."
+    },
+    {
+      "type": "range",
+      "id": "title_size",
+      "label": "Title size desktop (px)",
+      "default": 60,
+      "min": 20,
+      "max": 80,
+      "step": 1,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "mobile_title_size",
+      "label": "Title size mobile (px)",
+      "default": 32,
+      "min": 16,
+      "max": 56,
+      "step": 1,
+      "unit": "px"
+    },
+    {
+      "type": "color",
+      "id": "title_color",
+      "label": "Title color",
+      "default": "#270089"
+    },
+    {
+      "type": "richtext",
+      "id": "body_text",
+      "default": "<p>Step-by-step instructions to help your customers get the most out of your product.</p>",
+      "label": "Body",
+      "info": "Leave the text blank to hide the body."
+    },
+    {
+      "type": "range",
+      "id": "body_size",
+      "label": "Body size desktop (px)",
+      "default": 18,
+      "min": 12,
+      "max": 32,
+      "step": 1,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "mobile_body_size",
+      "label": "Body size mobile (px)",
+      "default": 14,
+      "min": 10,
+      "max": 24,
+      "step": 1,
+      "unit": "px"
+    },
+    {
+      "type": "color",
+      "id": "body_color",
+      "label": "Body color",
+      "default": "#000000"
+    },
+    {
+      "type": "range",
+      "id": "title_body_gap",
+      "label": "Spacing between title and body",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "default": 8
+    },
+    {
+      "type": "range",
+      "id": "content_below_spacing",
+      "label": "Spacing between body and media",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 40
+    },
+    {
+      "type": "header",
+      "content": "Instruction Items Styling"
+    },
+    {
+      "type": "checkbox",
+      "id": "title_below_image",
+      "label": "Title below image",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "image_title_gap",
+      "label": "Gap between image and title (px)",
+      "min": 0,
+      "max": 120,
+      "step": 2,
+      "unit": "px",
+      "default": 8
+    },
+    {
+      "type": "range",
+      "id": "title_desc_gap",
+      "label": "Gap between title and description (px)",
+      "min": 0,
+      "max": 120,
+      "step": 2,
+      "unit": "px",
+      "default": 4
+    },
+    {
+      "type": "select",
+      "id": "instruction_title_alignment",
+      "label": "Title alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "color",
+      "id": "instruction_title_color",
+      "label": "Title color",
+      "default": "#270089"
+    },
+    {
+      "type": "range",
+      "id": "instruction_title_size",
+      "label": "Title font size desktop (px)",
+      "min": 12,
+      "max": 32,
+      "step": 1,
+      "unit": "px",
+      "default": 25
+    },
+    {
+      "type": "range",
+      "id": "mobile_instruction_title_size",
+      "label": "Title font size mobile (px)",
+      "min": 10,
+      "max": 28,
+      "step": 1,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "color",
+      "id": "instruction_description_color",
+      "label": "Description color",
+      "default": "#000000"
+    },
+    {
+      "type": "range",
+      "id": "instruction_description_size",
+      "label": "Description font size",
+      "min": 8,
+      "max": 28,
+      "step": 1,
+      "unit": "px",
+      "default": 14
+    },
+    {
+      "type": "range",
+      "id": "mobile_instruction_desc_size",
+      "label": "Description font size mobile (px)",
+      "min": 8,
+      "max": 22,
+      "step": 1,
+      "unit": "px",
+      "default": 12
+    },
+    {
+      "type": "select",
+      "id": "instruction_description_alignment",
+      "label": "Description alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "color",
+      "id": "instruction_background_color",
+      "label": "Instruction items background color",
+      "default": "rgba(0,0,0,0)",
+      "info": "Background color for all instruction items"
+    },
+    {
+      "type": "header",
+      "content": "Desktop"
+    },
+    {
+      "type": "select",
+      "id": "media_size",
+      "options": [
+        {
+          "value": "long",
+          "label": "Long"
+        },
+        {
+          "value": "square",
+          "label": "Square"
+        },
+        {
+          "value": "wide",
+          "label": "Wide"
+        }
+      ],
+      "default": "square",
+      "label": "Media size"
+    },
+    {
+      "type": "select",
+      "id": "desktop_content_alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "center",
+      "label": "Desktop content alignment"
+    },
+    {
+      "type": "range",
+      "id": "desktop_steps_per_row",
+      "min": 1,
+      "max": 6,
+      "step": 1,
+      "label": "Desktop steps per row",
+      "default": 2,
+      "info": "Number of instruction items per row on desktop"
+    },
+    {
+      "type": "header",
+      "content": "Mobile"
+    },
+    {
+      "type": "select",
+      "id": "mobile_media_size",
+      "options": [
+        {
+          "value": "long",
+          "label": "Long"
+        },
+        {
+          "value": "square",
+          "label": "Square"
+        },
+        {
+          "value": "wide",
+          "label": "Wide"
+        }
+      ],
+      "default": "square",
+      "label": "Media size"
+    },
+    {
+      "type": "select",
+      "id": "mobile_content_alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "center",
+      "label": "Mobile content alignment"
+    },
+    {
+      "type": "range",
+      "id": "mobile_steps_per_row",
+      "min": 1,
+      "max": 3,
+      "step": 1,
+      "label": "Steps per row",
+      "default": 1,
+      "info": "Number of instruction steps per row on mobile"
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "range",
+      "id": "media_spacing",
+      "min": 0,
+      "max": 50,
+      "step": 2,
+      "unit": "px",
+      "label": "Spacing between media",
+      "default": 28,
+      "info": "On mobile, spacing is halved. Refresh in mobile view to check."
+    },
+    {
+      "type": "checkbox",
+      "id": "card_style",
+      "label": "Card style layout",
+      "info": "Changes order to: image, title, description",
+      "default": false
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "default": "#F8F4E4"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_shadow",
+      "label": "Show shadow",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "show_border",
+      "label": "Show border",
+      "default": false
+    },
+    {
+      "type": "color",
+      "id": "border_color",
+      "label": "Border color",
+      "default": "#000000",
+      "info": "Color of the border around media elements",
+      "visible_if": "{{ section.settings.show_border == true }}"
+    },
+    {
+      "type": "range",
+      "id": "border_width",
+      "label": "Border thickness (px)",
+      "min": 1,
+      "max": 10,
+      "step": 1,
+      "unit": "px",
+      "default": 1,
+      "visible_if": "{{ section.settings.show_border == true }}"
+    },
+    {
+      "type": "range",
+      "id": "border_radius",
+      "label": "Corner roundness (px)",
+      "min": 0,
+      "max": 60,
+      "step": 1,
+      "unit": "px",
+      "default": 15
+    },
+    {
+      "type": "header",
+      "content": "Section size"
+    },
+    {
+      "type": "range",
+      "id": "page_width",
+      "unit": "px",
+      "step": 100,
+      "min": 800,
+      "max": 1600,
+      "default": 1200,
+      "label": "Section width"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Top padding",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Bottom padding",
+      "default": 36
+    }
+  ],
+  "blocks": [
+    {
+      "type": "image",
+      "name": "Image",
+      "settings": [
+        {
+          "type": "header",
+          "content": "Description"
+        },
+        {
+          "type": "richtext",
+          "id": "title",
+          "label": "Title",
+          "default": "<p>Step Title</p>"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "select",
+          "id": "media_fit",
+          "label": "Image fit",
+          "default": "zoomed",
+          "options": [
+            {
+              "value": "fit",
+              "label": "Fit"
+            },
+            {
+              "value": "zoomed",
+              "label": "Zoomed in"
+            },
+            {
+              "value": "contained",
+              "label": "Contained"
+            }
+          ]
+        },
+        {
+          "type": "richtext",
+          "id": "description",
+          "label": "Description",
+          "default": "<p>Add your instruction description here.</p>"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link"
+        }
+      ]
+    },
+    {
+      "type": "video",
+      "name": "Video",
+      "settings": [
+        {
+          "type": "header",
+          "content": "Description"
+        },
+        {
+          "type": "richtext",
+          "id": "title",
+          "label": "Title",
+          "default": "<p>Step Title</p>"
+        },
+        {
+          "type": "video",
+          "id": "video",
+          "label": "Video"
+        },
+        {
+          "type": "select",
+          "id": "media_fit",
+          "label": "Video fit",
+          "default": "zoomed",
+          "options": [
+            {
+              "value": "fit",
+              "label": "Fit"
+            },
+            {
+              "value": "zoomed",
+              "label": "Zoomed in"
+            }
+          ]
+        },
+        {
+          "type": "richtext",
+          "id": "description",
+          "label": "Description",
+          "default": "<p>Add your instruction description here.</p>"
+        },
+        {
+          "type": "color",
+          "id": "play_button_color",
+          "default": "#FFFFFF",
+          "label": "Play button color",
+          "info": "The play button only shows if autoplay is off"
+        },
+        {
+          "type": "color",
+          "id": "play_button_background_color",
+          "default": "#000000",
+          "label": "Play button background color"
+        },
+        {
+          "type": "checkbox",
+          "id": "autoplay",
+          "label": "Autoplay",
+          "default": false
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "BKY - Media Instructions 2",
+      "blocks": [
+        {
+          "type": "image"
+        },
+        {
+          "type": "image"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

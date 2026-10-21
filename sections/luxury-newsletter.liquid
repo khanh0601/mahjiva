@@ -1,0 +1,306 @@
+{%- comment -%}
+  -----------------------------------------------------------------------------
+  SECTION: LUXURY NEWSLETTER ("Join the Shuffle")
+  - Warm Taupe / Earthy Maison Palette (#978F82)
+  - Deep Espresso Accent Button (#362E2E)
+  - Transparent thin border email field
+  - Native Shopify Customer Tagging ('newsletter') -> Admin > Customers
+  - 100% Zero Mock / Self-contained responsive CSS
+  -----------------------------------------------------------------------------
+{%- endcomment -%}
+
+<style>
+  #LuxuryNewsletter-{{ section.id }},
+  #LuxuryNewsletter-{{ section.id }} * {
+    box-sizing: border-box !important;
+  }
+
+  #LuxuryNewsletter-{{ section.id }} {
+    background-color: {{ section.settings.bg_color | default: '#978F82' }};
+    padding: {{ section.settings.padding_top | default: 60 }}px 0 {{ section.settings.padding_bottom | default: 64 }}px;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .ln-container {
+    max-width: {{ section.settings.container_max_width | default: 720 }}px;
+    margin: 0 auto;
+    padding: 0 24px;
+    text-align: center;
+  }
+
+  .ln-eyebrow {
+    font-family: "Cormorant Garamond", Garamond, Georgia, serif;
+    font-size: 15px;
+    letter-spacing: 0.05em;
+    text-transform: none;
+    color: #FAF8F5 !important;
+    font-weight: 500;
+    margin-bottom: 8px;
+    display: inline-block;
+  }
+
+  .ln-heading {
+    font-family: "Cormorant Garamond", Garamond, Georgia, serif;
+    font-size: 44px;
+    font-weight: 400;
+    line-height: 1.15;
+    color: #FFFFFF;
+    letter-spacing: 0.16em;
+    margin: 0 0 16px 0;
+  }
+
+  @media (min-width: 768px) {
+    .ln-heading {
+      font-size: 50px;
+    }
+  }
+
+  .ln-subtext {
+    font-size: 13.5px;
+    font-weight: 400;
+    line-height: 1.6;
+    color: rgba(255, 255, 255, 0.95);
+    margin: 0 auto 30px;
+    max-width: 580px;
+  }
+
+  /* Form and Input Group */
+  .ln-form {
+    width: 100%;
+    max-width: 490px;
+    margin: 0 auto;
+  }
+
+  .ln-input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    width: 100%;
+  }
+
+  @media (min-width: 520px) {
+    .ln-input-group {
+      flex-direction: row;
+      gap: 14px;
+      align-items: stretch;
+    }
+  }
+
+  .ln-input {
+    flex: 1 1 auto;
+    height: 46px;
+    padding: 0 16px;
+    border-radius: 0px !important;
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.45);
+    color: #FFFFFF;
+    font-size: 13px;
+    letter-spacing: 0.02em;
+    outline: none;
+    transition: border-color 0.2s ease, background-color 0.2s ease;
+  }
+
+  .ln-input::placeholder {
+    color: rgba(255, 255, 255, 0.65);
+  }
+
+  .ln-input:focus {
+    border-color: #FFFFFF;
+    background: rgba(255, 255, 255, 0.06);
+  }
+
+  .ln-submit-btn {
+    height: 46px;
+    padding: 0 32px;
+    border-radius: 0px !important;
+    background-color: #362E2E !important;
+    border: 1px solid #362E2E !important;
+    color: #FFFFFF !important;
+    font-size: 11.5px;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: background-color 0.2s ease, border-color 0.2s ease;
+  }
+
+  .ln-submit-btn:hover {
+    background-color: #241D1D !important;
+    border-color: #241D1D !important;
+  }
+
+  /* Feedback Messages */
+  .ln-message {
+    margin-top: 16px;
+    font-size: 13px;
+    padding: 10px 16px;
+    border-radius: 2px;
+  }
+
+  .ln-success {
+    background: rgba(255, 255, 255, 0.18);
+    color: #FFFFFF;
+    border: 1px solid rgba(255, 255, 255, 0.4);
+  }
+
+  .ln-error {
+    background: rgba(180, 40, 40, 0.25);
+    color: #FFD4D4;
+    border: 1px solid rgba(255, 200, 200, 0.35);
+  }
+</style>
+
+<section id="LuxuryNewsletter-{{ section.id }}" class="ln-section" aria-label="{{ section.settings.heading | default: 'Newsletter' | escape }}">
+  <div class="ln-container">
+
+    {%- if section.settings.eyebrow != blank -%}
+      <span class="ln-eyebrow">{{ section.settings.eyebrow | escape }}</span>
+    {%- endif -%}
+
+    {%- if section.settings.heading != blank -%}
+      <h2 class="ln-heading">{{ section.settings.heading | escape }}</h2>
+    {%- endif -%}
+
+    {%- if section.settings.subtext != blank -%}
+      <p class="ln-subtext">{{ section.settings.subtext | escape }}</p>
+    {%- endif -%}
+
+    {%- form 'customer', id: 'MaisonNewsletterForm', class: 'ln-form' -%}
+      <input type="hidden" name="contact[tags]" value="newsletter">
+      <div class="ln-input-group">
+        <input 
+          type="email" 
+          name="contact[email]" 
+          id="NewsletterEmail-{{ section.id }}" 
+          class="ln-input" 
+          value="{{ form.email }}" 
+          aria-required="true" 
+          autocorrect="off" 
+          autocapitalize="off" 
+          autocomplete="email" 
+          {% if form.errors %}
+            autofocus
+            aria-invalid="true"
+            aria-describedby="Newsletter-error--{{ section.id }}"
+          {% elsif form.posted_successfully? %}
+            aria-describedby="Newsletter-success--{{ section.id }}"
+          {% endif %}
+          placeholder="{{ section.settings.placeholder_text | default: 'E-mail' }}" 
+          required
+        >
+        <button type="submit" class="ln-submit-btn" name="commit" id="Subscribe-{{ section.id }}">
+          {{ section.settings.btn_text | default: 'SUBSCRIBE' }}
+        </button>
+      </div>
+
+      {%- if form.errors -%}
+        <div class="ln-message ln-error" id="Newsletter-error--{{ section.id }}">
+          {{ form.errors.translated_fields['email'] | capitalize }} {{ form.errors.messages['email'] }}
+        </div>
+      {%- endif -%}
+
+      {%- if form.posted_successfully? -%}
+        <div class="ln-message ln-success" id="Newsletter-success--{{ section.id }}" tabindex="-1" autofocus>
+          ✓ Thank you for subscribing!
+        </div>
+      {%- endif -%}
+    {%- endform -%}
+
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Luxury Newsletter",
+  "tag": "section",
+  "class": "section-luxury-newsletter",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow Text",
+      "default": "Join the Shuffle"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Section Heading",
+      "default": "Newsletter"
+    },
+    {
+      "type": "textarea",
+      "id": "subtext",
+      "label": "Section Description",
+      "default": "Receive invitations to fun events, resources for learning, new product drops, and more!"
+    },
+    {
+      "type": "text",
+      "id": "placeholder_text",
+      "label": "Input Placeholder",
+      "default": "E-mail"
+    },
+    {
+      "type": "text",
+      "id": "btn_text",
+      "label": "Button Label",
+      "default": "SUBSCRIBE"
+    },
+    {
+      "type": "header",
+      "content": "Palette & Spacing"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Section Background Color",
+      "default": "#978F82"
+    },
+    {
+      "type": "range",
+      "id": "container_max_width",
+      "min": 500,
+      "max": 1000,
+      "step": 20,
+      "default": 720,
+      "unit": "px",
+      "label": "Container Max Width"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 20,
+      "max": 120,
+      "step": 4,
+      "default": 60,
+      "unit": "px",
+      "label": "Padding Top"
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 20,
+      "max": 120,
+      "step": 4,
+      "default": 64,
+      "unit": "px",
+      "label": "Padding Bottom"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Luxury Newsletter",
+      "settings": {
+        "eyebrow": "Join the Shuffle",
+        "heading": "Newsletter",
+        "subtext": "Receive invitations to fun events, resources for learning, new product drops, and more!",
+        "placeholder_text": "E-mail",
+        "btn_text": "SUBSCRIBE",
+        "bg_color": "#978F82"
+      }
+    }
+  ]
+}
+{% endschema %}
