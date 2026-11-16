@@ -38,6 +38,7 @@
         {% elsif section.settings.image %}
           <img
             class="blocky-image-cover"
+            alt="{{ section.settings.image.alt | escape }}" loading="lazy"
             src="{{ section.settings.image | image_url: height: 1200 }}"
             width="100%"
             height="100%"

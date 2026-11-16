@@ -1,3 +1,4 @@
+{%- render 'material-symbols-font' -%}
 {%- comment -%}
   © BlockyApps. You are permitted to use this content within your store. Redistribution or use in any other application is strictly prohibited. 
   Unauthorized copying, distribution, or reproduction in any form will result in legal action.
@@ -208,6 +209,7 @@
               {% elsif section.settings.image != blank %}
                 <img
                   class="blocky-image-cover"
+                  alt="{{ section.settings.image.alt | escape }}" loading="lazy"
                   src="{{ section.settings.image | image_url: height: 750 }}"
                   height="100%"
                   width="100%"

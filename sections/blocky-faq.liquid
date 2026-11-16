@@ -1,3 +1,15 @@
+{%- liquid
+  assign faq_needs_icon_font = false
+  for block in section.blocks
+    if block.settings.image == null and block.settings.icon_code != blank
+      assign faq_needs_icon_font = true
+      break
+    endif
+  endfor
+  if faq_needs_icon_font
+    render 'material-symbols-font'
+  endif
+-%}
 {%- comment -%}
   © BlockyApps. You are permitted to use this content within your store. Redistribution or use in any other application is strictly prohibited. 
   Unauthorized copying, distribution, or reproduction in any form will result in legal action.

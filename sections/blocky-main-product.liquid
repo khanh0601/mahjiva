@@ -1,3 +1,4 @@
+{%- render 'material-symbols-font' -%}
 {%- comment -%}
   © BlockyApps. You are permitted to use this content within your store. Redistribution or use in any other application is strictly prohibited.
   Unauthorized copying, distribution, or reproduction in any form will result in legal action.
@@ -4021,9 +4022,9 @@
                   {{ text_content }}
                 </div>
               {%- when 'title' -%}
-                <h2 class="blocky-title" style="--title-color: {{ block.settings.title_color }}; --title-size: {{ block.settings.title_size }};" {{ block.shopify_attributes }}>
-                  {%- if product.title != blank -%}{{ product.title | escape }}{%- else -%}Product title{%- endif -%}
-                </h2>
+                <h1 class="blocky-title h2" style="--title-color: {{ block.settings.title_color }}; --title-size: {{ block.settings.title_size }};" {{ block.shopify_attributes }}>
+                  {{- product.title | escape -}}
+                </h1>
               {%- when 'price' -%}
                 <div
                   class="blocky-product-price"
@@ -5160,6 +5161,10 @@
       }
     });
   }
+</script>
+
+<script type="application/ld+json">
+  {{ product | structured_data }}
 </script>
 
 {% schema %}

@@ -1,0 +1,264 @@
+{%- comment -%}
+  Luxury Sale Marquee
+  A plain colour band with one line of text scrolling continuously.
+  - The text comes only from the section setting (no hardcoded copy).
+  - Empty text: shows a setup notice in the theme editor, renders nothing on the storefront.
+{%- endcomment -%}
+
+{%- liquid
+  assign marquee_text = section.settings.text | strip
+  assign font_desktop = section.settings.font_size_desktop
+  assign font_mobile = section.settings.font_size_mobile
+  assign item_gap = section.settings.gap
+
+  # Repeat the text enough times for one group to be wider than any screen,
+  # so the loop never shows an empty stretch. Width is estimated from the text length.
+  assign est_item_width = marquee_text.size | times: font_desktop | times: 0.55 | plus: item_gap
+  if est_item_width < 40
+    assign est_item_width = 40
+  endif
+  assign repeat_count = 2800 | divided_by: est_item_width | ceil | at_least: 4 | at_most: 40
+  assign est_group_width = est_item_width | times: repeat_count
+  assign duration = est_group_width | divided_by: section.settings.speed | round: 1 | at_least: 5
+-%}
+
+{%- if marquee_text != blank -%}
+  {%- style -%}
+    .lsm-{{ section.id }} {
+      background-color: {{ section.settings.bg_color }};
+      color: {{ section.settings.text_color }};
+      overflow: hidden;
+      padding: {{ section.settings.padding_y }}px 0;
+    }
+
+    .lsm-{{ section.id }} .lsm-track {
+      display: flex;
+      width: max-content;
+      animation: lsm-scroll-{{ section.id }} {{ duration }}s linear infinite;
+      {%- if section.settings.direction == 'right' %}
+      animation-direction: reverse;
+      {%- endif %}
+      will-change: transform;
+    }
+
+    {%- if section.settings.pause_on_hover %}
+    .lsm-{{ section.id }}:hover .lsm-track,
+    .lsm-{{ section.id }}:focus-within .lsm-track {
+      animation-play-state: paused;
+    }
+    {%- endif %}
+
+    .lsm-{{ section.id }} .lsm-group {
+      display: flex;
+      flex-shrink: 0;
+      align-items: center;
+    }
+
+    .lsm-{{ section.id }} .lsm-item {
+      flex-shrink: 0;
+      padding-right: {{ item_gap }}px;
+      color: inherit;
+      text-decoration: none;
+      white-space: nowrap;
+      font-size: {{ font_mobile }}px;
+      font-weight: {{ section.settings.font_weight }};
+      line-height: 1.3;
+      letter-spacing: {{ section.settings.letter_spacing | divided_by: 10.0 }}px;
+      {%- if section.settings.uppercase %}
+      text-transform: uppercase;
+      {%- endif %}
+    }
+
+    @media screen and (min-width: 750px) {
+      .lsm-{{ section.id }} .lsm-item {
+        font-size: {{ font_desktop }}px;
+      }
+    }
+
+    @keyframes lsm-scroll-{{ section.id }} {
+      from { transform: translateX(0); }
+      to { transform: translateX(-50%); }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .lsm-{{ section.id }} .lsm-track {
+        animation: none;
+      }
+    }
+  {%- endstyle -%}
+
+  {%- capture marquee_items -%}
+    {%- for i in (1..repeat_count) -%}
+      {%- if section.settings.link != blank -%}
+        <a class="lsm-item" href="{{ section.settings.link }}" tabindex="-1">{{ marquee_text | escape }}</a>
+      {%- else -%}
+        <span class="lsm-item">{{ marquee_text | escape }}</span>
+      {%- endif -%}
+    {%- endfor -%}
+  {%- endcapture -%}
+
+  <div class="lsm-{{ section.id }}" role="region" aria-label="{{ marquee_text | escape }}">
+    {%- comment -%} One accessible copy for screen readers and keyboard users; the scrolling copies are decorative. {%- endcomment -%}
+    {%- if section.settings.link != blank -%}
+      <a class="visually-hidden" href="{{ section.settings.link }}">{{ marquee_text | escape }}</a>
+    {%- else -%}
+      <span class="visually-hidden">{{ marquee_text | escape }}</span>
+    {%- endif -%}
+    <div class="lsm-track" aria-hidden="true">
+      <div class="lsm-group">{{ marquee_items }}</div>
+      <div class="lsm-group">{{ marquee_items }}</div>
+    </div>
+  </div>
+{%- elsif request.design_mode -%}
+  <div style="margin: 12px 16px; padding: 16px 20px; border: 1px dashed #b89768; background: #fbf6ea; color: #163327; font-size: 14px; line-height: 1.5; text-align: center;">
+    <strong>Dải chữ chạy đang trống</strong>
+    <p style="margin: 4px 0 0;">Vui lòng nhập nội dung vào ô <em>"Text"</em> ở cột cài đặt bên phải của Theme Editor.</p>
+  </div>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Luxury Sale Marquee",
+  "tag": "section",
+  "class": "section-luxury-sale-marquee",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "text",
+      "id": "text",
+      "label": "Text",
+      "info": "This line repeats and scrolls across the bar."
+    },
+    {
+      "type": "url",
+      "id": "link",
+      "label": "Link (optional)"
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background color",
+      "default": "#E8526F"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "header",
+      "content": "Typography"
+    },
+    {
+      "type": "range",
+      "id": "font_size_desktop",
+      "min": 12,
+      "max": 40,
+      "step": 1,
+      "unit": "px",
+      "label": "Font size (desktop)",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "font_size_mobile",
+      "min": 10,
+      "max": 30,
+      "step": 1,
+      "unit": "px",
+      "label": "Font size (mobile)",
+      "default": 16
+    },
+    {
+      "type": "select",
+      "id": "font_weight",
+      "label": "Font weight",
+      "options": [
+        { "value": "400", "label": "Regular" },
+        { "value": "500", "label": "Medium" },
+        { "value": "600", "label": "Semi-bold" },
+        { "value": "700", "label": "Bold" }
+      ],
+      "default": "400"
+    },
+    {
+      "type": "range",
+      "id": "letter_spacing",
+      "min": 0,
+      "max": 30,
+      "step": 1,
+      "label": "Letter spacing (x 0.1px)",
+      "default": 5
+    },
+    {
+      "type": "checkbox",
+      "id": "uppercase",
+      "label": "Uppercase",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "Layout & motion"
+    },
+    {
+      "type": "range",
+      "id": "padding_y",
+      "min": 4,
+      "max": 30,
+      "step": 1,
+      "unit": "px",
+      "label": "Vertical padding",
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "gap",
+      "min": 16,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "label": "Space between repeats",
+      "default": 56
+    },
+    {
+      "type": "range",
+      "id": "speed",
+      "min": 20,
+      "max": 200,
+      "step": 10,
+      "label": "Scroll speed",
+      "info": "Higher is faster.",
+      "default": 60
+    },
+    {
+      "type": "select",
+      "id": "direction",
+      "label": "Direction",
+      "options": [
+        { "value": "left", "label": "Right to left" },
+        { "value": "right", "label": "Left to right" }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "checkbox",
+      "id": "pause_on_hover",
+      "label": "Pause on hover",
+      "default": false
+    }
+  ],
+  "presets": [
+    {
+      "name": "Luxury Sale Marquee"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,7 @@
+Redirect from,Redirect to
+/pages/about,/pages/about-us
+/pages/our-story,/pages/about-us
+/pages/contact-information,/pages/about-us
+/pages/returns,/policies/refund-policy
+/pages/policy,/policies/refund-policy
+/pages/shipping-policy,/policies/shipping-policy

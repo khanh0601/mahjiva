@@ -149,7 +149,7 @@
             {% if media_block.settings.video != blank  %}
               {% render "blocky-video", video: media_block.settings.video, video_fit: "zoomed", fill: "#DCDCDC" %}
             {% elsif media_block.settings.image != blank %}
-              <img class="blocky-image-cover" src="{{ media_block.settings.image | image_url: height: 750 }}" height="100%" width="100%">
+              <img class="blocky-image-cover" alt="{{ media_block.settings.image.alt | escape }}" loading="lazy" src="{{ media_block.settings.image | image_url: height: 750 }}" height="100%" width="100%">
             {% else %}
               {{ 'image' | placeholder_svg_tag: "blocky-full" }}
             {% endif %}

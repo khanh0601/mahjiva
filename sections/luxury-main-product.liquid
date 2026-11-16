@@ -3604,10 +3604,11 @@
       <!-- =====================================================================
            LEFT COLUMN (56%): GALLERY STAGE & FILMSTRIP TRACK
            ===================================================================== -->
-      <div class="lp-gallery-col pdp-gallery-col">
+      <div class="lp-gallery-col pdp-gallery-col{% if product.metafields.custom.personalization_options.value != blank %} lp-gallery-col--pz{% endif %}">
         {%- assign current_variant = product.selected_or_first_available_variant -%}
         {%- assign initial_media = current_variant.featured_media | default: product.featured_media | default: product.media.first -%}
 
+        <div class="lp-pin-wrap" data-lp-pin>
         {%- if product.metafields.custom.personalization_options.value != blank -%}
           {%- assign pz_photos_selector = '#pdpMainStage-' | append: section.id -%}
           {%- assign pz_triggers_selector = '#pdpThumbsTrack-' | append: section.id -%}
@@ -3644,6 +3645,7 @@
           {%- else -%}
             <div class="pdp-no-image">Artwork imagery in archive</div>
           {%- endif -%}
+        </div>
         </div>
 
         <!-- Filmstrip Thumbnails Track: Larger 82x82px with navigation buttons -->
@@ -6287,6 +6289,162 @@ window.addEventListener('pointercancel', endTrackDrag);
 
   })();
 </script>
+
+<script type="application/ld+json">
+  {{ product | structured_data }}
+</script>
+
+{%- if product.metafields.custom.personalization_options.value != blank -%}
+  {%- comment -%}
+    Mobile: keep the live preview / photo visible while the customer fills in the
+    personalization form. Once the gallery scrolls under the header, a scaled-down
+    version of the same element is pinned below the header, above the form.
+  {%- endcomment -%}
+  <style>
+    @media (max-width: 739px) {
+      /* The gallery scrolls away normally; the pinned mini preview replaces the "sheet slides over image" behaviour. */
+      .lp-gallery-col.lp-gallery-col--pz,
+      .pdp-gallery-col.lp-gallery-col--pz {
+        position: relative !important;
+        top: auto !important;
+        z-index: 20 !important;
+      }
+
+      .lp-pin-placeholder { display: none; }
+      .lp-gallery-col--pz.is-pinned .lp-pin-placeholder { display: block; }
+
+      .lp-gallery-col--pz.is-pinned .lp-pin-wrap {
+        position: fixed;
+        top: calc(var(--lp-pin-top, 60px) + 8px);
+        left: 50%;
+        width: var(--lp-pin-width, 100%);
+        transform: translateX(-50%) scale(var(--lp-pin-scale, 1));
+        transform-origin: top center;
+        z-index: 31; /* above the thumbnail arrows (z-index 2) and thumbnails */
+        will-change: transform;
+        transition: top 0.25s ease, opacity 0.25s ease, visibility 0.25s;
+      }
+
+      /* Full-width band behind the mini preview so the form scrolls underneath it */
+      .lp-gallery-col--pz.is-pinned::before {
+        content: "";
+        position: fixed;
+        top: var(--lp-pin-top, 60px);
+        left: 0;
+        right: 0;
+        height: calc(var(--lp-pin-height, 240px) + 16px);
+        background: #FAF8F5;
+        border-bottom: 1px solid rgba(184, 151, 104, calc(0.35 * var(--lp-pin-progress, 1)));
+        box-shadow: 0 8px 20px rgba(22, 51, 39, calc(0.10 * var(--lp-pin-progress, 1)));
+        z-index: 30;
+        transition: top 0.25s ease, opacity 0.25s ease, visibility 0.25s;
+      }
+
+      /* Past the end of the form: fade the pinned preview out instead of cutting it */
+      .lp-gallery-col--pz.is-pinned.is-pin-out .lp-pin-wrap,
+      .lp-gallery-col--pz.is-pinned.is-pin-out::before {
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .lp-gallery-col--pz.is-pinned .lp-pin-wrap,
+      .lp-gallery-col--pz.is-pinned::before { transition: none; }
+    }
+  </style>
+
+  <script>
+    (function () {
+      var root = document.getElementById('LuxuryProduct-{{ section.id }}');
+      if (!root) return;
+      var col = root.querySelector('.lp-gallery-col--pz');
+      var wrap = root.querySelector('[data-lp-pin]');
+      var grid = root.querySelector('.lp-grid') || root;
+      if (!col || !wrap) return;
+
+      var mq = window.matchMedia('(max-width: 739px)');
+      var placeholder = document.createElement('div');
+      placeholder.className = 'lp-pin-placeholder';
+      placeholder.setAttribute('aria-hidden', 'true');
+      wrap.parentNode.insertBefore(placeholder, wrap);
+
+      var pinned = false;
+      var ticking = false;
+
+      function headerBottom() {
+        var header = document.querySelector('.luxury-header-wrapper');
+        if (!header) return 0;
+        var bottom = header.getBoundingClientRect().bottom;
+        return bottom > 0 ? bottom : 0;
+      }
+
+      function unpin() {
+        if (!pinned) return;
+        pinned = false;
+        col.classList.remove('is-pinned', 'is-pin-out');
+      }
+
+      function update() {
+        ticking = false;
+        if (!mq.matches) { unpin(); return; }
+
+        // Natural (unpinned) box of the preview: the placeholder stands in for it while pinned.
+        var ref = pinned ? placeholder : wrap;
+        var rect = ref.getBoundingClientRect();
+        if (!rect.width || !rect.height) { unpin(); return; }
+
+        var top = headerBottom();
+        var offset = 8;
+
+        // Pin as soon as the preview reaches the header; until then it scrolls normally.
+        if (rect.top >= top + offset) { unpin(); return; }
+
+        // Smallest size: about a third of the screen, between 170px and 280px.
+        var miniH = Math.min(rect.height, Math.max(170, Math.min(280, window.innerHeight * 0.34)));
+
+        // Scroll-linked shrink: the pinned preview's bottom edge follows where the full-size
+        // preview's bottom edge would be, so it shrinks continuously and then holds at miniH.
+        var h = rect.bottom - top - offset;
+        if (h > rect.height) h = rect.height;
+        if (h < miniH) h = miniH;
+        var scale = h / rect.height;
+        var progress = rect.height > miniH ? (rect.height - h) / (rect.height - miniH) : 1;
+
+        col.style.setProperty('--lp-pin-top', top + 'px');
+        col.style.setProperty('--lp-pin-width', rect.width + 'px');
+        col.style.setProperty('--lp-pin-scale', scale.toFixed(4));
+        col.style.setProperty('--lp-pin-height', h + 'px');
+        col.style.setProperty('--lp-pin-progress', progress.toFixed(3));
+
+        if (!pinned) {
+          placeholder.style.height = rect.height + 'px';
+          pinned = true;
+          col.classList.add('is-pinned');
+        }
+
+        // Fade out once the form has scrolled past.
+        var gridBottom = grid.getBoundingClientRect().bottom;
+        col.classList.toggle('is-pin-out', gridBottom <= top + h + 80);
+      }
+
+      function requestUpdate() {
+        if (ticking) return;
+        ticking = true;
+        window.requestAnimationFrame(update);
+      }
+
+      window.addEventListener('scroll', requestUpdate, { passive: true });
+      window.addEventListener('resize', requestUpdate);
+      if (mq.addEventListener) mq.addEventListener('change', requestUpdate);
+      // The header can slide in/out on its own (without a scroll event): follow it.
+      var headerEl = document.querySelector('.luxury-header-wrapper');
+      if (headerEl) headerEl.addEventListener('transitionend', requestUpdate);
+      requestUpdate();
+    })();
+  </script>
+{%- endif -%}
 
 {% schema %}
 {

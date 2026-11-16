@@ -213,7 +213,7 @@
                 {%- if block.settings.image_1 != blank or block.settings.video_1 != blank -%}
                   <div class="blocky-{{ block.settings.media_shape }} blocky-testimonial-media{% if block.settings.media_width == 100 and block.settings.media_shape != "circle" %} blocky-testimonial-media-full{% endif %}" style="--media-width: {{ block.settings.media_width }}%;">
                     {% if block.settings.video_1 == blank %}
-                      <img src="{{ block.settings.image_1 | image_url: height: 750 }}" height="100%" width="100%">  
+                      <img alt="{{ block.settings.image_1.alt | escape }}" loading="lazy" src="{{ block.settings.image_1 | image_url: height: 750 }}" height="100%" width="100%">  
                     {% else %}
                       {% render "blocky-video", video: block.settings.video_1, autoplay: false, button_color: block.settings.play_button_color, background_button_color: block.settings.play_button_background_color %} 
                     {% endif %}
@@ -258,7 +258,7 @@
                 {%- if block.settings.image_2 != blank or block.settings.video_2 != blank -%}
                   <div class="blocky-{{ block.settings.media_shape }} blocky-testimonial-media{% if block.settings.media_width == 100 and block.settings.media_shape != "circle" %} blocky-testimonial-media-full{% endif %}" style="--media-width: {{ block.settings.media_width }}%;">
                     {% if block.settings.video_2 == blank %}
-                      <img src="{{ block.settings.image_2 | image_url: height: 750 }}" height="100%" width="100%">  
+                      <img alt="{{ block.settings.image_2.alt | escape }}" loading="lazy" src="{{ block.settings.image_2 | image_url: height: 750 }}" height="100%" width="100%">  
                     {% else %}
                       {% render "blocky-video", video: block.settings.video_2, autoplay: false, button_color: block.settings.play_button_color, background_button_color: block.settings.play_button_background_color %} 
                     {% endif %}
@@ -303,7 +303,7 @@
                 {%- if block.settings.image_3 != blank or block.settings.video_3 != blank -%}
                   <div class="blocky-{{ block.settings.media_shape }} blocky-testimonial-media{% if block.settings.media_width == 100 and block.settings.media_shape != "circle" %} blocky-testimonial-media-full{% endif %}" style="--media-width: {{ block.settings.media_width }}%;">
                     {% if block.settings.video_3 == blank %}
-                      <img src="{{ block.settings.image_3 | image_url: height: 750 }}" height="100%" width="100%">  
+                      <img alt="{{ block.settings.image_3.alt | escape }}" loading="lazy" src="{{ block.settings.image_3 | image_url: height: 750 }}" height="100%" width="100%">  
                     {% else %}
                       {% render "blocky-video", video: block.settings.video_3, autoplay: false, button_color: block.settings.play_button_color, background_button_color: block.settings.play_button_background_color %} 
                     {% endif %}

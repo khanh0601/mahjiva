@@ -1034,9 +1034,12 @@
             <!-- PHOTOS STAGE -->
             <div class="cmh-photo-stage" id="cmhPhotoStage-{{ section.id }}">
               {%- if custom_mat_product.featured_media -%}
-                <img id="cmhPhotoActive-{{ section.id }}" src="{{ custom_mat_product.featured_media | image_url: width: 1200 }}" alt="{{ custom_mat_product.title | escape }}">
-              {%- else -%}
-                <img id="cmhPhotoActive-{{ section.id }}" src="{{ 'Mats_Custom3_8df24f2c-9ee9-45a4-8463-4941278d7dd7.jpg' | asset_url | default: 'https://www.aloxo.store/cdn/shop/files/Mats_Custom20_96cd5514-649e-429c-98b6-2886cd64eccb.jpg?v=1787543350' }}" alt="Custom Mahjong Mat Hand Drawn">
+                <img id="cmhPhotoActive-{{ section.id }}" src="{{ custom_mat_product.featured_media | image_url: width: 1200 }}" alt="{{ custom_mat_product.featured_media.alt | default: custom_mat_product.title | escape }}" width="{{ custom_mat_product.featured_media.preview_image.width }}" height="{{ custom_mat_product.featured_media.preview_image.height }}">
+              {%- elsif request.design_mode -%}
+                <div class="cmh-empty-state-notice">
+                  <strong>Sản phẩm chưa có ảnh</strong>
+                  <p>Vui lòng thêm ảnh (Media) cho sản phẩm này trong Shopify Admin → Products.</p>
+                </div>
               {%- endif -%}
             </div>
 
@@ -1052,20 +1055,11 @@
               </div>
             </div>
 
-            {%- if custom_mat_product.media.size > 0 -%}
-              {%- for media in custom_mat_product.media -%}
-                <div class="cmh-thumb-item" onclick="selectCmhPhoto('{{ media | image_url: width: 1200 }}', this, '{{ section.id }}')">
-                  <img src="{{ media | image_url: width: 140, height: 140, crop: 'center' }}" alt="{{ media.alt | default: custom_mat_product.title | escape }}">
-                </div>
-              {%- endfor -%}
-            {%- else -%}
-              <div class="cmh-thumb-item" onclick="selectCmhPhoto('https://www.aloxo.store/cdn/shop/files/Mats_Custom20_96cd5514-649e-429c-98b6-2886cd64eccb.jpg?v=1787543350', this, '{{ section.id }}')">
-                <img src="https://www.aloxo.store/cdn/shop/files/Mats_Custom20_96cd5514-649e-429c-98b6-2886cd64eccb.jpg?v=1787543350" alt="Mat Overview">
+            {%- for media in custom_mat_product.media -%}
+              <div class="cmh-thumb-item" onclick="selectCmhPhoto('{{ media | image_url: width: 1200 }}', this, '{{ section.id }}')">
+                <img src="{{ media | image_url: width: 140, height: 140, crop: 'center' }}" alt="{{ media.alt | default: custom_mat_product.title | escape }}" width="70" height="70" loading="lazy">
               </div>
-              <div class="cmh-thumb-item" onclick="selectCmhPhoto('https://www.aloxo.store/cdn/shop/files/Mats_Custom3_8df24f2c-9ee9-45a4-8463-4941278d7dd7.jpg?v=1787542875', this, '{{ section.id }}')">
-                <img src="https://www.aloxo.store/cdn/shop/files/Mats_Custom3_8df24f2c-9ee9-45a4-8463-4941278d7dd7.jpg?v=1787542875" alt="Art Deco Sample">
-              </div>
-            {%- endif -%}
+            {%- endfor -%}
           </div>
 
         </div>

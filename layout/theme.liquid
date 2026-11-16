@@ -6,13 +6,7 @@
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="theme-color" content="#163327">
     <link rel="canonical" href="{{ canonical_url }}">
-    {%- if request.path == '/pages/about' or request.path == '/pages/contact-information' or request.path == '/pages/our-story' -%}
-      <script>window.location.replace('/pages/about-us');</script>
-      <meta http-equiv="refresh" content="0;url=/pages/about-us">
-    {%- elsif request.path == '/pages/refund-policy' or request.path contains '/pages/refund' or request.path contains '/pages/return' -%}
-      <script>window.location.replace('/policies/refund-policy');</script>
-      <meta http-equiv="refresh" content="0;url=/policies/refund-policy">
-    {%- endif -%}
+    {%- comment -%} Old URLs are redirected with real 301s in Shopify Admin (Content → Menus → URL redirects). {%- endcomment -%}
     <meta name="google-site-verification" content="EP0pmUmfLixU262xK2JPSOJC2KY854f2Zq1RTbnvdQw">
 
     <script>
@@ -28,10 +22,6 @@
             window.scrollTo(0, 0);
           } catch(e) {}
         }
-        var p = window.location.pathname.toLowerCase().replace(/\/+$/, '');
-        if (p === '/pages/about' || p === '/pages/contact-information' || p === '/pages/our-story') {
-          window.location.replace('/pages/about-us');
-        }
       })();
     </script>
 
@@ -41,13 +31,8 @@
          - Supports Google Search Favicon specifications (multiples of 48px square)
          - Supports Desktop & Mobile Browser tabs, iOS Apple Touch Icon, Android Chrome
          ========================================================================= -->
-    <link rel="icon" type="image/png" sizes="192x192" href="{{ '06262745-02ba-47c9-8d8b-a167a610554c.png' | asset_url }}">
-    <link rel="icon" type="image/png" sizes="96x96" href="{{ '06262745-02ba-47c9-8d8b-a167a610554c.png' | asset_url }}">
-    <link rel="icon" type="image/png" sizes="48x48" href="{{ '06262745-02ba-47c9-8d8b-a167a610554c.png' | asset_url }}">
-    <link rel="icon" type="image/png" sizes="32x32" href="{{ '06262745-02ba-47c9-8d8b-a167a610554c.png' | asset_url }}">
-    <link rel="shortcut icon" type="image/png" href="{{ '06262745-02ba-47c9-8d8b-a167a610554c.png' | asset_url }}">
-    <link rel="apple-touch-icon" sizes="180x180" href="{{ '06262745-02ba-47c9-8d8b-a167a610554c.png' | asset_url }}">
-    <link rel="apple-touch-icon" href="{{ '06262745-02ba-47c9-8d8b-a167a610554c.png' | asset_url }}">
+    <link rel="icon" type="image/png" sizes="192x192" href="{{ 'favicon.png' | asset_url }}">
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ 'apple-touch-icon.png' | asset_url }}">
 
     {%- unless settings.type_header_font.system? and settings.type_body_font.system? -%}
       <link rel="preconnect" href="https://fonts.shopifycdn.com" crossorigin>
@@ -58,109 +43,81 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&display=swap" media="print" onload="this.media='all'">
 
     <title>
-      {%- if request.page_type == 'index' and page_title == shop.name -%}
-        {{ shop.name }} | American Mahjong Sets &amp; Accessories
-      {%- elsif collection.handle == 'all' and page_title == 'Products' -%}
-        All Products
-      {%- elsif template.name == 'product' and product.handle contains 'classic-canvas' -%}
-        Everyday Mahjong Tile Bag &ndash; {{ shop.name }}
-      {%- elsif template.name == 'product' and product.handle contains 'clear-acrylic' -%}
-        Crystal Clear Mahjong Racks - Set of 4 &ndash; {{ shop.name }}
-      {%- elsif request.path contains 'about' or page.handle contains 'about' or request.path contains 'contact-information' -%}
-        About Us &ndash; {{ shop.name }}
-      {%- elsif request.path contains 'refund' or page.handle contains 'refund' -%}
-        Refund Policy &ndash; {{ shop.name }}
-      {%- else -%}
-        {{ page_title }}
-      {%- endif -%}
+      {%- comment -%} Titles come from Shopify Admin (Search engine listing of each product / page / collection, and Online Store → Preferences). {%- endcomment -%}
+      {{- page_title -}}
       {%- if current_tags %} &ndash; tagged "{{ current_tags | join: ', ' }}"{% endif -%}
       {%- if current_page != 1 %} &ndash; Page {{ current_page }}{% endif -%}
       {%- unless page_title contains shop.name %} &ndash; {{ shop.name }}{% endunless -%}
     </title>
 
     {%- liquid
+      # Descriptions come from Shopify Admin (Search engine listing of each product / page / collection).
+      # When a page has none, fall back to the store description from Online Store → Preferences.
       assign seo_description = page_description
-      if request.page_type == 'index'
-        if seo_description == blank or seo_description == page_title or seo_description contains 'Luxury American Mahjong Sets' or seo_description contains 'Shop Mahjiva American Mahjong'
-          assign seo_description = "Luxury American Mahjong sets and bespoke accessories crafted to NMJL standards. Discover artful tile designs, complimentary worldwide shipping, and dedicated concierge care."
-        endif
-      elsif seo_description contains 'Spooky Haven' or seo_description contains 'DASON' or request.path contains 'refund' or page.handle contains 'refund'
-        assign seo_description = "Read Mahjiva's official 30-day return and exchange policy. Handcrafted luxury American Mahjong sets, mats, and accessories with dedicated client care."
-      elsif template.name == 'product' and product.handle contains 'tiger-peony'
-        assign seo_description = "Inspired by Asian artistry, the Tiger & Peony Mahjong Mat features majestic tigers, blooming peonies, and water-resistant neoprene with non-slip rubber backing."
-      elsif template.name == 'product' and product.handle contains 'classic-canvas'
-        assign seo_description = "Explore the Everyday Mahjong Tile Bag by Mahjiva. Handcrafted with durable quilted canvas, padded lining, and elegant storage for your tiles."
-      elsif template.name == 'product' and product.handle contains 'clear-acrylic'
-        assign seo_description = "Explore the Crystal Clear Mahjong Racks (Set of 4) by Mahjiva. Handcrafted high-clarity acrylic with integrated brass pushers."
-      elsif seo_description == blank
-        if request.page_type == 'index'
-          assign seo_description = "Luxury American Mahjong sets and bespoke accessories crafted to NMJL standards. Discover artful tile designs, complimentary worldwide shipping, and dedicated concierge care."
-        elsif request.page_type == 'collection'
-          capture seo_description
-            echo 'Shop '
-            echo collection.title
-            echo ' from '
-            echo shop.name
-            echo '.'
-          endcapture
-        else
-          assign seo_description = shop.description
-        endif
+      if seo_description == blank
+        assign seo_description = shop.description
       endif
     -%}
     {%- if seo_description != blank -%}
-      <meta name="description" content="{{ seo_description | strip_html | strip_newlines | escape }}">
+      <meta name="description" content="{{ seo_description | strip_html | strip_newlines | escape_once }}">
     {%- endif -%}
 
     {% render 'meta-tags', seo_description: seo_description %}
 
-    <meta name="keywords" content="mahjiva, mahjiva mahjong, mahjiva sets, mahjiva.com, luxury mahjong, american mahjong sets">
-
+    {%- comment -%}
+      Organization schema — every value comes from Shopify (Settings → Store details,
+      Theme settings → Logo / Social media). Nothing is hardcoded here.
+    {%- endcomment -%}
+    {%- liquid
+      assign org_same_as = ''
+      assign social_links = settings.social_facebook_link | append: '|' | append: settings.social_instagram_link | append: '|' | append: settings.social_pinterest_link | append: '|' | append: settings.social_youtube_link | append: '|' | append: settings.social_tiktok_link | append: '|' | append: settings.social_twitter_link | append: '|' | append: settings.social_snapchat_link | append: '|' | append: settings.social_tumblr_link | append: '|' | append: settings.social_vimeo_link | split: '|'
+      for link in social_links
+        if link != blank
+          assign org_same_as = org_same_as | append: link | append: '|'
+        endif
+      endfor
+      assign org_same_as = org_same_as | split: '|'
+    -%}
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
         "@type": "Organization",
-        "name": "Mahjiva",
-        "legalName": "FR SUMMER LLC",
-        "alternateName": ["Mahjiva", "Mahjiva Mahjong", "Mahjiva Official", "Mahjiva Store", "mahjiva.com"],
-        "url": "https://www.mahjiva.com",
-        "logo": {{ '06262745-02ba-47c9-8d8b-a167a610554c.png' | asset_url | prepend: 'https:' | json }},
-        "description": "Mahjiva is an American luxury atelier offering artisan American Mahjong tile sets, designer play mats, acrylic racks, and bespoke tabletop accessories. Operated by FR SUMMER LLC.",
-        "brand": {
-          "@type": "Brand",
-          "name": "Mahjiva",
-          "alternateName": "Mahjiva Mahjong",
-          "url": "https://www.mahjiva.com"
-        },
+        "name": {{ shop.name | json }},
+        {%- if shop.address.company != blank %}
+        "legalName": {{ shop.address.company | json }},
+        {%- endif %}
+        "url": {{ shop.url | json }},
+        {%- if settings.logo != blank %}
+        "logo": {{ settings.logo | image_url: width: 600 | prepend: 'https:' | json }},
+        {%- endif %}
+        {%- if shop.description != blank %}
+        "description": {{ shop.description | strip_html | strip_newlines | json }},
+        {%- endif %}
+        {%- if shop.address.address1 != blank %}
         "address": {
           "@type": "PostalAddress",
-          "streetAddress": "1401 PENNSYLVANIA AVE STE 105 5132",
-          "addressLocality": "WILMINGTON",
-          "addressRegion": "DE",
-          "postalCode": "19806-4125",
-          "addressCountry": "US"
+          "streetAddress": {{ shop.address.address1 | append: ' ' | append: shop.address.address2 | strip | json }},
+          "addressLocality": {{ shop.address.city | json }},
+          "addressRegion": {{ shop.address.province_code | json }},
+          "postalCode": {{ shop.address.zip | json }},
+          "addressCountry": {{ shop.address.country_code | json }}
         },
+        {%- endif %}
+        {%- if shop.phone != blank or shop.email != blank %}
         "contactPoint": [
           {
             "@type": "ContactPoint",
-            "telephone": "+1-323-366-6555",
-            "contactType": "customer service",
-            "email": "care@mahjiva.com",
-            "availableLanguage": "English",
-            "areaServed": "US",
-            "hoursAvailable": "Mo-Sa 09:00-18:00 EST"
+            "contactType": "customer service"
+            {%- if shop.phone != blank %},
+            "telephone": {{ shop.phone | json }}
+            {%- endif %}
+            {%- if shop.email != blank %},
+            "email": {{ shop.email | json }}
+            {%- endif %}
           }
         ],
-        "founder": {
-          "@type": "Person",
-          "name": "Frank R.",
-          "jobTitle": "Creative Director"
-        },
-        "sameAs": [
-          "https://www.facebook.com/mahjiva",
-          "https://www.instagram.com/mahjiva",
-          "https://www.pinterest.com/mahjiva"
-        ]
+        {%- endif %}
+        "sameAs": {{ org_same_as | json }}
       }
     </script>
     {%- if request.page_type == 'index' -%}
@@ -195,12 +152,7 @@
       </script>
     {%- endif -%}
 
-    <link
-      rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:FILL@0..1&display=swap"
-      media="print"
-      onload="this.media='all'"
-    >
+    {%- comment -%} Material Symbols icon font is loaded per section via snippets/material-symbols-font.liquid {%- endcomment -%}
 
     <script src="{{ 'constants.js' | asset_url }}" defer="defer"></script>
     <script src="{{ 'pubsub.js' | asset_url }}" defer="defer"></script>
@@ -504,6 +456,9 @@
     {{ 'base.css' | asset_url | stylesheet_tag }}
     {{ 'blocky-lys.css' | asset_url | stylesheet_tag }}
     {{ 'responsive-fixes.css' | asset_url | stylesheet_tag }}
+    {%- if request.page_type == 'policy' -%}
+      {{ 'policy-page.css' | asset_url | stylesheet_tag }}
+    {%- endif -%}
 
     {%- unless settings.type_body_font.system? -%}
       {% comment %}theme-check-disable AssetPreload{% endcomment %}
@@ -549,15 +504,11 @@
     {% sections 'header-group' %}
 
     <main id="MainContent" class="content-for-layout focus-none" role="main" tabindex="-1">
-      {%- if request.path contains 'privacy-policy' or page.handle == 'privacy-policy' -%}
-        {%- render 'mahjiva-privacy-policy' -%}
-      {%- elsif request.path contains 'terms' or page.handle contains 'terms' -%}
-        {%- render 'mahjiva-terms-of-service' -%}
-      {%- elsif request.path contains 'shipping-policy' or request.path contains 'shipping-information' or page.handle == 'shipping-policy' or page.handle == 'shipping-information' -%}
-        {%- render 'mahjiva-shipping-policy' -%}
-      {%- elsif request.path contains 'refund' or request.path contains 'return' or request.path == '/pages/policy' or request.path == '/policies' or page.handle == 'returns' or page.handle == 'refund-policy' -%}
-        {%- render 'mahjiva-refund-policy' -%}
-      {%- elsif request.path contains 'about' or page.handle contains 'about' or request.path contains 'contact-information' -%}
+      {%- comment -%}
+        Policy pages show the content entered in Shopify Admin (Settings → Policies).
+        The About page keeps its designed layout, matched by its exact page handle only.
+      {%- endcomment -%}
+      {%- if request.page_type == 'page' and page.handle == 'about-us' -%}
         {%- render 'mahjiva-about-us' -%}
       {%- else -%}
         {{ content_for_layout }}
