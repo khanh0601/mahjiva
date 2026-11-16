@@ -1,0 +1,769 @@
+{%- comment -%}
+  -----------------------------------------------------------------------------
+  SNIPPET: LUXURY ADD THESE TO YOUR ORDER (CAROUSEL / ADD-ONS)
+  - 100% Harmonized Atelier Aesthetic: Imperial Jade (#163327) & Champagne Bronze (#B89768)
+  - Balanced 3-column grid when <= 3 items (zero awkward right-side empty space)
+  - Responsive horizontal carousel with arrow nav when > 3 items or on mobile
+  - 100% Real Shopify Data (Zero Mock)
+  - Interactive variant selector (updates price, image with srcset swap, variant ID)
+  - One-click AJAX "Add & Save" button with cart drawer sync
+  - Filtered specifically for Mahjong Set products
+  -----------------------------------------------------------------------------
+{%- endcomment -%}
+
+{%- liquid
+  assign sec_id = section_id | default: section.id | default: 'add-to-order'
+  assign only_sets = only_mahjong_sets
+  if only_sets == nil
+    assign only_sets = true
+  endif
+
+  # Mahjong Set detection
+  assign is_mahjong_set = false
+  if product.type == 'Tiles' or product.tags contains 'Mahjong Set' or product.handle contains 'mahjong-set'
+    assign is_mahjong_set = true
+  else
+    for c in product.collections
+      if c.handle == 'mahjong-set' or c.handle contains 'mahjong-set'
+        assign is_mahjong_set = true
+        break
+      endif
+    endfor
+  endif
+
+  # Products list
+  assign prod_items = products
+  assign prod_count = prod_items.size | default: 0
+  if prod_items == blank or prod_count == 0
+    assign default_handles = 'handcrafted-natural-gemstone-mahjong-dice-set,classic-canvas-mahjong-tile-carrying-bag,leopard-print-quilted-mahjong-tile-bag,leopard-print-mahjong-racks-set-of-4,palm-paradise-mahjong-mat' | split: ','
+    assign item_count = default_handles.size
+  else
+    assign item_count = prod_count
+  endif
+
+  assign heading_text = heading | default: 'Add These to Your Order'
+  assign subheading_text = subheading | default: 'Choose any coordinating piece to complete your setup. Each one is 10% off.'
+  assign disc_pct = discount_percent | default: 10
+  assign btn_label = button_text | default: 'Add & Save'
+  assign btn_bg = button_color | default: '#163327'
+  if btn_bg == '#6F266A' or btn_bg == '#4A154B' or btn_bg == blank
+    assign btn_bg = '#163327'
+  endif
+  assign card_bg_color = card_bg | default: '#FAF8F5'
+  if card_bg_color == '#FAF8F6' or card_bg_color == blank
+    assign card_bg_color = '#FAF8F5'
+  endif
+
+  # Multiplier for 10% off: (100 - disc_pct) / 100
+  assign multiplier = 100 | minus: disc_pct
+-%}
+
+{%- if only_sets and is_mahjong_set == false -%}
+  {%- if request.design_mode -%}
+    <div class="ato-admin-note" style="max-width:1200px;margin:16px auto;padding:14px 20px;background:#FAF8F5;border:1px dashed #D6D0C9;border-radius:12px;font-size:12.5px;color:#7A7571;text-align:center;">
+      <strong style="color:#163327;">[Theme Editor Notice]</strong> "Add These to Your Order" is configured to appear only on <strong>Mahjong Set</strong> products. This notice is hidden from customers.
+    </div>
+  {%- endif -%}
+{%- else -%}
+
+<div class="ato-section-wrapper" id="AddTheseToOrder-{{ sec_id }}" data-section-id="{{ sec_id }}">
+  <div class="ato-container" style="background-color: {{ card_bg_color }};">
+    <!-- Header Area -->
+    <div class="ato-header">
+      <h2 class="ato-title">{{ heading_text | escape }}</h2>
+      {%- if subheading_text != blank -%}
+        <p class="ato-subtitle">{{ subheading_text | escape }}</p>
+      {%- endif -%}
+    </div>
+
+    <!-- Carousel / Grid Relative Wrapper -->
+    <div class="ato-carousel-relative">
+      <!-- Navigation Prev Button (for > 3 items or overflow) -->
+      <button 
+        type="button" 
+        class="ato-nav-btn ato-nav-prev" 
+        aria-label="Previous add-ons" 
+        title="Previous add-ons"
+        style="display: none;"
+      >
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M15 18l-6-6 6-6"/>
+        </svg>
+      </button>
+
+      <!-- Cards Track (Responsive moderate cards fitting 4-5 per view on desktop) -->
+      <div 
+        class="ato-track" 
+        role="region" 
+        aria-label="Add-on products collection"
+      >
+        {%- if prod_items != blank and prod_count > 0 -%}
+          {%- for item in prod_items -%}
+            {%- if item != blank and item.title != blank -%}
+              {%- render 'luxury-add-to-order-card', item_product: item, discount_percent: disc_pct, multiplier: multiplier, btn_label: btn_label, btn_bg: btn_bg -%}
+            {%- endif -%}
+          {%- endfor -%}
+        {%- else -%}
+          {%- for h in default_handles -%}
+            {%- assign item = all_products[h] -%}
+            {%- if item != blank and item.title != blank -%}
+              {%- render 'luxury-add-to-order-card', item_product: item, discount_percent: disc_pct, multiplier: multiplier, btn_label: btn_label, btn_bg: btn_bg -%}
+            {%- endif -%}
+          {%- endfor -%}
+        {%- endif -%}
+      </div>
+
+      <!-- Navigation Next Button -->
+      <button 
+        type="button" 
+        class="ato-nav-btn ato-nav-next" 
+        aria-label="Next add-ons" 
+        title="Next add-ons"
+        style="display: none;"
+      >
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M9 18l6-6-6-6"/>
+        </svg>
+      </button>
+    </div>
+
+    <!-- Scrollbar Indicator Pill (shown only on mobile / small screens when horizontally scrollable) -->
+    <div class="ato-scrollbar-wrapper" aria-hidden="true" style="display: none;">
+      <div class="ato-scrollbar-track">
+        <div class="ato-scrollbar-pill"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  #AddTheseToOrder-{{ sec_id }} {
+    width: 100%;
+    margin-top: 32px;
+    margin-bottom: 40px;
+    box-sizing: border-box;
+  }
+
+  #AddTheseToOrder-{{ sec_id }} * {
+    box-sizing: border-box;
+  }
+
+  #AddTheseToOrder-{{ sec_id }} .ato-container {
+    border-radius: 14px;
+    border: 1px solid #E6E1D8;
+    padding: 24px 26px 20px 26px;
+    position: relative;
+    box-shadow: 0 4px 18px rgba(22, 51, 39, 0.04);
+    background-color: {{ card_bg_color }};
+  }
+
+  @media (max-width: 767px) {
+    #AddTheseToOrder-{{ sec_id }} {
+      margin-top: 18px;
+      margin-bottom: 24px;
+    }
+    #AddTheseToOrder-{{ sec_id }} .ato-container {
+      padding: 16px 12px 14px 12px;
+      border-radius: 12px;
+    }
+  }
+
+  /* Header Area */
+  #AddTheseToOrder-{{ sec_id }} .ato-header {
+    margin-bottom: 16px;
+  }
+
+  #AddTheseToOrder-{{ sec_id }} .ato-title {
+    font-size: 22px;
+    font-weight: 600;
+    color: #163327;
+    margin: 0;
+    line-height: 1.25;
+    letter-spacing: 0.02em;
+    font-family: "Cormorant Garamond", Garamond, Georgia, serif;
+  }
+
+  #AddTheseToOrder-{{ sec_id }} .ato-subtitle {
+    font-size: 13px;
+    color: #6E6A63;
+    margin: 4px 0 0 0;
+    line-height: 1.4;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  }
+
+  @media (max-width: 767px) {
+    #AddTheseToOrder-{{ sec_id }} .ato-title {
+      font-size: 19px;
+    }
+    #AddTheseToOrder-{{ sec_id }} .ato-subtitle {
+      font-size: 12px;
+    }
+  }
+
+  /* Carousel / Track Relative Wrapper */
+  #AddTheseToOrder-{{ sec_id }} .ato-carousel-relative {
+    position: relative;
+    width: 100%;
+  }
+
+  #AddTheseToOrder-{{ sec_id }} .ato-track {
+    display: flex;
+    gap: 14px;
+    overflow-x: auto;
+    scroll-snap-type: x proximity;
+    touch-action: pan-x pan-y !important;
+    overscroll-behavior-x: contain !important;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    -webkit-overflow-scrolling: touch;
+    padding: 4px 2px 8px 2px;
+    justify-content: flex-start;
+  }
+
+  #AddTheseToOrder-{{ sec_id }} .ato-track::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Nav Arrows (Imperial Jade) */
+  #AddTheseToOrder-{{ sec_id }} .ato-nav-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: linear-gradient(180deg, #1D4B37 0%, #143828 42%, #081610 100%) !important;
+    color: #FAF8F5 !important;
+    border: 1px solid rgba(216, 184, 140, 0.4) !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 6;
+    box-shadow: 0 4px 14px rgba(8, 22, 16, 0.35);
+    transition: all 0.2s ease;
+  }
+
+  #AddTheseToOrder-{{ sec_id }} .ato-nav-btn:hover {
+    background: linear-gradient(180deg, #245E45 0%, #18422F 42%, #0C1E15 100%) !important;
+    border-color: #D8B88C !important;
+    transform: translateY(-50%) scale(1.08);
+  }
+
+  #AddTheseToOrder-{{ sec_id }} .ato-nav-btn:active {
+    transform: translateY(-50%) scale(0.96);
+  }
+
+  #AddTheseToOrder-{{ sec_id }} .ato-nav-prev {
+    left: -14px;
+  }
+
+  #AddTheseToOrder-{{ sec_id }} .ato-nav-next {
+    right: -14px;
+  }
+
+  @media (max-width: 859px) {
+    #AddTheseToOrder-{{ sec_id }} .ato-nav-btn {
+      display: none !important;
+    }
+  }
+
+  /* Product Card - Balanced 3 cards per view on desktop */
+  #AddTheseToOrder-{{ sec_id }} .ato-card {
+    flex: 0 0 calc((100% - 2 * 16px) / 3);
+    width: calc((100% - 2 * 16px) / 3);
+    min-width: 250px;
+    scroll-snap-align: start;
+    background: #FFFFFF;
+    border: 1px solid #ECE7DE;
+    border-radius: 12px;
+    padding: 14px 14px 16px 14px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    box-shadow: 0 2px 8px rgba(22, 51, 39, 0.03);
+    transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+  }
+
+  @media (min-width: 860px) {
+    #AddTheseToOrder-{{ sec_id }} .ato-card {
+      flex: 0 0 calc((100% - 2 * 16px) / 3);
+      width: calc((100% - 2 * 16px) / 3);
+      max-width: none;
+    }
+  }
+
+  @media (min-width: 641px) and (max-width: 859px) {
+    #AddTheseToOrder-{{ sec_id }} .ato-card {
+      flex: 0 0 calc((100% - 14px) / 2);
+      width: calc((100% - 14px) / 2);
+      min-width: 230px;
+    }
+  }
+
+  @media (max-width: 640px) {
+    #AddTheseToOrder-{{ sec_id }} .ato-card {
+      flex: 0 0 195px;
+      width: 195px;
+      padding: 12px 10px;
+      border-radius: 10px;
+    }
+  }
+
+  #AddTheseToOrder-{{ sec_id }} .ato-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(22, 51, 39, 0.08);
+    border-color: #C8BFAF;
+  }
+
+  /* Media Wrap */
+  #AddTheseToOrder-{{ sec_id }} .ato-card-image-wrap {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    border-radius: 7px;
+    overflow: hidden;
+    background-color: #F8F6F2;
+    margin-bottom: 10px;
+    position: relative;
+    border: 1px solid rgba(22, 51, 39, 0.05);
+  }
+
+  #AddTheseToOrder-{{ sec_id }} .ato-card-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: opacity 0.25s ease, transform 0.25s ease;
+  }
+
+  #AddTheseToOrder-{{ sec_id }} .ato-card:hover .ato-card-img {
+    transform: scale(1.03);
+  }
+
+  /* Card Info */
+  #AddTheseToOrder-{{ sec_id }} .ato-card-info {
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
+  }
+
+  #AddTheseToOrder-{{ sec_id }} .ato-card-title {
+    font-size: 13px;
+    font-weight: 600;
+    color: #163327;
+    line-height: 1.32;
+    margin: 0 0 6px 0;
+    min-height: 35px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-decoration: none;
+    transition: color 0.2s ease;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  }
+
+  #AddTheseToOrder-{{ sec_id }} .ato-card-title:hover {
+    color: #B89768;
+  }
+
+  /* Price Row */
+  #AddTheseToOrder-{{ sec_id }} .ato-price-row {
+    display: flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 5px;
+    margin-bottom: 9px;
+  }
+
+  #AddTheseToOrder-{{ sec_id }} .ato-price-discounted {
+    font-size: 14.5px;
+    font-weight: 700;
+    color: #163327;
+    letter-spacing: -0.01em;
+  }
+
+  #AddTheseToOrder-{{ sec_id }} .ato-price-original {
+    font-size: 11.5px;
+    font-weight: 400;
+    color: #8C847A;
+    text-decoration: line-through;
+  }
+
+  #AddTheseToOrder-{{ sec_id }} .ato-price-badge {
+    font-size: 10px;
+    font-weight: 700;
+    color: #9E6316;
+    background: #FDF4E7;
+    border: 1px solid #F3DFBF;
+    padding: 2px 5px;
+    border-radius: 4px;
+    margin-left: 1px;
+    line-height: 1.2;
+    letter-spacing: 0.02em;
+  }
+
+  /* Variant Dropdown & Spacer */
+  #AddTheseToOrder-{{ sec_id }} .ato-variant-wrap {
+    margin-bottom: 9px;
+    position: relative;
+  }
+
+  #AddTheseToOrder-{{ sec_id }} .ato-variant-select {
+    width: 100%;
+    height: 33px;
+    padding: 0 24px 0 9px;
+    border: 1px solid #D8D2C4;
+    border-radius: 6px;
+    background-color: #FFFFFF;
+    color: #163327;
+    font-size: 12px;
+    font-weight: 500;
+    font-family: inherit;
+    appearance: none;
+    -webkit-appearance: none;
+    cursor: pointer;
+    outline: none;
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23163327' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 8px center;
+    background-size: 12px;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  #AddTheseToOrder-{{ sec_id }} .ato-variant-select:hover {
+    border-color: #B89768;
+  }
+
+  #AddTheseToOrder-{{ sec_id }} .ato-variant-select:focus {
+    border-color: #163327;
+    box-shadow: 0 0 0 2px rgba(22, 51, 39, 0.15);
+  }
+
+  #AddTheseToOrder-{{ sec_id }} .ato-variant-single-note {
+    height: 33px;
+    display: flex;
+    align-items: center;
+    padding: 0 9px;
+    border: 1px dashed #E2DDD5;
+    border-radius: 6px;
+    background-color: #FAF8F5;
+    color: #8C847A;
+    font-size: 11.5px;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+  }
+
+  /* Add & Save Button - Imperial Jade (#163327) */
+  #AddTheseToOrder-{{ sec_id }} .ato-add-btn {
+    width: 100%;
+    height: 35px;
+    background: linear-gradient(180deg, #1D4B37 0%, #143828 42%, #081610 100%) !important;
+    color: #FAF8F5 !important;
+    border: 1px solid rgba(216, 184, 140, 0.4) !important;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 600;
+    font-family: inherit;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    letter-spacing: 0.02em;
+    box-shadow: 0 2px 8px rgba(8, 22, 16, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+    transition: all 0.2s ease;
+  }
+
+  #AddTheseToOrder-{{ sec_id }} .ato-add-btn:hover:not(:disabled) {
+    background: linear-gradient(180deg, #245E45 0%, #18422F 42%, #0C1E15 100%) !important;
+    border-color: #D8B88C !important;
+    color: #FFFFFF !important;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 14px rgba(8, 22, 16, 0.35);
+  }
+
+  #AddTheseToOrder-{{ sec_id }} .ato-add-btn:active:not(:disabled) {
+    transform: translateY(0);
+  }
+
+  #AddTheseToOrder-{{ sec_id }} .ato-add-btn:disabled {
+    background: #E5DFD7 !important;
+    color: #8C847A !important;
+    cursor: not-allowed;
+    box-shadow: none;
+  }
+
+  #AddTheseToOrder-{{ sec_id }} .ato-add-btn.is-loading {
+    opacity: 0.85;
+    pointer-events: none;
+  }
+
+  #AddTheseToOrder-{{ sec_id }} .ato-add-btn.is-success {
+    background: #0E241B !important;
+  }
+
+  /* Scrollbar Indicator */
+  #AddTheseToOrder-{{ sec_id }} .ato-scrollbar-wrapper {
+    display: flex;
+    justify-content: center;
+    margin-top: 14px;
+  }
+
+  #AddTheseToOrder-{{ sec_id }} .ato-scrollbar-track {
+    width: 68px;
+    height: 4px;
+    background: #E5DFD7;
+    border-radius: 4px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  #AddTheseToOrder-{{ sec_id }} .ato-scrollbar-pill {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 45%;
+    background: #163327;
+    border-radius: 4px;
+    transform: translateX(0);
+    transition: transform 0.08s ease-out;
+  }
+</style>
+
+<script>
+(function() {
+  const container = document.getElementById('AddTheseToOrder-{{ sec_id }}');
+  if (!container) return;
+
+  const track = container.querySelector('.ato-track');
+  const prevBtn = container.querySelector('.ato-nav-prev');
+  const nextBtn = container.querySelector('.ato-nav-next');
+  const pill = container.querySelector('.ato-scrollbar-pill');
+
+  // 1. Scroll & Navigation Indicator
+  function updateScrollState() {
+    if (!track) return;
+    const maxScroll = track.scrollWidth - track.clientWidth;
+    const currentScroll = track.scrollLeft;
+    const scrollWrapper = container.querySelector('.ato-scrollbar-wrapper');
+
+    if (maxScroll <= 8) {
+      if (prevBtn) prevBtn.style.display = 'none';
+      if (nextBtn) nextBtn.style.display = 'none';
+      if (scrollWrapper) scrollWrapper.style.display = 'none';
+      return;
+    } else {
+      if (scrollWrapper) scrollWrapper.style.display = 'flex';
+    }
+
+    if (prevBtn) {
+      prevBtn.style.display = currentScroll > 15 ? 'flex' : 'none';
+    }
+    if (nextBtn) {
+      nextBtn.style.display = currentScroll < maxScroll - 15 ? 'flex' : 'none';
+    }
+
+    if (pill && maxScroll > 0) {
+      const scrollPct = Math.min(Math.max(currentScroll / maxScroll, 0), 1);
+      const maxTranslate = 120; // percent
+      pill.style.transform = `translateX(${scrollPct * maxTranslate}%)`;
+    }
+  }
+
+  if (track) {
+    track.addEventListener('scroll', updateScrollState, { passive: true });
+    window.addEventListener('resize', updateScrollState, { passive: true });
+    setTimeout(updateScrollState, 200);
+  }
+
+  function getScrollStep() {
+    const firstCard = track ? track.querySelector('.ato-card') : null;
+    return firstCard ? (firstCard.offsetWidth + 14) : 280;
+  }
+
+  if (prevBtn && track) {
+    prevBtn.addEventListener('click', function() {
+      track.scrollBy({ left: -getScrollStep(), behavior: 'smooth' });
+    });
+  }
+
+  if (nextBtn && track) {
+    nextBtn.addEventListener('click', function() {
+      track.scrollBy({ left: getScrollStep(), behavior: 'smooth' });
+    });
+  }
+
+  // 2. Interactive Variant Selector Change (Flawless Image Swap with srcset)
+  container.querySelectorAll('.ato-variant-select').forEach(function(select) {
+    function handleVariantChange() {
+      const selectedOpt = select.options[select.selectedIndex];
+      const card = select.closest('.ato-card');
+      if (!card || !selectedOpt) return;
+
+      const variantId = selectedOpt.value;
+      const priceText = selectedOpt.dataset.price;
+      const origPriceText = selectedOpt.dataset.originalPrice;
+      const isAvailable = selectedOpt.dataset.available === '1';
+      const imgSrc = selectedOpt.dataset.img;
+      const imgSrcset = selectedOpt.dataset.srcset;
+
+      // Update price display
+      const discEl = card.querySelector('.ato-price-discounted');
+      if (discEl && priceText) discEl.textContent = priceText;
+
+      const origEl = card.querySelector('.ato-price-original');
+      if (origEl && origPriceText) origEl.textContent = origPriceText;
+
+      // Update Image (clearing and updating srcset ensures browser paints the new image)
+      let imgEl = card.querySelector('.ato-card-img');
+      if (imgSrc) {
+        if (!imgEl) {
+          const wrap = card.querySelector('.ato-card-image-link');
+          if (wrap) {
+            wrap.innerHTML = `<img class="ato-card-img" src="${imgSrc}" alt="${selectedOpt.textContent.trim()}">`;
+            imgEl = wrap.querySelector('.ato-card-img');
+          }
+        }
+
+        if (imgEl) {
+          imgEl.style.transition = 'opacity 0.2s ease, transform 0.2s ease';
+          imgEl.style.opacity = '0.35';
+          imgEl.style.transform = 'scale(0.96)';
+
+          let applied = false;
+          const applyNewImage = function() {
+            if (applied) return;
+            applied = true;
+            if (imgSrcset) {
+              imgEl.setAttribute('srcset', imgSrcset);
+            } else {
+              imgEl.removeAttribute('srcset');
+            }
+            imgEl.src = imgSrc;
+            imgEl.alt = (card.dataset.productTitle || '') + ' - ' + selectedOpt.text.trim();
+            imgEl.style.opacity = '1';
+            imgEl.style.transform = 'scale(1)';
+          };
+
+          const preloader = new Image();
+          preloader.onload = applyNewImage;
+          preloader.onerror = applyNewImage;
+          preloader.src = imgSrc;
+
+          setTimeout(applyNewImage, 250);
+        }
+      }
+
+      // Update Links with variant query parameter
+      const imageLink = card.querySelector('.ato-card-image-link');
+      if (imageLink && variantId) {
+        const baseHref = imageLink.getAttribute('href').split('?')[0];
+        imageLink.setAttribute('href', `${baseHref}?variant=${variantId}`);
+      }
+      const titleLink = card.querySelector('.ato-card-title');
+      if (titleLink && variantId) {
+        const baseHref = titleLink.getAttribute('href').split('?')[0];
+        titleLink.setAttribute('href', `${baseHref}?variant=${variantId}`);
+      }
+
+      // Update Button
+      const btn = card.querySelector('.ato-add-btn');
+      if (btn) {
+        btn.dataset.variantId = variantId;
+        const btnText = btn.querySelector('.ato-btn-text') || btn;
+        btn.disabled = false;
+        btnText.textContent = {{ btn_label | json }};
+      }
+    }
+
+    select.addEventListener('change', handleVariantChange);
+    select.addEventListener('input', handleVariantChange);
+  });
+
+  // 3. Add & Save AJAX Click
+  container.querySelectorAll('.ato-add-btn').forEach(function(btn) {
+    btn.addEventListener('click', function(e) {
+      e.preventDefault();
+      const variantId = btn.dataset.variantId;
+      if (!variantId || btn.disabled) return;
+
+      const btnText = btn.querySelector('.ato-btn-text') || btn;
+      const originalText = btnText.textContent;
+
+      btn.classList.add('is-loading');
+      btnText.textContent = 'Adding...';
+
+      const requestPayload = {
+        id: parseInt(variantId, 10),
+        quantity: 1,
+        properties: {
+          '_add_to_order_discount': '{{ disc_pct }}% Off'
+        },
+        sections: ['cart-drawer', 'cart-icon-bubble']
+      };
+
+      const addUrl = (window.routes && window.routes.cart_add_url) ? window.routes.cart_add_url : '/cart/add.js';
+
+      fetch(addUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify(requestPayload)
+      })
+      .then(function(res) {
+        if (!res.ok) {
+          return res.json().then(function(err) { throw err; });
+        }
+        return res.json();
+      })
+      .then(function(data) {
+        btn.classList.remove('is-loading');
+        btn.classList.add('is-success');
+        btnText.textContent = '✓ Added to Order';
+
+        // Revert button text after 2.2s
+        setTimeout(function() {
+          btn.classList.remove('is-success');
+          btnText.textContent = originalText;
+        }, 2200);
+
+        // Notify Cart Drawer
+        const cartDrawer = document.querySelector('cart-drawer');
+        if (cartDrawer && typeof cartDrawer.renderContents === 'function' && data.sections) {
+          cartDrawer.renderContents(data);
+        } else {
+          // Fallback: update cart bubble
+          fetch('/cart.js')
+            .then(function(r) { return r.json(); })
+            .then(function(cart) {
+              const bubbles = document.querySelectorAll('.cart-count-bubble, #cart-icon-bubble');
+              bubbles.forEach(function(b) {
+                const countSpan = b.querySelector('[aria-hidden="true"]') || b;
+                if (countSpan) countSpan.textContent = cart.item_count;
+              });
+            })
+            .catch(function(e) { console.warn('Cart sync warning:', e); });
+        }
+
+        // Dispatch standard Shopify cart events
+        document.documentElement.dispatchEvent(new CustomEvent('cart:item-added', { detail: data }));
+        document.body.dispatchEvent(new CustomEvent('cart:refresh'));
+      })
+      .catch(function(err) {
+        btn.classList.remove('is-loading');
+        console.error('Add to order error:', err);
+        btnText.textContent = err.description || 'Unavailable';
+        setTimeout(function() {
+          btnText.textContent = originalText;
+        }, 2500);
+      });
+    });
+  });
+})();
+</script>
+
+{%- endif -%}

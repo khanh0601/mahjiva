@@ -46,6 +46,9 @@ class CartDrawer extends HTMLElement {
 
   open(triggeredBy) {
     if (triggeredBy) this.setActiveElement(triggeredBy);
+    if (this.querySelector('.cart-item') || this.querySelector('.drawer__cart-items-wrapper')) {
+      this.classList.remove('is-empty');
+    }
     const cartDrawerNote = this.querySelector('[id^="Details-"] summary');
     if (cartDrawerNote && !cartDrawerNote.hasAttribute('role')) this.setSummaryAccessibility(cartDrawerNote);
 
@@ -93,8 +96,13 @@ class CartDrawer extends HTMLElement {
   }
 
   renderContents(parsedState) {
-    this.querySelector('.drawer__inner').classList.contains('is-empty') &&
+    this.classList.remove('is-empty');
+    if (this.querySelector('.drawer__inner')) {
       this.querySelector('.drawer__inner').classList.remove('is-empty');
+    }
+    const cartDrawerItems = this.querySelector('cart-drawer-items');
+    if (cartDrawerItems) cartDrawerItems.classList.remove('is-empty');
+
     this.productId = parsedState.id;
     this.getSectionsToRender().forEach((section) => {
       const sectionElement = section.selector
@@ -103,7 +111,13 @@ class CartDrawer extends HTMLElement {
       sectionElement.innerHTML = this.getSectionInnerHTML(parsedState.sections[section.id], section.selector);
     });
 
+    this.classList.remove('is-empty');
+    if (this.querySelector('.drawer__inner')) {
+      this.querySelector('.drawer__inner').classList.remove('is-empty');
+    }
+
     setTimeout(() => {
+      this.classList.remove('is-empty');
       const overlay = this.querySelector('#CartDrawer-Overlay');
       if (overlay) overlay.addEventListener('click', this.close.bind(this));
       this.bindCloseButtons();

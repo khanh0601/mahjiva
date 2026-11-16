@@ -44,10 +44,10 @@
     padding: 0 !important;
     font-family: "Cormorant Garamond", Georgia, serif !important;
     font-size: 38px !important;
-    font-weight: 500 !important;
+    font-weight: 700 !important;
     line-height: 1.15 !important;
     letter-spacing: -0.01em !important;
-    color: #111111 !important;
+    color: #0D1110 !important;
   }
 
   @media screen and (max-width: 749px) {
@@ -89,7 +89,35 @@
       </h1>
 
       {%- if section.settings.show_collection_description -%}
-        <div class="collection-hero__description rte">{{ collection.description }}</div>
+        {%- assign col_desc = collection.description | strip -%}
+        {%- if col_desc == blank -%}
+          {%- case collection.handle -%}
+            {%- when 'all' -%}
+              {%- assign col_desc = 'Explore our complete collection of handcrafted American Mahjong tile sets, artisan playing mats, crystal-clear acrylic racks, and protective velvet cases.' -%}
+            {%- when 'mahjong-set' -%}
+              {%- assign col_desc = 'Discover exquisite American Mahjong tile sets, meticulously cast from fine acrylic and premium resins with heirloom craftsmanship.' -%}
+            {%- when 'mats' -%}
+              {%- assign col_desc = 'Artisan Mahjong playing mats designed with archival precision, anti-slip rubber backing, and vibrant luxury motifs.' -%}
+            {%- when 'racks' -%}
+              {%- assign col_desc = 'Crystal-clear acrylic and polished hardwood Mahjong racks with integrated pushers, tailored for effortless gameplay.' -%}
+            {%- when 'tile-bag' -%}
+              {%- assign col_desc = 'Protective velvet cases and carry bags designed to safeguard your tiles and accessories in understated elegance.' -%}
+            {%- when 'dices' -%}
+              {%- assign col_desc = 'Artisan engraved dice crafted to elevate your game table with distinctive refinement.' -%}
+            {%- when 'best-seller' -%}
+              {%- assign col_desc = 'Our most coveted American Mahjong tiles, mats, and heirloom accessories, cherished by players nationwide.' -%}
+            {%- when 'new-array' or 'new-arrivals' -%}
+              {%- assign col_desc = 'The latest seasonal editions, limited-run tile motifs, and newly unveiled Mahjong essentials.' -%}
+            {%- else -%}
+              {%- assign col_desc = 'Curated American Mahjong essentials crafted with timeless artistry and heirloom distinction.' -%}
+          {%- endcase -%}
+        {%- endif -%}
+
+        {%- if col_desc != blank -%}
+          <div class="collection-hero__description rte">
+            <p>{{ col_desc }}</p>
+          </div>
+        {%- endif -%}
       {%- endif -%}
     </div>
 

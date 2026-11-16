@@ -1,0 +1,112 @@
+{%- comment -%}
+  -----------------------------------------------------------------------------
+  SNIPPET: LUXURY ADD TO ORDER CARD
+  - Renders a single product card in the "Add These to Your Order" carousel
+  - 100% Real Shopify Data
+  - Calculated 10% discount price & original strike-through
+  - Variant dropdown updates image, price, and variant ID
+  - Uniform button alignment across cards
+  -----------------------------------------------------------------------------
+{%- endcomment -%}
+
+{%- liquid
+  assign prod = item_product
+  assign cur_variant = prod.selected_or_first_available_variant | default: prod.variants.first
+  assign initial_image = cur_variant.featured_image | default: prod.featured_image
+
+  assign orig_price = cur_variant.price
+  assign mult = multiplier | default: 90
+  assign disc_price = orig_price | times: mult | divided_by: 100
+  assign disc_pct = discount_percent | default: 10
+-%}
+
+<div 
+  class="ato-card" 
+  data-product-handle="{{ prod.handle }}" 
+  data-product-id="{{ prod.id }}"
+  data-product-title="{{ prod.title | escape }}"
+>
+  <!-- Card Media -->
+  <div class="ato-card-image-wrap">
+    <a href="{{ prod.url }}?variant={{ cur_variant.id }}" class="ato-card-image-link" tabindex="-1" aria-hidden="true">
+      {%- if initial_image != blank -%}
+        {{ initial_image | image_url: width: 450 | image_tag: 
+          class: 'ato-card-img', 
+          loading: 'lazy', 
+          widths: '200, 300, 450', 
+          sizes: '(max-width: 767px) 175px, 230px',
+          alt: prod.title | escape 
+        }}
+      {%- else -%}
+        <div style="width:100%;height:100%;background:#F2EFEB;display:flex;align-items:center;justify-content:center;color:#A8A096;font-size:11px;">
+          No Image
+        </div>
+      {%- endif -%}
+    </a>
+  </div>
+
+  <!-- Card Info -->
+  <div class="ato-card-info">
+    <a href="{{ prod.url }}?variant={{ cur_variant.id }}" class="ato-card-title" title="{{ prod.title | escape }}">
+      {{ prod.title | escape }}
+    </a>
+
+    <!-- Price with Discount -->
+    <div class="ato-price-row">
+      <span class="ato-price-discounted">{{ disc_price | money }}</span>
+      <span class="ato-price-original">{{ orig_price | money }}</span>
+      <span class="ato-price-badge">-{{ disc_pct }}%</span>
+    </div>
+
+    <!-- Variant Selector Dropdown -->
+    <div class="ato-variant-wrap{% if prod.variants.size <= 1 %} ato-variant-spacer{% endif %}">
+      {%- if prod.variants.size > 1 -%}
+        <select 
+          class="ato-variant-select" 
+          aria-label="Select variant for {{ prod.title | escape }}"
+        >
+          {%- for v in prod.variants -%}
+            {%- assign v_orig = v.price -%}
+            {%- assign v_disc = v_orig | times: mult | divided_by: 100 -%}
+            {%- assign v_img_obj = v.featured_image | default: prod.featured_image -%}
+            {%- assign v_img = v_img_obj | image_url: width: 600 -%}
+            {%- assign v_img_300 = v_img_obj | image_url: width: 300 -%}
+            {%- assign v_img_450 = v_img_obj | image_url: width: 450 -%}
+            <option 
+              value="{{ v.id }}" 
+              data-price="{{ v_disc | money }}" 
+              data-original-price="{{ v_orig | money }}" 
+              data-available="{% if v.available %}1{% else %}0{% endif %}" 
+              data-img="{{ v_img }}"
+              data-srcset="{{ v_img_300 }} 300w, {{ v_img_450 }} 450w, {{ v_img }} 600w"
+              {% if v.id == cur_variant.id %}selected{% endif %}
+            >
+              {{ v.title | escape }}
+            </option>
+          {%- endfor -%}
+        </select>
+      {%- else -%}
+        <!-- Harmonized single-edition note for uniform alignment -->
+        <div class="ato-variant-single-note" aria-hidden="true">
+          <span>Standard Edition</span>
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+
+  <!-- Action Button -->
+  <button 
+    type="button" 
+    class="ato-add-btn" 
+    data-variant-id="{{ cur_variant.id }}"
+    aria-label="{{ btn_label | escape }} - {{ prod.title | escape }}"
+  >
+    <svg class="ato-btn-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <line x1="12" y1="5" x2="12" y2="19"></line>
+      <line x1="5" y1="12" x2="19" y2="12"></line>
+    </svg>
+    <span class="ato-btn-text">
+      {{ btn_label | default: 'Add & Save' }}
+    </span>
+  </button>
+</div>

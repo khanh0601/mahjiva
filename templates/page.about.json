@@ -1,0 +1,24 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "luxury-about",
+      "settings": {
+        "image_1": "shopify://shop_images/1_ea6a10ae-5f5b-410c-bb50-b2fdeb8b33fa.png",
+        "image_2": "shopify://shop_images/3.png",
+        "image_3": "shopify://shop_images/image_2026-10-27_16-35-10.png"
+      }
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

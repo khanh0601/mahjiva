@@ -14,12 +14,19 @@
     "header": {
       "type": "atelier-header",
       "settings": {
+        "show_announcement_bar": true,
+        "announcement_text": "COMPLIMENTARY WORLDWIDE SHIPPING • 30-DAY MAHJIVA GUARANTEE",
+        "promo_text": "FREE WORLDWIDE SHIPPING • GET YOUR TABLE READY FOR THANKSGIVING • 30-DAY GUARANTEE",
+        "promo_start": "2026-11-11",
+        "promo_end": "2026-11-14",
+        "announcement_bg": "#f5efe6",
+        "announcement_text_color": "#163327",
         "header_height": 68,
         "container_max_width": 1360,
         "enable_sticky": true,
-        "bg_color_scrolled": "#fdfbf8",
+        "bg_color_scrolled": "#faf6ee",
         "text_color": "#16181b",
-        "border_bottom_color": "#eae6df",
+        "border_bottom_color": "#ece7de",
         "accent_hover_color": "#b89768",
         "logo_height_desktop": 48,
         "logo_height_mobile": 44,
@@ -39,7 +46,7 @@
         "enable_country_selector": true,
         "enable_account": true,
         "enable_search": true,
-        "search_placeholder": "Search the Atelier repertoire...",
+        "search_placeholder": "Search Mahjiva collections...",
         "enable_cart": true
       }
     }

@@ -1,0 +1,433 @@
+{%- comment -%}
+  -----------------------------------------------------------------------------
+  SNIPPET: Mahjiva REFUND & RETURN POLICY
+  - Complete 13-Section Policy Content per User Specification
+  - Luxury Editorial Layout & High-Contrast Typography
+  -----------------------------------------------------------------------------
+{%- endcomment -%}
+
+<style>
+  .mp-container {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 56px 24px 88px;
+    color: #2c2d30;
+    font-family: var(--font-body-family, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif);
+    font-size: 15.5px;
+    line-height: 1.72;
+  }
+
+  .mp-eyebrow {
+    display: inline-block;
+    font-size: 11.5px;
+    font-weight: 700;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: #8C7355;
+    margin-bottom: 12px;
+  }
+
+  .mp-title {
+    font-family: var(--font-heading-family, "Cormorant Garamond", Georgia, serif);
+    font-size: 40px;
+    font-weight: 700;
+    line-height: 1.18;
+    color: #163327;
+    margin: 0 0 10px 0;
+    letter-spacing: -0.01em;
+  }
+
+  @media (min-width: 768px) {
+    .mp-title {
+      font-size: 46px;
+    }
+  }
+
+  .mp-updated {
+    font-size: 13.5px;
+    color: #7A7570;
+    font-style: italic;
+    margin: 0 0 28px 0;
+    display: block;
+  }
+
+  .mp-lead {
+    font-size: 16.5px;
+    line-height: 1.75;
+    color: #242220;
+    margin-bottom: 24px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #ECE7DE;
+  }
+
+  /* Quick Summary Metric Grid */
+  .mp-metrics-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
+    margin: 28px 0 38px 0;
+  }
+
+  @media (min-width: 640px) {
+    .mp-metrics-grid {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+
+  .mp-metric-card {
+    background: #FAF8F5;
+    border: 1px solid #E6E1D8;
+    border-radius: 12px;
+    padding: 16px 14px;
+    text-align: center;
+    transition: transform 0.2s ease, border-color 0.2s ease;
+  }
+
+  .mp-metric-card:hover {
+    transform: translateY(-2px);
+    border-color: #8C7355;
+  }
+
+  .mp-metric-val {
+    display: block;
+    font-family: var(--font-heading-family, "Cormorant Garamond", Georgia, serif);
+    font-size: 24px;
+    font-weight: 700;
+    color: #163327;
+    line-height: 1.2;
+    margin-bottom: 4px;
+  }
+
+  .mp-metric-lbl {
+    display: block;
+    font-size: 12px;
+    color: #6B6661;
+    line-height: 1.35;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-weight: 600;
+  }
+
+  .mp-section {
+    margin-bottom: 34px;
+    padding-bottom: 28px;
+    border-bottom: 1px solid #F0ECE4;
+  }
+
+  .mp-section:last-of-type {
+    border-bottom: none;
+  }
+
+  .mp-section-title {
+    font-family: var(--font-heading-family, "Cormorant Garamond", Georgia, serif);
+    font-size: 24px;
+    font-weight: 700;
+    color: #163327;
+    margin: 0 0 14px 0;
+    line-height: 1.3;
+  }
+
+  .mp-container p {
+    margin: 0 0 14px 0;
+  }
+
+  .mp-container strong {
+    color: #163327;
+    font-weight: 700;
+  }
+
+  .mp-container a {
+    color: #163327;
+    font-weight: 600;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    transition: color 0.2s ease;
+  }
+
+  .mp-container a:hover {
+    color: #8C7355;
+  }
+
+  /* Callout Warning / Note Boxes */
+  .mp-callout {
+    background: #FDF9F2;
+    border-left: 3.5px solid #8C7355;
+    padding: 16px 20px;
+    border-radius: 0 10px 10px 0;
+    margin: 18px 0;
+    font-size: 14.5px;
+    line-height: 1.65;
+    color: #38342E;
+  }
+
+  .mp-alert {
+    background: #FFF8F7;
+    border: 1px solid rgba(200, 60, 40, 0.25);
+    border-radius: 12px;
+    padding: 18px 22px;
+    margin: 16px 0;
+  }
+
+  .mp-alert-list {
+    list-style: none;
+    padding: 0;
+    margin: 8px 0 0 0;
+  }
+
+  .mp-alert-list li {
+    position: relative;
+    padding-left: 24px;
+    margin-bottom: 8px;
+    font-size: 14.5px;
+    color: #4A4642;
+  }
+
+  .mp-alert-list li::before {
+    content: "✕";
+    position: absolute;
+    left: 0;
+    top: 0;
+    color: #B83A2E;
+    font-weight: 800;
+    font-size: 13px;
+  }
+
+  /* Contact Information Card */
+  .mp-company-card {
+    margin-top: 36px;
+    border: 1px solid #E5E0D8;
+    background: #FAF8F5;
+    border-radius: 14px;
+    padding: 28px;
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.03);
+  }
+
+  .mp-company-card h4 {
+    font-family: var(--font-heading-family, "Cormorant Garamond", Georgia, serif);
+    font-size: 22px;
+    font-weight: 700;
+    color: #163327;
+    margin: 0 0 12px 0;
+  }
+
+  .mp-contact-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 16px;
+    margin-top: 14px;
+  }
+
+  @media (min-width: 600px) {
+    .mp-contact-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  .mp-contact-item {
+    font-size: 14px;
+    line-height: 1.6;
+    color: #4A4642;
+  }
+
+  .mp-contact-item strong {
+    display: block;
+    color: #163327;
+    font-weight: 700;
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 2px;
+  }
+</style>
+
+<div class="mp-container">
+  <span class="mp-eyebrow">STORE POLICY</span>
+  <h1 class="mp-title">Refund policy</h1>
+  <span class="mp-updated">Effective &amp; Updated: October 2026</span>
+
+  <p class="mp-lead">
+    Thank you for shopping with Mahjiva, operated by FR SUMMER LLC ("we", "us", "our"). This policy explains when returns and refunds are available.
+  </p>
+
+  <!-- Metric Highlights -->
+  <div class="mp-metrics-grid">
+    <div class="mp-metric-card">
+      <span class="mp-metric-val">90 Days</span>
+      <span class="mp-metric-lbl">Return Window</span>
+    </div>
+    <div class="mp-metric-card">
+      <span class="mp-metric-val">1 Day</span>
+      <span class="mp-metric-lbl">Fast Support Reply</span>
+    </div>
+    <div class="mp-metric-card">
+      <span class="mp-metric-val">Free</span>
+      <span class="mp-metric-lbl">Exchanges Shipping</span>
+    </div>
+    <div class="mp-metric-card">
+      <span class="mp-metric-val">Same Day</span>
+      <span class="mp-metric-lbl">Refund Processing</span>
+    </div>
+  </div>
+
+  <!-- SECTION 1 -->
+  <div class="mp-section">
+    <h2 class="mp-section-title">1. Contact us first — we reply within 1 business day</h2>
+    <p>
+      If anything is wrong with your order, email <a href="mailto:care@mahjiva.com">care@mahjiva.com</a> with your order number. We reply to every message within 1 business day. If you have not heard from us within that time, please resend your message or contact us on WhatsApp at <a href="https://wa.me/13233666555" target="_blank" rel="noopener">+1 323-366-6555</a>.
+    </p>
+    <div class="mp-callout">
+      <strong>We would rather resolve a problem with you directly than have you open a dispute with your bank.</strong> A bank dispute takes several weeks longer to settle, and we cannot reship or refund an order while one is open.
+    </div>
+  </div>
+
+  <!-- SECTION 2 -->
+  <div class="mp-section">
+    <h2 class="mp-section-title">2. If your order has not arrived</h2>
+    <p>
+      If your order has not arrived within 30 business days of dispatch, contact us and we will reship it or refund you in full, at your choice — no return required. Delivery windows are set out in our <a href="/policies/shipping-policy">Shipping Policy</a>.
+    </p>
+  </div>
+
+  <!-- SECTION 3 -->
+  <div class="mp-section">
+    <h2 class="mp-section-title">3. Return window</h2>
+    <p>
+      You have <strong>90 days</strong> from the date of delivery to request a return. Requests made after 90 days cannot be accepted.
+    </p>
+  </div>
+
+  <!-- SECTION 4 -->
+  <div class="mp-section">
+    <h2 class="mp-section-title">4. Damaged, defective or incorrect items</h2>
+    <p>
+      Please inspect your order on delivery. If an item arrives damaged, defective, or is not what you ordered, email <a href="mailto:care@mahjiva.com">care@mahjiva.com</a> within 30 days of delivery with photographs or a short video of the item and its packaging. Where we confirm the fault, we will replace the item or refund you in full at no cost to you, and we cover any return shipping. For damage that occurred in transit, please tell us within 7 days of delivery where possible, so we can open a claim with the carrier while it is still available.
+    </p>
+    <p>
+      <em>A note on tools:</em> some problems that look like a fault turn out to be a setup or technique issue, and we can usually sort those out by email the same day. Contact us before requesting a replacement and we will walk you through it. If the problem continues after that, we will make it right.
+    </p>
+  </div>
+
+  <!-- SECTION 5 -->
+  <div class="mp-section">
+    <h2 class="mp-section-title">5. Returns for any other reason</h2>
+    <p>
+      If you simply no longer want an item, you may return it within the 90-day window provided it is unused, undamaged, complete with all accessories and original packaging, and you have your order number. Email us first — do not ship an item back before we confirm the return address, as we cannot process an unannounced return.
+    </p>
+    <p>
+      <strong>Orders under $100:</strong> in most cases we will simply refund you and ask you to keep or dispose of the item, because return shipping costs more than the item is worth.
+    </p>
+    <p>
+      <strong>Orders of $100 or more:</strong> return shipping is at your cost unless the item was faulty, damaged, or sent in error.
+    </p>
+    <p>
+      <strong>Prefer an exchange?</strong> Instead of a refund, you can exchange your item for a larger pack or a different product. If you choose an exchange, we cover the return shipping on any order value. You pay only the price difference, or we refund the difference if the new item costs less.
+    </p>
+    <p>
+      Items showing heavy wear, damage from misuse, or missing parts may receive a partial refund.
+    </p>
+  </div>
+
+  <!-- SECTION 6 -->
+  <div class="mp-section">
+    <h2 class="mp-section-title">6. Choosing the right product</h2>
+    <p>
+      Every product we sell is made to specific dimensions and ratings, listed in full on its product page. Fit is the most common reason an order turns into a return, so if you are unsure whether a product suits your application, email us before ordering with the size or specification you are working to and we will confirm it. If you order the wrong size or specification, tell us within the 90-day window and we will arrange a return or exchange under Section 5.
+    </p>
+  </div>
+
+  <!-- SECTION 7 -->
+  <div class="mp-section">
+    <h2 class="mp-section-title">7. Refill offer</h2>
+    <p>
+      Ties and staples run out. Your tools keep working. If you have bought a Waymelo zip tie tool or hog ring pliers from us, get <strong>20% off</strong> your refill order of stainless steel zip ties or galvanized hog ring staples with code <strong>REFILL20</strong> at checkout. Full details here: <a href="https://waymelo.store/pages/refill-offer" target="_blank" rel="noopener">waymelo.store/pages/refill-offer</a>. Use the same email address you used for your tool order. One use per customer; the code cannot be combined with other discount codes.
+    </p>
+  </div>
+
+  <!-- SECTION 8 -->
+  <div class="mp-section">
+    <h2 class="mp-section-title">8. What we cannot accept</h2>
+    <div class="mp-alert">
+      <ul class="mp-alert-list">
+        <li>Items returned after the 90-day window</li>
+        <li>Items damaged by misuse, modification, or improper operation</li>
+        <li>Gift cards and free promotional items</li>
+        <li>Items returned without contacting us first</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- SECTION 9 -->
+  <div class="mp-section">
+    <h2 class="mp-section-title">9. Refunds</h2>
+    <p>
+      Once your return is received and inspected — or once your claim is approved where no return is required — we issue your refund the same business day to your original payment method. Your bank or card issuer then typically takes 5–10 business days to post it to your account. If more than 10 business days have passed since we confirmed your refund and you have not received it, contact us and we will send you the refund confirmation from our payment processor.
+    </p>
+  </div>
+
+  <!-- SECTION 10 -->
+  <div class="mp-section">
+    <h2 class="mp-section-title">10. Order cancellations</h2>
+    <p>
+      You may cancel an order within 12 hours of placing it by emailing <a href="mailto:care@mahjiva.com">care@mahjiva.com</a> with your order number. After 12 hours the order may already be in preparation at the warehouse. If it has already shipped, it falls under the return process above.
+    </p>
+    <p>
+      <em>Want to add items rather than cancel?</em> You can add to your order within 24 hours and we will ship everything together — see our <a href="/policies/shipping-policy">Shipping Policy</a>, or add more items here.
+    </p>
+  </div>
+
+  <!-- SECTION 11 -->
+  <div class="mp-section">
+    <h2 class="mp-section-title">11. If you are considering a payment dispute</h2>
+    <p>
+      Please contact us first. Almost every problem — a late parcel, a missing item, a damaged tool, a wrong size — we can resolve within one business day, and usually faster than your bank can.
+    </p>
+    <p>
+      We keep full order, delivery and communication records, including carrier proof of delivery, and we provide them when a dispute is raised. Nothing in this policy limits your rights under applicable law or your rights as a cardholder.
+    </p>
+  </div>
+
+  <!-- SECTION 12 -->
+  <div class="mp-section">
+    <h2 class="mp-section-title">12. European Union orders</h2>
+    <p>
+      Where we ship an order into the European Union, you may cancel it within 14 days of delivery for any reason under EU consumer law, and return the item unused and in its original condition.
+    </p>
+  </div>
+
+  <!-- SECTION 13 -->
+  <div class="mp-section">
+    <h2 class="mp-section-title">13. Contact</h2>
+    <p>
+      Mahjiva, operated by <strong>FR SUMMER LLC</strong> (Founder & Creative Director: Frank R.).
+    </p>
+    <div class="mp-company-card">
+      <h4>Customer Support &amp; Legal Entity</h4>
+      <div class="mp-contact-grid">
+        <div class="mp-contact-item">
+          <strong>Business Information</strong>
+          Brand: Mahjiva<br>
+          Legal Entity: FR SUMMER LLC<br>
+          Founder & Creative Director: Frank R.
+        </div>
+        <div class="mp-contact-item">
+          <strong>Contact Information</strong>
+          Business: FR SUMMER LLC<br>
+          Address: 1401 PENNSYLVANIA AVE STE 105 5132, WILMINGTON DE 19806-4125, US<br>
+          Contact Person: Frank R.<br>
+          Operated by FR SUMMER LLC
+        </div>
+        <div class="mp-contact-item">
+          <strong>Email Customer Care</strong>
+          <a href="mailto:care@mahjiva.com">care@mahjiva.com</a><br>
+          Concierge: Mon–Sat 9AM–6PM EST
+        </div>
+        <div class="mp-contact-item">
+          <strong>Phone &amp; WhatsApp</strong>
+          <a href="https://wa.me/13233666555" target="_blank" rel="noopener">+1 323-366-6555</a><br>
+          Concierge: Mon–Sat 9AM–6PM EST
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>

@@ -9,25 +9,39 @@
  */
 {
   "sections": {
-    "main": {
-      "type": "main-page",
+    "track_order": {
+      "type": "luxury-track-order",
       "settings": {
-        "padding_top": 36,
-        "padding_bottom": 0
+        "heading": "Track Your Order",
+        "subheading": "Enter your tracking number to check the latest shipping updates and estimated delivery date."
       }
     },
-    "custom_liquid_TW8GPX": {
-      "type": "custom-liquid",
+    "luxury_best_sellers_mDHfPA": {
+      "type": "luxury-best-sellers",
+      "name": "Best Sellers Grid",
       "settings": {
-        "custom_liquid": "<div class=\"page-width\"><div class=\"track-order-container\">\n<div style=\"text-align: center;\">Enter your tracking number</div>\n<input class=\"track-order-input\" type=\"text\" id=\"YQNum\" maxlength=\"50\" /> <button class=\"track-order-button\"  onclick=\"doTrack()\" > Track Your Order</button></div>\n<div id=\"YQContainer\"></div>\n<!--Script code can be put in the bottom of the page, wait until the page is loaded then execute.-->\n<script type=\"text/javascript\" src=\"//www.17track.net/externalcall.js\"></script>\n<script type=\"text/javascript\">// <![CDATA[\nfunction doTrack() {\n    var num = document.getElementById(\"YQNum\").value;\n    if(num===\"\"){\n        alert(\"Enter your number.\"); \n        return;\n    }\n    YQV5.trackSingle({\n        //Required, Specify the container ID of the carrier content.\n        YQ_ContainerId:\"YQContainer\",\n        //Optional, specify tracking result height, max height 800px, default is 560px.\n        YQ_Height:560,\n        //Optional, select carrier, default to auto identify.\n        YQ_Fc:\"0\",\n        //Optional, specify UI language, default language is automatically detected based on the browser settings.\n        YQ_Lang:\"en\",\n        //Required, specify the number needed to be tracked.\n        YQ_Num:num\n    });\n}\n// ]]></script>\n</div>\n</div>",
-        "color_scheme": "scheme-1",
+        "heading": "Best Sellers",
+        "heading_alignment": "left",
+        "subtitle": "",
+        "collection": "best-seller",
+        "products_to_show": 4,
+        "columns_desktop": 4,
+        "show_sale_badge": true,
+        "badge_color": "#163327",
+        "show_view_all": true,
+        "view_all_text": "View all",
+        "view_all_link": "",
+        "view_all_bg_color": "#163327",
+        "card_border_color": "#EAE5DC",
+        "bg_color": "#FAF8F5",
+        "container_max_width": 1320,
         "padding_top": 0,
-        "padding_bottom": 64
+        "padding_bottom": 20
       }
     }
   },
   "order": [
-    "main",
-    "custom_liquid_TW8GPX"
+    "track_order",
+    "luxury_best_sellers_mDHfPA"
   ]
 }

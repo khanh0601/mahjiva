@@ -1,0 +1,753 @@
+{%- comment -%}
+  -----------------------------------------------------------------------------
+  SECTION: LUXURY CUSTOM MAT STORY ("Twenty Years at This Table" / "Your Circle. Your Stories. Your Table.")
+  - 2-Column Storytelling Section (Text & Cards + Large Responsive Image)
+  - 100% Configurable via Shopify Theme Editor (Title, Subtitle, Badge, Cards, Colors, Image)
+  - Fully supports custom Google Drive asset, Shopify CDN image, or custom URL
+  -----------------------------------------------------------------------------
+{%- endcomment -%}
+
+{%- style -%}
+  #CustomMatStory-{{ section.id }} {
+    --cms-bg: {{ section.settings.bg_color | default: '#FFFFFF' }};
+    --cms-badge-bg: {{ section.settings.badge_bg_color | default: '#6E2A5D' }};
+    --cms-badge-color: {{ section.settings.badge_text_color | default: '#FFFFFF' }};
+    --cms-heading-color: {{ section.settings.heading_color | default: '#141517' }};
+    --cms-sub-color: {{ section.settings.subtitle_color | default: '#55504C' }};
+    --cms-question-color: {{ section.settings.question_color | default: '#7E22CE' }};
+    --cms-card-bg: {{ section.settings.card_bg | default: '#FFFFFF' }};
+    --cms-card-border: {{ section.settings.card_border_color | default: '#E7E2DC' }};
+    --cms-card-text: {{ section.settings.card_text_color | default: '#2E2C2A' }};
+    --cms-bullet-color: {{ section.settings.bullet_color | default: '#7E22CE' }};
+    --cms-img-radius: {{ section.settings.image_radius | default: 20 }}px;
+    --cms-btn-bg: {{ section.settings.button_bg_color | default: '#16302B' }};
+    --cms-btn-color: {{ section.settings.button_text_color | default: '#FFFFFF' }};
+
+    background-color: var(--cms-bg);
+    padding-top: {{ section.settings.padding_top | default: 60 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | default: 68 }}px;
+    color: #141517;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .cms-container {
+    max-width: {{ section.settings.container_max_width | default: 1220 }}px;
+    margin: 0 auto;
+    padding: 0 24px;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .cms-layout {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 40px;
+    align-items: center;
+  }
+
+  @media (min-width: 900px) {
+    .cms-layout {
+      grid-template-columns: {% if section.settings.image_position == 'left' %}1.05fr 1.15fr{% else %}1.15fr 1.05fr{% endif %};
+      gap: 56px;
+    }
+  }
+
+  @media (min-width: 1100px) {
+    .cms-layout {
+      grid-template-columns: {% if section.settings.image_position == 'left' %}1fr 1.1fr{% else %}1.1fr 1fr{% endif %};
+      gap: 68px;
+    }
+  }
+
+  /* Text Column */
+  .cms-text-col {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    {% if section.settings.image_position == 'left' %}
+      order: 2;
+    {% else %}
+      order: 1;
+    {% endif %}
+  }
+
+  /* Badge Pill */
+  .cms-badge-pill {
+    display: inline-flex;
+    align-items: center;
+    background-color: var(--cms-badge-bg);
+    color: var(--cms-badge-color);
+    padding: 6px 14px;
+    border-radius: 9999px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+    line-height: 1.2;
+  }
+
+  /* Main Heading */
+  .cms-heading {
+    font-family: var(--font-heading-family, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif);
+    font-size: {{ section.settings.heading_size_mobile | default: 28 }}px;
+    font-weight: 700;
+    line-height: 1.22;
+    color: var(--cms-heading-color);
+    margin: 0 0 16px 0;
+    letter-spacing: -0.015em;
+  }
+
+  @media (min-width: 768px) {
+    .cms-heading {
+      font-size: {{ section.settings.heading_size | default: 40 }}px;
+    }
+  }
+
+  /* Subtitle Body */
+  .cms-subtitle {
+    font-size: 15.5px;
+    line-height: 1.62;
+    color: var(--cms-sub-color);
+    margin: 0 0 16px 0;
+  }
+
+  .cms-subtitle p {
+    margin: 0 0 10px 0;
+  }
+  .cms-subtitle p:last-child {
+    margin-bottom: 0;
+  }
+
+  /* Question / Transition Prompt */
+  .cms-question {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--cms-question-color);
+    margin: 0 0 20px 0;
+    display: inline-block;
+  }
+
+  /* Bullet / Card Items */
+  .cms-cards-list {
+    display: flex;
+    flex-direction: column;
+    gap: 11px;
+    width: 100%;
+    margin: 0 0 24px 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .cms-card-item {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    background: var(--cms-card-bg);
+    border: 1px solid var(--cms-card-border);
+    border-radius: 10px;
+    padding: 13px 18px;
+    transition: border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .cms-card-item:hover {
+    border-color: #C8BFB5;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+  }
+
+  .cms-bullet-icon {
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+  }
+
+  .cms-bullet-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background-color: var(--cms-bullet-color);
+  }
+
+  .cms-bullet-emoji {
+    font-size: 16px;
+    line-height: 1;
+  }
+
+  .cms-card-text {
+    font-size: 14px;
+    line-height: 1.45;
+    color: var(--cms-card-text);
+    font-weight: 450;
+    margin: 0;
+  }
+
+  /* Optional CTA Button */
+  .cms-btn-cta {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--cms-btn-bg);
+    color: var(--cms-btn-color);
+    padding: 12px 26px;
+    border-radius: 8px;
+    font-size: 14.5px;
+    font-weight: 600;
+    text-decoration: none;
+    letter-spacing: 0.02em;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+    margin-top: 6px;
+  }
+
+  .cms-btn-cta:hover {
+    opacity: 0.92;
+    transform: translateY(-1px);
+    color: var(--cms-btn-color);
+  }
+
+  /* Image Column */
+  .cms-image-col {
+    {% if section.settings.image_position == 'left' %}
+      order: 1;
+    {% else %}
+      order: 2;
+    {% endif %}
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .cms-image-card {
+    position: relative;
+    width: 100%;
+    border-radius: var(--cms-img-radius);
+    overflow: hidden;
+    box-shadow: 0 16px 44px rgba(20, 21, 23, 0.09);
+    background: #FAF7F2;
+    border: 1px solid #ECE7E1;
+  }
+
+  .cms-image-card img {
+    display: block;
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    aspect-ratio: {{ section.settings.image_aspect_ratio | default: '4 / 3' }};
+    transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .cms-image-card:hover img {
+    transform: scale(1.02);
+  }
+
+  @media (max-width: 767px) {
+    #CustomMatStory-{{ section.id }} {
+      padding-top: {{ section.settings.padding_top_mobile | default: 40 }}px;
+      padding-bottom: {{ section.settings.padding_bottom_mobile | default: 48 }}px;
+    }
+    .cms-container {
+      padding: 0 16px;
+    }
+    .cms-layout {
+      gap: 32px;
+    }
+    .cms-card-item {
+      padding: 11px 14px;
+    }
+    .cms-image-card {
+      border-radius: 16px;
+    }
+  }
+{%- endstyle -%}
+
+<section id="CustomMatStory-{{ section.id }}" class="cms-section" {{ section.shopify_attributes }}>
+  <div class="cms-container">
+    <div class="cms-layout">
+      
+      <!-- Text & Points Column -->
+      <div class="cms-text-col">
+        
+        {%- if section.settings.show_badge and section.settings.badge_text != blank -%}
+          <div class="cms-badge-pill">
+            {{ section.settings.badge_text }}
+          </div>
+        {%- endif -%}
+
+        {%- if section.settings.heading != blank -%}
+          <h2 class="cms-heading">
+            {{ section.settings.heading }}
+          </h2>
+        {%- endif -%}
+
+        {%- if section.settings.subtitle != blank -%}
+          <div class="cms-subtitle">
+            {%- if section.settings.subtitle contains '<p>' -%}
+              {{ section.settings.subtitle }}
+            {%- else -%}
+              <p>{{ section.settings.subtitle | newline_to_br }}</p>
+            {%- endif -%}
+          </div>
+        {%- endif -%}
+
+        {%- if section.settings.show_question and section.settings.question_text != blank -%}
+          <div class="cms-question">
+            {{ section.settings.question_text }}
+          </div>
+        {%- endif -%}
+
+        <!-- Card Points -->
+        {%- if section.blocks.size > 0 -%}
+          <ul class="cms-cards-list">
+            {%- for block in section.blocks -%}
+              <li class="cms-card-item" {{ block.shopify_attributes }}>
+                <span class="cms-bullet-icon">
+                  {%- case block.settings.icon_type -%}
+                    {%- when 'flower' -%}
+                      <span class="cms-bullet-emoji">🌸</span>
+                    {%- when 'check' -%}
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--cms-bullet-color)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+                    {%- when 'star' -%}
+                      <span style="color: var(--cms-bullet-color); font-size: 15px;">✦</span>
+                    {%- when 'custom' -%}
+                      <span class="cms-bullet-emoji">{{ block.settings.custom_emoji | default: '🌸' }}</span>
+                    {%- else -%}
+                      <span class="cms-bullet-dot"></span>
+                  {%- endcase -%}
+                </span>
+                <span class="cms-card-text">{{ block.settings.text }}</span>
+              </li>
+            {%- endfor -%}
+          </ul>
+        {%- endif -%}
+
+        <!-- Optional Button -->
+        {%- if section.settings.show_button and section.settings.button_label != blank -%}
+          <a href="{{ section.settings.button_link | default: '#PdpCustomIdeaBlock' }}" class="cms-btn-cta">
+            {{ section.settings.button_label }}
+          </a>
+        {%- endif -%}
+
+      </div>
+
+      <!-- Image Column -->
+      <div class="cms-image-col">
+        <div class="cms-image-card">
+          {%- if section.settings.image != blank -%}
+            <img 
+              src="{{ section.settings.image | image_url: width: 1400 }}"
+              srcset="{{ section.settings.image | image_url: width: 600 }} 600w, {{ section.settings.image | image_url: width: 1000 }} 1000w, {{ section.settings.image | image_url: width: 1400 }} 1400w"
+              sizes="(min-width: 900px) 50vw, 100vw"
+              alt="{{ section.settings.image.alt | default: section.settings.heading | escape }}"
+              loading="lazy"
+              decoding="async"
+              width="1200"
+              height="900"
+            >
+          {%- elsif section.settings.custom_image_url != blank -%}
+            <img 
+              src="{{ section.settings.custom_image_url }}"
+              alt="{{ section.settings.heading | escape }}"
+              loading="lazy"
+              decoding="async"
+              width="1200"
+              height="900"
+            >
+          {%- else -%}
+            <img 
+              src="{{ 'custom-mat-story-circle.png' | asset_url }}"
+              alt="{{ section.settings.heading | escape }}"
+              loading="lazy"
+              decoding="async"
+              width="1200"
+              height="900"
+            >
+          {%- endif -%}
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Custom Mat Story (Circle)",
+  "tag": "section",
+  "class": "section-custom-mat-story",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Badge Pill"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_badge",
+      "label": "Show Badge",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "badge_text",
+      "label": "Badge Text",
+      "default": "FOR THE GROUP THAT HAS PLAYED FOR YEARS"
+    },
+    {
+      "type": "color",
+      "id": "badge_bg_color",
+      "label": "Badge Background Color",
+      "default": "#6E2A5D"
+    },
+    {
+      "type": "color",
+      "id": "badge_text_color",
+      "label": "Badge Text Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "header",
+      "content": "Main Content"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Twenty Years at This Table. Nothing on It Says So."
+    },
+    {
+      "type": "range",
+      "id": "heading_size",
+      "min": 24,
+      "max": 56,
+      "step": 2,
+      "unit": "px",
+      "label": "Heading Size (Desktop)",
+      "default": 38
+    },
+    {
+      "type": "range",
+      "id": "heading_size_mobile",
+      "min": 20,
+      "max": 36,
+      "step": 2,
+      "unit": "px",
+      "label": "Heading Size (Mobile)",
+      "default": 28
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading Color",
+      "default": "#141517"
+    },
+    {
+      "type": "textarea",
+      "id": "subtitle",
+      "label": "Subtitle / Story",
+      "default": "You have played with the same women through birthdays, moves, the ones who left, and every Thursday in between."
+    },
+    {
+      "type": "color",
+      "id": "subtitle_color",
+      "label": "Subtitle Color",
+      "default": "#55504C"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_question",
+      "label": "Show Question / Prompt",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "question_text",
+      "label": "Question Text",
+      "default": "Sound familiar?"
+    },
+    {
+      "type": "color",
+      "id": "question_color",
+      "label": "Question Color",
+      "default": "#7E22CE"
+    },
+    {
+      "type": "header",
+      "content": "Card Points Colors"
+    },
+    {
+      "type": "color",
+      "id": "card_bg",
+      "label": "Card Background",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "card_border_color",
+      "label": "Card Border Color",
+      "default": "#E7E2DC"
+    },
+    {
+      "type": "color",
+      "id": "card_text_color",
+      "label": "Card Text Color",
+      "default": "#2E2C2A"
+    },
+    {
+      "type": "color",
+      "id": "bullet_color",
+      "label": "Bullet Dot Color",
+      "default": "#7E22CE"
+    },
+    {
+      "type": "header",
+      "content": "Featured Image"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Shopify Image"
+    },
+    {
+      "type": "text",
+      "id": "custom_image_url",
+      "label": "Custom Image URL (Fallback)",
+      "default": "https://lh3.googleusercontent.com/d/1ypkY4coP5IYL7Jf5bpFgIuTH2mx_0v6B"
+    },
+    {
+      "type": "select",
+      "id": "image_position",
+      "label": "Image Position (Desktop)",
+      "options": [
+        { "value": "right", "label": "Right" },
+        { "value": "left", "label": "Left" }
+      ],
+      "default": "right"
+    },
+    {
+      "type": "select",
+      "id": "image_aspect_ratio",
+      "label": "Image Aspect Ratio",
+      "options": [
+        { "value": "4 / 3", "label": "4:3 (Landscape)" },
+        { "value": "1 / 1", "label": "1:1 (Square)" },
+        { "value": "16 / 9", "label": "16:9 (Wide)" },
+        { "value": "auto", "label": "Auto" }
+      ],
+      "default": "4 / 3"
+    },
+    {
+      "type": "range",
+      "id": "image_radius",
+      "min": 0,
+      "max": 36,
+      "step": 2,
+      "unit": "px",
+      "label": "Image Corner Radius",
+      "default": 20
+    },
+    {
+      "type": "header",
+      "content": "Optional Button"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_button",
+      "label": "Show Button",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button Label",
+      "default": "Create Your Personal Mat →"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button Link"
+    },
+    {
+      "type": "color",
+      "id": "button_bg_color",
+      "label": "Button Background",
+      "default": "#16302B"
+    },
+    {
+      "type": "color",
+      "id": "button_text_color",
+      "label": "Button Text Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "header",
+      "content": "Section Layout & Spacing"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Section Background Color",
+      "default": "#FAF8F5"
+    },
+    {
+      "type": "range",
+      "id": "container_max_width",
+      "min": 1000,
+      "max": 1400,
+      "step": 20,
+      "unit": "px",
+      "label": "Container Max Width",
+      "default": 1220
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 20,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding Top",
+      "default": 64
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 20,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding Bottom",
+      "default": 72
+    },
+    {
+      "type": "range",
+      "id": "padding_top_mobile",
+      "min": 16,
+      "max": 80,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding Top (Mobile)",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_mobile",
+      "min": 16,
+      "max": 80,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding Bottom (Mobile)",
+      "default": 48
+    }
+  ],
+  "blocks": [
+    {
+      "type": "card",
+      "name": "Story Card Point",
+      "settings": [
+        {
+          "type": "textarea",
+          "id": "text",
+          "label": "Text",
+          "default": "The same mat three other groups in town already own"
+        },
+        {
+          "type": "select",
+          "id": "icon_type",
+          "label": "Bullet Icon Style",
+          "options": [
+            { "value": "dot", "label": "Purple Dot (Screenshot 1)" },
+            { "value": "flower", "label": "Cherry Blossom 🌸 (Screenshot 2)" },
+            { "value": "check", "label": "Checkmark ✓" },
+            { "value": "star", "label": "Star ✦" },
+            { "value": "custom", "label": "Custom Emoji" }
+          ],
+          "default": "dot"
+        },
+        {
+          "type": "text",
+          "id": "custom_emoji",
+          "label": "Custom Emoji (if selected)",
+          "default": "🌸"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Custom Mat Story (Twenty Years)",
+      "blocks": [
+        {
+          "type": "card",
+          "settings": {
+            "text": "The same mat three other groups in town already own",
+            "icon_type": "dot"
+          }
+        },
+        {
+          "type": "card",
+          "settings": {
+            "text": "A table full of things that came off a shelf",
+            "icon_type": "dot"
+          }
+        },
+        {
+          "type": "card",
+          "settings": {
+            "text": "Nothing that shows the years, the names, the Thursdays",
+            "icon_type": "dot"
+          }
+        },
+        {
+          "type": "card",
+          "settings": {
+            "text": "Nothing on it you would think to photograph",
+            "icon_type": "dot"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Custom Mat Story (Your Circle)",
+      "settings": {
+        "badge_text": "YOUR CIRCLE. YOUR STORIES.",
+        "heading": "Your Circle. Your Stories. Your Table.",
+        "subtitle": "The familiar faces. The conversations between hands. The evenings that become a tradition.\n\nGive those moments a place on your table, with a mat inspired by the people and details that make your game yours.",
+        "show_question": false
+      },
+      "blocks": [
+        {
+          "type": "card",
+          "settings": {
+            "text": "Your group's name, beautifully placed.",
+            "icon_type": "flower"
+          }
+        },
+        {
+          "type": "card",
+          "settings": {
+            "text": "Colors that feel like your circle.",
+            "icon_type": "flower"
+          }
+        },
+        {
+          "type": "card",
+          "settings": {
+            "text": "A date or detail worth remembering.",
+            "icon_type": "flower"
+          }
+        },
+        {
+          "type": "card",
+          "settings": {
+            "text": "A table with a little more meaning.",
+            "icon_type": "flower"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,446 @@
+{%- comment -%}
+  -----------------------------------------------------------------------------
+  SNIPPET: WAYMELO STORE SHIPPING POLICY
+  - Complete Shipping & Fulfillment Policy per User Specification
+  - Luxury Editorial Layout & High-Contrast Typography
+  -----------------------------------------------------------------------------
+{%- endcomment -%}
+
+<style>
+  .sp-container {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 56px 24px 88px;
+    color: #2c2d30;
+    font-family: var(--font-body-family, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif);
+    font-size: 15.5px;
+    line-height: 1.72;
+  }
+
+  .sp-eyebrow {
+    display: inline-block;
+    font-size: 11.5px;
+    font-weight: 700;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: #8C7355;
+    margin-bottom: 12px;
+  }
+
+  .sp-title {
+    font-family: var(--font-heading-family, "Cormorant Garamond", Georgia, serif);
+    font-size: 40px;
+    font-weight: 700;
+    line-height: 1.18;
+    color: #163327;
+    margin: 0 0 10px 0;
+    letter-spacing: -0.01em;
+  }
+
+  @media (min-width: 768px) {
+    .sp-title {
+      font-size: 46px;
+    }
+  }
+
+  .sp-updated {
+    font-size: 13.5px;
+    color: #7A7570;
+    font-style: italic;
+    margin: 0 0 28px 0;
+    display: block;
+  }
+
+  .sp-lead {
+    font-size: 16.5px;
+    line-height: 1.75;
+    color: #242220;
+    margin-bottom: 24px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #ECE7DE;
+  }
+
+  /* Key Metrics Grid */
+  .sp-metrics-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
+    margin: 28px 0 38px 0;
+  }
+
+  @media (min-width: 640px) {
+    .sp-metrics-grid {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+
+  .sp-metric-card {
+    background: #FAF8F5;
+    border: 1px solid #E6E1D8;
+    border-radius: 12px;
+    padding: 16px 14px;
+    text-align: center;
+    transition: transform 0.2s ease, border-color 0.2s ease;
+  }
+
+  .sp-metric-card:hover {
+    transform: translateY(-2px);
+    border-color: #8C7355;
+  }
+
+  .sp-metric-val {
+    display: block;
+    font-family: var(--font-heading-family, "Cormorant Garamond", Georgia, serif);
+    font-size: 24px;
+    font-weight: 700;
+    color: #163327;
+    line-height: 1.2;
+    margin-bottom: 4px;
+  }
+
+  .sp-metric-lbl {
+    display: block;
+    font-size: 12px;
+    color: #6B6661;
+    line-height: 1.35;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-weight: 600;
+  }
+
+  .sp-section {
+    margin-bottom: 34px;
+    padding-bottom: 28px;
+    border-bottom: 1px solid #F0ECE4;
+  }
+
+  .sp-section:last-of-type {
+    border-bottom: none;
+  }
+
+  .sp-section-title {
+    font-family: var(--font-heading-family, "Cormorant Garamond", Georgia, serif);
+    font-size: 24px;
+    font-weight: 700;
+    color: #163327;
+    margin: 0 0 14px 0;
+    line-height: 1.3;
+  }
+
+  .sp-container p {
+    margin: 0 0 14px 0;
+  }
+
+  .sp-container strong {
+    color: #163327;
+    font-weight: 700;
+  }
+
+  .sp-container a {
+    color: #163327;
+    font-weight: 600;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    transition: color 0.2s ease;
+  }
+
+  .sp-container a:hover {
+    color: #8C7355;
+  }
+
+  .sp-callout {
+    background: #FDF9F2;
+    border-left: 3.5px solid #8C7355;
+    padding: 18px 22px;
+    border-radius: 0 10px 10px 0;
+    margin: 18px 0;
+    font-size: 14.5px;
+    line-height: 1.65;
+    color: #38342E;
+  }
+
+  .sp-list {
+    margin: 10px 0 16px 20px;
+    padding: 0;
+  }
+
+  .sp-list li {
+    margin-bottom: 8px;
+    line-height: 1.65;
+  }
+
+  /* Company Card */
+  .sp-company-card {
+    margin-top: 36px;
+    border: 1px solid #E5E0D8;
+    background: #FAF8F5;
+    border-radius: 14px;
+    padding: 28px;
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.03);
+  }
+
+  .sp-company-card h4 {
+    font-family: var(--font-heading-family, "Cormorant Garamond", Georgia, serif);
+    font-size: 22px;
+    font-weight: 700;
+    color: #163327;
+    margin: 0 0 12px 0;
+  }
+
+  .sp-contact-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 16px;
+    margin-top: 14px;
+  }
+
+  @media (min-width: 600px) {
+    .sp-contact-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  .sp-contact-item {
+    font-size: 14px;
+    line-height: 1.6;
+    color: #4A4642;
+  }
+
+  .sp-contact-item strong {
+    display: block;
+    color: #163327;
+    font-weight: 700;
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 2px;
+  }
+</style>
+
+<div class="sp-container">
+  <span class="sp-eyebrow">STORE POLICY</span>
+  <h1 class="sp-title">Shipping Policy</h1>
+  <span class="sp-updated">Effective &amp; Updated: October 2026</span>
+
+  <p class="sp-lead">
+    Welcome to <strong>Mahjiva</strong>, operated by <strong>FR SUMMER LLC</strong> (Founder & Creative Director: Frank R.). We are committed to delivering your orders with care, transparency, and reliable global fulfillment.
+  </p>
+
+  <!-- Metric Highlights -->
+  <div class="sp-metrics-grid">
+    <div class="sp-metric-card">
+      <span class="sp-metric-val">1–2 Days</span>
+      <span class="sp-metric-lbl">Order Processing</span>
+    </div>
+    <div class="sp-metric-card">
+      <span class="sp-metric-val">3–7 Days</span>
+      <span class="sp-metric-lbl">US Domestic Delivery</span>
+    </div>
+    <div class="sp-metric-card">
+      <span class="sp-metric-val">Free</span>
+      <span class="sp-metric-lbl">Standard Shipping</span>
+    </div>
+    <div class="sp-metric-card">
+      <span class="sp-metric-val">Mon–Sat 9AM–6PM EST</span>
+      <span class="sp-metric-lbl">Support Reply</span>
+    </div>
+  </div>
+
+  <!-- ORDER PROCESSING -->
+  <div class="sp-section">
+    <h2 class="sp-section-title">Order processing</h2>
+    <p>
+      Orders are prepared for dispatch within <strong>1–2 business days</strong> after payment is confirmed. Most orders are dispatched within 2 business days. During promotional periods and public holidays this may extend to 7 business days.
+    </p>
+    <p>
+      Orders are not processed, shipped or delivered on weekends or public holidays. Orders placed after 12:00 PM EST begin processing on the next business day.
+    </p>
+  </div>
+
+  <!-- WHERE YOUR ORDER SHIPS FROM -->
+  <div class="sp-section">
+    <h2 class="sp-section-title">Where your order ships from</h2>
+    <p>
+      Mahjiva fulfils orders from more than one warehouse. Depending on which location holds stock when you order, your parcel is dispatched either from our fulfilment partner in California, United States, or from our overseas atelier.
+    </p>
+    <p>
+      The warehouse is assigned automatically and cannot be selected at checkout. Orders dispatched from our overseas atelier take longer to arrive, and the delivery windows below reflect that difference.
+    </p>
+  </div>
+
+    <!-- DELIVERY TIME -->
+  <div class="sp-section">
+    <h2 class="sp-section-title">Delivery Time</h2>
+    <p>
+      Delivery time is counted from the date your parcel is dispatched, not from the date you place your order.
+    </p>
+    
+    <p><strong>United States and Canada:</strong></p>
+    <ul class="sp-list">
+      <li><strong>Dispatched from our US warehouse:</strong> arrives in <strong>3–7 business days</strong> after dispatch (typically <strong>1–2 weeks</strong> total arrival window).</li>
+      <li><strong>Dispatched from our overseas atelier:</strong> arrives in <strong>7–12 business days</strong> after dispatch (typically <strong>2–3 weeks</strong> total arrival window).</li>
+    </ul>
+
+    <p style="margin-top: 14px; font-weight: 500;">
+      Across all fulfillment locations, parcels arrive within <strong>1–3 weeks</strong> of your order.
+    </p>
+
+    <p><strong>Australia and other international destinations:</strong></p>
+    <ul class="sp-list">
+      <li>Arrives <strong>10–25 business days</strong> after dispatch, depending on destination and customs clearance.</li>
+    </ul>
+
+    <p>
+      These are estimates based on our own delivery records, not guarantees. Delivery may take longer during peak seasons, or where a parcel is held for customs inspection or delayed by the carrier.
+    </p>
+    <p>
+      If your order has not arrived within 30 business days of dispatch, contact us and we will reship it or refund you in full, at your choice.
+    </p>
+    <p>
+      <em>We do not offer overnight, express or guaranteed next-day delivery.</em>
+    </p>
+  </div>
+
+  <!-- SHIPPING OPTIONS AT CHECKOUT -->
+  <div class="sp-section">
+    <h2 class="sp-section-title">Shipping options at checkout</h2>
+    <ul class="sp-list">
+      <li><strong>Complimentary Standard Insured Shipping</strong> — Free on all orders. Every order is hand-inspected, packed in protective packaging, and dispatched within 1–2 business days with full end-to-end tracking provided at no extra cost.</li>
+    </ul>
+    <p>
+      <em>We believe in honest, transparent luxury service with zero hidden fees or priority queue charges. Every client receives our complete concierge fulfillment standard.</em>
+    </p>
+  </div>
+
+  <!-- ADD TO YOUR ORDER WITHIN 24 HOURS -->
+  <div class="sp-section">
+    <h2 class="sp-section-title">Add to your order within 24 hours</h2>
+    <p>
+      Forgot something? Within 24 hours of placing your order, you can add more items and we will ship them together with your original order at no extra shipping cost, as long as your order has not yet been dispatched. Place a second order with the same email and delivery address, then reply to your order confirmation email so we can combine them.
+    </p>
+    <p>
+      <a href="/collections/all"><strong>Add more items here &rarr;</strong></a>
+    </p>
+  </div>
+
+  <!-- TRACKING, AND WHY YOUR TRACKING NUMBER MAY CHANGE -->
+  <div class="sp-section">
+    <h2 class="sp-section-title">End-to-end tracking &amp; carrier updates</h2>
+    <p>
+      You receive a tracking link by email as soon as your order is dispatched. When parcels transition from our overseas atelier to domestic carriers such as USPS, both reference numbers automatically synchronize under your single tracking link. Carrier scans typically begin updating within 2–4 business days after dispatch.
+    </p>
+  </div>
+
+  <!-- IF YOUR ORDER HAS NOT ARRIVED -->
+  <div class="sp-section">
+    <h2 class="sp-section-title">If your order has not arrived</h2>
+    <div class="sp-callout">
+      <p>
+        Please email <a href="mailto:care@mahjiva.com">care@mahjiva.com</a> with your order number before taking any other step. We reply within 24 hours and will:
+      </p>
+      <ul class="sp-list" style="margin-left: 15px;">
+        <li>Trace the parcel with the carrier, or</li>
+        <li>Reship your order at no cost, or</li>
+        <li>Refund you in full</li>
+      </ul>
+      <p style="margin-top: 10px;">
+        — whichever you prefer, for any order past the delivery window above.
+      </p>
+      <p style="margin-bottom: 0;">
+        <strong>Our client care commitment:</strong> Reaching out directly to our concierge team at <a href="mailto:care@mahjiva.com">care@mahjiva.com</a> ensures an immediate, hassle-free resolution within 24 hours. We arrange a fast replacement or full refund directly, ensuring a smooth luxury experience without third-party delays.
+      </p>
+    </div>
+  </div>
+
+  <!-- CANCELLATIONS AND ADDRESS CHANGES -->
+  <div class="sp-section">
+    <h2 class="sp-section-title">Cancellations and address changes</h2>
+    <p>
+      You may cancel an order or correct the delivery address within 12 hours of placing it, by emailing <a href="mailto:care@mahjiva.com">care@mahjiva.com</a> with your order number. After 12 hours the order may already be in preparation at the warehouse and can no longer be changed or cancelled.
+    </p>
+    <p>
+      <em>Want to add items rather than cancel?</em> See <strong>Add to your order within 24 hours</strong> above.
+    </p>
+    <p>
+      If a parcel is returned to us because the address given at checkout was incomplete or incorrect, we will contact you to arrange reshipment. Reshipping costs may apply.
+    </p>
+  </div>
+
+  <!-- PROOF OF DELIVERY -->
+  <div class="sp-section">
+    <h2 class="sp-section-title">Proof of delivery</h2>
+    <p>
+      Our carriers record a delivery scan, and in many cases a photograph of the parcel at the delivery location together with GPS coordinates. Once a carrier records a parcel as delivered to the address given at checkout, Mahjiva is not responsible for parcels subsequently stolen or moved. If a parcel shows as delivered but you cannot find it, contact us within 7 days and we will open a carrier trace on your behalf.
+    </p>
+  </div>
+
+  <!-- DAMAGED ITEMS -->
+  <div class="sp-section">
+    <h2 class="sp-section-title">Damaged items</h2>
+    <p>
+      Report damage to <a href="mailto:care@mahjiva.com">care@mahjiva.com</a> within 30 days of delivery, with photographs or video of the item and its packaging. For damage that occurred in transit, please tell us within 7 days of delivery where possible, so we can open a claim with the carrier. We replace or refund damaged items at no cost to you, as set out in our <a href="/policies/refund-policy">Refund Policy</a>.
+    </p>
+  </div>
+
+  <!-- INCORRECT ADDRESSES -->
+  <div class="sp-section">
+    <h2 class="sp-section-title">Incorrect addresses</h2>
+    <p>
+      We are not responsible for non-delivery caused by an incorrect or incomplete address given at checkout. Please check your address before completing your order, and contact us within 12 hours if you need to correct it.
+    </p>
+  </div>
+
+  <!-- SHIPPING DESTINATIONS -->
+  <div class="sp-section">
+    <h2 class="sp-section-title">Shipping destinations</h2>
+    <p>
+      We ship worldwide. Delivery times by region are listed above. Orders to some remote destinations may take longer, and any duties vary by country.
+    </p>
+  </div>
+
+  <!-- CUSTOMS AND DUTIES -->
+  <div class="sp-section">
+    <h2 class="sp-section-title">Customs and duties</h2>
+    <p>
+      Customers outside the United States are responsible for import duties, taxes and handling fees charged by their own country. These are not included in the price paid to us and we cannot estimate them in advance.
+    </p>
+  </div>
+
+  <!-- CONTACT -->
+  <div class="sp-section">
+    <h2 class="sp-section-title">Contact</h2>
+    <p>
+      Support hours: <strong>Mon–Sat 9AM–6PM EST — we reply within 24 hours</strong>.
+    </p>
+        <div class="sp-company-card">
+      <h4>Customer Support &amp; Legal Entity</h4>
+      <div class="sp-contact-grid">
+        <div class="sp-contact-item">
+          <strong>Business Information</strong>
+          Brand: Mahjiva<br>
+          Legal Entity: FR SUMMER LLC<br>
+          Founder & Creative Director: Frank R.
+        </div>
+        <div class="sp-contact-item">
+          <strong>Contact Information</strong>
+          Business: FR SUMMER LLC<br>
+          Address: 1401 PENNSYLVANIA AVE STE 105 5132, WILMINGTON DE 19806-4125, US<br>
+          Contact Person: Frank R.<br>
+          Operated by FR SUMMER LLC
+        </div>
+        <div class="sp-contact-item">
+          <strong>Email Customer Care</strong>
+          <a href="mailto:care@mahjiva.com">care@mahjiva.com</a><br>
+          Concierge: Mon–Sat 9AM–6PM EST
+        </div>
+        <div class="sp-contact-item">
+          <strong>Phone &amp; WhatsApp</strong>
+          <a href="https://wa.me/13233666555" target="_blank" rel="noopener">+1 323-366-6555</a><br>
+          Concierge: Mon–Sat 9AM–6PM EST
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>
+
+</div>

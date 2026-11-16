@@ -163,13 +163,13 @@
   .lc-heading {
     font-family: "Cormorant Garamond", Garamond, Georgia, serif;
     font-size: 36px;
-    font-weight: 500;
+    font-weight: 700;
     line-height: 1.15;
-    color: {{ section.settings.text_color | default: '#141517' }};
+    color: {{ section.settings.text_color | default: '#0D1110' }};
     margin: 0 0 18px 0;
   }
 
-  @media (min-width: 768px) {
+  @media (min-width: 740px) {
     .lc-heading {
       font-size: 44px;
     }
@@ -292,22 +292,24 @@
     gap: 8px;
     padding: 13px 30px;
     border-radius: 9999px;
-    background: #141517;
-    color: #FFFFFF;
+    background: linear-gradient(180deg, #1D4B37 0%, #143828 42%, #081610 100%) !important;
+    border: 1px solid rgba(216, 184, 140, 0.4) !important;
+    color: #FAF8F5 !important;
     font-size: 11px;
     font-weight: 600;
     letter-spacing: 0.16em;
     text-transform: uppercase;
     text-decoration: none;
     transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-    box-shadow: 0 4px 14px rgba(20, 21, 23, 0.15);
+    box-shadow: 0 4px 16px rgba(8, 22, 16, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.15) !important;
   }
 
   .lc-cta-btn:hover {
-    background: #B89768;
-    color: #FFFFFF;
+    background: linear-gradient(180deg, #245E45 0%, #18422F 42%, #0C1E15 100%) !important;
+    border-color: #D8B88C !important;
+    color: #FFFFFF !important;
     transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(184, 151, 104, 0.35);
+    box-shadow: 0 8px 24px rgba(8, 22, 16, 0.45), 0 0 16px rgba(36, 94, 69, 0.25) !important;
   }
 </style>
 
@@ -364,29 +366,29 @@
             <div class="lc-spec-card">
               <span class="lc-spec-num">01</span>
               <div class="lc-spec-info">
-                <h3 class="lc-spec-title">Hetian River Nephrite Jade (Xinjiang Grade A)</h3>
-                <p class="lc-spec-desc">Directly sourced from high-altitude glacial deposits. Each boulder is hand-selected for fibrous tremolite density and characteristic warm, oily luster.</p>
+                <h3 class="lc-spec-title">Master-Cut Scratch-Resistant Acrylic</h3>
+                <p class="lc-spec-desc">High-density artisan acrylic calibrated for substantial heft, crisp hand-feel, and enduring tactile satisfaction on every shuffle.</p>
               </div>
             </div>
             <div class="lc-spec-card">
               <span class="lc-spec-num">02</span>
               <div class="lc-spec-info">
-                <h3 class="lc-spec-title">0.02mm CNC Diamond-Milled & Hand-Trued</h3>
-                <p class="lc-spec-desc">Sub-millimeter CNC diamond mills true each tile face. Master lapidaries execute 12 stages of diamond-paste polish to ensure seamless wall stacking without slippage.</p>
+                <h3 class="lc-spec-title">Precision CNC Milled &amp; Hand-Polished</h3>
+                <p class="lc-spec-desc">Sub-millimeter CNC diamond milling trues each tile face, followed by multi-stage polishing for effortless wall building without slippage.</p>
               </div>
             </div>
             <div class="lc-spec-card">
               <span class="lc-spec-num">03</span>
               <div class="lc-spec-info">
-                <h3 class="lc-spec-title">24K Triple-Leaf Gold Inlay</h3>
-                <p class="lc-spec-desc">Each glyph is hand-engraved with diamond burrs, gilded with three layers of genuine 24-karat gold leaf, and sealed with archival natural lacquer.</p>
+                <h3 class="lc-spec-title">Permanent Colorfast Engraving</h3>
+                <p class="lc-spec-desc">Each glyph, motif, and custom Joker is deeply engraved with crisp pigments that are sealed to never fade or rub off with continuous play.</p>
               </div>
             </div>
             <div class="lc-spec-card">
               <span class="lc-spec-num">04</span>
               <div class="lc-spec-info">
-                <h3 class="lc-spec-title">Californian Burl Walnut & French Bridle Leather</h3>
-                <p class="lc-spec-desc">Hand-dovetailed solid Californian walnut chassis lined in acoustic micro-suede, framed by hand-stitched saddle leather and solid brushed brass fittings.</p>
+                <h3 class="lc-spec-title">Signature Amber Tortoiseshell &amp; Velvet Trays</h3>
+                <p class="lc-spec-desc">Luminous amber tortoiseshell-effect backs layered over ivory faces, delivered in bespoke protective velvet storage trays.</p>
               </div>
             </div>
           {%- endif -%}
@@ -589,32 +591,32 @@
           "type": "spec_item",
           "settings": {
             "number": "01",
-            "title": "Hetian River Nephrite Jade (Xinjiang Grade A)",
-            "description": "Directly sourced from high-altitude glacial deposits. Each boulder is hand-selected for fibrous tremolite density and characteristic warm, oily luster."
+            "title": "Master-Cut Scratch-Resistant Acrylic",
+            "description": "High-density artisan acrylic calibrated for substantial heft, crisp hand-feel, and enduring tactile satisfaction on every shuffle."
           }
         },
         {
           "type": "spec_item",
           "settings": {
             "number": "02",
-            "title": "0.02mm CNC Diamond-Milled & Hand-Trued",
-            "description": "Sub-millimeter CNC diamond mills true each tile face. Master lapidaries execute 12 stages of diamond-paste polish to ensure seamless wall stacking without slippage."
+            "title": "Precision CNC Milled & Hand-Polished",
+            "description": "Sub-millimeter CNC diamond milling trues each tile face, followed by multi-stage polishing for effortless wall building without slippage."
           }
         },
         {
           "type": "spec_item",
           "settings": {
             "number": "03",
-            "title": "24K Triple-Leaf Gold Inlay",
-            "description": "Each glyph is hand-engraved with diamond burrs, gilded with three layers of genuine 24-karat gold leaf, and sealed with archival natural lacquer."
+            "title": "Permanent Colorfast Engraving",
+            "description": "Each glyph, motif, and custom Joker is deeply engraved with crisp pigments that are sealed to never fade or rub off with continuous play."
           }
         },
         {
           "type": "spec_item",
           "settings": {
             "number": "04",
-            "title": "Californian Burl Walnut & French Bridle Leather",
-            "description": "Hand-dovetailed solid Californian walnut chassis lined in acoustic micro-suede, framed by hand-stitched saddle leather and solid brushed brass fittings."
+            "title": "Signature Amber Tortoiseshell & Velvet Trays",
+            "description": "Luminous amber tortoiseshell-effect backs layered over ivory faces, delivered in bespoke protective velvet storage trays."
           }
         }
       ]

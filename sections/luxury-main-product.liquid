@@ -38,11 +38,12 @@
   #LuxuryMainProduct-{{ section.id }} {
     background-color: {{ section.settings.bg_color | default: '#FCFAF8' }};
     padding-top: {{ section.settings.padding_top | default: 24 }}px !important;
-    padding-bottom: {{ section.settings.padding_bottom | default: 60 }}px !important;
+    padding-bottom: 8px !important;
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     color: #141517;
     position: relative;
-    overflow-x: clip !important;
+    overflow: visible !important;
+    overflow-x: visible !important;
     overflow-y: visible !important;
     max-width: 100vw !important;
   }
@@ -51,7 +52,15 @@
     #LuxuryProduct-{{ section.id }},
     #LuxuryMainProduct-{{ section.id }} {
       padding-top: {{ section.settings.padding_top | default: 24 | times: 0.7 | round | at_least: 16 }}px !important;
-      padding-bottom: 40px !important;
+      padding-bottom: 8px !important;
+    }
+  }
+
+  @media (min-width: 768px) and (max-width: 1199px) {
+    #LuxuryProduct-{{ section.id }},
+    #LuxuryMainProduct-{{ section.id }} {
+      padding-top: 18px !important;
+      padding-bottom: 24px !important;
     }
   }
 
@@ -71,7 +80,15 @@
     }
   }
 
-  @media (min-width: 1024px) {
+  @media (min-width: 740px) and (max-width: 1199px) {
+    .lp-container,
+    .pdp-container {
+      padding: 0 20px !important;
+      max-width: 100% !important;
+    }
+  }
+
+  @media (min-width: 1200px) {
     .lp-container,
     .pdp-container {
       max-width: 1200px !important;
@@ -93,7 +110,7 @@
     line-height: 1.4;
   }
 
-  @media (max-width: 767px) {
+  @media (max-width: 739px) {
     .lp-breadcrumb {
       font-size: 10.5px !important;
       gap: 6px !important;
@@ -118,7 +135,7 @@
     font-size: 10px;
   }
 
-  /* Grid Layout: Left Column 54% / Right Column 46%, 40px gap on Desktop */
+  /* Grid Layout: Left Column / Right Column */
   .lp-grid,
   .pdp-grid,
   .lp-layout {
@@ -130,7 +147,7 @@
     box-sizing: border-box !important;
   }
 
-  @media (max-width: 767px) {
+  @media (max-width: 739px) {
     .lp-grid,
     .pdp-grid,
     .lp-layout {
@@ -138,49 +155,232 @@
     }
   }
 
-  @media (min-width: 992px) {
+  /* iPad Portrait & Tablets (740px - 991px): 2 columns, exactly 100% width, zero overflow */
+  @media (min-width: 740px) and (max-width: 991px) {
     .lp-grid,
     .pdp-grid,
     .lp-layout {
-      grid-template-columns: 54% 46% !important;
-      gap: 40px !important;
-      align-items: start;
+      grid-template-columns: minmax(0, 0.96fr) minmax(0, 1.04fr) !important;
+      gap: 20px !important;
+      align-items: start !important;
+      width: 100% !important;
+      max-width: 100% !important;
+      box-sizing: border-box !important;
     }
   }
 
+  /* iPad Landscape & Large Tablets (992px - 1199px): 50/50 columns, exactly 100% width, zero overflow */
+  @media (min-width: 992px) and (max-width: 1199px) {
+    .lp-grid,
+    .pdp-grid,
+    .lp-layout {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) !important;
+      gap: 24px !important;
+      align-items: start !important;
+      width: 100% !important;
+      max-width: 100% !important;
+      box-sizing: border-box !important;
+    }
+  }
+
+  /* Large Desktop & iPad Pro 12.9" Landscape (>= 1200px): 54/46 columns, zero overflow */
   @media (min-width: 1200px) {
     .lp-grid,
     .pdp-grid,
     .lp-layout {
-      grid-template-columns: 54% 46% !important;
-      gap: 40px !important;
+      grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr) !important;
+      gap: 32px !important;
+      align-items: start !important;
+      width: 100% !important;
+      max-width: 100% !important;
+      box-sizing: border-box !important;
+    }
+  }
+
+    /* =========================================================================
+     MOBILE LUXURY STICKY PRODUCT BAR (Slides up when scrolling past Add to Cart)
+     ========================================================================= */
+  .lp-mobile-sticky-bar {
+    display: none !important;
+  }
+
+  @media (max-width: 739px) {
+    .lp-mobile-sticky-bar {
+      display: block !important;
+      position: fixed !important;
+      bottom: 0 !important;
+      left: 0 !important;
+      right: 0 !important;
+      width: 100% !important;
+      background: #FAF8F5 !important;
+      border-top: 1px solid rgba(184, 151, 104, 0.4) !important;
+      box-shadow: 0 -6px 22px rgba(10, 22, 17, 0.12) !important;
+      z-index: 998 !important;
+      transform: translateY(115%) !important;
+      transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.25s ease !important;
+      opacity: 0 !important;
+      pointer-events: none !important;
+      padding: 10px 16px !important;
+      padding-bottom: calc(10px + env(safe-area-inset-bottom, 0px)) !important;
+      box-sizing: border-box !important;
+    }
+
+    .lp-mobile-sticky-bar.is-visible {
+      transform: translateY(0) !important;
+      opacity: 1 !important;
+      pointer-events: auto !important;
+    }
+
+    .lp-msb-inner {
+      display: flex !important;
+      align-items: center !important;
+      justify-content: space-between !important;
+      gap: 12px !important;
+      max-width: 600px !important;
+      margin: 0 auto !important;
+    }
+
+    .lp-msb-left {
+      display: flex !important;
+      align-items: center !important;
+      gap: 10px !important;
+      min-width: 0 !important;
+      flex: 1 !important;
+    }
+
+    .lp-msb-thumb {
+      width: 44px !important;
+      height: 44px !important;
+      border-radius: 8px !important;
+      object-fit: cover !important;
+      border: 1px solid rgba(22, 51, 39, 0.15) !important;
+      flex-shrink: 0 !important;
+      background: #FFFFFF !important;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.06) !important;
+    }
+
+    .lp-msb-info {
+      min-width: 0 !important;
+      display: flex !important;
+      flex-direction: column !important;
+      gap: 2px !important;
+    }
+
+    .lp-msb-title {
+      font-size: 13px !important;
+      font-weight: 600 !important;
+      color: #163327 !important;
+      white-space: nowrap !important;
+      overflow: hidden !important;
+      text-overflow: ellipsis !important;
+      line-height: 1.25 !important;
+    }
+
+    .lp-msb-price {
+      font-size: 13px !important;
+      font-weight: 700 !important;
+      color: #B89768 !important;
+      line-height: 1 !important;
+    }
+
+    .lp-msb-right {
+      flex-shrink: 0 !important;
+    }
+
+    .lp-msb-btn {
+      display: inline-flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      background: linear-gradient(180deg, #1D4B37 0%, #163327 100%) !important;
+      color: #FAF8F5 !important;
+      border: 1px solid rgba(184, 151, 104, 0.45) !important;
+      border-radius: 8px !important;
+      padding: 10px 18px !important;
+      font-size: 12.5px !important;
+      font-weight: 700 !important;
+      letter-spacing: 0.04em !important;
+      cursor: pointer !important;
+      white-space: nowrap !important;
+      box-shadow: 0 3px 10px rgba(22, 51, 39, 0.25) !important;
+      transition: all 0.2s ease !important;
+      min-height: 42px !important;
+    }
+
+    .lp-msb-btn:active {
+      transform: scale(0.97) !important;
+    }
+
+    .lp-msb-btn[disabled] {
+      background: #A3A09B !important;
+      border-color: #A3A09B !important;
+      cursor: not-allowed !important;
+      box-shadow: none !important;
     }
   }
 
   /* =========================================================================
-     2. LEFT COLUMN (54%): GALLERY STAGE & FILMSTRIP
+     2. LEFT COLUMN: GALLERY STAGE & FILMSTRIP - STICKY ACROSS ALL DEVICES
      ========================================================================= */
   .lp-gallery-col,
   .pdp-gallery-col {
-    position: relative;
+    position: -webkit-sticky !important;
+    position: sticky !important;
+    top: var(--lh-header-h, 68.5px) !important;
+    align-self: start !important;
+    height: fit-content !important;
     width: 100% !important;
     max-width: 100% !important;
     min-width: 0 !important;
     box-sizing: border-box !important;
+    z-index: 15 !important;
+    transition: top 0.25s ease !important;
   }
 
-  /* Desktop Sticky Gallery Pinning */
-  @media (min-width: 992px) {
+  /* Sticky Gallery Pinning on Tablet (iPad) & Desktop */
+  @media (min-width: 740px) {
+    .lp-grid,
+    .pdp-grid,
+    .lp-layout {
+      align-items: start !important;
+    }
+
     .lp-gallery-col,
     .pdp-gallery-col {
-      position: sticky !important;
-      top: 88px !important;
-      align-self: start !important;
-      z-index: 5;
+      top: var(--lh-header-h, 68.5px) !important;
+      z-index: 15 !important;
+    }
+
+    body.header-is-revealed .lp-gallery-col,
+    body.header-is-revealed .pdp-gallery-col,
+    body.is-scrolled-past-top .lp-gallery-col,
+    body.is-scrolled-past-top .pdp-gallery-col {
+      top: var(--lh-header-h, 68.5px) !important;
     }
   }
 
-  /* Master Stage Frame: 1:1 ratio, max-height 480px, border-radius 18px, champagne gold border #B89768 */
+  /* Mobile Gallery Sticky Experience */
+  @media (max-width: 739px) {
+    .lp-gallery-col,
+    .pdp-gallery-col {
+      position: -webkit-sticky !important;
+      position: sticky !important;
+      top: var(--lh-header-h, 60px) !important;
+      z-index: 5 !important;
+    }
+
+    .lp-info-col,
+    .pdp-info-col {
+      position: relative !important;
+      z-index: 10 !important;
+      background: #FAF8F5 !important;
+      border-radius: 20px 20px 0 0 !important;
+      box-shadow: 0 -8px 24px rgba(22, 51, 39, 0.08) !important;
+      padding-top: 18px !important;
+      margin-top: 8px !important;
+    }
+  }
+
+  /* Master Stage Frame: Exact 1:1 square ratio, border-radius 18px, champagne gold border #B89768 */
   .lp-stage-frame,
   .pdp-main-stage {
     position: relative;
@@ -188,22 +388,36 @@
     max-width: 100% !important;
     min-width: 0 !important;
     aspect-ratio: 1 / 1 !important;
-    max-height: 480px !important;
+    height: auto !important;
+    max-height: none !important;
     border-radius: 18px !important;
     overflow: hidden;
-    background-color: #F5F2EB !important;
+    background-color: #FFFFFF !important;
     border: 1px solid rgba(184, 151, 104, 0.45) !important;
     box-shadow: 0 12px 32px rgba(20, 21, 23, 0.06);
     cursor: zoom-in;
+    touch-action: pan-y !important;
+    user-select: none !important;
+    -webkit-user-select: none !important;
     transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.35s ease, border-color 0.3s ease;
     box-sizing: border-box !important;
+  }
+
+  .lp-stage-frame img,
+  .pdp-main-stage img,
+  .lp-main-img,
+  .pdp-main-img {
+    -webkit-user-drag: none !important;
+    user-drag: none !important;
+    pointer-events: auto !important;
   }
 
   @media (max-width: 767px) {
     .lp-stage-frame,
     .pdp-main-stage {
       border-radius: 14px !important;
-      max-height: 420px !important;
+      height: auto !important;
+      max-height: none !important;
     }
   }
 
@@ -219,13 +433,17 @@
     height: 100%;
     position: relative;
     overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
   .lp-main-img,
   .pdp-main-img {
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: contain !important;
+    object-position: center !important;
     display: block;
     opacity: 1;
     transform: scale(1);
@@ -240,10 +458,10 @@
     transform: scale(0.98) !important;
   }
 
-  /* Micro-interaction: Hover Zoom 1.04x */
+  /* Micro-interaction: Keep crisp 1:1 image without cropping edges on hover */
   .lp-stage-frame:hover .lp-main-img,
   .pdp-main-stage:hover .pdp-main-img {
-    transform: scale(1.04) !important;
+    transform: scale(1) !important;
   }
 
   /* Zoom badge removed to preserve unobstructed view of master artwork */
@@ -271,6 +489,14 @@
     align-items: center;
     gap: 8px;
     box-sizing: border-box !important;
+  }
+
+  @media (min-width: 768px) and (max-width: 1199px) {
+    .lp-thumbs-wrapper,
+    .pdp-thumbs-wrapper {
+      margin-top: 10px !important;
+      gap: 6px !important;
+    }
   }
 
   @media (max-width: 767px) {
@@ -310,11 +536,11 @@
   }
 
   .lp-thumb-nav-btn:hover {
-    background: #163327 !important;
+    background: linear-gradient(180deg, #1D4B37 0%, #143828 42%, #081610 100%) !important;
     color: #FAF8F5 !important;
-    border-color: #163327 !important;
+    border-color: #143828 !important;
     transform: scale(1.08) !important;
-    box-shadow: 0 4px 12px rgba(22, 51, 39, 0.2) !important;
+    box-shadow: 0 4px 12px rgba(8, 22, 16, 0.35) !important;
   }
 
   .lp-thumb-nav-btn:active {
@@ -330,15 +556,17 @@
     display: flex;
     gap: 12px;
     overflow-x: auto;
-    scroll-snap-type: x mandatory;
-    scroll-behavior: smooth;
+    scroll-snap-type: none !important;
+    scroll-behavior: auto;
+        touch-action: pan-x pan-y !important;
+    overscroll-behavior-x: contain !important;
     padding: 6px 2px 10px;
     -webkit-overflow-scrolling: touch;
     scrollbar-width: none;
     -ms-overflow-style: none;
-    flex: 1 1 0% !important;
-    width: 0 !important;
+    flex: 1 1 auto !important;
     min-width: 0 !important;
+    width: auto !important;
     align-items: center;
   }
 
@@ -355,12 +583,17 @@
     display: none;
   }
 
+  @media (hover: hover) and (pointer: fine) { .lp-thumbs-track, .pdp-thumbs-track { cursor: grab; } }
+  .lp-thumbs-track.is-dragging, .pdp-thumbs-track.is-dragging { cursor: grabbing; user-select: none; }
+  .lp-thumbs-track.is-dragging .lp-thumb-item, .pdp-thumbs-track.is-dragging .pdp-thumb-item { transition: none !important; }
+
   /* Enlarged Thumbnail dimensions: 82x82px, border-radius: 12px */
   .lp-thumb-item,
   .pdp-thumb-item {
     width: 82px !important;
     height: 82px !important;
     flex: 0 0 82px !important;
+    aspect-ratio: 1 / 1 !important;
     border-radius: 12px !important;
     overflow: hidden;
     position: relative;
@@ -374,6 +607,16 @@
     scroll-snap-align: start;
     opacity: 0.72;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+  }
+
+  @media (min-width: 768px) and (max-width: 1199px) {
+    .lp-thumb-item,
+    .pdp-thumb-item {
+      width: 72px !important;
+      height: 72px !important;
+      flex: 0 0 72px !important;
+      border-radius: 10px !important;
+    }
   }
 
   @media (max-width: 767px) {
@@ -469,7 +712,7 @@
     font-weight: 600;
   }
 
-  /* Judge.me Star Rating Badge (Above Product Title) */
+  /* Judge.me Star Rating Badge (Above Product Title) - Sleek, clean and hide empty reviews */
   .pdp-judgeme-rating {
     display: flex;
     align-items: center;
@@ -477,6 +720,18 @@
     margin-top: 2px;
     margin-bottom: 2px;
     cursor: pointer;
+    transition: opacity 0.2s ease;
+  }
+
+  .pdp-judgeme-rating:hover {
+    opacity: 0.85;
+  }
+
+  /* Automatically hide if Judge.me has 0 reviews / no reviews */
+  .pdp-judgeme-rating.is-empty-review,
+  .pdp-judgeme-rating .jdgm-prev-badge[data-number-of-reviews="0"],
+  .pdp-judgeme-rating .jdgm-preview-badge[data-number-of-reviews="0"] {
+    display: none !important;
   }
 
   .pdp-judgeme-rating .jdgm-widget,
@@ -485,23 +740,24 @@
   .pdp-judgeme-rating .jdgm-prev-badge {
     display: inline-flex !important;
     align-items: center !important;
-    gap: 4px !important;
+    gap: 5px !important;
     visibility: visible !important;
     opacity: 1 !important;
   }
 
   .pdp-judgeme-rating .jdgm-star {
-    color: #E3D10D !important;
-    font-size: 15px !important;
+    color: #E5A93C !important;
+    font-size: 14px !important;
   }
 
   .pdp-judgeme-rating .jdgm-prev-badge__text {
-    font-size: 12.5px !important;
-    color: #55524E !important;
+    font-size: 12px !important;
+    color: #6B655F !important;
     font-weight: 500 !important;
+    letter-spacing: 0.02em !important;
     visibility: visible !important;
     display: inline !important;
-    margin-left: 4px !important;
+    margin-left: 2px !important;
   }
 
   /* Product Title & Description Group */
@@ -514,101 +770,271 @@
   .pdp-title {
     font-family: "Cormorant Garamond", Garamond, Georgia, serif;
     font-size: 27px;
-    font-weight: 500;
+    font-weight: 700;
     line-height: 1.2;
-    color: #141517;
+    color: #0D1110;
     margin: 0 !important;
     letter-spacing: -0.01em;
   }
 
-  @media (min-width: 768px) {
+  @media (min-width: 740px) and (max-width: 991px) {
+    .pdp-title {
+      font-size: 26px !important;
+      line-height: 1.25 !important;
+    }
+  }
+
+  @media (min-width: 992px) and (max-width: 1199px) {
+    .pdp-title {
+      font-size: 29px !important;
+      line-height: 1.2 !important;
+    }
+  }
+
+  @media (min-width: 1200px) and (max-width: 1366px) {
+    .pdp-title {
+      font-size: 33px !important;
+      line-height: 1.18 !important;
+    }
+  }
+
+  @media (min-width: 1367px) {
     .pdp-title {
       font-size: 38px;
       line-height: 1.15;
     }
   }
 
-  .pdp-description {
-    font-size: 14px;
-    line-height: 1.55;
-    color: #4A4642;
-    margin-top: 4px;
-    margin-bottom: 0;
-  }
-
-  .pdp-description p {
-    margin: 0 0 6px 0 !important;
-  }
-
-  .pdp-description p:last-child {
-    margin-bottom: 0 !important;
-  }
-
-  /* Delivery & Shipping Estimator Widget (Amazon/Etsy Style) */
+  /* =========================================================================
+     MAISON ATELIER LUXURY DELIVERY CONCIERGE CARD
+     ========================================================================= */
   .pdp-delivery-estimator {
-    margin: 8px 0 14px 0;
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-    position: relative;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    margin: 14px 0 20px 0 !important;
+    padding: 12px 14px !important;
+    background: #FAF8F5 !important;
+    border: 1px solid #EBE5DB !important;
+    border-radius: 12px !important;
+    box-shadow: 0 2px 10px rgba(22, 51, 39, 0.03), inset 0 1px 0 rgba(255, 255, 255, 0.9) !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 10px !important;
+    position: relative !important;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+    box-sizing: border-box !important;
+    width: 100% !important;
+    max-width: 520px !important;
+    transition: border-color 0.25s ease, box-shadow 0.25s ease !important;
+  }
+
+  .pdp-delivery-estimator:hover {
+    border-color: #DDD4C5 !important;
+    box-shadow: 0 4px 16px rgba(22, 51, 39, 0.06), inset 0 1px 0 rgba(255, 255, 255, 0.9) !important;
+  }
+
+  @media (min-width: 768px) and (max-width: 1199px) {
+    .pdp-delivery-estimator {
+      margin: 12px 0 16px 0 !important;
+      padding: 10px 12px !important;
+      gap: 8px !important;
+      max-width: 100% !important;
+    }
   }
 
   .pdp-delivery-row {
-    display: flex;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 6px;
-    font-size: 13.5px;
-    line-height: 1.45;
-    color: #4B5563;
-    position: relative;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 10px !important;
+    position: relative !important;
+    width: 100% !important;
+  }
+
+  .pdp-delivery-left {
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+    flex-shrink: 0 !important;
+  }
+
+  .pdp-delivery-icon-badge {
+    width: 24px !important;
+    height: 24px !important;
+    border-radius: 50% !important;
+    background: rgba(184, 151, 104, 0.12) !important;
+    color: #9C7D4E !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    flex-shrink: 0 !important;
+  }
+
+  .pdp-delivery-icon-badge--truck {
+    background: rgba(22, 51, 39, 0.08) !important;
+    color: #163327 !important;
   }
 
   .pdp-delivery-label {
-    color: #4B5563;
-    font-weight: 400;
+    color: #5C5750 !important;
+    font-weight: 600 !important;
+    font-size: 11.5px !important;
+    letter-spacing: 0.04em !important;
+    text-transform: uppercase !important;
+    white-space: nowrap !important;
+    margin: 0 !important;
+  }
+
+  .pdp-delivery-right {
+    display: inline-flex !important;
+    align-items: center !important;
+    position: relative !important;
+    min-width: 0 !important;
+    justify-content: flex-end !important;
+  }
+
+  .pdp-country-form {
+    margin: 0 !important;
+    padding: 0 !important;
+    display: inline-flex !important;
+    min-width: 0 !important;
+  }
+
+  .pdp-country-dropdown-wrapper {
+    position: relative !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    min-width: 0 !important;
   }
 
   .pdp-delivery-trigger {
-    background: transparent;
-    border: none;
-    padding: 0;
-    margin: 0;
-    font-family: inherit;
-    font-size: 13.5px;
-    color: #111827;
-    font-weight: 700;
-    cursor: pointer;
-    display: inline-flex;
-    align-items: center;
-    gap: 4px;
-    transition: color 0.15s ease;
-    line-height: inherit;
+    background: #FFFFFF !important;
+    border: 1px solid #DCD3C5 !important;
+    border-radius: 9999px !important;
+    padding: 4.5px 12px !important;
+    margin: 0 !important;
+    font-family: inherit !important;
+    font-size: 12px !important;
+    font-weight: 600 !important;
+    color: #16181B !important;
+    cursor: pointer !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 6px !important;
+    transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1) !important;
+    line-height: 1.35 !important;
+    white-space: nowrap !important;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04) !important;
+    max-width: 220px !important;
+    overflow: hidden !important;
   }
 
-  .pdp-delivery-trigger:hover {
-    color: #163327;
+  .pdp-country-trigger {
+    max-width: 215px !important;
+  }
+
+  .pdp-schedule-trigger {
+    color: #163327 !important;
+    font-weight: 700 !important;
+  }
+
+  .pdp-delivery-trigger:hover,
+  .pdp-delivery-trigger[aria-expanded="true"] {
+    color: #163327 !important;
+    border-color: #B89768 !important;
+    background: #FFFFFF !important;
+    box-shadow: 0 2px 8px rgba(184, 151, 104, 0.2) !important;
+    transform: translateY(-1px) !important;
+  }
+
+  .pdp-curr-flag {
+    display: inline-flex !important;
+    align-items: center !important;
+    flex-shrink: 0 !important;
+  }
+
+  .pdp-curr-flag img {
+    margin-right: 2px !important;
+    border-radius: 2px !important;
+    box-shadow: 0 0 1px rgba(0,0,0,0.2) !important;
+  }
+
+  .pdp-country-current-text {
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+    font-weight: 600 !important;
+  }
+
+  .pdp-delivery-date {
+    color: #163327 !important;
+    font-weight: 700 !important;
+    letter-spacing: -0.01em !important;
   }
 
   .pdp-chevron-icon {
-    color: #4B5563;
-    transition: transform 0.2s ease;
-    flex-shrink: 0;
+    color: #9C7D4E !important;
+    transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
+    flex-shrink: 0 !important;
   }
 
   .pdp-delivery-trigger[aria-expanded="true"] .pdp-chevron-icon {
-    transform: rotate(180deg);
+    transform: rotate(180deg) !important;
   }
 
-  /* Delivery Method Popover (Exact match to screenshot) */
+  .pdp-delivery-divider {
+    width: 100% !important;
+    height: 1px !important;
+    background: rgba(22, 51, 39, 0.06) !important;
+    margin: 1px 0 !important;
+  }
+
+  .pdp-delivery-trust-bar {
+    display: flex !important;
+    align-items: center !important;
+    gap: 6px !important;
+    padding-top: 3px !important;
+    font-size: 11px !important;
+    font-weight: 500 !important;
+    color: #635E56 !important;
+    line-height: 1.2 !important;
+  }
+
+  .pdp-trust-check {
+    color: #00B67A !important;
+    flex-shrink: 0 !important;
+  }
+
+  @media (max-width: 480px) {
+    .pdp-delivery-estimator {
+      padding: 10px 12px !important;
+      gap: 9px !important;
+    }
+    .pdp-delivery-row {
+      flex-direction: row !important;
+      justify-content: space-between !important;
+      align-items: center !important;
+    }
+    .pdp-delivery-trigger {
+      max-width: 180px !important;
+      padding: 4px 10px !important;
+      font-size: 11.5px !important;
+    }
+    .pdp-country-current-text {
+      max-width: 125px !important;
+    }
+    .pdp-delivery-label {
+      font-size: 11px !important;
+    }
+  }
+
   .pdp-delivery-popover {
-    position: absolute;
-    top: calc(100% + 10px);
-    left: 0;
-    z-index: 1000;
-    width: 100%;
-    max-width: 385px;
+    position: absolute !important;
+    top: calc(100% + 10px) !important;
+    right: 0 !important;
+    left: auto !important;
+    z-index: 1000 !important;
+    width: min(360px, calc(100vw - 28px)) !important;
+    max-width: calc(100vw - 28px) !important;
+    white-space: normal !important;
     animation: pdpFadeInUp 0.18s cubic-bezier(0.16, 1, 0.3, 1);
   }
 
@@ -624,101 +1050,190 @@
   }
 
   .pdp-popover-arrow {
-    position: absolute;
-    top: -6px;
-    left: 48px;
-    width: 12px;
-    height: 12px;
-    background: #FFFFFF;
-    border-left: 1px solid #E5E7EB;
-    border-top: 1px solid #E5E7EB;
-    transform: rotate(45deg);
-    z-index: 1001;
+    position: absolute !important;
+    top: -7px !important;
+    right: 24px !important;
+    left: auto !important;
+    width: 12px !important;
+    height: 12px !important;
+    background: #FFFFFF !important;
+    border-left: 1.5px solid #D8CFC2 !important;
+    border-top: 1.5px solid #D8CFC2 !important;
+    transform: rotate(45deg) !important;
+    z-index: 1001 !important;
   }
 
   .pdp-delivery-card {
     position: relative;
     background: #FFFFFF;
-    border: 1px solid #E5E7EB;
+    border: 1.5px solid #D8CFC2;
     border-radius: 14px;
-    box-shadow: 0 12px 36px rgba(0, 0, 0, 0.12), 0 2px 8px rgba(0, 0, 0, 0.04);
-    padding: 18px 20px 20px;
-    color: #111827;
+    box-shadow: 0 16px 40px rgba(22, 51, 39, 0.16), 0 4px 12px rgba(0, 0, 0, 0.06);
+    padding: 20px 22px;
+    color: #1A1A1A;
     box-sizing: border-box;
+    white-space: normal !important;
+    overflow: hidden;
   }
 
   .pdp-delivery-card-header {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-bottom: 12px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #F0ECE4;
+    margin-bottom: 14px;
   }
 
   .pdp-delivery-method-title {
     display: inline-flex;
     align-items: center;
-    gap: 8px;
-    font-size: 15px;
+    gap: 9px;
+    font-size: 15.5px;
     font-weight: 700;
-    color: #111827;
+    color: #163327;
+    letter-spacing: -0.01em;
   }
 
   .pdp-truck-icon {
-    color: #111827;
+    color: #163327;
     flex-shrink: 0;
   }
 
   .pdp-delivery-close-btn {
-    background: #F3F4F6;
-    border: none;
-    width: 26px;
-    height: 26px;
+    background: #F4EFE6;
+    border: 1px solid #E5DFD3;
+    width: 28px;
+    height: 28px;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    color: #4B5563;
+    color: #163327;
     transition: all 0.15s ease;
     padding: 0;
   }
 
   .pdp-delivery-close-btn:hover {
-    background: #E5E7EB;
-    color: #111827;
+    background: linear-gradient(180deg, #1D4B37 0%, #143828 42%, #081610 100%) !important;
+    color: #FFFFFF !important;
+    border-color: #143828 !important;
   }
 
-  .pdp-delivery-subheading {
-    font-size: 14px;
-    font-weight: 700;
-    color: #111827;
-    margin-bottom: 12px;
-  }
-
-  .pdp-delivery-milestones {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
+  .pdp-delivery-service-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: #F2F7F4;
+    border: 1px solid #C8DDD0;
+    color: #163327;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
     margin-bottom: 16px;
   }
 
-  .pdp-milestone-row {
+  /* Timeline styling */
+  .pdp-timeline {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    padding-left: 28px;
+    margin-bottom: 18px;
+  }
+
+  .pdp-timeline::before {
+    content: '';
+    position: absolute;
+    top: 10px;
+    bottom: 24px;
+    left: 9px;
+    width: 2px;
+    background: #D8D2C5;
+  }
+
+  .pdp-timeline-step {
+    position: relative;
+    margin-bottom: 14px;
+  }
+
+  .pdp-timeline-step:last-child {
+    margin-bottom: 0;
+  }
+
+  .pdp-timeline-dot {
+    position: absolute;
+    left: -28px;
+    top: 2px;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #FAF8F5;
+    border: 2px solid #163327;
     display: flex;
     align-items: center;
+    justify-content: center;
+    z-index: 2;
+    font-size: 11px;
+    font-weight: 700;
+    color: #FFFFFF;
+  }
+
+  .pdp-timeline-dot.is-active {
+    background: #163327;
+  }
+
+  .pdp-timeline-dot.is-active::after {
+    content: '';
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #FFFFFF;
+  }
+
+  .pdp-timeline-dot.is-final {
+    background: #163327;
+    border-color: #163327;
+    color: #FFFFFF;
+  }
+
+  .pdp-timeline-content {
+    display: flex;
+    align-items: baseline;
     justify-content: space-between;
+    gap: 12px;
+  }
+
+  .pdp-timeline-label {
     font-size: 13.5px;
-    line-height: 1.4;
+    font-weight: 600;
+    color: #163327;
+    line-height: 1.35;
   }
 
-  .pdp-milestone-label {
-    font-weight: 700;
-    color: #111827;
+  .pdp-timeline-sub {
+    font-size: 11px;
+    color: #7D7569;
+    font-weight: 400;
+    margin-top: 1px;
   }
 
-  .pdp-milestone-val {
+  .pdp-timeline-date {
+    font-size: 13.5px;
     font-weight: 700;
-    color: #111827;
+    color: #163327;
     text-align: right;
+    white-space: nowrap;
+  }
+
+  .pdp-timeline-date.highlight {
+    color: #163327;
+    background: #EAF3EE;
+    border: 1px solid #BED8C8;
+    padding: 2px 8px;
+    border-radius: 6px;
   }
 
   .pdp-delivery-notes {
@@ -726,7 +1241,8 @@
     padding-top: 14px;
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 9px;
+    white-space: normal !important;
   }
 
   .pdp-note-item {
@@ -734,146 +1250,600 @@
     align-items: flex-start;
     gap: 8px;
     font-size: 12px;
-    line-height: 1.5;
-    color: #4B5563;
-  }
-
-  .pdp-bullet {
-    font-size: 14px;
-    line-height: 1;
-    color: #111827;
-    flex-shrink: 0;
-  }
-
-  /* Country Selection Popover */
-  .pdp-country-popover {
-    position: absolute;
-    top: calc(100% + 8px);
-    left: 0;
-    z-index: 1002;
-    width: 320px;
-    max-width: 90vw;
-    background: #FFFFFF;
-    border: 1px solid #E5E7EB;
-    border-radius: 12px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
-    padding: 14px;
-    animation: pdpFadeInUp 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+    line-height: 1.45;
+    color: #4A463F;
+    white-space: normal !important;
+    width: 100%;
     box-sizing: border-box;
   }
 
-  .pdp-popover-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 10px;
-  }
-
-  .pdp-popover-title {
-    font-size: 13px;
-    font-weight: 700;
-    color: #111827;
-    letter-spacing: 0.02em;
-  }
-
-  .pdp-popover-close {
-    background: transparent;
-    border: none;
-    font-size: 14px;
-    color: #6B7280;
-    cursor: pointer;
-    padding: 2px 6px;
-  }
-
-  .pdp-country-search-wrap {
-    margin-bottom: 8px;
-  }
-
-  .pdp-country-search-input {
-    width: 100%;
-    padding: 7px 10px;
-    font-size: 12.5px;
-    border: 1px solid #D1D5DB;
-    border-radius: 6px;
-    outline: none;
-    box-sizing: border-box;
-  }
-
-  .pdp-country-search-input:focus {
-    border-color: #163327;
-  }
-
-  .pdp-country-list {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    max-height: 200px;
-    overflow-y: auto;
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
-  }
-
-  .pdp-country-select-item {
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 7px 8px;
-    border-radius: 6px;
-    background: transparent;
-    border: none;
-    cursor: pointer;
-    font-family: inherit;
-    font-size: 12.5px;
-    color: #374151;
-    text-align: left;
-    transition: background 0.15s ease;
-  }
-
-  .pdp-country-select-item:hover,
-  .pdp-country-select-item.is-selected {
-    background: #F3F4F6;
-    color: #111827;
-    font-weight: 600;
-  }
-
-  .pdp-country-flag {
-    margin-right: 8px;
-    display: inline-flex;
-  }
-
-  .pdp-country-curr-tag {
-    font-size: 11px;
-    color: #6B7280;
-    background: #F3F4F6;
-    padding: 2px 6px;
-    border-radius: 4px;
-  }
-
-  .pdp-country-native-form {
+  .pdp-note-item span {
     flex: 1 1 auto;
     min-width: 0;
+    white-space: normal !important;
+    word-break: normal;
+    overflow-wrap: break-word;
   }
 
-  .pdp-country-native-select {
-    width: 100%;
-    max-width: 320px;
-    min-height: 38px;
-    padding: 8px 10px;
-    border: 1px solid #D8D2C4;
-    border-radius: 8px;
-    background: #FFFFFF;
+  .pdp-note-icon {
     color: #163327;
-    font: inherit;
-    font-size: 13px;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  @media (max-width: 640px) {
+    .pdp-delivery-popover {
+      right: 0 !important;
+      left: auto !important;
+      width: min(340px, calc(100vw - 28px)) !important;
+      max-width: calc(100vw - 28px) !important;
+    }
+    .pdp-popover-arrow {
+      right: 24px !important;
+      left: auto !important;
+    }
+    .pdp-delivery-card {
+      padding: 16px 14px;
+    }
+    .pdp-country-popover {
+      right: 0 !important;
+      left: auto !important;
+      width: min(320px, calc(100vw - 32px)) !important;
+      max-width: calc(100vw - 32px) !important;
+    }
+  }
+
+  /* Country Selection Popover: 100% Identical to Header Luxury Style */
+  .pdp-country-popover {
+    position: absolute !important;
+    top: calc(100% + 8px) !important;
+    right: 0 !important;
+    left: auto !important;
+    background: #FFFFFF !important;
+    border-radius: 12px !important;
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.16), 0 2px 8px rgba(0, 0, 0, 0.04) !important;
+    border: 1px solid #ECE8E1 !important;
+    width: 320px !important;
+    max-width: min(340px, calc(100vw - 32px)) !important;
+    padding: 8px 0 !important;
+    z-index: 100005 !important;
+    animation: pdpFadeInDown 0.18s cubic-bezier(0.16, 1, 0.3, 1) !important;
+    white-space: normal !important;
+    box-sizing: border-box !important;
+  }
+
+  .pdp-country-popover[hidden] {
+    display: none !important;
+  }
+
+  @keyframes pdpFadeInDown {
+    from {
+      opacity: 0;
+      transform: translateY(-6px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .pdp-curr-header {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    font-size: 10px !important;
+    font-weight: 700 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.14em !important;
+    color: #8C857B !important;
+    padding: 6px 14px 10px !important;
+    border-bottom: 1px solid #F2EEE7 !important;
+    user-select: none !important;
+  }
+
+  .pdp-curr-close {
+    background: transparent !important;
+    border: none !important;
+    color: #8C857B !important;
+    cursor: pointer !important;
+    padding: 2px 4px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    border-radius: 4px !important;
+    transition: color 0.15s ease, background 0.15s ease !important;
+  }
+
+  .pdp-curr-close:hover {
+    color: #163327 !important;
+    background: #F5F2EC !important;
+  }
+
+  .pdp-curr-search-box {
+    padding: 8px 12px !important;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.06) !important;
+    position: sticky !important;
+    top: 0 !important;
+    background: #FFFFFF !important;
+    z-index: 2 !important;
+  }
+
+  .pdp-curr-search-input {
+    width: 100% !important;
+    padding: 7px 11px !important;
+    font-size: 12px !important;
+    border-radius: 7px !important;
+    border: 1px solid rgba(0, 0, 0, 0.12) !important;
+    outline: none !important;
+    background: #FAF8F5 !important;
+    color: #141517 !important;
+    transition: border-color 0.2s ease, background 0.2s ease !important;
+    box-sizing: border-box !important;
+  }
+
+  .pdp-curr-search-input:focus {
+    border-color: #B89768 !important;
+    background: #FFFFFF !important;
+    box-shadow: 0 0 0 3px rgba(184, 151, 104, 0.12) !important;
+  }
+
+  .pdp-curr-options {
+    list-style: none !important;
+    margin: 0 !important;
+    padding: 4px 0 !important;
+    max-height: 250px !important;
+    overflow-y: auto !important;
+  }
+
+  .pdp-curr-option-item {
+    list-style: none !important;
+    margin: 0 !important;
+    padding: 0 4px !important;
+  }
+
+  .pdp-curr-select-btn {
+    width: 100% !important;
+    background: transparent !important;
+    border: none !important;
+    padding: 8px 12px !important;
+    border-radius: 6px !important;
+    text-align: left !important;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+    cursor: pointer !important;
+    transition: background 0.15s ease, color 0.15s ease !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+  }
+
+  .pdp-curr-btn-left {
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    min-width: 0 !important;
+  }
+
+  .pdp-curr-country-name {
+    font-size: 12px !important;
+    color: #141517 !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    font-weight: 500 !important;
+  }
+
+  .pdp-curr-currency-tag {
+    font-size: 11px !important;
+    font-weight: 600 !important;
+    color: #8C857B !important;
+    background: #F5F2EC !important;
+    padding: 3px 7px !important;
+    border-radius: 5px !important;
+    flex-shrink: 0 !important;
+    margin-left: 8px !important;
+  }
+
+  .pdp-curr-select-btn:hover {
+    background: #FAF7F2 !important;
+  }
+
+  .pdp-curr-select-btn:hover .pdp-curr-country-name {
+    color: #B89768 !important;
+  }
+
+  .pdp-curr-select-btn:hover .pdp-curr-currency-tag {
+    background: #EFE9DE !important;
+    color: #141517 !important;
+  }
+
+  .pdp-curr-select-btn.is-active,
+  .pdp-curr-select-btn.is-selected {
+    background: #FDF9F3 !important;
+  }
+
+  .pdp-curr-select-btn.is-active .pdp-curr-country-name,
+  .pdp-curr-select-btn.is-selected .pdp-curr-country-name {
+    font-weight: 700 !important;
+    color: #163327 !important;
+  }
+
+  .pdp-curr-select-btn.is-active .pdp-curr-currency-tag,
+  .pdp-curr-select-btn.is-selected .pdp-curr-currency-tag {
+    background: #163327 !important;
+    color: #FFFFFF !important;
+  }
+
+  /* Custom-2 "Tell us your idea" & "Reference photos" Personalization */
+  .pdp-custom-idea-block {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    width: 100%;
+    margin-top: 14px;
+    margin-bottom: 16px;
+    box-sizing: border-box;
+  }
+
+  .pdp-custom-idea-group {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .pdp-custom-idea-label {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    color: #141517;
+    letter-spacing: -0.01em;
+    margin: 0 0 8px 0;
+    line-height: 1.3;
+  }
+
+  .pdp-custom-idea-textarea {
+    width: 100% !important;
+    min-height: 92px;
+    max-height: 220px;
+    box-sizing: border-box !important;
+    padding: 12px 14px;
+    background: #FFFFFF;
+    border: 1px solid #D1D5DB;
+    border-radius: 6px;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    font-size: 14px;
+    line-height: 1.5;
+    color: #141517;
+    resize: vertical;
+    outline: none;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .pdp-custom-idea-textarea::placeholder {
+    color: #9CA3AF;
+    opacity: 1;
+    font-style: normal;
+    font-size: 13.5px;
+  }
+
+  .pdp-custom-idea-textarea:hover {
+    border-color: #9CA3AF;
+  }
+
+  .pdp-custom-idea-textarea:focus {
+    border-color: #163327;
+    box-shadow: 0 0 0 2px rgba(22, 51, 39, 0.12);
+  }
+
+  .pdp-custom-idea-subtext {
+    font-size: 12.5px;
+    font-style: italic;
+    color: #6B7280;
+    line-height: 1.45;
+    margin: 6px 0 0 0;
+  }
+
+  .pdp-custom-photos-dropzone {
+    width: 100%;
+    border: 1.5px dashed #D1D5DB;
+    border-radius: 6px;
+    padding: 24px 16px;
+    background: #FFFFFF;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    transition: border-color 0.2s ease, background-color 0.2s ease;
+  }
+
+  .pdp-custom-photos-dropzone:hover {
+    border-color: #163327;
+    background-color: #FAF8F5;
+  }
+
+  .pdp-custom-photos-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 7px 20px;
+    background: #FFFFFF;
+    color: #1F2937;
+    border: 1px solid #D1D5DB;
+    border-radius: 4px;
+    font-size: 13.5px;
     font-weight: 600;
     cursor: pointer;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+    transition: all 0.2s ease;
+    font-family: inherit;
   }
 
-  .pdp-country-native-select:focus-visible {
-    outline: 2px solid #163327;
-    outline-offset: 2px;
+  .pdp-custom-photos-btn:hover {
+    border-color: #163327;
+    color: #163327;
+    background: #FAF8F5;
+  }
+
+  .pdp-custom-photos-selected {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: #EAF3EC;
+    border: 1px solid #C8E0CD;
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 12.5px;
+    color: #163327;
+    font-weight: 600;
+  }
+
+  .pdp-custom-photos-remove {
+    background: transparent;
+    border: none;
+    color: #6B7280;
+    cursor: pointer;
+    font-size: 15px;
+    padding: 0 2px;
+    display: flex;
+    align-items: center;
+    line-height: 1;
+  }
+
+  .pdp-custom-photos-remove:hover {
+    color: #DC2626;
+  }
+
+  /* Bespoke Set Personalization Request (User-defined line item notes) */
+  .pdp-custom-request-wrap {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    width: 100%;
+    margin-top: 4px;
+    margin-bottom: 6px;
+    box-sizing: border-box;
+  }
+
+  .pdp-custom-request-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 0 1px;
+  }
+
+  .pdp-custom-request-title {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    font-size: 14.5px;
+    font-weight: 700;
+    color: #141517;
+    letter-spacing: -0.01em;
+    margin: 0;
+    cursor: pointer;
+    line-height: 1.3;
+  }
+
+  .pdp-custom-request-optional {
+    font-size: 12.5px;
+    font-weight: 400;
+    color: #8C827A;
+    letter-spacing: 0.01em;
+  }
+
+  .pdp-custom-request-input {
+    width: 100% !important;
+    min-height: 84px;
+    max-height: 180px;
+    box-sizing: border-box !important;
+    padding: 10px 14px;
+    background: #FFFFFF;
+    border: 1px solid #D8D2C7;
+    border-radius: 8px;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    font-size: 13.5px;
+    line-height: 1.45;
+    color: #163327;
+    resize: vertical;
+    outline: none;
+    box-shadow: 0 1px 3px rgba(22, 51, 39, 0.03);
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .pdp-custom-request-input:hover {
+    border-color: #B8B0A4;
+  }
+
+  .pdp-custom-request-input:focus {
+    border-color: #163327;
+    box-shadow: 0 0 0 1.5px #163327;
+    background: #FFFFFF;
+  }
+
+  .pdp-custom-request-input::placeholder {
+    color: #9C948B;
+    opacity: 1;
+    font-style: normal;
+    line-height: 1.45;
+    font-size: 13px;
+  }
+
+  @media (max-width: 767px) {
+    .pdp-custom-request-title {
+      font-size: 14px;
+    }
+    .pdp-custom-request-input {
+      font-size: 13px;
+      padding: 9px 12px;
+      min-height: 78px;
+    }
+  }
+
+  /* Custom Idea & Reference Photos Block (custom-2 template & customizable) */
+  .pdp-custom-idea-block {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    width: 100%;
+    margin-top: 14px;
+    margin-bottom: 20px;
+    box-sizing: border-box;
+  }
+
+  .pdp-custom-idea-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    width: 100%;
+  }
+
+  .pdp-custom-idea-label {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    color: #111111;
+    margin: 0;
+    letter-spacing: -0.01em;
+    line-height: 1.3;
+  }
+
+  .pdp-custom-idea-textarea {
+    width: 100% !important;
+    min-height: 100px;
+    box-sizing: border-box !important;
+    padding: 12px 14px;
+    background: #FFFFFF;
+    border: 1px solid #D5D3CC;
+    border-radius: 4px;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    font-size: 14px;
+    line-height: 1.45;
+    color: #111111;
+    resize: vertical;
+    outline: none;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .pdp-custom-idea-textarea:focus {
+    border-color: #111111;
+    box-shadow: 0 0 0 1px #111111;
+  }
+
+  .pdp-custom-idea-textarea::placeholder {
+    color: #9C9A94;
+    opacity: 1;
+    font-style: normal;
+    font-size: 14px;
+    line-height: 1.45;
+  }
+
+  .pdp-custom-idea-subtext {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    font-size: 13px;
+    line-height: 1.45;
+    font-style: italic;
+    color: #666666;
+    margin: 0;
+  }
+
+  .pdp-custom-photos-dropzone {
+    width: 100%;
+    min-height: 110px;
+    border: 1px dashed #C8C5BE;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #FAFAFA;
+    padding: 20px 16px;
+    box-sizing: border-box;
+    transition: border-color 0.2s ease, background 0.2s ease;
+  }
+
+  .pdp-custom-photos-dropzone:hover,
+  .pdp-custom-photos-dropzone.is-dragover {
+    border-color: #8C8880;
+    background: #F5F4F0;
+  }
+
+  .pdp-custom-photos-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: #FFFFFF;
+    border: 1px solid #D1D5DB;
+    border-radius: 5px;
+    padding: 8px 22px;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    font-size: 13.5px;
+    font-weight: 600;
+    color: #111111;
+    cursor: pointer;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+    transition: all 0.2s ease;
+  }
+
+  .pdp-custom-photos-btn:hover {
+    border-color: #9CA3AF;
+    background: #F3F4F6;
+  }
+
+  .pdp-custom-photos-selected {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: #FFFFFF;
+    border: 1px solid #E5E7EB;
+    border-radius: 6px;
+    padding: 8px 14px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+  }
+
+  .pdp-custom-photos-filename {
+    font-size: 13px;
+    font-weight: 500;
+    color: #111111;
+    word-break: break-all;
+  }
+
+  .pdp-custom-photos-remove {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    color: #888888;
+    font-size: 14px;
+    padding: 2px 6px;
+    line-height: 1;
+    border-radius: 4px;
+    transition: color 0.15s ease, background 0.15s ease;
+  }
+
+  .pdp-custom-photos-remove:hover {
+    color: #DC2626;
+    background: #FEE2E2;
   }
 
   /* Pricing Cluster Directly Above ATC (CLS Reservation) */
@@ -885,7 +1855,7 @@
     contain: layout style;
     padding: 0;
     margin-top: 0;
-    margin-bottom: 0;
+    margin-bottom: 16px;
     border-bottom: none;
   }
 
@@ -1298,14 +2268,14 @@
   }
 
   .pdp-opt-pill.is-selected {
-    border-color: #163327 !important;
-    background: #163327 !important;
+    border-color: #143828 !important;
+    background: linear-gradient(180deg, #1D4B37 0%, #143828 42%, #081610 100%) !important;
     color: #FAF8F5 !important;
-    box-shadow: 0 4px 12px rgba(22, 51, 39, 0.2);
+    box-shadow: 0 4px 12px rgba(8, 22, 16, 0.3);
   }
 
 
-  /* Actions Wrapper */
+  /* Actions Wrapper & Row (Side-by-side Quantity Selector + ATC Button) */
   .lp-actions-wrapper,
   .pdp-actions-wrapper {
     display: flex;
@@ -1316,24 +2286,186 @@
     width: 100%;
   }
 
-  /* Primary CTA Button: Imperial Jade #163327 with Emerald Gleam Shimmer */
+  .pdp-actions-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+  }
+
+  /* Quantity Stepper Control */
+  .pdp-qty-wrapper {
+    display: inline-flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 48px;
+    min-width: 118px;
+    max-width: 124px;
+    flex-shrink: 0;
+    background: #FFFFFF;
+    border: 1.5px solid #D8C3A5;
+    border-radius: 10px;
+    padding: 2px;
+    box-shadow: 0 2px 6px rgba(22, 51, 39, 0.04);
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    box-sizing: border-box;
+  }
+
+  .pdp-qty-wrapper:focus-within,
+  .pdp-qty-wrapper:hover {
+    border-color: #163327;
+    box-shadow: 0 3px 10px rgba(22, 51, 39, 0.08);
+  }
+
+  .pdp-qty-wrapper.is-disabled {
+    opacity: 0.45;
+    pointer-events: none;
+    border-color: #E2D9CE;
+    background: #FAF7F2;
+  }
+
+  .pdp-qty-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 100%;
+    background: transparent;
+    border: none;
+    border-radius: 7px;
+    color: #163327;
+    cursor: pointer;
+    transition: background-color 0.15s ease, color 0.15s ease, transform 0.1s ease, opacity 0.15s ease;
+    padding: 0;
+    user-select: none;
+    -webkit-user-select: none;
+  }
+
+  .pdp-qty-btn:hover:not(:disabled):not(.is-disabled) {
+    background: #F4EFEA;
+    color: #081610;
+  }
+
+  .pdp-qty-btn:active:not(:disabled):not(.is-disabled) {
+    background: #EBE4DC;
+    transform: scale(0.92);
+  }
+
+  .pdp-qty-btn:disabled,
+  .pdp-qty-btn.is-disabled {
+    opacity: 0.28;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+
+  .pdp-qty-btn svg {
+    width: 15px;
+    height: 15px;
+    stroke: currentColor;
+    stroke-width: 2.8;
+    display: block;
+    pointer-events: none;
+  }
+
+  .pdp-qty-input {
+    width: 44px;
+    height: 100%;
+    border: none;
+    background: transparent;
+    text-align: center;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    font-size: 18px;
+    font-weight: 800;
+    color: #163327;
+    padding: 0;
+    margin: 0;
+    outline: none;
+    -moz-appearance: textfield;
+    appearance: textfield;
+  }
+
+  .pdp-qty-input::-webkit-outer-spin-button,
+  .pdp-qty-input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  .pdp-actions-row .pdp-add-btn {
+    flex: 1;
+    margin: 0;
+  }
+
+  .pdp-add-btn.is-adding {
+    pointer-events: none;
+    opacity: 0.85;
+  }
+
+  @media (min-width: 740px) and (max-width: 1199px) {
+    .pdp-actions-row {
+      gap: 10px !important;
+    }
+    .pdp-qty-wrapper {
+      height: 46px !important;
+      min-width: 108px !important;
+      max-width: 114px !important;
+    }
+    .pdp-actions-row .pdp-add-btn {
+      height: 46px !important;
+      min-height: 46px !important;
+      font-size: 14.5px !important;
+      letter-spacing: 0.06em !important;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .pdp-actions-row {
+      gap: 8px;
+    }
+    .pdp-qty-wrapper {
+      height: 44px;
+      min-width: 104px;
+      max-width: 110px;
+      border-radius: 10px;
+      padding: 2px;
+    }
+    .pdp-qty-btn {
+      width: 32px;
+    }
+    .pdp-qty-input {
+      width: 36px;
+      font-size: 17px;
+      font-weight: 800;
+    }
+    .pdp-actions-row .pdp-add-btn {
+      min-height: 44px !important;
+      height: 44px !important;
+      padding: 10px 16px !important;
+      font-size: 15px !important;
+      font-weight: 800 !important;
+      letter-spacing: 0.08em !important;
+      border-radius: 10px !important;
+    }
+  }
+
+  /* Primary CTA Button: Imperial Emerald-to-Black Gradient with Emerald Gleam Shimmer */
   .lp-add-btn,
   .pdp-add-btn,
   .lp-primary-btn {
     width: 100%;
-    padding: 17px 24px;
-    min-height: 54px;
-    border-radius: 10px;
-    background-color: #163327;
-    border: 1px solid #163327;
-    color: #FAF8F5;
-    font-size: 12.5px;
-    font-weight: 700;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
+    padding: 11px 24px !important;
+    min-height: 48px !important;
+    height: 48px !important;
+    border-radius: 10px !important;
+    background: linear-gradient(180deg, #1D4B37 0%, #143828 42%, #081610 100%) !important;
+    border: 1.5px solid rgba(216, 184, 140, 0.45) !important;
+    color: #FAF8F5 !important;
+    font-size: 17px !important;
+    font-weight: 800 !important;
+    letter-spacing: 0.08em !important;
+    text-transform: uppercase !important;
     cursor: pointer;
     transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-    box-shadow: 0 6px 18px rgba(22, 51, 39, 0.22);
+    box-shadow: 0 8px 24px rgba(8, 22, 16, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.2) !important;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -1376,11 +2508,11 @@
   .lp-add-btn:hover,
   .pdp-add-btn:hover,
   .lp-primary-btn:hover {
-    background-color: #1a3d2f;
-    border-color: #D8B88C;
-    color: #FAF8F5;
+    background: linear-gradient(180deg, #245E45 0%, #18422F 42%, #0C1E15 100%) !important;
+    border-color: #D8B88C !important;
+    color: #FFFFFF !important;
     transform: translateY(-1px);
-    box-shadow: 0 10px 28px rgba(22, 51, 39, 0.35);
+    box-shadow: 0 10px 28px rgba(8, 22, 16, 0.45), 0 0 18px rgba(36, 94, 69, 0.25) !important;
   }
 
   .lp-add-btn:disabled,
@@ -1466,19 +2598,21 @@
   .pdp-guarantee-features {
     display: flex !important;
     align-items: center !important;
-    justify-content: space-between !important;
-    gap: 12px !important;
+    justify-content: flex-start !important;
+    gap: 8px 16px !important;
     width: 100% !important;
     margin-bottom: 8px !important;
     padding: 2px 0 4px !important;
+    flex-wrap: wrap !important;
   }
 
   .pdp-guarantee-feature-item {
     display: inline-flex !important;
     align-items: center !important;
-    gap: 8px !important;
-    flex: 1 1 0 !important;
-    justify-content: center !important;
+    gap: 7px !important;
+    flex: 0 0 auto !important;
+    max-width: 100% !important;
+    justify-content: flex-start !important;
   }
 
   .pdp-guarantee-feature-icon {
@@ -1502,31 +2636,67 @@
 
   .pdp-guarantee-feature-text {
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif !important;
-    font-size: 13.5px !important;
+    font-size: 12.5px !important;
     font-weight: 500 !important;
     color: #2D2D2D !important;
-    line-height: 1.25 !important;
+    line-height: 1.3 !important;
     white-space: nowrap !important;
     letter-spacing: -0.01em !important;
   }
 
-  @media (max-width: 640px) {
+  @media (max-width: 1199px) {
     .pdp-guarantee-features {
+      justify-content: flex-start !important;
+      gap: 8px 12px !important;
       flex-wrap: wrap !important;
-      justify-content: center !important;
-      gap: 8px 14px !important;
     }
     .pdp-guarantee-feature-item {
-      flex: 0 1 auto !important;
+      flex: 0 0 auto !important;
+      max-width: 100% !important;
     }
     .pdp-guarantee-feature-text {
       font-size: 12px !important;
+      line-height: 1.3 !important;
+      white-space: nowrap !important;
+    }
+  }
+
+  /* Dedicated iPad Portrait Tuning: Compact Bullets with Zero Truncation */
+  @media (min-width: 740px) and (max-width: 991px) {
+    .pdp-guarantee-features {
+      justify-content: flex-start !important;
+      gap: 6px 12px !important;
+      flex-wrap: wrap !important;
+    }
+    .pdp-guarantee-feature-item {
+      flex: 0 0 auto !important;
+      max-width: 100% !important;
+    }
+    .pdp-guarantee-feature-text {
+      font-size: 11.5px !important;
+      line-height: 1.3 !important;
+      white-space: nowrap !important;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .pdp-guarantee-features {
+      justify-content: center !important;
+      gap: 6px 12px !important;
+    }
+    .pdp-guarantee-feature-item {
+      flex: 0 0 auto !important;
+    }
+    .pdp-guarantee-feature-text {
+      font-size: 11.5px !important;
+      white-space: nowrap !important;
     }
   }
 
 
   .pdp-payment-icons-wrapper {
-    margin-top: 4px;
+    margin-top: 6px;
+    margin-bottom: 2px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -1541,94 +2711,413 @@
     margin: 0 auto;
   }
 
-  /* Payment logos grid: clean, responsive wrapping, perfectly centered */
+  /* Payment logos grid: clean, direct rendering, perfectly centered */
   .pdp-payment-icons-list {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
     justify-content: center;
-    gap: 6px;
+    gap: 6px 8px;
     width: 100%;
-    margin-top: 6px;
+    margin: 0;
+    padding: 0;
   }
 
   .pdp-payment-badge {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    background: #FFFFFF;
-    border: 1px solid #E5DFD3;
-    border-radius: 4px;
-    padding: 2px 4px;
-    height: 24px;
-    width: 40px;
-    box-sizing: border-box;
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
-    transition: transform 0.15s ease, box-shadow 0.15s ease;
+    background: transparent;
+    border: none;
+    padding: 0;
+    margin: 0;
+    box-shadow: none;
+    line-height: 1;
+    transition: transform 0.15s ease, opacity 0.15s ease;
   }
 
   .pdp-payment-badge:hover {
     transform: translateY(-1px);
-    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.08);
+    opacity: 0.88;
   }
 
   .pdp-payment-svg {
-    height: 15px;
+    height: 24px;
     width: auto;
-    max-width: 32px;
     display: block;
-    object-fit: contain;
+    border-radius: 3px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08);
   }
 
-  /* Product Description Directly Below Title */
-  .pdp-description {
-    margin: 0;
-    font-size: 14.5px;
-    line-height: 1.7;
-    color: #4A4642;
+  @media (max-width: 640px) {
+    .pdp-payment-icons-list {
+      gap: 5px 6px;
+    }
+    .pdp-payment-svg {
+      height: 22px;
+    }
+  }
+
+  /* =========================================================================
+     PDP WHATSAPP CONCIERGE BOX (Dashed Atelier Support Box - Prominent & Deluxe)
+     ========================================================================= */
+  .pdp-whatsapp-box {
+    margin-top: 18px;
+    margin-bottom: 10px;
+    padding: 16px 20px;
+    border: 1.5px dashed {{ section.settings.whatsapp_border_color | default: '#D4C3AC' }};
+    border-radius: 12px;
+    background-color: {{ section.settings.whatsapp_bg_color | default: '#FAF7F2' }};
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    box-sizing: border-box;
+    width: 100%;
+    box-shadow: 0 4px 16px rgba(22, 51, 39, 0.04);
+    transition: all 0.25s ease;
+  }
+
+  .pdp-whatsapp-box:hover {
+    border-color: #B89768;
+    background-color: #F8F3EA;
+    box-shadow: 0 6px 20px rgba(184, 151, 104, 0.12);
+    transform: translateY(-1px);
+  }
+
+  .pdp-whatsapp-icon-wrap {
+    flex-shrink: 0;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: #EAF7EE;
+    border: 1px solid rgba(37, 211, 102, 0.25);
+    color: #25D366;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 8px rgba(37, 211, 102, 0.15);
+    transition: transform 0.2s ease, background-color 0.2s ease, color 0.2s ease;
+  }
+
+  .pdp-whatsapp-box:hover .pdp-whatsapp-icon-wrap {
+    transform: scale(1.06);
+    background: #25D366;
+    color: #FFFFFF;
+  }
+
+  .pdp-whatsapp-icon-svg {
+    width: 22px;
+    height: 22px;
+    display: block;
+  }
+
+  .pdp-whatsapp-content {
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+
+  .pdp-whatsapp-heading {
+    font-size: 15.5px;
+    font-weight: 700;
+    color: #163327;
+    margin: 0 0 4px 0;
+    line-height: 1.3;
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    letter-spacing: 0.01em;
+  }
+
+  .pdp-whatsapp-text {
+    font-size: 13.5px;
+    color: #5C5854;
+    margin: 0 0 8px 0;
+    line-height: 1.5;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  }
+
+  .pdp-whatsapp-actions {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 6px;
+  }
+
+  /* Text only for "Chat with Us on WhatsApp ->" */
+  .pdp-whatsapp-text-link {
+    color: #163327;
+    font-weight: 600;
+    font-size: 13.5px;
+    background: transparent !important;
+    border: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    box-shadow: none !important;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    transition: color 0.2s ease;
+    cursor: pointer;
+  }
+
+  .pdp-whatsapp-text-link:hover {
+    color: #0E241B;
+    text-decoration: underline;
+  }
+
+  .pdp-whatsapp-text-link .pdp-whatsapp-arrow {
+    font-size: 14px;
+    transition: transform 0.2s ease;
+    display: inline-block;
+  }
+
+  .pdp-whatsapp-text-link:hover .pdp-whatsapp-arrow {
+    transform: translateX(3px);
+  }
+
+  /* Button without background (nút ko nền) for the phone number */
+  .pdp-whatsapp-outline-btn {
+    color: #163327 !important;
+    font-weight: 600;
+    font-size: 13px;
+    background: transparent !important;
+    border: 1.5px solid #163327 !important;
+    padding: 5px 14px !important;
+    border-radius: 999px !important;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    text-decoration: none !important;
+    box-shadow: none !important;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+    cursor: pointer;
+  }
+
+  .pdp-whatsapp-outline-btn svg {
+    color: #25D366;
+    transition: transform 0.2s ease;
+    flex-shrink: 0;
+  }
+
+  .pdp-whatsapp-outline-btn:hover {
+    background: rgba(22, 51, 39, 0.06) !important;
+    border-color: #0E241B !important;
+    color: #0E241B !important;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(22, 51, 39, 0.12) !important;
+  }
+
+  .pdp-whatsapp-outline-btn:hover svg {
+    transform: scale(1.12);
+  }
+
+  @media (min-width: 740px) and (max-width: 1199px) {
+    .pdp-whatsapp-box {
+      padding: 13px 16px !important;
+      gap: 12px !important;
+      margin-top: 14px !important;
+      margin-bottom: 30px !important;
+    }
+    .pdp-whatsapp-icon-wrap {
+      width: 40px !important;
+      height: 40px !important;
+    }
+    .pdp-whatsapp-icon-svg {
+      width: 20px !important;
+      height: 20px !important;
+    }
+    .pdp-whatsapp-heading {
+      font-size: 14.5px !important;
+    }
+    .pdp-whatsapp-text {
+      font-size: 12.5px !important;
+      margin-bottom: 6px !important;
+    }
+    .pdp-whatsapp-actions {
+      gap: 8px 12px !important;
+      margin-top: 4px !important;
+    }
+    .pdp-whatsapp-text-link {
+      font-size: 12.5px !important;
+    }
+    .pdp-whatsapp-outline-btn {
+      font-size: 12px !important;
+      padding: 4px 12px !important;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .pdp-whatsapp-box {
+      padding: 14px 16px;
+      gap: 12px;
+      margin-top: 14px;
+      margin-bottom: 24px !important;
+    }
+    .pdp-whatsapp-icon-wrap {
+      width: 40px;
+      height: 40px;
+    }
+    .pdp-whatsapp-icon-svg {
+      width: 20px;
+      height: 20px;
+    }
+    .pdp-whatsapp-heading {
+      font-size: 14.5px;
+    }
+    .pdp-whatsapp-text {
+      font-size: 13px;
+      margin-bottom: 6px;
+    }
+    .pdp-whatsapp-actions {
+      gap: 8px 12px;
+      margin-top: 4px;
+    }
+    .pdp-whatsapp-text-link {
+      font-size: 13px;
+    }
+    .pdp-whatsapp-outline-btn {
+      font-size: 12.5px;
+      padding: 4px 12px !important;
+    }
+  }
+
+  /* Product Description Directly Below Title (100% Faithful to Shopify Rich Text Editor) */
+  .pdp-description,
+  .pdp-description * {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif !important;
+  }
+
+  .pdp-description {
+    margin: 8px 0 0 0;
+    font-size: 14.5px;
+    line-height: 1.65;
+    color: #2E2A27;
+    word-break: break-word;
   }
 
   .pdp-description p {
     margin: 0 0 10px 0;
+    line-height: 1.65;
+    color: #2E2A27;
   }
 
   .pdp-description p:first-child {
     margin-top: 0 !important;
   }
 
+  @media (min-width: 768px) and (max-width: 1199px) {
+    .pdp-description {
+      font-size: 13.5px !important;
+      line-height: 1.55 !important;
+      margin: 6px 0 0 0 !important;
+    }
+    .pdp-description p {
+      line-height: 1.55 !important;
+      margin: 0 0 8px 0 !important;
+    }
+  }
+
   .pdp-description p:last-child {
     margin-bottom: 0;
   }
 
-  .pdp-description ul,
+  .pdp-description ul {
+    list-style-type: disc !important;
+    margin: 8px 0 14px 0 !important;
+    padding-left: 22px !important;
+  }
+
   .pdp-description ol {
-    margin: 0 0 16px 0;
-    padding-left: 20px;
+    list-style-type: decimal !important;
+    margin: 8px 0 14px 0 !important;
+    padding-left: 22px !important;
   }
 
   .pdp-description li {
-    margin-bottom: 8px;
-    line-height: 1.7;
+    list-style: inherit !important;
+    margin-bottom: 6px !important;
+    line-height: 1.65 !important;
   }
 
   .pdp-description strong,
   .pdp-description b {
-    color: #141517;
-    font-weight: 600;
+    color: #111111 !important;
+    font-weight: 700 !important;
+  }
+
+  .pdp-description em,
+  .pdp-description i {
+    font-style: italic !important;
+  }
+
+  .pdp-description u {
+    text-decoration: underline !important;
+  }
+
+  .pdp-description s,
+  .pdp-description strike {
+    text-decoration: line-through !important;
+  }
+
+  .pdp-description a {
+    color: #163327;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    transition: color 0.15s ease;
+  }
+
+  .pdp-description a:hover {
+    color: #0B1C15;
   }
 
   .pdp-description h1,
   .pdp-description h2,
   .pdp-description h3,
-  .pdp-description h4 {
-    font-family: "Cormorant Garamond", Garamond, Georgia, serif;
-    font-weight: 500;
-    letter-spacing: 0.04em;
-    color: #141517;
-    margin-top: 16px;
-    margin-bottom: 8px;
-    line-height: 1.3;
+  .pdp-description h4,
+  .pdp-description h5,
+  .pdp-description h6 {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif !important;
+    font-weight: 700 !important;
+    color: #111111 !important;
+    letter-spacing: -0.01em !important;
+    margin-top: 18px !important;
+    margin-bottom: 8px !important;
+    line-height: 1.35 !important;
+  }
+
+  .pdp-description h1 { font-size: 22px !important; }
+  .pdp-description h2 { font-size: 20px !important; }
+  .pdp-description h3 { font-size: 18px !important; }
+  .pdp-description h4 { font-size: 16px !important; }
+  .pdp-description h5 { font-size: 15px !important; }
+  .pdp-description h6 { font-size: 14px !important; }
+
+  .pdp-description blockquote {
+    margin: 12px 0;
+    padding: 8px 16px;
+    border-left: 3px solid #163327;
+    background: rgba(22, 51, 39, 0.03);
+    font-style: italic;
+  }
+
+  .pdp-description table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 12px 0;
+  }
+
+  .pdp-description table td,
+  .pdp-description table th {
+    padding: 8px 10px;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+  }
+
+  .pdp-description img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 6px;
+    margin: 8px 0;
   }
 
   /* =========================================================================
@@ -1639,18 +3128,17 @@
     inset: 0 !important;
     width: 100vw !important;
     height: 100vh !important;
-    background-color: rgba(252, 250, 248, 0.94) !important; /* Soft Maison Ivory Cream */
-    backdrop-filter: blur(16px) !important;
-    -webkit-backdrop-filter: blur(16px) !important;
+    background-color: rgba(250, 248, 245, 0.88) !important; /* Elegant semi-translucent backdrop */
+    backdrop-filter: blur(12px) !important;
+    -webkit-backdrop-filter: blur(12px) !important;
     z-index: 2147483647 !important;
     display: none;
-    flex-direction: column;
-    justify-content: center;
     align-items: center;
-    padding: 24px 20px !important;
+    justify-content: center;
+    padding: 16px !important;
     box-sizing: border-box !important;
     user-select: none;
-    cursor: zoom-out !important; /* Clicking backdrop closes modal */
+    cursor: zoom-out !important;
   }
 
   #AtelierLightbox.active,
@@ -1670,45 +3158,79 @@
     }
   }
 
-  /* Zero unwanted nested styles */
-  #AtelierLightbox div,
-  #AtelierLightbox .lp-lb-stage,
-  #AtelierLightbox .lp-lb-img-wrap {
-    background: transparent !important;
-    border: none !important;
-    box-shadow: none !important;
-    padding: 0 !important;
-    margin: 0 !important;
+  /* Compact cohesive modal card wrapping image, close button and controls together */
+  .lp-lb-card {
+    position: relative !important;
+    display: inline-flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    max-width: 92vw !important;
+    max-height: 86vh !important;
+    cursor: default !important;
   }
 
-  /* Hide top header bar completely */
-  #AtelierLightbox .lp-lb-header {
-    display: none !important;
+  /* Close Button directly hugging top-right corner of image */
+  .lp-lb-close-btn {
+    position: absolute !important;
+    top: -12px !important;
+    right: -12px !important;
+    width: 38px !important;
+    height: 38px !important;
+    border-radius: 50% !important;
+    background: #FFFFFF !important;
+    border: 1px solid rgba(184, 151, 104, 0.45) !important;
+    color: #163327 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    cursor: pointer !important;
+    z-index: 100 !important;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.16) !important;
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
+    padding: 0 !important;
+    outline: none !important;
+  }
+
+  .lp-lb-close-btn:hover {
+    background: #143828 !important;
+    color: #FAF8F5 !important;
+    border-color: #143828 !important;
+    transform: scale(1.1) !important;
+    box-shadow: 0 6px 20px rgba(20, 56, 40, 0.35) !important;
+  }
+
+  .lp-lb-close-btn:active {
+    transform: scale(0.94) !important;
+  }
+
+  .lp-lb-close-btn svg {
+    pointer-events: none !important;
   }
 
   /* Center Stage */
   #AtelierLightbox .lp-lb-stage {
-    flex: 1 !important;
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
     position: relative !important;
-    width: 100% !important;
-    max-height: 86vh !important;
-    cursor: zoom-out !important;
+    cursor: zoom-in !important;
   }
 
-  /* Enlarged Artwork Image */
+  /* Ultra-Crisp Artwork Image: High-res rendering with clean edge */
   #AtelierLightbox .lp-lb-img {
-    max-height: 84vh !important;
-    max-width: 86vw !important;
+    max-height: 66vh !important;
+    max-width: 88vw !important;
+    width: auto !important;
+    height: auto !important;
     object-fit: contain !important;
-    border-radius: 12px !important;
+    border-radius: 16px !important;
     background: #FFFFFF !important;
-    box-shadow: 0 16px 48px rgba(22, 51, 39, 0.12), 0 4px 16px rgba(0, 0, 0, 0.04) !important;
-    border: 1px solid rgba(184, 151, 104, 0.28) !important;
+    box-shadow: 0 16px 48px rgba(22, 51, 39, 0.12), 0 2px 10px rgba(0, 0, 0, 0.04) !important;
+    border: 1px solid rgba(184, 151, 104, 0.32) !important;
+    image-rendering: -webkit-optimize-contrast !important;
+    image-rendering: crisp-edges !important;
     transition: transform 0.25s ease-out !important;
-    cursor: default !important;
+    cursor: zoom-in !important;
     display: block !important;
   }
 
@@ -1717,13 +3239,14 @@
     cursor: grab !important;
   }
 
-  /* Integrated Luxury Bottom Controller (Buttons next to counter) */
+  /* Integrated Luxury Bottom Controller - Hugging closely right beneath image */
   #AtelierLightbox .lp-lb-footer {
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
-    padding: 16px 0 20px !important;
-    z-index: 50 !important;
+    padding-top: 14px !important;
+    padding-bottom: 0 !important;
+    width: 100% !important;
   }
 
   .lp-lb-controls-bar {
@@ -1757,11 +3280,11 @@
   }
 
   .lp-lb-ctrl-btn:hover {
-    background: #163327 !important;
+    background: linear-gradient(180deg, #1D4B37 0%, #143828 42%, #081610 100%) !important;
     color: #FAF8F5 !important;
-    border-color: #163327 !important;
+    border-color: #143828 !important;
     transform: scale(1.1) !important;
-    box-shadow: 0 4px 12px rgba(22, 51, 39, 0.25) !important;
+    box-shadow: 0 4px 12px rgba(8, 22, 16, 0.35) !important;
   }
 
   .lp-lb-ctrl-btn:active {
@@ -1916,8 +3439,8 @@
   .lp-pdp-faq-title {
     font-size: 32px;
     font-family: "Cormorant Garamond", Georgia, serif;
-    font-weight: 500;
-    color: #141517;
+    font-weight: 700;
+    color: #0D1110;
     margin: 0 0 10px;
     letter-spacing: -0.01em;
   }
@@ -2026,9 +3549,10 @@
   }
 
   .lp-faq-concierge-btn:hover {
-    background: #163327;
-    color: #FFFFFF;
-    border-color: #163327;
+    background: linear-gradient(180deg, #1D4B37 0%, #143828 42%, #081610 100%) !important;
+    color: #FFFFFF !important;
+    border-color: #143828 !important;
+    box-shadow: 0 4px 12px rgba(8, 22, 16, 0.3) !important;
   }
 </style>
 
@@ -2058,8 +3582,8 @@
       {%- assign badge_label = 'RACKS' -%}
     {%- elsif prod_collection.handle == 'dices' or badge_label == 'DICES' -%}
       {%- assign badge_label = 'DICE' -%}
-    {%- elsif prod_collection.handle == 'tile-bag' or badge_label == 'TILE-BAG' or badge_label == 'BAG' -%}
-      {%- assign badge_label = 'TILE BAG' -%}
+    {%- elsif prod_collection.handle == 'tile-bag' or badge_label == 'TILE-BAG' or badge_label == 'TILE BAG' or badge_label == 'BAG' -%}
+      {%- assign badge_label = 'BAG' -%}
     {%- endif -%}
 
     <nav class="lp-breadcrumb" aria-label="Breadcrumb">
@@ -2075,7 +3599,7 @@
     </nav>
 
     <!-- 2. Grid Architecture: Left Column 54% / Right Column 46% -->
-    <div class="lp-grid pdp-grid lp-layout">
+    <div class="lp-grid pdp-grid lp-layout" data-pz-scope>
 
       <!-- =====================================================================
            LEFT COLUMN (56%): GALLERY STAGE & FILMSTRIP TRACK
@@ -2083,6 +3607,12 @@
       <div class="lp-gallery-col pdp-gallery-col">
         {%- assign current_variant = product.selected_or_first_available_variant -%}
         {%- assign initial_media = current_variant.featured_media | default: product.featured_media | default: product.media.first -%}
+
+        {%- if product.metafields.custom.personalization_options.value != blank -%}
+          {%- assign pz_photos_selector = '#pdpMainStage-' | append: section.id -%}
+          {%- assign pz_triggers_selector = '#pdpThumbsTrack-' | append: section.id -%}
+          {%- render 'mahjiva-personalizer-preview', product: product, photos_selector: pz_photos_selector, triggers_selector: pz_triggers_selector -%}
+        {%- endif -%}
 
         <!-- Master Stage Frame: Ratio 4:3, max-height 520px, border-radius 20px, soft shadow -->
         <div 
@@ -2100,12 +3630,12 @@
                 src="{{ initial_media | image_url: width: 1200 }}"
                 srcset="{{ initial_media | image_url: width: 800 }} 800w, {{ initial_media | image_url: width: 1200 }} 1200w, {{ initial_media | image_url: width: 1600 }} 1600w, {{ initial_media | image_url: width: 2000 }} 2000w"
                 sizes="(min-width: 1200px) 720px, (min-width: 992px) 56vw, 100vw"
-                alt="{{ initial_media.alt | default: product.title | escape }}"
+                alt="{% render 'luxury-image-alt', image: initial_media, product: product, index: 1 %}"
                 loading="eager"
                 fetchpriority="high"
                 decoding="sync"
                 width="1200"
-                height="900"
+                height="1200"
                 data-full-src="{{ initial_media | image_url: width: 2400 }}"
                 data-media-id="{{ initial_media.id }}"
               >
@@ -2130,7 +3660,14 @@
             </button>
 
             <div class="lp-thumbs-track pdp-thumbs-track" id="pdpThumbsTrack-{{ section.id }}" role="tablist" aria-label="Media archive filmstrip">
+              {%- assign seen_media_ids = '' -%}
+              {%- assign thumb_counter = 0 -%}
               {%- for media in product.media -%}
+                {%- assign media_id_str = media.id | append: ',' -%}
+                {%- if seen_media_ids contains media_id_str -%}
+                  {%- continue -%}
+                {%- endif -%}
+                {%- assign seen_media_ids = seen_media_ids | append: media_id_str -%}
                 {%- assign is_active = false -%}
                 {%- if media.id == initial_media.id or forloop.first and initial_media == blank -%}
                   {%- assign is_active = true -%}
@@ -2140,17 +3677,17 @@
                   role="tab"
                   class="lp-thumb-item pdp-thumb-item{% if is_active %} is-active{% endif %}"
                   data-media-id="{{ media.id }}"
-                  data-index="{{ forloop.index0 }}"
+                  data-index="{{ thumb_counter }}"
                   data-src="{{ media | image_url: width: 1600 }}"
                   data-srcset="{{ media | image_url: width: 800 }} 800w, {{ media | image_url: width: 1200 }} 1200w, {{ media | image_url: width: 1600 }} 1600w, {{ media | image_url: width: 2000 }} 2000w"
                   data-full-src="{{ media | image_url: width: 2400 }}"
-                  data-alt="{{ media.alt | default: product.title | escape }}"
+                  data-alt="{% render 'luxury-image-alt', image: media, product: product, index: forloop.index %}"
                   aria-selected="{% if is_active %}true{% else %}false{% endif %}"
                   aria-label="Plate {{ forloop.index }} of {{ product.title | escape }}"
                 >
                   <img 
                     src="{{ media | image_url: width: 200, height: 200, crop: 'center' }}"
-                    alt="{{ media.alt | default: product.title | escape }}"
+                    alt="{% render 'luxury-image-alt', image: media, product: product, index: forloop.index %}"
                     loading="lazy"
                     decoding="async"
                     width="82"
@@ -2158,6 +3695,7 @@
                     class="lp-thumb-img pdp-thumb-img"
                   >
                 </button>
+                {%- assign thumb_counter = thumb_counter | plus: 1 -%}
               {%- endfor -%}
             </div>
 
@@ -2190,9 +3728,6 @@
               {{ badge_label }}
             </span>
           {%- endif -%}
-          {%- if product.vendor != blank -%}
-            <span class="pdp-vendor-text">{{ product.vendor | escape }}</span>
-          {%- endif -%}
         </div>
 
         <!-- Suite Title & Information Group -->
@@ -2206,108 +3741,6 @@
 
           <h1 class="pdp-title">{{ product.title | escape }}</h1>
 
-          <!-- Delivery Estimation & Schedule Widget (Directly Below Product Title) -->
-          <div class="pdp-delivery-estimator" id="pdpDeliveryEstimator-{{ section.id }}">
-            <!-- Row 1: Deliver to Country -->
-            <div class="pdp-delivery-row pdp-delivery-country-wrap">
-              <span class="pdp-delivery-label">Deliver to:</span>
-              {%- form 'localization', id: 'PdpDeliveryCountryForm', class: 'pdp-country-native-form' -%}
-                <label class="visually-hidden" for="PdpDeliveryCountryInput-{{ section.id }}">Delivery destination</label>
-                <select
-                  name="country_code"
-                  id="PdpDeliveryCountryInput-{{ section.id }}"
-                  class="pdp-country-native-select"
-                  aria-label="Delivery destination"
-                  onchange="this.form.submit()"
-                >
-                  {%- for country in localization.available_countries -%}
-                    <option value="{{ country.iso_code }}"{% if country.iso_code == localization.country.iso_code %} selected{% endif %}>
-                      {{ country.name }} — {{ country.currency.iso_code }} {{ country.currency.symbol }}
-                    </option>
-                  {%- endfor -%}
-                </select>
-              {%- endform -%}
-            </div>
-
-            <!-- Row 2: Order today, get it as early as -->
-            <div class="pdp-delivery-row pdp-delivery-schedule-wrap">
-              <span class="pdp-delivery-label">Order today, get it as early as:</span>
-              <button 
-                type="button" 
-                class="pdp-delivery-trigger pdp-schedule-trigger" 
-                id="pdpScheduleTrigger-{{ section.id }}" 
-                aria-expanded="false"
-                aria-label="View delivery schedule"
-              >
-                <span class="pdp-delivery-val pdp-delivery-date" id="pdpMainDeliveryDate-{{ section.id }}">
-                  {{ 'now' | date: '%s' | plus: 604800 | date: '%B %d' }}-{{ 'now' | date: '%s' | plus: 864000 | date: '%d' }}
-                </span>
-                <svg class="pdp-chevron-icon pdp-schedule-chevron" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round">
-                  <polyline points="6 9 12 15 18 9"></polyline>
-                </svg>
-              </button>
-
-              <!-- Delivery Method Popover (Exact match to screenshot) -->
-              <div class="pdp-delivery-popover" id="pdpDeliveryPopover-{{ section.id }}" hidden>
-                <div class="pdp-popover-arrow"></div>
-                <div class="pdp-delivery-card">
-                  <!-- Header -->
-                  <div class="pdp-delivery-card-header">
-                    <div class="pdp-delivery-method-title">
-                      <svg class="pdp-truck-icon" width="17" height="17" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M1 3h15v13H1zM16 8h4.5l3.5 4v4h-8zM5.5 18a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5zM18.5 18a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5z"/>
-                      </svg>
-                      <span>Delivery Method</span>
-                    </div>
-                    <button type="button" class="pdp-delivery-close-btn" id="pdpDeliveryClose-{{ section.id }}" aria-label="Close delivery method popup">
-                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                        <line x1="18" y1="6" x2="6" y2="18"></line>
-                        <line x1="6" y1="6" x2="18" y2="18"></line>
-                      </svg>
-                    </button>
-                  </div>
-
-                  <!-- Subtitle -->
-                  <div class="pdp-delivery-subheading">Standard Shipping:</div>
-
-                  <!-- 3 Milestone Rows -->
-                  <div class="pdp-delivery-milestones">
-                    <div class="pdp-milestone-row">
-                      <span class="pdp-milestone-label">Order Placed:</span>
-                      <span class="pdp-milestone-val" id="pdpPlacedDate-{{ section.id }}">
-                        {{ 'now' | date: '%B %d' }}
-                      </span>
-                    </div>
-                    <div class="pdp-milestone-row">
-                      <span class="pdp-milestone-label">Order Ships:</span>
-                      <span class="pdp-milestone-val" id="pdpShipsDate-{{ section.id }}">
-                        {{ 'now' | date: '%s' | plus: 86400 | date: '%B %d' }}-{{ 'now' | date: '%s' | plus: 172800 | date: '%d' }}
-                      </span>
-                    </div>
-                    <div class="pdp-milestone-row">
-                      <span class="pdp-milestone-label">Delivered:</span>
-                      <span class="pdp-milestone-val" id="pdpDeliveredDate-{{ section.id }}">
-                        {{ 'now' | date: '%s' | plus: 604800 | date: '%B %d' }}-{{ 'now' | date: '%s' | plus: 864000 | date: '%d' }}
-                      </span>
-                    </div>
-                  </div>
-
-                  <!-- Notes -->
-                  <div class="pdp-delivery-notes">
-                    <div class="pdp-note-item">
-                      <span class="pdp-bullet">&bull;</span>
-                      <span>Orders can be cancelled or modified within 2 hours after being placed.</span>
-                    </div>
-                    <div class="pdp-note-item">
-                      <span class="pdp-bullet">&bull;</span>
-                      <span>Canvas/ Poster/ Metal Sign: These packages cannot be delivered to a PO box.</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
           <!-- Product Information / Description Directly Below Title -->
           {%- if product.description != blank -%}
             <div class="pdp-description rte">
@@ -2316,9 +3749,9 @@
           {%- endif -%}
         </div>
 
-        <!-- Tax & Diplomatic Transit Notice -->
+        <!-- Tax & Insured Transit Notice -->
         <div class="pdp-tax-notice">
-          <span>Complimentary Insured Diplomatic Courier & Archival Certificate</span>
+          <span>Complimentary Worldwide Shipping &amp; Tracked Delivery</span>
         </div>
 
         <!-- Bundle Deals Block (Buy More Save More) - Server-side 100% -->
@@ -2355,7 +3788,7 @@
                 <div class="pdp-bundle-card-content">
                   <div class="pdp-bundle-card-info">
                     <span class="pdp-bundle-title">02 Allocation Suites</span>
-                    <span class="pdp-bundle-sub">Diplomatic pair</span>
+                    <span class="pdp-bundle-sub">Curated duo</span>
                   </div>
                   <div class="pdp-bundle-pricing">
                     <span class="pdp-bundle-price" data-bundle-discount="0.9">{{ current_variant.price | times: 1.8 | money }}</span>
@@ -2366,7 +3799,7 @@
 
               <!-- Tier 3 -->
               <div class="pdp-bundle-card" data-bundle-qty="3">
-                <span class="pdp-bundle-badge pdp-bundle-badge-vip">MAISON VIP (-20%)</span>
+                <span class="pdp-bundle-badge pdp-bundle-badge-vip">MAHJIVA VIP (-20%)</span>
                 <div class="pdp-bundle-card-content">
                   <div class="pdp-bundle-card-info">
                     <span class="pdp-bundle-title">03 Allocation Suites</span>
@@ -2383,8 +3816,18 @@
         {%- endif -%}
 
         <!-- Commerce & Variant Form -->
+        {%- assign show_custom_set_request = false -%}
+        {%- assign cur_handle = product.handle | downcase -%}
+        {%- assign cur_title = product.title | downcase -%}
+        {%- if cur_handle contains 'cocktail-social-clubs-mahjong-set' or cur_handle contains 'crimson-leopard-mahjong-set' or cur_handle contains 'lotus-dynasty-mahjong-set' -%}
+          {%- assign show_custom_set_request = true -%}
+        {%- elsif cur_title contains 'cocktail social clubs mahjong set' or cur_title contains 'crimson leopard mahjong set' or cur_title contains 'lotus dynasty mahjong set' -%}
+          {%- assign show_custom_set_request = true -%}
+        {%- elsif section.settings.enable_custom_set_request -%}
+          {%- assign show_custom_set_request = true -%}
+        {%- endif -%}
         {%- assign product_form_id = 'PdpForm-' | append: section.id -%}
-        {%- form 'product', product, id: product_form_id, class: 'pdp-form' -%}
+        {%- form 'product', product, id: product_form_id, class: 'pdp-form', enctype: 'multipart/form-data' -%}
           <input type="hidden" name="id" id="PdpVariantId-{{ section.id }}" value="{{ current_variant.id }}">
 
           <!-- Variant Selectors (Swatch Card Grid & Pill Selector) -->
@@ -2511,6 +3954,91 @@
             </div>
           {%- endunless -%}
 
+          {%- assign pz_options = product.metafields.custom.personalization_options.value -%}
+          {%- if pz_options != blank -%}
+            <!-- Data-driven personalizer: steps from product.metafields.custom.personalization_options -->
+            <div class="pdp-personalizer">
+              {%- render 'mahjiva-personalizer', product: product, section_id: section.id -%}
+            </div>
+          {%- elsif template.suffix == 'custom-2' or section.settings.enable_custom_idea_fields -%}
+            <!-- Customizer Idea & Reference Photos Block (custom-2 template) -->
+            <div class="pdp-custom-idea-block" id="PdpCustomIdeaBlock">
+              <div class="pdp-custom-idea-group">
+                <label for="PdpCustomIdea-{{ section.id }}" class="pdp-custom-idea-label">
+                  {{ section.settings.custom_idea_heading | default: "Tell us your idea" }}
+                </label>
+                <textarea
+                  id="PdpCustomIdea-{{ section.id }}"
+                  name="properties[Tell us your idea]"
+                  class="pdp-custom-idea-textarea"
+                  rows="3"
+                  placeholder="{{ section.settings.custom_idea_placeholder | default: 'The Thursday Girls, est. 2005 — soft greens and gold, with peonies' }}"
+                ></textarea>
+                <p class="pdp-custom-idea-subtext">
+                  {{ section.settings.custom_idea_subtext | default: "A name, a year, colours you love, a motif, a pet. A few words are enough. Not ready yet? Order now and reply to your confirmation email — we will not start drawing until we hear from you." }}
+                </p>
+              </div>
+
+              <div class="pdp-custom-idea-group">
+                <label class="pdp-custom-idea-label">
+                  {{ section.settings.custom_photos_heading | default: "Reference photos" }}
+                </label>
+                <div class="pdp-custom-photos-dropzone" id="pdpPhotosDropzone-{{ section.id }}">
+                  <input
+                    type="file"
+                    id="PdpCustomPhotos-{{ section.id }}"
+                    name="properties[Reference photos]"
+                    class="pdp-custom-photos-input"
+                    accept="image/*,.pdf"
+                    style="display: none;"
+                    onchange="handlePdpCustomPhotoSelect(this, '{{ section.id }}')"
+                  >
+                  <div class="pdp-custom-photos-content" id="pdpPhotosContent-{{ section.id }}">
+                    <button
+                      type="button"
+                      class="pdp-custom-photos-btn"
+                      onclick="document.getElementById('PdpCustomPhotos-{{ section.id }}').click()"
+                    >
+                      {{ section.settings.custom_photos_button_text | default: "Add photos" }}
+                    </button>
+                  </div>
+                  <div class="pdp-custom-photos-selected" id="pdpPhotosSelected-{{ section.id }}" style="display: none;">
+                    <span class="pdp-custom-photos-filename" id="pdpPhotosFilename-{{ section.id }}"></span>
+                    <button
+                      type="button"
+                      class="pdp-custom-photos-remove"
+                      onclick="removePdpCustomPhoto('{{ section.id }}')"
+                      title="Remove photo"
+                      aria-label="Remove photo"
+                    >✕</button>
+                  </div>
+                </div>
+                <p class="pdp-custom-idea-subtext">
+                  {{ section.settings.custom_photos_subtext | default: "A pet, a room, a fabric, a style you love. Optional — you can also send these later by replying to your order confirmation." }}
+                </p>
+              </div>
+            </div>
+          {%- elsif show_custom_set_request -%}
+            <!-- Optional Bespoke Set Personalization Request -->
+            <div class="pdp-custom-request-wrap">
+              <div class="pdp-custom-request-header">
+                <label for="PdpCustomRequest-{{ section.id }}" class="pdp-custom-request-title">
+                  {{ section.settings.custom_set_request_heading | default: "Complimentary Gift Note or Order Instructions (Optional)" }}
+                </label>
+                <span class="pdp-custom-request-optional">
+                  {{ section.settings.custom_set_request_badge | default: "Optional" }}
+                </span>
+              </div>
+              <textarea
+                id="PdpCustomRequest-{{ section.id }}"
+                name="properties[Complimentary Gift Note or Order Instructions (Optional)]"
+                class="pdp-custom-request-input"
+                rows="3"
+                placeholder="I’d like a different mat with my tiles…&#10;I’d like a custom mat with my name…&#10;I'd like to choose different racks..."
+              ></textarea>
+            </div>
+          {%- endif -%}
+
           <!-- Price Display Directly Above ATC Button -->
           <div class="pdp-price-row maison-cls-price-slot">
             <span class="pdp-current-price{% if current_variant.price == 0 %} is-inquiry-price{% endif %}" id="pdpPrice-{{ section.id }}">
@@ -2527,25 +4055,368 @@
             </span>
           </div>
 
+
+
           <!-- Suite Acquisition Action Buttons -->
           <div class="lp-actions-wrapper pdp-actions-wrapper">
-            <button 
-              type="submit" 
-              name="add" 
-              id="pdpAddBtn-{{ section.id }}" 
-              class="lp-add-btn pdp-add-btn lp-primary-btn"
-              {% unless current_variant.available %}disabled{% endunless %}
-            >
-              <span id="pdpAddBtnText-{{ section.id }}">
-                {%- if current_variant.available -%}
-                  ADD TO CART
-                {%- else -%}
-                  SOLD OUT
-                {%- endif -%}
-              </span>
-            </button>
+            <div class="pdp-actions-row">
+              <!-- Quantity Stepper Selector -->
+              <div class="pdp-qty-wrapper{% unless current_variant.available %} is-disabled{% endunless %}" role="group" aria-label="Quantity selector">
+                <button 
+                  type="button" 
+                  class="pdp-qty-btn pdp-qty-btn--minus is-disabled" 
+                  id="pdpQtyMinus-{{ section.id }}" 
+                  aria-label="Decrease quantity"
+                  title="Decrease quantity"
+                  disabled
+                  aria-disabled="true"
+                >
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                </button>
+                <input 
+                  type="number" 
+                  name="quantity" 
+                  id="pdpQtyInput-{{ section.id }}" 
+                  class="pdp-qty-input" 
+                  value="1" 
+                  min="1" 
+                  max="99" 
+                  step="1"
+                  inputmode="numeric"
+                  aria-label="Product quantity"
+                  {% unless current_variant.available %}disabled{% endunless %}
+                >
+                <button 
+                  type="button" 
+                  class="pdp-qty-btn pdp-qty-btn--plus" 
+                  id="pdpQtyPlus-{{ section.id }}" 
+                  aria-label="Increase quantity"
+                  title="Increase quantity"
+                  {% unless current_variant.available %}disabled aria-disabled="true"{% endunless %}
+                >
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                </button>
+              </div>
+
+              <!-- Main Add to Cart Button -->
+              <button 
+                type="submit" 
+                name="add" 
+                id="pdpAddBtn-{{ section.id }}" 
+                class="lp-add-btn pdp-add-btn lp-primary-btn"
+                {% unless current_variant.available %}disabled{% endunless %}
+              >
+                <span id="pdpAddBtnText-{{ section.id }}">
+                  {%- if current_variant.available -%}
+                    ADD TO CART
+                  {%- else -%}
+                    SOLD OUT
+                  {%- endif -%}
+                </span>
+              </button>
+            </div>
           </div>
         {%- endform -%}
+
+        <!-- Maison Atelier Luxury Delivery & Schedule Concierge Card -->
+          <div class="pdp-delivery-estimator" id="pdpDeliveryEstimator-{{ section.id }}">
+            <!-- Row 1: Deliver to Destination -->
+            <div class="pdp-delivery-row pdp-delivery-row--country">
+              <div class="pdp-delivery-left">
+                <span class="pdp-delivery-icon-badge" aria-hidden="true">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                    <circle cx="12" cy="10" r="3"></circle>
+                  </svg>
+                </span>
+                <span class="pdp-delivery-label">Deliver to</span>
+              </div>
+              
+              <div class="pdp-delivery-right pdp-delivery-country-wrap">
+                {%- form 'localization', id: 'PdpDeliveryCountryForm', class: 'pdp-country-form' -%}
+                  <input type="hidden" name="country_code" id="PdpDeliveryCountryInput-{{ section.id }}" value="{{ localization.country.iso_code }}">
+                  <div class="pdp-country-dropdown-wrapper">
+                    <button 
+                      type="button" 
+                      class="pdp-delivery-trigger pdp-country-trigger" 
+                      id="pdpCountryTrigger-{{ section.id }}" 
+                      aria-expanded="false" 
+                      aria-label="Select delivery destination (Currently {{ localization.country.name }} - {{ localization.country.currency.iso_code }} {{ localization.country.currency.symbol }})"
+                    >
+                      <span class="pdp-curr-flag" aria-hidden="true">
+                        {% render 'country-flag', country: localization.country, country_code: localization.country.iso_code %}
+                      </span>
+                      <span class="pdp-country-current-text">{{ localization.country.name }} ({{ localization.country.currency.iso_code }} {{ localization.country.currency.symbol }})</span>
+                      {%- if localization.available_countries.size > 1 -%}
+                        <svg class="pdp-chevron-icon" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                          <polyline points="6 9 12 15 18 9"></polyline>
+                        </svg>
+                      {%- endif -%}
+                    </button>
+
+                    {%- if localization.available_countries.size > 1 -%}
+                      <div class="pdp-country-popover" id="pdpCountryPopover-{{ section.id }}" hidden>
+                        <div class="pdp-curr-header">
+                          <span>Shipping Destination &amp; Currency</span>
+                          <button type="button" class="pdp-curr-close" id="pdpCountryClose-{{ section.id }}" aria-label="Close country selection">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                              <line x1="18" y1="6" x2="6" y2="18"></line>
+                              <line x1="6" y1="6" x2="18" y2="18"></line>
+                            </svg>
+                          </button>
+                        </div>
+                        
+                        <div class="pdp-curr-search-box">
+                          <input 
+                            type="search" 
+                            class="pdp-curr-search-input" 
+                            id="pdpCountrySearch-{{ section.id }}" 
+                            placeholder="Search region or currency..." 
+                            aria-label="Search region or currency"
+                            autocomplete="off"
+                          >
+                        </div>
+
+                        <ul class="pdp-curr-options" role="list">
+                          {%- for country in localization.available_countries -%}
+                            <li class="pdp-curr-option-item">
+                              <button 
+                                type="button" 
+                                class="pdp-country-select-item pdp-curr-select-btn{% if country.iso_code == localization.country.iso_code %} is-active is-selected{% endif %}"
+                                data-country-code="{{ country.iso_code }}"
+                                data-currency="{{ country.currency.iso_code }}"
+                              >
+                                <div class="pdp-curr-btn-left">
+                                  {% render 'country-flag', country: country, country_code: country.iso_code %}
+                                  <span class="pdp-curr-country-name">{{ country.name }}</span>
+                                </div>
+                                <span class="pdp-curr-currency-tag">
+                                  {{ country.currency.iso_code }} {{ country.currency.symbol }}
+                                </span>
+                              </button>
+                            </li>
+                          {%- endfor -%}
+                        </ul>
+                      </div>
+                    {%- endif -%}
+                  </div>
+                {%- endform -%}
+              </div>
+            </div>
+
+            <!-- Subtle Hairline Luxury Divider -->
+            <div class="pdp-delivery-divider" aria-hidden="true"></div>
+
+            <!-- Row 2: Estimated Arrival Date -->
+            <div class="pdp-delivery-row pdp-delivery-row--schedule">
+              <div class="pdp-delivery-left">
+                <span class="pdp-delivery-icon-badge pdp-delivery-icon-badge--truck" aria-hidden="true">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="1" y="3" width="15" height="13"></rect>
+                    <polygon points="16 8 20 8 23 11 23 16 16 16 8"></polygon>
+                    <circle cx="5.5" cy="18.5" r="2.5"></circle>
+                    <circle cx="18.5" cy="18.5" r="2.5"></circle>
+                  </svg>
+                </span>
+                <span class="pdp-delivery-label">Estimated arrival</span>
+              </div>
+
+              <div class="pdp-delivery-right pdp-delivery-schedule-wrap">
+                <button 
+                  type="button" 
+                  class="pdp-delivery-trigger pdp-schedule-trigger" 
+                  id="pdpScheduleTrigger-{{ section.id }}" 
+                  aria-expanded="false"
+                  aria-label="View delivery schedule"
+                >
+                {%- liquid
+                  assign sec_now = 'now' | date: '%s'
+                  assign sec_ship_1 = sec_now | plus: 86400
+                  assign sec_ship_2 = sec_now | plus: 172800
+                  assign sec_del_1 = sec_now | plus: 864000
+                  assign sec_del_2 = sec_now | plus: 1296000
+
+                  assign m_ship_1 = sec_ship_1 | date: '%b'
+                  assign m_ship_2 = sec_ship_2 | date: '%b'
+                  assign m_del_1 = sec_del_1 | date: '%b'
+                  assign m_del_2 = sec_del_2 | date: '%b'
+
+                  assign day_ship_2 = sec_ship_2 | date: '%d'
+                  assign day_del_2 = sec_del_2 | date: '%d'
+                  assign date_ship_2 = sec_ship_2 | date: '%b %d'
+                  assign date_del_2 = sec_del_2 | date: '%b %d'
+
+                  if m_ship_1 == m_ship_2
+                    assign ships_liquid = sec_ship_1 | date: '%b %d' | append: '–' | append: day_ship_2
+                  else
+                    assign ships_liquid = sec_ship_1 | date: '%b %d' | append: ' – ' | append: date_ship_2
+                  endif
+
+                  if m_del_1 == m_del_2
+                    assign del_liquid = sec_del_1 | date: '%b %d' | append: '–' | append: day_del_2
+                  else
+                    assign del_liquid = sec_del_1 | date: '%b %d' | append: ' – ' | append: date_del_2
+                  endif
+                -%}
+                  <span class="pdp-delivery-val pdp-delivery-date" id="pdpMainDeliveryDate-{{ section.id }}">
+                    {{ del_liquid }}
+                  </span>
+                  <svg class="pdp-chevron-icon pdp-schedule-chevron" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="6 9 12 15 18 9"></polyline>
+                  </svg>
+                </button>
+
+                <!-- Delivery Method Popover (Luxury Atelier Delivery Schedule) -->
+                <div class="pdp-delivery-popover" id="pdpDeliveryPopover-{{ section.id }}" hidden>
+                  <div class="pdp-popover-arrow"></div>
+                  <div class="pdp-delivery-card">
+                    <!-- Header -->
+                    <div class="pdp-delivery-card-header">
+                      <div class="pdp-delivery-method-title">
+                        <svg class="pdp-truck-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                          <rect x="1" y="3" width="15" height="13"></rect>
+                          <polygon points="16 8 20 8 23 11 23 16 16 16 8"></polygon>
+                          <circle cx="5.5" cy="18.5" r="2.5"></circle>
+                          <circle cx="18.5" cy="18.5" r="2.5"></circle>
+                        </svg>
+                        <span>Estimated Delivery Schedule</span>
+                      </div>
+                      <button type="button" class="pdp-delivery-close-btn" id="pdpDeliveryClose-{{ section.id }}" aria-label="Close delivery schedule popup">
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                          <line x1="18" y1="6" x2="6" y2="18"></line>
+                          <line x1="6" y1="6" x2="18" y2="18"></line>
+                        </svg>
+                      </button>
+                    </div>
+
+                    <!-- Shipping Badge -->
+                    <div class="pdp-delivery-service-badge">
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                      </svg>
+                      <span>Complimentary Insured Courier • Tracking Included</span>
+                    </div>
+
+                    <!-- Visual Timeline (Step by Step) -->
+                    <div class="pdp-timeline">
+                      <!-- Step 1: Placed -->
+                      <div class="pdp-timeline-step">
+                        <div class="pdp-timeline-dot is-active"></div>
+                        <div class="pdp-timeline-content">
+                          <div>
+                            <div class="pdp-timeline-label">Order Placed</div>
+                            <div class="pdp-timeline-sub">Verified &amp; sent to atelier</div>
+                          </div>
+                          <div class="pdp-timeline-date" id="pdpPlacedDate-{{ section.id }}">
+                            Today, {{ 'now' | date: '%b %d' }}
+                          </div>
+                        </div>
+                      </div>
+
+                      <!-- Step 2: Ships -->
+                      <div class="pdp-timeline-step">
+                        <div class="pdp-timeline-dot"></div>
+                        <div class="pdp-timeline-content">
+                          <div>
+                            <div class="pdp-timeline-label">Order Ships</div>
+                            <div class="pdp-timeline-sub">Hand-inspected &amp; dispatched</div>
+                          </div>
+                          <div class="pdp-timeline-date" id="pdpShipsDate-{{ section.id }}">
+                            {{ ships_liquid }}
+                          </div>
+                        </div>
+                      </div>
+
+                      <!-- Step 3: Delivered -->
+                      <div class="pdp-timeline-step">
+                        <div class="pdp-timeline-dot is-final">✓</div>
+                        <div class="pdp-timeline-content">
+                          <div>
+                            <div class="pdp-timeline-label">Estimated Delivery</div>
+                            <div class="pdp-timeline-sub">Direct to your doorstep</div>
+                          </div>
+                          <div class="pdp-timeline-date highlight" id="pdpDeliveredDate-{{ section.id }}">
+                            {{ del_liquid }}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- Policy Notes (Appropriate for luxury Mahjong Atelier) -->
+                    <div class="pdp-delivery-notes">
+                      <div class="pdp-note-item">
+                        <svg class="pdp-note-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                          <polyline points="20 6 9 17 4 12"></polyline>
+                        </svg>
+                        <span>Complimentary insured shipping with end-to-end tracking on every order.</span>
+                      </div>
+                      <div class="pdp-note-item">
+                        <svg class="pdp-note-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                          <polyline points="20 6 9 17 4 12"></polyline>
+                        </svg>
+                        <span>Full real-time tracking number emailed as soon as courier dispatches.</span>
+                      </div>
+                      <div class="pdp-note-item">
+                        <svg class="pdp-note-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                          <polyline points="20 6 9 17 4 12"></polyline>
+                        </svg>
+                        <span>Order modifications or address updates accepted within 12 hours of order placement.</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- Real-time Immediate Date Hydration Script (Runs synchronously to defeat CDN edge cache) -->
+                <script>
+                  (function() {
+                    try {
+                      var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+                      var now = new Date();
+                      function addD(b, d) {
+                        var r = new Date(b.getTime());
+                        r.setDate(r.getDate() + d);
+                        return r;
+                      }
+                      function fmtRange(d1, d2) {
+                        var m1 = months[d1.getMonth()];
+                        var m2 = months[d2.getMonth()];
+                        var n1 = d1.getDate();
+                        var n2 = d2.getDate();
+                        if (m1 === m2) return m1 + ' ' + n1 + '\u2013' + n2;
+                        return m1 + ' ' + n1 + ' \u2013 ' + m2 + ' ' + n2;
+                      }
+                      var ship1 = addD(now, 1);
+                      var ship2 = addD(now, 2);
+                      var del1 = addD(now, 10);
+                      var del2 = addD(now, 15);
+
+                      var placedStr = 'Today, ' + months[now.getMonth()] + ' ' + now.getDate();
+                      var shipsStr = fmtRange(ship1, ship2);
+                      var delStr = fmtRange(del1, del2);
+
+                      var mEl = document.getElementById('pdpMainDeliveryDate-{{ section.id }}');
+                      var pEl = document.getElementById('pdpPlacedDate-{{ section.id }}');
+                      var sEl = document.getElementById('pdpShipsDate-{{ section.id }}');
+                      var dEl = document.getElementById('pdpDeliveredDate-{{ section.id }}');
+
+                      if (mEl) mEl.textContent = delStr;
+                      if (pEl) pEl.textContent = placedStr;
+                      if (sEl) sEl.textContent = shipsStr;
+                      if (dEl) dEl.textContent = delStr;
+                    } catch(e) {}
+                  })();
+                </script>
+              </div>
+            </div>
+
+            <!-- Trust Bar / Reassurance Line -->
+            <div class="pdp-delivery-trust-bar">
+              <svg class="pdp-trust-check" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <polyline points="20 6 9 17 4 12"></polyline>
+              </svg>
+              <span>Complimentary insured shipping &amp; guarantee on all orders</span>
+            </div>
+          </div>
+
 
         <!-- App Blocks / Upsell Slot (Placed between Action Buttons and Payment & Guarantees) -->
         {%- assign has_app_blocks = false -%}
@@ -2557,6 +4428,65 @@
         {%- endfor -%}
 
         {%- if has_app_blocks -%}
+          <style>
+            /* Selleasy Bundle Checkbox Fix: Ensure user can click/tap to toggle products in bundle */
+            .lb-custom-checkbox,
+            .lb-checkbox-check,
+            .lb-checkbox-check span {
+              pointer-events: none !important;
+            }
+            .lb-checkbox-cont {
+              position: relative !important;
+              display: inline-flex !important;
+              align-items: center !important;
+              justify-content: center !important;
+              cursor: pointer !important;
+              width: 28px !important;
+              height: 28px !important;
+              margin: -4px !important;
+            }
+            .lb-card-checkbox {
+              position: absolute !important;
+              top: 0 !important;
+              left: 0 !important;
+              width: 100% !important;
+              height: 100% !important;
+              opacity: 0 !important;
+              cursor: pointer !important;
+              z-index: 10 !important;
+              pointer-events: auto !important;
+              margin: 0 !important;
+              padding: 0 !important;
+            }
+            .lb-custom-checkbox {
+              width: 18px !important;
+              height: 18px !important;
+              cursor: pointer !important;
+              border-radius: 4px !important;
+            }
+            .lb-card-checkbox-cont,
+            card-checkbox {
+              cursor: pointer !important;
+              z-index: 10 !important;
+            }
+          </style>
+          <script>
+            (function() {
+              if (window.__selleasyAddonAtcFixAttached) return;
+              window.__selleasyAddonAtcFixAttached = true;
+
+              // 1. Selleasy Bundle Checkbox Click Fix (Style Your Game)
+              document.addEventListener('click', function(e) {
+                var cbWrapper = e.target && e.target.closest ? e.target.closest('card-checkbox, .lb-card-checkbox-cont, .lb-checkbox-cont') : null;
+                if (cbWrapper) {
+                  var input = cbWrapper.querySelector('input.lb-card-checkbox');
+                  if (input && e.target !== input) {
+                    input.click();
+                  }
+                }
+              }, true);
+            })();
+          </script>
           <div class="pdp-app-blocks-slot" id="pdpAppBlocksSlot-{{ section.id }}">
             {%- for block in section.blocks -%}
               {%- case block.type -%}
@@ -2637,7 +4567,10 @@
             {%- else -%}
               {%- assign g2_text = 'NMJL-Ready Tile Sets' -%}
           {%- endcase -%}
-          {%- assign g3_text = 'U.S. Shipping' -%}
+          {%- assign g3_text = section.settings.guarantee_3 | default: 'Free Worldwide Shipping' -%}
+          {%- if g3_text contains 'U.S.' or g3_text contains 'US' or g3_text == 'Free shipping' or g3_text == 'Free Shipping' -%}
+            {%- assign g3_text = 'Free Worldwide Shipping' -%}
+          {%- endif -%}
 
           <div class="pdp-guarantee-bar">
             <!-- 3 Category-Specific Guarantee Features Above Logos -->
@@ -2678,6 +4611,7 @@
               <div class="pdp-payment-icons-wrapper">
                 <div class="pdp-payment-icons-list" id="pdpPaymentIcons-{{ section.id }}" aria-label="Accepted Payment Methods">
                   {%- for type in shop.enabled_payment_types -%}
+                    {%- assign type_lc = type | downcase -%}{%- if type_lc contains 'bancontact' or type_lc contains 'mbway' or type_lc contains 'mb_way' or type_lc contains 'mb-way' or type_lc contains 'blik' or type_lc contains 'ideal' or type_lc contains 'satispay' or type_lc contains 'twint' or type_lc contains 'przelewy24' or type_lc contains 'eps' or type_lc contains 'giropay' -%}{%- continue -%}{%- endif -%}
                     {%- liquid
                       assign type_title = type | replace: '_', ' ' | capitalize
                       if type == 'american_express'
@@ -2694,16 +4628,8 @@
                         assign type_title = 'Diners Club'
                       elsif type == 'unionpay'
                         assign type_title = 'UnionPay'
-                      elsif type == 'ideal'
-                        assign type_title = 'iDEAL'
                       elsif type == 'jcb'
                         assign type_title = 'JCB'
-                      elsif type == 'blik'
-                        assign type_title = 'BLIK'
-                      elsif type == 'mbway'
-                        assign type_title = 'MB WAY'
-                      elsif type == 'bancontact'
-                        assign type_title = 'Bancontact'
                       endif
                     -%}
                     <span class="pdp-payment-badge" title="{{ type_title }}">
@@ -2713,6 +4639,71 @@
                 </div>
               </div>
             {%- endunless -%}
+          </div>
+        {%- endif -%}
+
+        <!-- =========================================================================
+             WHATSAPP ATELIER CONCIERGE BOX
+             - Displays right below payment logos
+             - Applies to ALL products
+             - Connects customers directly to Atelier Concierge on WhatsApp
+             ========================================================================= -->
+        {%- if section.settings.show_whatsapp_concierge != false -%}
+          {%- liquid
+            assign wa_phone = section.settings.whatsapp_phone_number | default: '13233666555'
+            if wa_phone == '18134081627' or wa_phone == '13212333336' or wa_phone == blank
+              assign wa_phone = '13233666555'
+            endif
+            assign wa_display = section.settings.whatsapp_phone_display | default: '+1 323-366-6555'
+            if wa_display == '+1 (813) 408-1627' or wa_display == '+1 321-233-3336' or wa_display == blank
+              assign wa_display = '+1 323-366-6555'
+            endif
+            assign wa_title = section.settings.whatsapp_title | default: 'Need Help Curating Your Mahjong Table?'
+            if wa_title == 'Need guidance curating your suite?' or wa_title == blank
+              assign wa_title = 'Need Help Curating Your Mahjong Table?'
+            endif
+            assign wa_text = section.settings.whatsapp_subtitle | default: 'Let us help you find the perfect tiles and coordinating accessories.'
+            if wa_text == 'Connect with our Atelier Concierge on WhatsApp:' or wa_text == blank
+              assign wa_text = 'Let us help you find the perfect tiles and coordinating accessories.'
+            endif
+            assign wa_msg = section.settings.whatsapp_default_message | default: 'Hello Mahjiva Atelier Concierge, I need help curating my Mahjong table.'
+          -%}
+          <div class="pdp-whatsapp-box" id="pdpWhatsappBox-{{ section.id }}">
+            <div class="pdp-whatsapp-icon-wrap" aria-hidden="true">
+              <svg class="pdp-whatsapp-icon-svg" viewBox="0 0 24 24" width="22" height="22" fill="currentColor">
+                <path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91C2.13 13.66 2.59 15.36 3.45 16.86L2.05 22L7.3 20.62C8.75 21.41 10.38 21.83 12.04 21.83C17.5 21.83 21.95 17.38 21.95 11.92C21.95 9.27 20.92 6.78 19.05 4.91C17.18 3.04 14.69 2 12.04 2ZM12.04 20.15C10.56 20.15 9.11 19.76 7.85 19.01L7.55 18.83L4.43 19.65L5.26 16.61L5.06 16.29C4.24 14.99 3.81 13.47 3.81 11.91C3.81 7.37 7.5 3.69 12.04 3.69C14.24 3.69 16.31 4.55 17.86 6.11C19.42 7.66 20.27 9.73 20.27 11.92C20.28 16.46 16.58 20.15 12.04 20.15ZM16.57 14.36C16.32 14.23 15.11 13.64 14.88 13.56C14.66 13.48 14.49 13.44 14.33 13.69C14.16 13.94 13.69 14.5 13.55 14.67C13.4 14.83 13.26 14.85 13.01 14.73C12.76 14.6 11.97 14.34 11.03 13.51C10.29 12.86 9.79 12.05 9.65 11.8C9.5 11.55 9.63 11.42 9.76 11.3C9.87 11.18 10.01 11 10.14 10.86C10.26 10.71 10.3 10.61 10.38 10.44C10.46 10.27 10.42 10.13 10.36 10C10.3 9.87 9.8 8.65 9.59 8.15C9.39 7.66 9.18 7.73 9.03 7.72C8.89 7.71 8.72 7.71 8.55 7.71C8.38 7.71 8.11 7.77 7.88 8.02C7.65 8.27 7.01 8.87 7.01 10.09C7.01 11.31 7.9 12.48 8.02 12.65C8.15 12.82 9.77 15.31 12.24 16.38C12.83 16.63 13.28 16.78 13.64 16.9C14.23 17.08 14.77 17.06 15.2 16.99C15.68 16.92 16.67 16.39 16.88 15.8C17.08 15.22 17.08 14.73 17.02 14.62C16.96 14.51 16.82 14.48 16.57 14.36Z"/>
+              </svg>
+            </div>
+            <div class="pdp-whatsapp-content">
+              <div class="pdp-whatsapp-heading">{{ wa_title | escape }}</div>
+              <p class="pdp-whatsapp-text">
+                {{ wa_text | escape }}
+              </p>
+              <div class="pdp-whatsapp-actions">
+                <a 
+                  href="https://wa.me/{{ wa_phone }}?text={{ wa_msg | url_encode }}" 
+                  class="pdp-whatsapp-text-link" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  title="Chat with Us on WhatsApp"
+                >
+                  <span>Chat with Us on WhatsApp</span>
+                  <span class="pdp-whatsapp-arrow" aria-hidden="true">→</span>
+                </a>
+                <a 
+                  href="https://wa.me/{{ wa_phone }}?text={{ wa_msg | url_encode }}" 
+                  class="pdp-whatsapp-outline-btn" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  title="WhatsApp: {{ wa_display | escape }}"
+                >
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                    <path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91C2.13 13.66 2.59 15.36 3.45 16.86L2.05 22L7.3 20.62C8.75 21.41 10.38 21.83 12.04 21.83C17.5 21.83 21.95 17.38 21.95 11.92C21.95 9.27 20.92 6.78 19.05 4.91C17.18 3.04 14.69 2 12.04 2ZM12.04 20.15C10.56 20.15 9.11 19.76 7.85 19.01L7.55 18.83L4.43 19.65L5.26 16.61L5.06 16.29C4.24 14.99 3.81 13.47 3.81 11.91C3.81 7.37 7.5 3.69 12.04 3.69C14.24 3.69 16.31 4.55 17.86 6.11C19.42 7.66 20.27 9.73 20.27 11.92C20.28 16.46 16.58 20.15 12.04 20.15ZM16.57 14.36C16.32 14.23 15.11 13.64 14.88 13.56C14.66 13.48 14.49 13.44 14.33 13.69C14.16 13.94 13.69 14.5 13.55 14.67C13.4 14.83 13.26 14.85 13.01 14.73C12.76 14.6 11.97 14.34 11.03 13.51C10.29 12.86 9.79 12.05 9.65 11.8C9.5 11.55 9.63 11.42 9.76 11.3C9.87 11.18 10.01 11 10.14 10.86C10.26 10.71 10.3 10.61 10.38 10.44C10.46 10.27 10.42 10.13 10.36 10C10.3 9.87 9.8 8.65 9.59 8.15C9.39 7.66 9.18 7.73 9.03 7.72C8.89 7.71 8.72 7.71 8.55 7.71C8.38 7.71 8.11 7.77 7.88 8.02C7.65 8.27 7.01 8.87 7.01 10.09C7.01 11.31 7.9 12.48 8.02 12.65C8.15 12.82 9.77 15.31 12.24 16.38C12.83 16.63 13.28 16.78 13.64 16.9C14.23 17.08 14.77 17.06 15.2 16.99C15.68 16.92 16.67 16.39 16.88 15.8C17.08 15.22 17.08 14.73 17.02 14.62C16.96 14.51 16.82 14.48 16.57 14.36Z"/>
+                  </svg>
+                  <span>{{ wa_display | escape }}</span>
+                </a>
+              </div>
+            </div>
           </div>
         {%- endif -%}
 
@@ -2805,7 +4796,7 @@
                 <span class="lp-faq-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span>
               </button>
               <div class="lp-faq-answer" id="lpFaq-t5-{{ section.id }}">
-                <p>All orders arrive within 1–2 weeks. If your order arrives damaged, incorrect, or has another issue, please contact us with your order number and photos. We offer returns and exchanges within 30 days of delivery.</p>
+                <p>All orders arrive within 1–3 weeks (US domestic delivery takes 3–7 business days; overseas atelier delivery takes 7–12 business days). If your order arrives damaged, incorrect, or has another issue, please contact us with your order number and photos. We offer returns and exchanges within 30 days of delivery.</p>
               </div>
             </div>
 
@@ -2846,7 +4837,7 @@
                 <span class="lp-faq-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span>
               </button>
               <div class="lp-faq-answer" id="lpFaq-b4-{{ section.id }}">
-                <p>Orders arrive within 1–2 weeks. If you’re shopping for a gift or an upcoming gathering, contact us before ordering if you need help with timing.</p>
+                <p>Orders arrive within 1–3 weeks (US domestic delivery takes 3–7 business days; overseas atelier delivery takes 7–12 business days). If you’re shopping for a gift or an upcoming gathering, contact us before ordering if you need help with timing.</p>
               </div>
             </div>
 
@@ -2907,7 +4898,7 @@
                 <span class="lp-faq-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span>
               </button>
               <div class="lp-faq-answer" id="lpFaq-m5-{{ section.id }}">
-                <p>Orders arrive within 1–2 weeks. We offer returns and exchanges within 30 days of delivery. If your mat arrives damaged or incorrect, contact us with your order number and clear photos so we can help.</p>
+                <p>Orders arrive within 1–3 weeks (US domestic delivery takes 3–7 business days; overseas atelier delivery takes 7–12 business days). We offer returns and exchanges within 30 days of delivery. If your mat arrives damaged or incorrect, contact us with your order number and clear photos so we can help.</p>
               </div>
             </div>
 
@@ -2948,7 +4939,7 @@
                 <span class="lp-faq-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span>
               </button>
               <div class="lp-faq-answer" id="lpFaq-r4-{{ section.id }}">
-                <p>Orders arrive within 1–2 weeks. Shopping for a gift or an upcoming game night? Contact us before ordering if you need help with timing.</p>
+                <p>Orders arrive within 1–3 weeks (US domestic delivery takes 3–7 business days; overseas atelier delivery takes 7–12 business days). Shopping for a gift or an upcoming game night? Contact us before ordering if you need help with timing.</p>
               </div>
             </div>
 
@@ -2999,7 +4990,7 @@
                 <span class="lp-faq-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span>
               </button>
               <div class="lp-faq-answer" id="lpFaq-d4-{{ section.id }}">
-                <p>Orders arrive within 1–2 weeks. If you’re shopping for a gift or a planned gathering, contact us before ordering if you need help with timing.</p>
+                <p>Orders arrive within 1–3 weeks (US domestic delivery takes 3–7 business days; overseas atelier delivery takes 7–12 business days). If you’re shopping for a gift or a planned gathering, contact us before ordering if you need help with timing.</p>
               </div>
             </div>
 
@@ -3029,35 +5020,101 @@
   <!-- =========================================================================
        ENLARGED IMAGE VIEWER (CLEAN, AIRY & LIGHT MAISON BACKDROP)
        ========================================================================= -->
-  <div id="AtelierLightbox" role="dialog" aria-modal="true" onclick="if(!event.target.closest('#lbMainImg') && !event.target.closest('.lp-lb-controls-bar')) closeLightbox()">
-    <!-- SÂN KHẤU TRUNG TÂM -->
-    <div class="lp-lb-stage">
-      <img id="lbMainImg" src="{{ initial_media | image_url: width: 2400 }}" alt="{{ initial_media.alt | default: product.title | escape }}" class="lp-lb-img" width="{{ initial_media.width }}" height="{{ initial_media.height }}" loading="lazy" onclick="event.stopPropagation();" ondblclick="toggleLightboxZoom()">
+  <div id="AtelierLightbox" role="dialog" aria-modal="true" onclick="if(!event.target.closest('.lp-lb-card')) closeLightbox()">
+    <div class="lp-lb-card" onclick="event.stopPropagation();">
+      <!-- NÚT ĐÓNG (CLOSE ICON) - GẮN TRỰC TIẾP GÓC TRÊN CỦA ẢNH -->
+      <button 
+        type="button" 
+        class="lp-lb-close-btn" 
+        onclick="event.stopPropagation(); closeLightbox();" 
+        aria-label="Close image viewer" 
+        title="Close (Esc)"
+      >
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+
+      <!-- SÂN KHẤU CHỨA ẢNH SẮC NÉT -->
+      <div class="lp-lb-stage">
+        <img 
+          id="lbMainImg" 
+          src="{{ initial_media | image_url: width: 2400 }}" 
+          alt="{% render 'luxury-image-alt', image: initial_media, product: product, index: 1 %}" 
+          class="lp-lb-img" 
+          width="{{ initial_media.width }}" 
+          height="{{ initial_media.height }}" 
+          loading="eager" 
+          decoding="sync"
+          onclick="event.stopPropagation();" 
+          ondblclick="toggleLightboxZoom()"
+        >
+      </div>
+
+      <!-- THANH ĐIỀU HƯỚNG GẮN LIỀN NGAY DƯỚI ẢNH -->
+      <div class="lp-lb-footer">
+        <div class="lp-lb-controls-bar">
+          <button 
+            type="button" 
+            class="lp-lb-ctrl-btn prev" 
+            onclick="event.stopPropagation(); changeLightboxImage(-1);" 
+            aria-label="Previous image"
+            title="Previous image"
+          >
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 19l-7-7 7-7"/></svg>
+          </button>
+
+          <span class="lp-lb-counter" id="lbCounterBadge">01 / {{ product.media.size | default: 1 | prepend: '0' | slice: -2, 2 }}</span>
+
+          <button 
+            type="button" 
+            class="lp-lb-ctrl-btn next" 
+            onclick="event.stopPropagation(); changeLightboxImage(1);" 
+            aria-label="Next image"
+            title="Next image"
+          >
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg>
+          </button>
+        </div>
+      </div>
     </div>
+  </div>
 
-    <!-- COMPACT LUXURY BOTTOM CONTROLLER (Buttons next to counter) -->
-    <div class="lp-lb-footer" onclick="event.stopPropagation();">
-      <div class="lp-lb-controls-bar">
+  <!-- Mobile Luxury Sticky Product Bar -->
+  <div class="lp-mobile-sticky-bar" id="pdpMobileStickyBar-{{ section.id }}" aria-hidden="true">
+    <div class="lp-msb-inner">
+      <div class="lp-msb-left">
+        {%- if initial_media != blank -%}
+          <img 
+            id="pdpMsbThumb-{{ section.id }}"
+            src="{{ initial_media | image_url: width: 120 }}" 
+            alt="{{ product.title | escape }}"
+            class="lp-msb-thumb"
+            width="44"
+            height="44"
+            loading="lazy"
+          >
+        {%- endif -%}
+        <div class="lp-msb-info">
+          <div class="lp-msb-title">{{ product.title }}</div>
+          <div class="lp-msb-price" id="pdpMsbPrice-{{ section.id }}">{{ current_variant.price | money }}</div>
+        </div>
+      </div>
+      <div class="lp-msb-right">
         <button 
           type="button" 
-          class="lp-lb-ctrl-btn prev" 
-          onclick="event.stopPropagation(); changeLightboxImage(-1);" 
-          aria-label="Previous image"
-          title="Previous image"
+          class="lp-msb-btn" 
+          id="pdpMsbBtn-{{ section.id }}"
+          {% unless current_variant.available %}disabled{% endunless %}
         >
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 19l-7-7 7-7"/></svg>
-        </button>
-
-        <span class="lp-lb-counter" id="lbCounterBadge">01 / {{ product.media.size | default: 1 | prepend: '0' | slice: -2, 2 }}</span>
-
-        <button 
-          type="button" 
-          class="lp-lb-ctrl-btn next" 
-          onclick="event.stopPropagation(); changeLightboxImage(1);" 
-          aria-label="Next image"
-          title="Next image"
-        >
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg>
+          <span id="pdpMsbBtnText-{{ section.id }}">
+            {%- if current_variant.available -%}
+              ADD TO CART
+            {%- else -%}
+              SOLD OUT
+            {%- endif -%}
+          </span>
         </button>
       </div>
     </div>
@@ -3068,6 +5125,28 @@
      VANILLA JAVASCRIPT: STAGE, FILMSTRIP & LIGHTBOX CONTROLLER
      ========================================================================= -->
 <script>
+  window.handlePdpCustomPhotoSelect = function(input, sectionId) {
+    const content = document.getElementById('pdpPhotosContent-' + sectionId);
+    const selected = document.getElementById('pdpPhotosSelected-' + sectionId);
+    const filename = document.getElementById('pdpPhotosFilename-' + sectionId);
+    if (input.files && input.files[0]) {
+      if (content) content.style.display = 'none';
+      if (selected) selected.style.display = 'inline-flex';
+      if (filename) filename.textContent = '✓ ' + input.files[0].name;
+    }
+  };
+
+  window.removePdpCustomPhoto = function(sectionId) {
+    const input = document.getElementById('PdpCustomPhotos-' + sectionId);
+    const content = document.getElementById('pdpPhotosContent-' + sectionId);
+    const selected = document.getElementById('pdpPhotosSelected-' + sectionId);
+    const filename = document.getElementById('pdpPhotosFilename-' + sectionId);
+    if (input) input.value = '';
+    if (content) content.style.display = 'block';
+    if (selected) selected.style.display = 'none';
+    if (filename) filename.textContent = '';
+  };
+
   (function() {
     const sectionEl = document.getElementById('LuxuryProduct-{{ section.id }}') || document.getElementById('LuxuryMainProduct-{{ section.id }}');
     if (!sectionEl) return;
@@ -3103,7 +5182,26 @@
     // Helper: format 2-digit numbers
     const formatNumber = num => (num < 10 ? '0' + num : num);
 
-    // 1. Switch Stage Image with Silky Crossfade (0.25s)
+    // Helper: mathematically center thumbnail in track without causing vertical page jump
+    function scrollThumbIntoView(index) {
+      if (!thumbsTrack || !thumbItems[index]) return;
+      const targetThumb = thumbItems[index];
+      const trackRect = thumbsTrack.getBoundingClientRect();
+      const thumbRect = targetThumb.getBoundingClientRect();
+      
+      const currentScroll = thumbsTrack.scrollLeft;
+      const relativeOffset = thumbRect.left - trackRect.left;
+      const targetScroll = currentScroll + relativeOffset - (trackRect.width / 2) + (thumbRect.width / 2);
+      const maxScroll = Math.max(0, thumbsTrack.scrollWidth - thumbsTrack.clientWidth);
+      const clampedScroll = Math.max(0, Math.min(maxScroll, targetScroll));
+      
+      thumbsTrack.scrollTo({
+        left: clampedScroll,
+        behavior: 'smooth'
+      });
+    }
+
+    // 1. Switch Stage Image with Silky Crossfade (0.2s)
     function switchMainImage(index) {
       if (!mainImg || !thumbItems[index]) return;
       currentIndex = index;
@@ -3123,11 +5221,9 @@
       targetThumb.setAttribute('aria-selected', 'true');
 
       // Scroll thumbnail into view smoothly
-      if (thumbsTrack) {
-        targetThumb.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
-      }
+      scrollThumbIntoView(index);
 
-      // Silky Crossfade Transition on Main Stage (0.25s)
+      // Silky Crossfade Transition on Main Stage
       if (switchTimeout) clearTimeout(switchTimeout);
       mainImg.classList.add('is-switching');
       mainImg.classList.add('is-transitioning');
@@ -3143,7 +5239,7 @@
         mainImg.setAttribute('data-full-src', fullSrc);
         mainImg.classList.remove('is-switching');
         mainImg.classList.remove('is-transitioning');
-      }, 120);
+      }, 90);
 
       // Preload & Sync Lightbox Image & Text
       const lbImg = document.getElementById('lbMainImg');
@@ -3162,10 +5258,16 @@
       }
     }
 
+    let isTrackDown = false;
+    let trackStartX = 0;
+    let trackScrollLeft = 0;
+    let hasDraggedTrack = false;
+
     // Attach click events to thumbnails
     thumbItems.forEach((thumb, idx) => {
       thumb.addEventListener('click', (e) => {
         e.preventDefault();
+        if (hasDraggedTrack) return;
         switchMainImage(idx);
       });
     });
@@ -3177,6 +5279,7 @@
     if (thumbPrevBtn) {
       thumbPrevBtn.addEventListener('click', (e) => {
         e.preventDefault();
+        e.stopPropagation();
         let prevIdx = (currentIndex - 1 + totalMedia) % totalMedia;
         switchMainImage(prevIdx);
       });
@@ -3185,22 +5288,24 @@
     if (thumbNextBtn) {
       thumbNextBtn.addEventListener('click', (e) => {
         e.preventDefault();
+        e.stopPropagation();
         let nextIdx = (currentIndex + 1) % totalMedia;
         switchMainImage(nextIdx);
       });
     }
 
-    // Horizontal mouse wheel scrolling over thumbnail track
-    if (thumbsTrack) {
-      thumbsTrack.addEventListener('wheel', (e) => {
-        if (Math.abs(e.deltaY) > Math.abs(e.deltaX)) {
-          e.preventDefault();
-          thumbsTrack.scrollBy({ left: e.deltaY * 1.5, behavior: 'smooth' });
-        }
-      }, { passive: false });
-    }
+    // Horizontal mouse wheel & drag-to-scroll on thumbnail track
+    let dragRaf = 0, momentumRaf = 0, pendingLeft = 0, lastX = 0, lastT = 0, velocity = 0;
+    const stopMomentum = () => { cancelAnimationFrame(momentumRaf); momentumRaf = 0; };
+    if (thumbsTrack) thumbsTrack.addEventListener('wheel', (e) => { stopMomentum(); if (Math.abs(e.deltaY) <= Math.abs(e.deltaX)) return; const max = Math.max(0, thumbsTrack.scrollWidth - thumbsTrack.clientWidth); const cur = thumbsTrack.scrollLeft; if (max <= 0 || (e.deltaY < 0 && cur <= 0) || (e.deltaY > 0 && cur >= max)) return; e.preventDefault(); thumbsTrack.scrollLeft = Math.max(0, Math.min(max, cur + e.deltaY * 1.5)); }, { passive: false });
+  if (thumbsTrack) thumbsTrack.addEventListener('dragstart', (e) => e.preventDefault());
+if (thumbsTrack) thumbsTrack.addEventListener('pointerdown', (e) => { if (e.pointerType !== 'mouse' || e.button !== 0) return; stopMomentum(); thumbsTrack.scrollTo({ left: thumbsTrack.scrollLeft, behavior: 'auto' }); isTrackDown = true; hasDraggedTrack = false; trackStartX = e.clientX; trackScrollLeft = thumbsTrack.scrollLeft; lastX = e.clientX; lastT = performance.now(); velocity = 0; });
+window.addEventListener('pointermove', (e) => { if (!isTrackDown || e.pointerType !== 'mouse') return; const walk = e.clientX - trackStartX; if (!hasDraggedTrack) { if (Math.abs(walk) < 6) return; hasDraggedTrack = true; trackStartX = e.clientX; trackScrollLeft = thumbsTrack.scrollLeft; thumbsTrack.classList.add('is-dragging'); try { thumbsTrack.setPointerCapture(e.pointerId); } catch (err) {} return; } e.preventDefault(); const now = performance.now(); const dt = now - lastT; if (dt > 0) velocity = 0.75 * velocity + 0.25 * ((lastX - e.clientX) / dt); lastX = e.clientX; lastT = now; pendingLeft = trackScrollLeft - (e.clientX - trackStartX); if (!dragRaf) dragRaf = requestAnimationFrame(() => { dragRaf = 0; thumbsTrack.scrollLeft = pendingLeft; }); });
+const endTrackDrag = (e) => { if (!isTrackDown) return; isTrackDown = false; thumbsTrack.classList.remove('is-dragging'); try { thumbsTrack.releasePointerCapture(e.pointerId); } catch (err) {} if (!hasDraggedTrack) return; cancelAnimationFrame(dragRaf); dragRaf = 0; let v = (performance.now() - lastT < 80) ? velocity * 16 : 0; const max = Math.max(0, thumbsTrack.scrollWidth - thumbsTrack.clientWidth); if (Math.abs(v) > 0.6) { const step = () => { v *= 0.94; const next = thumbsTrack.scrollLeft + v; thumbsTrack.scrollLeft = Math.max(0, Math.min(max, next)); if (Math.abs(v) > 0.4 && next > 0 && next < max) momentumRaf = requestAnimationFrame(step); }; momentumRaf = requestAnimationFrame(step); } setTimeout(() => { hasDraggedTrack = false; }, 60); };
+window.addEventListener('pointerup', endTrackDrag);
+window.addEventListener('pointercancel', endTrackDrag);
 
-    // 2. Inspection Lightbox Operations
+// 2. Inspection Lightbox Operations
     function openLightbox() {
       const modal = document.getElementById('AtelierLightbox');
       if (!modal) return;
@@ -3277,10 +5382,139 @@
       }
     }
 
+    // Touch & Swipe gesture on Master Main Stage (Image 2 - Mobile & iPad)
+    let stageTouchStartX = 0;
+    let stageTouchStartY = 0;
+    let stageTouchEndX = 0;
+    let stageTouchEndY = 0;
+    let isStageTouching = false;
+    let stageSwipeOccurred = false;
+
     if (mainStage) {
+      mainStage.addEventListener('touchstart', (e) => {
+        if (!e.touches || e.touches.length === 0) return;
+        isStageTouching = true;
+        stageSwipeOccurred = false;
+        stageTouchStartX = e.touches[0].clientX;
+        stageTouchStartY = e.touches[0].clientY;
+        stageTouchEndX = stageTouchStartX;
+        stageTouchEndY = stageTouchStartY;
+      }, { passive: true });
+
+      mainStage.addEventListener('touchmove', (e) => {
+        if (!isStageTouching || !e.touches || e.touches.length === 0) return;
+        stageTouchEndX = e.touches[0].clientX;
+        stageTouchEndY = e.touches[0].clientY;
+        const diffX = stageTouchStartX - stageTouchEndX;
+        const diffY = stageTouchStartY - stageTouchEndY;
+        if (Math.abs(diffX) > 12 && Math.abs(diffX) > Math.abs(diffY)) {
+          stageSwipeOccurred = true;
+        }
+      }, { passive: true });
+
+      const handleStageSwipeEnd = () => {
+        if (!isStageTouching) return;
+        isStageTouching = false;
+        const diffX = stageTouchStartX - stageTouchEndX;
+        const diffY = stageTouchStartY - stageTouchEndY;
+        if (Math.abs(diffX) > 35 && Math.abs(diffX) > Math.abs(diffY)) {
+          stageSwipeOccurred = true;
+          if (diffX > 0) {
+            let nextIdx = (currentIndex + 1) % totalMedia;
+            switchMainImage(nextIdx);
+          } else {
+            let prevIdx = (currentIndex - 1 + totalMedia) % totalMedia;
+            switchMainImage(prevIdx);
+          }
+        }
+        setTimeout(() => { stageSwipeOccurred = false; }, 80);
+      };
+
+      mainStage.addEventListener('touchend', (e) => {
+        if (e.changedTouches && e.changedTouches.length > 0) {
+          stageTouchEndX = e.changedTouches[0].clientX;
+          stageTouchEndY = e.changedTouches[0].clientY;
+        }
+        handleStageSwipeEnd();
+      }, { passive: true });
+
+      mainStage.addEventListener('touchcancel', handleStageSwipeEnd, { passive: true });
+
+      // Mouse drag-to-swipe on Desktop & iPad trackpad
+      let stageMouseDown = false;
+      let stageMouseStartX = 0;
+      let stageMouseStartY = 0;
+
+      mainStage.addEventListener('mousedown', (e) => {
+        if (e.button !== 0) return;
+        stageMouseDown = true;
+        stageSwipeOccurred = false;
+        stageMouseStartX = e.clientX;
+        stageMouseStartY = e.clientY;
+      });
+
+      window.addEventListener('mouseup', (e) => {
+        if (!stageMouseDown) return;
+        stageMouseDown = false;
+        const diffX = stageMouseStartX - e.clientX;
+        const diffY = stageMouseStartY - e.clientY;
+        if (Math.abs(diffX) > 40 && Math.abs(diffX) > Math.abs(diffY)) {
+          stageSwipeOccurred = true;
+          if (diffX > 0) {
+            let nextIdx = (currentIndex + 1) % totalMedia;
+            switchMainImage(nextIdx);
+          } else {
+            let prevIdx = (currentIndex - 1 + totalMedia) % totalMedia;
+            switchMainImage(prevIdx);
+          }
+        }
+        setTimeout(() => { stageSwipeOccurred = false; }, 80);
+      });
+
+      // Click handler: only open lightbox if user did NOT swipe/drag
       mainStage.addEventListener('click', (e) => {
+        if (stageSwipeOccurred) {
+          e.preventDefault();
+          e.stopPropagation();
+          return;
+        }
         openLightbox();
       });
+    }
+
+    // Touch swipe support in full-screen Lightbox modal
+    const lightboxModalEl = document.getElementById('AtelierLightbox') || lbModal;
+    if (lightboxModalEl) {
+      let lbTouchStartX = 0;
+      let lbTouchStartY = 0;
+      let lbTouchEndX = 0;
+      let lbTouchEndY = 0;
+
+      lightboxModalEl.addEventListener('touchstart', (e) => {
+        if (!e.touches || e.touches.length === 0) return;
+        lbTouchStartX = e.touches[0].clientX;
+        lbTouchStartY = e.touches[0].clientY;
+        lbTouchEndX = lbTouchStartX;
+        lbTouchEndY = lbTouchStartY;
+      }, { passive: true });
+
+      lightboxModalEl.addEventListener('touchmove', (e) => {
+        if (!e.touches || e.touches.length === 0) return;
+        lbTouchEndX = e.touches[0].clientX;
+        lbTouchEndY = e.touches[0].clientY;
+      }, { passive: true });
+
+      lightboxModalEl.addEventListener('touchend', () => {
+        const diffX = lbTouchStartX - lbTouchEndX;
+        const diffY = lbTouchStartY - lbTouchEndY;
+        if (Math.abs(diffX) > 40 && Math.abs(diffX) > Math.abs(diffY)) {
+          if (diffX > 0) {
+            changeLightboxImage(1);
+          } else {
+            changeLightboxImage(-1);
+          }
+        }
+      }, { passive: true });
     }
 
     if (zoomTrigger) {
@@ -3298,6 +5532,56 @@
     const comparePriceEl = document.getElementById('pdpComparePrice-{{ section.id }}');
     const addBtn = document.getElementById('pdpAddBtn-{{ section.id }}');
     const addBtnText = document.getElementById('pdpAddBtnText-{{ section.id }}');
+    const pdpForm = document.getElementById('PdpForm-{{ section.id }}');
+    const qtyWrapper = sectionEl.querySelector('.pdp-qty-wrapper');
+    const qtyInput = document.getElementById('pdpQtyInput-{{ section.id }}');
+    const minusBtn = document.getElementById('pdpQtyMinus-{{ section.id }}');
+    const plusBtn = document.getElementById('pdpQtyPlus-{{ section.id }}');
+
+    function isCurrentVariantAvailable() {
+      if (qtyWrapper && qtyWrapper.classList.contains('is-disabled')) return false;
+      if (addBtn && addBtn.disabled && addBtnText && addBtnText.textContent.trim() === 'SOLD OUT') return false;
+      return true;
+    }
+
+    function updatePdpQty(newVal) {
+      if (!qtyInput) return;
+      const isAvailable = isCurrentVariantAvailable();
+      let val = parseInt(newVal, 10);
+      if (isNaN(val) || val < 1) val = 1;
+      if (val > 99) val = 99;
+      qtyInput.value = val;
+      qtyInput.setAttribute('value', val);
+
+      if (minusBtn) {
+        const isMin = (!isAvailable) || (val <= 1);
+        minusBtn.disabled = isMin;
+        minusBtn.classList.toggle('is-disabled', isMin);
+        if (isMin) {
+          minusBtn.setAttribute('aria-disabled', 'true');
+        } else {
+          minusBtn.removeAttribute('aria-disabled');
+        }
+      }
+
+      if (plusBtn) {
+        const isMax = (!isAvailable) || (val >= 99);
+        plusBtn.disabled = isMax;
+        plusBtn.classList.toggle('is-disabled', isMax);
+        if (isMax) {
+          plusBtn.setAttribute('aria-disabled', 'true');
+        } else {
+          plusBtn.removeAttribute('aria-disabled');
+        }
+      }
+
+      // Sync bundle selection if active
+      const bundleCardList = sectionEl.querySelectorAll('.pdp-bundle-card');
+      bundleCardList.forEach(c => {
+        const bQty = parseInt(c.getAttribute('data-bundle-qty') || '1', 10);
+        c.classList.toggle('is-selected', bQty === val);
+      });
+    }
 
     // Helper: format money text without innerHTML re-render (Prevents layout shift and font flicker)
     const moneyFormatString = {{ shop.money_format | json }};
@@ -3352,6 +5636,14 @@
           // Refactor variant change: Pure DOM textContent mutation (Zero innerHTML / Zero layout flicker)
           if (priceEl && matchedVariant.price !== undefined) {
             priceEl.textContent = formatMoneyText(matchedVariant.price);
+        var msbPrice = document.getElementById('pdpMsbPrice-{{ section.id }}');
+        if (msbPrice) msbPrice.textContent = formatMoneyText(matchedVariant.price);
+        var msbBtn = document.getElementById('pdpMsbBtn-{{ section.id }}');
+        var msbBtnText = document.getElementById('pdpMsbBtnText-{{ section.id }}');
+        if (msbBtn) {
+          msbBtn.disabled = !matchedVariant.available;
+          if (msbBtnText) msbBtnText.textContent = matchedVariant.available ? 'ADD TO CART' : 'SOLD OUT';
+        }
             if (matchedVariant.price <= 0) {
               priceEl.classList.add('is-inquiry-price');
             } else {
@@ -3368,6 +5660,8 @@
               comparePriceEl.style.display = 'none';
             }
           }
+
+
 
           // Update bundle card prices if bundle exists
           const bundleCards = sectionEl.querySelectorAll('.pdp-bundle-card');
@@ -3388,14 +5682,24 @@
             });
           }
 
-          // Stock button state
+          // Stock button & quantity stepper state
+          const qtyWrapper = sectionEl.querySelector('.pdp-qty-wrapper');
           if (addBtn && addBtnText) {
             if (!matchedVariant.available) {
               addBtn.disabled = true;
               addBtnText.textContent = 'SOLD OUT';
+              if (qtyWrapper) qtyWrapper.classList.add('is-disabled');
+              if (qtyInput) qtyInput.disabled = true;
+              if (minusBtn) { minusBtn.disabled = true; minusBtn.classList.add('is-disabled'); }
+              if (plusBtn) { plusBtn.disabled = true; plusBtn.classList.add('is-disabled'); }
             } else {
               addBtn.disabled = false;
               addBtnText.textContent = 'ADD TO CART';
+              if (qtyWrapper) qtyWrapper.classList.remove('is-disabled');
+              if (qtyInput) qtyInput.disabled = false;
+              if (typeof updatePdpQty === 'function') {
+                updatePdpQty(qtyInput ? qtyInput.value : 1);
+              }
             }
           }
 
@@ -3429,15 +5733,235 @@
       btn.addEventListener('click', () => onOptionClick(btn));
     });
 
-    // Bundle Card selection interaction
-    // Bundle Card selection interaction
+    // Quantity Stepper Event Listeners & Keyboard Controls
+    if (minusBtn && qtyInput) {
+      minusBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        if (minusBtn.disabled || minusBtn.classList.contains('is-disabled') || !isCurrentVariantAvailable()) return;
+        const current = parseInt(qtyInput.value, 10) || 1;
+        if (current > 1) {
+          updatePdpQty(current - 1);
+        }
+      });
+    }
+
+    if (plusBtn && qtyInput) {
+      plusBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        if (plusBtn.disabled || plusBtn.classList.contains('is-disabled') || !isCurrentVariantAvailable()) return;
+        const current = parseInt(qtyInput.value, 10) || 1;
+        if (current < 99) {
+          updatePdpQty(current + 1);
+        }
+      });
+    }
+
+    if (qtyInput) {
+      qtyInput.addEventListener('input', function() {
+        this.value = this.value.replace(/[^0-9]/g, '');
+        if (this.value !== '') {
+          let raw = parseInt(this.value, 10);
+          if (!isNaN(raw)) {
+            if (raw > 99) {
+              raw = 99;
+              this.value = '99';
+            }
+            if (minusBtn) {
+              const isMin = (!isCurrentVariantAvailable()) || (raw <= 1);
+              minusBtn.disabled = isMin;
+              minusBtn.classList.toggle('is-disabled', isMin);
+            }
+            if (plusBtn) {
+              const isMax = (!isCurrentVariantAvailable()) || (raw >= 99);
+              plusBtn.disabled = isMax;
+              plusBtn.classList.toggle('is-disabled', isMax);
+            }
+            // Sync bundle selection
+            const bundleCardList = sectionEl.querySelectorAll('.pdp-bundle-card');
+            bundleCardList.forEach(c => {
+              const bQty = parseInt(c.getAttribute('data-bundle-qty') || '1', 10);
+              c.classList.toggle('is-selected', bQty === raw);
+            });
+          }
+        }
+      });
+
+      qtyInput.addEventListener('change', function() {
+        updatePdpQty(this.value);
+      });
+
+      qtyInput.addEventListener('blur', function() {
+        updatePdpQty(this.value);
+      });
+
+      qtyInput.addEventListener('keydown', function(e) {
+        if (e.key === 'ArrowUp') {
+          e.preventDefault();
+          updatePdpQty((parseInt(qtyInput.value, 10) || 1) + 1);
+        } else if (e.key === 'ArrowDown') {
+          e.preventDefault();
+          updatePdpQty((parseInt(qtyInput.value, 10) || 1) - 1);
+        } else if (e.key === 'Enter') {
+          e.preventDefault();
+          updatePdpQty(this.value);
+          if (pdpForm) {
+            if (typeof pdpForm.requestSubmit === 'function') {
+              pdpForm.requestSubmit();
+            } else {
+              pdpForm.dispatchEvent(new Event('submit', { cancelable: true, bubbles: true }));
+            }
+          }
+        }
+      });
+    }
+
+    // Initialize stepper button states
+    updatePdpQty(qtyInput ? qtyInput.value : 1);
+
+    // Bundle Card selection interaction (sync with quantity)
     const bundleCardList = sectionEl.querySelectorAll('.pdp-bundle-card');
     bundleCardList.forEach(bCard => {
       bCard.addEventListener('click', () => {
         bundleCardList.forEach(c => c.classList.remove('is-selected'));
         bCard.classList.add('is-selected');
+        const bQty = parseInt(bCard.getAttribute('data-bundle-qty') || '1', 10);
+        updatePdpQty(bQty);
       });
     });
+
+    // Seamless AJAX Add to Cart & Cart Drawer Sync
+    if (pdpForm) {
+      pdpForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        if (addBtn.disabled || addBtn.classList.contains('is-adding') || !isCurrentVariantAvailable()) return;
+        if (typeof pdpForm.reportValidity === 'function' && !pdpForm.reportValidity()) return;
+
+        const cartDrawer = document.querySelector('cart-drawer');
+        const selectedQty = Math.max(1, Math.min(99, parseInt(qtyInput ? qtyInput.value : '1', 10) || 1));
+        const originalText = addBtnText ? addBtnText.textContent : 'ADD TO CART';
+
+        addBtn.disabled = true;
+        addBtn.classList.add('is-adding');
+        if (addBtnText) addBtnText.textContent = 'ADDING...';
+
+        const formData = new FormData(pdpForm);
+        formData.set('quantity', selectedQty);
+
+        // Prune empty properties to avoid blank line item properties in cart
+        pdpForm.querySelectorAll('[name^="properties"]').forEach(function(propInput) {
+          if (propInput.type === 'file') {
+            if (!propInput.files || propInput.files.length === 0 || (propInput.files[0] && propInput.files[0].size === 0)) {
+              formData.delete(propInput.name);
+            }
+          } else if (!propInput.value || !propInput.value.trim()) {
+            formData.delete(propInput.name);
+          }
+        });
+
+        if (cartDrawer) {
+          const sectionsToRender = typeof cartDrawer.getSectionsToRender === 'function'
+            ? cartDrawer.getSectionsToRender().map(s => s.id)
+            : ['cart-drawer', 'cart-icon-bubble'];
+
+          formData.append('sections', sectionsToRender.join(','));
+          formData.append('sections_url', window.location.pathname);
+          if (typeof cartDrawer.setActiveElement === 'function') {
+            cartDrawer.setActiveElement(document.activeElement || addBtn);
+          }
+        }
+
+        const addUrl = (window.routes && window.routes.cart_add_url)
+          ? (window.routes.cart_add_url.endsWith('.js') ? window.routes.cart_add_url : window.routes.cart_add_url + '.js')
+          : '/cart/add.js';
+
+        fetch(addUrl, {
+          method: 'POST',
+          headers: {
+            'X-Requested-With': 'XMLHttpRequest',
+            'Accept': 'application/json'
+          },
+          body: formData
+        })
+        .then(function(res) {
+          return res.json().then(function(data) {
+            if (!res.ok || data.status) {
+              throw data;
+            }
+            return data;
+          });
+        })
+        .then(function(data) {
+          if (addBtnText) {
+            addBtnText.textContent = selectedQty > 1 ? `ADDED (${selectedQty}) ✓` : 'ADDED ✓';
+          }
+
+          // Reset quantity stepper back to 1 for clean subsequent additions
+          updatePdpQty(1);
+
+          // Update cart drawer contents & open drawer
+          if (cartDrawer) {
+            cartDrawer.classList.remove('is-empty');
+            const drawerInner = cartDrawer.querySelector('.drawer__inner');
+            if (drawerInner) drawerInner.classList.remove('is-empty');
+            const drawerItems = cartDrawer.querySelector('cart-drawer-items');
+            if (drawerItems) drawerItems.classList.remove('is-empty');
+
+            if (typeof cartDrawer.renderContents === 'function' && data.sections) {
+              cartDrawer.renderContents(data);
+              cartDrawer.classList.remove('is-empty');
+            } else if (typeof cartDrawer.open === 'function') {
+              cartDrawer.open();
+            }
+          }
+
+          // Publish standard Dawn cart events
+          if (typeof publish === 'function' && typeof PUB_SUB_EVENTS !== 'undefined' && PUB_SUB_EVENTS.cartUpdate) {
+            publish(PUB_SUB_EVENTS.cartUpdate, {
+              source: 'luxury-product-form',
+              productVariantId: formData.get('id'),
+              cartData: data
+            });
+          }
+
+          // Refresh header cart count bubble
+          fetch('/cart.js')
+            .then(function(r) { return r.json(); })
+            .then(function(cart) {
+              const bubbles = document.querySelectorAll('.cart-count-bubble, [data-cart-count], .header__cart-count, #cart-icon-bubble .cart-count-bubble');
+              bubbles.forEach(function(b) {
+                const countSpan = b.querySelector('[aria-hidden="true"]') || b;
+                if (countSpan) countSpan.textContent = cart.item_count;
+                b.classList.remove('hidden');
+                b.style.display = cart.item_count > 0 ? '' : 'none';
+              });
+            })
+            .catch(function(e) { console.warn('Cart bubble update error:', e); });
+
+          // Dispatch standard Shopify cart events
+          document.documentElement.dispatchEvent(new CustomEvent('cart:item-added', { detail: data }));
+          document.body.dispatchEvent(new CustomEvent('cart:refresh'));
+        })
+        .catch(function(err) {
+          console.error('Pdp Add to Cart error:', err);
+          const errorMsg = (err && (err.description || err.message)) ? (err.description || err.message) : null;
+          if (addBtnText) addBtnText.textContent = 'TRY AGAIN';
+          if (errorMsg && !errorMsg.includes('Unexpected token') && !errorMsg.includes('JSON')) {
+            alert(errorMsg);
+          }
+        })
+        .finally(function() {
+          setTimeout(function() {
+            addBtn.disabled = !isCurrentVariantAvailable();
+            addBtn.classList.remove('is-adding');
+            if (addBtnText) {
+              addBtnText.textContent = isCurrentVariantAvailable() ? originalText : 'SOLD OUT';
+            }
+          }, 1800);
+        });
+      });
+    }
 
     // Accordion toggle handlers (Right Column & Full Q&A)
     const accTriggers = sectionEl.querySelectorAll('.pdp-acc-trigger, .lp-faq-trigger');
@@ -3452,9 +5976,35 @@
       });
     });
 
-    // Judge.me rating click handler -> smooth scroll down to reviews widget
+    // Judge.me rating click handler & dynamic 0-review hiding
     const judgemeRating = document.getElementById('pdpJudgemeRating-{{ section.id }}');
     if (judgemeRating) {
+      function checkReviewCount() {
+        const badge = judgemeRating.querySelector('.jdgm-prev-badge, .jdgm-preview-badge');
+        const badgeText = judgemeRating.querySelector('.jdgm-prev-badge__text');
+        const numReviews = badge ? badge.getAttribute('data-number-of-reviews') : null;
+        const textContent = badgeText ? badgeText.textContent.trim().toLowerCase() : '';
+
+        // If explicitly 0 reviews, or contains 'no review' / '0 review', hide badge
+        if (
+          numReviews === '0' ||
+          textContent.includes('no review') ||
+          textContent.startsWith('0 review') ||
+          textContent === '0'
+        ) {
+          judgemeRating.style.setProperty('display', 'none', 'important');
+        } else if (numReviews && parseInt(numReviews, 10) > 0) {
+          judgemeRating.style.removeProperty('display');
+        }
+      }
+
+      checkReviewCount();
+      // Observe Judge.me async loading/hydration
+      const observer = new MutationObserver(() => {
+        checkReviewCount();
+      });
+      observer.observe(judgemeRating, { childList: true, subtree: true, attributes: true, characterData: true });
+
       judgemeRating.addEventListener('click', () => {
         const reviewWidget = document.querySelector('.jdgm-review-widget, #judgeme_product_reviews, [data-from-snippet="true"]');
         if (reviewWidget) {
@@ -3463,26 +6013,42 @@
       });
     }
 
-    // Delivery Estimator & Shipping Schedule Popover Handler
+    // Delivery Estimator & Shipping Schedule Popover Handler (Accurate calendar logic based on Today)
     (function initDeliveryEstimator() {
-      const now = new Date();
+      const today = new Date();
+
+      function addDays(base, days) {
+        const d = new Date(base.getFullYear(), base.getMonth(), base.getDate() + days);
+        return d;
+      }
+
+      function formatSingle(d, showFullMonth) {
+        const month = d.toLocaleString('en-US', { month: showFullMonth ? 'long' : 'short' });
+        return `${month} ${d.getDate()}`;
+      }
+
       function formatRange(d1, d2) {
-        const m1 = d1.toLocaleString('en-US', { month: 'long' });
+        const m1 = d1.toLocaleString('en-US', { month: 'short' });
+        const m2 = d2.toLocaleString('en-US', { month: 'short' });
         const day1 = d1.getDate();
-        const m2 = d2.toLocaleString('en-US', { month: 'long' });
         const day2 = d2.getDate();
-        return (m1 === m2) ? `${m1} ${day1}-${day2}` : `${m1} ${day1} - ${m2} ${day2}`;
-      }
-      function formatSingle(d) {
-        return `${d.toLocaleString('en-US', { month: 'long' })} ${d.getDate()}`;
+        if (m1 === m2) {
+          return `${m1} ${day1}–${day2}`;
+        } else {
+          return `${m1} ${day1} – ${m2} ${day2}`;
+        }
       }
 
-      const ship1 = new Date(now); ship1.setDate(now.getDate() + 1);
-      const ship2 = new Date(now); ship2.setDate(now.getDate() + 2);
-      const del1 = new Date(now); del1.setDate(now.getDate() + 7);
-      const del2 = new Date(now); del2.setDate(now.getDate() + 10);
+      // Base Date: Today (Day 0)
+      const placedDate = today;
+      // Ships: Day 0 + 1 to Day 0 + 2 (1–2 days processing)
+      const ship1 = addDays(today, 1);
+      const ship2 = addDays(today, 2);
+      // Delivered: Day 0 + 10 to Day 0 + 15 (1–3 weeks delivery window)
+      const del1 = addDays(today, 10);
+      const del2 = addDays(today, 15);
 
-      const placedStr = formatSingle(now);
+      const placedStr = `Today, ${formatSingle(placedDate, false)}`;
       const shipsStr = formatRange(ship1, ship2);
       const delStr = formatRange(del1, del2);
 
@@ -3491,24 +6057,60 @@
       const shipsDateEl = document.getElementById('pdpShipsDate-{{ section.id }}');
       const delDateEl = document.getElementById('pdpDeliveredDate-{{ section.id }}');
 
-      if (mainDelDate) mainDelDate.textContent = delStr;
-      if (placedDateEl) placedDateEl.textContent = placedStr;
-      if (shipsDateEl) shipsDateEl.textContent = shipsStr;
-      if (delDateEl) delDateEl.textContent = delStr;
+      function refreshDates() {
+        const liveNow = new Date();
+        const liveShip1 = addDays(liveNow, 1);
+        const liveShip2 = addDays(liveNow, 2);
+        const liveDel1 = addDays(liveNow, 10);
+        const liveDel2 = addDays(liveNow, 15);
+
+        const livePlaced = `Today, ${formatSingle(liveNow, false)}`;
+        const liveShips = formatRange(liveShip1, liveShip2);
+        const liveDel = formatRange(liveDel1, liveDel2);
+
+        if (mainDelDate) mainDelDate.textContent = liveDel;
+        if (placedDateEl) placedDateEl.textContent = livePlaced;
+        if (shipsDateEl) shipsDateEl.textContent = liveShips;
+        if (delDateEl) delDateEl.textContent = liveDel;
+      }
+
+      refreshDates();
 
       // Delivery Method Popover Toggle
       const scheduleTrigger = document.getElementById('pdpScheduleTrigger-{{ section.id }}');
       const deliveryPopover = document.getElementById('pdpDeliveryPopover-{{ section.id }}');
       const deliveryCloseBtn = document.getElementById('pdpDeliveryClose-{{ section.id }}');
 
+      function clampDeliveryPopoverPosition() {
+        if (!deliveryPopover || deliveryPopover.hasAttribute('hidden')) return;
+        deliveryPopover.style.right = '0px';
+        deliveryPopover.style.left = 'auto';
+
+        const rect = deliveryPopover.getBoundingClientRect();
+        const padding = 12;
+
+        if (rect.right > window.innerWidth - padding) {
+          const shift = rect.right - (window.innerWidth - padding);
+          deliveryPopover.style.right = `${shift}px`;
+        }
+
+        const newRect = deliveryPopover.getBoundingClientRect();
+        if (newRect.left < padding) {
+          const shiftLeft = padding - newRect.left;
+          deliveryPopover.style.right = `-${shiftLeft}px`;
+        }
+      }
+
       function toggleDeliveryPopover(show) {
         if (!deliveryPopover || !scheduleTrigger) return;
         const isHidden = deliveryPopover.hasAttribute('hidden');
         const willShow = show !== undefined ? show : isHidden;
         if (willShow) {
+          refreshDates();
           deliveryPopover.removeAttribute('hidden');
           scheduleTrigger.setAttribute('aria-expanded', 'true');
           toggleCountryPopover(false);
+          clampDeliveryPopoverPosition();
         } else {
           deliveryPopover.setAttribute('hidden', 'true');
           scheduleTrigger.setAttribute('aria-expanded', 'false');
@@ -3529,13 +6131,33 @@
         });
       }
 
-      // Country Selection Popover Toggle
+      // Country Selection Popover Toggle (Synchronized with Header Luxury Dropdown)
       const countryTrigger = document.getElementById('pdpCountryTrigger-{{ section.id }}');
       const countryPopover = document.getElementById('pdpCountryPopover-{{ section.id }}');
       const countryCloseBtn = document.getElementById('pdpCountryClose-{{ section.id }}');
       const countrySearch = document.getElementById('pdpCountrySearch-{{ section.id }}');
       const countryForm = document.getElementById('PdpDeliveryCountryForm');
-      const countryInput = document.getElementById('PdpDeliveryCountryInput');
+      const countryInput = document.getElementById('PdpDeliveryCountryInput-{{ section.id }}') || document.getElementById('PdpDeliveryCountryInput');
+
+      function clampCountryPopoverPosition() {
+        if (!countryPopover || countryPopover.hasAttribute('hidden')) return;
+        countryPopover.style.right = '0px';
+        countryPopover.style.left = 'auto';
+
+        const rect = countryPopover.getBoundingClientRect();
+        const padding = 12;
+
+        if (rect.right > window.innerWidth - padding) {
+          const shift = rect.right - (window.innerWidth - padding);
+          countryPopover.style.right = `${shift}px`;
+        }
+
+        const newRect = countryPopover.getBoundingClientRect();
+        if (newRect.left < padding) {
+          const shiftLeft = padding - newRect.left;
+          countryPopover.style.right = `-${shiftLeft}px`;
+        }
+      }
 
       function toggleCountryPopover(show) {
         if (!countryPopover || !countryTrigger) return;
@@ -3545,14 +6167,23 @@
           countryPopover.removeAttribute('hidden');
           countryTrigger.setAttribute('aria-expanded', 'true');
           toggleDeliveryPopover(false);
+          clampCountryPopoverPosition();
           if (countrySearch) {
-            setTimeout(() => countrySearch.focus(), 60);
+            setTimeout(() => {
+              countrySearch.focus();
+              clampCountryPopoverPosition();
+            }, 60);
           }
         } else {
           countryPopover.setAttribute('hidden', 'true');
           countryTrigger.setAttribute('aria-expanded', 'false');
         }
       }
+
+      window.addEventListener('resize', () => {
+        clampCountryPopoverPosition();
+        clampDeliveryPopoverPosition();
+      });
 
       if (countryTrigger) {
         countryTrigger.addEventListener('click', (e) => {
@@ -3571,17 +6202,22 @@
       if (countrySearch) {
         countrySearch.addEventListener('input', () => {
           const q = countrySearch.value.toLowerCase().trim();
-          const items = countryPopover.querySelectorAll('.pdp-country-select-item');
-          items.forEach(item => {
-            const txt = item.textContent.toLowerCase();
-            const li = item.closest('li');
-            if (li) li.style.display = txt.includes(q) ? '' : 'none';
+          const items = countryPopover.querySelectorAll('.pdp-curr-option-item, li');
+          items.forEach(li => {
+            const txt = li.textContent.toLowerCase();
+            li.style.display = txt.includes(q) ? '' : 'none';
           });
+        });
+        countrySearch.addEventListener('click', (e) => {
+          e.stopPropagation();
         });
       }
 
       if (countryPopover) {
-        const countryItems = countryPopover.querySelectorAll('.pdp-country-select-item');
+        countryPopover.addEventListener('click', (e) => {
+          e.stopPropagation();
+        });
+        const countryItems = countryPopover.querySelectorAll('.pdp-country-select-item, .pdp-curr-select-btn');
         countryItems.forEach(item => {
           item.addEventListener('click', (e) => {
             e.preventDefault();
@@ -3602,6 +6238,51 @@
           toggleCountryPopover(false);
         }
       });
+    })();
+
+
+    // =========================================================================
+    // MOBILE STICKY BAR OBSERVER & DELEGATION
+    // =========================================================================
+    (function initMobileStickyBar() {
+      var bar = document.getElementById('pdpMobileStickyBar-{{ section.id }}');
+      var addBtn = document.getElementById('pdpAddBtn-{{ section.id }}');
+      var msbBtn = document.getElementById('pdpMsbBtn-{{ section.id }}');
+      if (!bar || !addBtn) return;
+
+      if (msbBtn) {
+        msbBtn.addEventListener('click', function(e) {
+          e.preventDefault();
+          if (addBtn.disabled) return;
+          addBtn.click();
+        });
+      }
+
+      if ('IntersectionObserver' in window) {
+        var observer = new IntersectionObserver(function(entries) {
+          entries.forEach(function(entry) {
+            if (!entry.isIntersecting && entry.boundingClientRect.top < 0) {
+              bar.classList.add('is-visible');
+              bar.setAttribute('aria-hidden', 'false');
+            } else {
+              bar.classList.remove('is-visible');
+              bar.setAttribute('aria-hidden', 'true');
+            }
+          });
+        }, { threshold: 0 });
+        observer.observe(addBtn);
+      } else {
+        window.addEventListener('scroll', function() {
+          var rect = addBtn.getBoundingClientRect();
+          if (rect.bottom < 0) {
+            bar.classList.add('is-visible');
+            bar.setAttribute('aria-hidden', 'false');
+          } else {
+            bar.classList.remove('is-visible');
+            bar.setAttribute('aria-hidden', 'true');
+          }
+        }, { passive: true });
+      }
     })();
 
   })();
@@ -3692,12 +6373,205 @@
       "type": "text",
       "id": "guarantee_3",
       "label": "Guarantee 3 Text",
-      "default": "Free U.S. shipping"
+      "default": "Free Worldwide Shipping"
     },
     {
       "type": "image_picker",
       "id": "payment_image",
       "label": "Custom Payment Methods Image"
+    },
+    {
+      "type": "header",
+      "content": "Add These to Your Order"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_add_to_order",
+      "label": "Enable 'Add These to Your Order'",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "add_to_order_only_mahjong_sets",
+      "label": "Only show on Mahjong Set products",
+      "default": true,
+      "info": "When enabled, this carousel only appears on Mahjong Set products."
+    },
+    {
+      "type": "text",
+      "id": "add_to_order_heading",
+      "label": "Heading",
+      "default": "Add These to Your Order"
+    },
+    {
+      "type": "text",
+      "id": "add_to_order_subheading",
+      "label": "Subheading",
+      "default": "Choose any. Each one is 10% off."
+    },
+    {
+      "type": "range",
+      "id": "add_to_order_discount",
+      "label": "Discount Percentage",
+      "min": 0,
+      "max": 50,
+      "step": 5,
+      "default": 10,
+      "unit": "%"
+    },
+    {
+      "type": "product_list",
+      "id": "add_to_order_products",
+      "label": "Select Add-on Products",
+      "limit": 10,
+      "info": "Choose products to display in the Add These to Your Order carousel. If left empty, default Mahjiva essentials (dice, carrying bags) will be shown."
+    },
+    {
+      "type": "text",
+      "id": "add_to_order_button_text",
+      "label": "Button Label",
+      "default": "Add & Save"
+    },
+    {
+      "type": "color",
+      "id": "add_to_order_button_color",
+      "label": "Button Color",
+      "default": "#163327"
+    },
+    {
+      "type": "color",
+      "id": "add_to_order_card_bg",
+      "label": "Container Background Color",
+      "default": "#FAF8F5"
+    },
+    {
+      "type": "header",
+      "content": "WhatsApp Atelier Concierge"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_whatsapp_concierge",
+      "label": "Show WhatsApp Concierge Box",
+      "default": true,
+      "info": "Displays the dashed WhatsApp support box directly below payment logos on all products."
+    },
+    {
+      "type": "text",
+      "id": "whatsapp_title",
+      "label": "Heading",
+      "default": "Need Help Curating Your Mahjong Table?"
+    },
+    {
+      "type": "text",
+      "id": "whatsapp_subtitle",
+      "label": "Text",
+      "default": "Let us help you find the perfect tiles and coordinating accessories."
+    },
+    {
+      "type": "text",
+      "id": "whatsapp_phone_display",
+      "label": "Phone Number Display",
+      "default": "+1 323-366-6555"
+    },
+    {
+      "type": "text",
+      "id": "whatsapp_phone_number",
+      "label": "WhatsApp Phone (digits only)",
+      "default": "13233666555"
+    },
+    {
+      "type": "text",
+      "id": "whatsapp_default_message",
+      "label": "Default WhatsApp Message",
+      "default": "Hello Mahjiva Atelier Concierge, I need guidance curating my order."
+    },
+    {
+      "type": "color",
+      "id": "whatsapp_border_color",
+      "label": "Border Color",
+      "default": "#D8C3A5"
+    },
+    {
+      "type": "color",
+      "id": "whatsapp_bg_color",
+      "label": "Background Color",
+      "default": "#FAF7F2"
+    },
+    {
+      "type": "header",
+      "content": "Custom Set Request Note"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_custom_set_request",
+      "label": "Enable Custom Set Request Box",
+      "default": false,
+      "info": "Automatically enabled on Cocktail Social Clubs, Crimson Leopard, and Lotus Dynasty Mahjong Sets."
+    },
+    {
+      "type": "text",
+      "id": "custom_set_request_heading",
+      "label": "Heading",
+      "default": "Complimentary Gift Note or Order Instructions (Optional)"
+    },
+    {
+      "type": "text",
+      "id": "custom_set_request_badge",
+      "label": "Badge",
+      "default": "Optional"
+    },
+    {
+      "type": "textarea",
+      "id": "custom_set_request_placeholder",
+      "label": "Placeholder Text",
+      "default": "I’d like a different mat with my tiles…\nI’d like a custom mat with my name…\nI'd like to choose different racks..."
+    },
+    {
+      "type": "header",
+      "content": "Custom Idea & Reference Photos (Customizer)"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_custom_idea_fields",
+      "label": "Enable Custom Idea & Reference Photos",
+      "default": false,
+      "info": "Automatically enabled on product template 'custom-2' or when this setting is checked."
+    },
+    {
+      "type": "text",
+      "id": "custom_idea_heading",
+      "label": "Idea Heading",
+      "default": "Tell us your idea"
+    },
+    {
+      "type": "textarea",
+      "id": "custom_idea_placeholder",
+      "label": "Idea Placeholder",
+      "default": "The Thursday Girls, est. 2005 — soft greens and gold, with peonies"
+    },
+    {
+      "type": "textarea",
+      "id": "custom_idea_subtext",
+      "label": "Idea Subtext",
+      "default": "A name, a year, colours you love, a motif, a pet. A few words are enough. Not ready yet? Order now and reply to your confirmation email — we will not start drawing until we hear from you."
+    },
+    {
+      "type": "text",
+      "id": "custom_photos_heading",
+      "label": "Photos Heading",
+      "default": "Reference photos"
+    },
+    {
+      "type": "text",
+      "id": "custom_photos_button_text",
+      "label": "Photos Button Text",
+      "default": "Add photos"
+    },
+    {
+      "type": "textarea",
+      "id": "custom_photos_subtext",
+      "label": "Photos Subtext",
+      "default": "A pet, a room, a fabric, a style you love. Optional — you can also send these later by replying to your order confirmation."
     }
   ],
   "blocks": [

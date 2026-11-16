@@ -64,14 +64,14 @@
   .lcr-heading {
     font-family: "Cormorant Garamond", Garamond, Georgia, serif;
     font-size: 36px;
-    font-weight: 500;
-    color: #141517;
+    font-weight: 700;
+    color: #0D1110;
     line-height: 1.15;
     margin: 0 !important;
     padding: 0 !important;
   }
 
-  @media (min-width: 768px) {
+  @media (min-width: 740px) {
     .lcr-heading {
       font-size: 46px;
     }
@@ -139,10 +139,10 @@
   }
 
   .lcr-tab-btn.is-active {
-    background: #163327 !important;
+    background: linear-gradient(180deg, #1D4B37 0%, #143828 42%, #081610 100%) !important;
     color: #FFFFFF !important;
     border: 1px solid #D8B88C !important;
-    box-shadow: 0 4px 16px rgba(22, 51, 39, 0.28);
+    box-shadow: 0 4px 16px rgba(8, 22, 16, 0.35);
   }
 
   /* Tab Panels */
@@ -294,9 +294,9 @@
   .lcr-spotlight-title {
     font-family: "Cormorant Garamond", Garamond, Georgia, serif;
     font-size: 26px;
-    font-weight: 500;
+    font-weight: 700;
     line-height: 1.2;
-    color: #141517;
+    color: #0D1110;
     margin: 0 0 10px 0;
   }
 
@@ -341,22 +341,24 @@
     gap: 8px;
     padding: 11px 26px;
     border-radius: 9999px;
-    background: #141517;
-    color: #FFFFFF;
+    background: linear-gradient(180deg, #1D4B37 0%, #143828 42%, #081610 100%) !important;
+    border: 1px solid rgba(216, 184, 140, 0.4) !important;
+    color: #FAF8F5 !important;
     font-size: 11px;
     font-weight: 600;
     letter-spacing: 0.14em;
     text-transform: uppercase;
     text-decoration: none;
     transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-    box-shadow: 0 4px 14px rgba(20, 21, 23, 0.15);
+    box-shadow: 0 4px 14px rgba(8, 22, 16, 0.35);
   }
 
   .lcr-spotlight-btn:hover {
-    background: #B89768;
-    color: #FFFFFF;
+    background: linear-gradient(180deg, #245E45 0%, #18422F 42%, #0C1E15 100%) !important;
+    border-color: #D8B88C !important;
+    color: #FFFFFF !important;
     transform: translateY(-2px);
-    box-shadow: 0 6px 18px rgba(184, 151, 104, 0.3);
+    box-shadow: 0 6px 20px rgba(8, 22, 16, 0.45);
   }
 
   .lcr-spotlight-view-coll {
@@ -550,8 +552,9 @@
   }
 
   .lcr-grid-card-btn:hover {
-    background: #141517;
-    color: #FFFFFF;
+    background: linear-gradient(180deg, #1D4B37 0%, #143828 42%, #081610 100%) !important;
+    border-color: #143828 !important;
+    color: #FFFFFF !important;
   }
 
   .lcr-grid-footer {
@@ -576,8 +579,10 @@
     display: flex;
     gap: 20px;
     overflow-x: auto;
-    scroll-snap-type: x mandatory;
+    scroll-snap-type: x proximity;
     scroll-behavior: smooth;
+    touch-action: pan-x pan-y !important;
+    overscroll-behavior-x: contain !important;
     scrollbar-width: none;
     -ms-overflow-style: none;
     padding: 8px 4px 16px;
@@ -743,8 +748,9 @@
   }
 
   .lcr-card-btn:hover {
-    background: #141517;
-    color: #FFFFFF;
+    background: linear-gradient(180deg, #1D4B37 0%, #143828 42%, #081610 100%) !important;
+    border-color: #143828 !important;
+    color: #FFFFFF !important;
   }
 
   /* Carousel Reel Footer (Progress Bar + Counter + Arrows) */
@@ -847,10 +853,10 @@
   }
 
   .lcr-arrow-btn:hover:not(:disabled) {
-    border-color: #141517;
-    background: #141517;
-    color: #FFFFFF;
-    box-shadow: 0 4px 12px rgba(20, 21, 23, 0.15);
+    border-color: #143828;
+    background: linear-gradient(180deg, #1D4B37 0%, #143828 42%, #081610 100%) !important;
+    color: #FAF8F5 !important;
+    box-shadow: 0 4px 12px rgba(8, 22, 16, 0.35);
   }
 
   .lcr-arrow-btn:disabled {
@@ -954,7 +960,7 @@
                 </div>
               {%- else -%}
                 <div class="lcr-empty-state">
-                  <p>No active allocations currently available in this repertoire.</p>
+                  <p>No active allocations currently available in this collection.</p>
                 </div>
               {%- endif -%}
 
@@ -973,7 +979,7 @@
                       {%- if product.featured_image != blank -%}
                         <img 
                           src="{{ product.featured_image | image_url: width: 1400 }}" 
-                          alt="{{ product.featured_image.alt | default: product.title | escape }}"
+                          alt="{% render 'luxury-image-alt', image: product.featured_image, product: product, index: 1 %}"
                           class="lcr-spotlight-img"
                           loading="lazy"
                           width="770"
@@ -1000,8 +1006,12 @@
                     {%- if tag_badge == blank -%}
                       {%- assign tag_badge = product.type | default: coll.title | default: 'HEIRLOOM PIECE' -%}
                     {%- endif -%}
+                    {%- assign tag_badge_up = tag_badge | upcase -%}
+                    {%- if tag_badge_up == 'TILE BAG' or tag_badge_up == 'TILE-BAG' or tag_badge_up == 'TILE BAGS' -%}
+                      {%- assign tag_badge_up = 'BAG' -%}
+                    {%- endif -%}
                     <span class="lcr-spotlight-tag">
-                      {{ tag_badge | upcase }}
+                      {{ tag_badge_up }}
                     </span>
                     <h3 class="lcr-spotlight-title">
                       <a href="{{ product.url }}">{{ product.title | escape }}</a>
@@ -1040,7 +1050,7 @@
                         {%- if product.featured_image != blank -%}
                           <img 
                             src="{{ product.featured_image | image_url: width: 900 }}" 
-                            alt="{{ product.featured_image.alt | default: product.title | escape }}"
+                            alt="{% render 'luxury-image-alt', image: product.featured_image, product: product, index: 1 %}"
                             class="lcr-grid-card-img"
                             loading="lazy"
                             width="500"
@@ -1066,8 +1076,12 @@
                       {%- if grid_tag_badge == blank -%}
                         {%- assign grid_tag_badge = product.type | default: coll.title | default: 'HEIRLOOM PIECE' -%}
                       {%- endif -%}
+                      {%- assign grid_tag_badge_up = grid_tag_badge | upcase -%}
+                      {%- if grid_tag_badge_up == 'TILE BAG' or grid_tag_badge_up == 'TILE-BAG' or grid_tag_badge_up == 'TILE BAGS' -%}
+                        {%- assign grid_tag_badge_up = 'BAG' -%}
+                      {%- endif -%}
                       <span class="lcr-grid-card-cat">
-                        {{ grid_tag_badge | upcase }}
+                        {{ grid_tag_badge_up }}
                       </span>
                       <h3 class="lcr-grid-card-title">
                         <a href="{{ product.url }}">{{ product.title | escape }}</a>
@@ -1117,7 +1131,7 @@
                           {%- if product.featured_image != blank -%}
                             <img 
                               src="{{ product.featured_image | image_url: width: 900 }}" 
-                              alt="{{ product.featured_image.alt | default: product.title | escape }}"
+                              alt="{% render 'luxury-image-alt', image: product.featured_image, product: product, index: 1 %}"
                               class="lcr-card-img"
                               loading="lazy"
                               width="450"
@@ -1143,8 +1157,12 @@
                         {%- if reel_tag_badge == blank -%}
                           {%- assign reel_tag_badge = product.type | default: coll.title | default: 'HEIRLOOM PIECE' -%}
                         {%- endif -%}
+                        {%- assign reel_tag_badge_up = reel_tag_badge | upcase -%}
+                        {%- if reel_tag_badge_up == 'TILE BAG' or reel_tag_badge_up == 'TILE-BAG' or reel_tag_badge_up == 'TILE BAGS' -%}
+                          {%- assign reel_tag_badge_up = 'BAG' -%}
+                        {%- endif -%}
                         <span class="lcr-card-category">
-                          {{ reel_tag_badge | upcase }}
+                          {{ reel_tag_badge_up }}
                         </span>
                         <h3 class="lcr-card-title">
                           <a href="{{ product.url }}">{{ product.title | escape }}</a>
@@ -1330,6 +1348,50 @@
         track._lcrBound = true;
       }
 
+      // Mouse/Trackpad Drag-to-Scroll support
+      if (!track._lcrDragBound) {
+        let isDown = false;
+        let startX = 0;
+        let scrollStart = 0;
+        let isDragging = false;
+
+        track.addEventListener('mousedown', (e) => {
+          if (e.button !== 0) return;
+          isDown = true;
+          isDragging = false;
+          startX = e.pageX - track.offsetLeft;
+          scrollStart = track.scrollLeft;
+          track.style.cursor = 'grabbing';
+        });
+
+        window.addEventListener('mouseup', () => {
+          if (!isDown) return;
+          isDown = false;
+          track.style.cursor = '';
+          setTimeout(() => { isDragging = false; }, 60);
+        });
+
+        track.addEventListener('mousemove', (e) => {
+          if (!isDown) return;
+          const x = e.pageX - track.offsetLeft;
+          const walk = (x - startX);
+          if (Math.abs(walk) > 5) {
+            isDragging = true;
+            e.preventDefault();
+            track.scrollLeft = scrollStart - walk;
+          }
+        });
+
+        track.addEventListener('click', (e) => {
+          if (isDragging) {
+            e.preventDefault();
+            e.stopPropagation();
+          }
+        }, true);
+
+        track._lcrDragBound = true;
+      }
+
       // Initial state sync
       updateControls();
     }
@@ -1362,17 +1424,17 @@
       "type": "text",
       "id": "heading",
       "label": "Section Heading",
-      "default": "The Atelier Repertoire"
+      "default": "The Mahjiva Collection"
     },
     {
       "type": "textarea",
       "id": "description",
       "label": "Section Description",
-      "default": "A singular repertoire of Hetian nephrite suites, hand-stitched leather trunks, and acoustic felt mats curated for private salons."
+      "default": "A singular collection of American Mahjong suites, playing mats, and coordinating accessories curated for private salons."
     },
     {
       "type": "header",
-      "content": "Repertoire Carousel & Cards"
+      "content": "Collection Carousel & Cards"
     },
     {
       "type": "range",

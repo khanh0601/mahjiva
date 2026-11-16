@@ -1,0 +1,665 @@
+{%- comment -%}
+  -----------------------------------------------------------------------------
+  SECTION: LUXURY TRACK ORDER (MAISON ATELIER DISPATCH CONCIERGE)
+  - 100% Harmonized Atelier Aesthetic: Imperial Jade (#163327), Champagne Bronze (#B89768), Silk Linen (#FAF8F5)
+  - Zero Layout Shift: Pre-parsed styles at top, stable flex flow, anti-FOUC typography
+  - Seamless 17track courier integration with real-time tracking
+  - Enter-key support and elegant inline validation
+  - 3 Luxury courier reassurance pillars
+  - Responsive mobile-first layout
+  -----------------------------------------------------------------------------
+{%- endcomment -%}
+
+<style>
+  /* =========================================================================
+     MAISON ATELIER LUXURY TRACK ORDER PAGE STYLES (PRE-PARSED AT TOP)
+     ========================================================================= */
+  .lto-page-wrapper {
+    background-color: #FAF8F5;
+    background-image: 
+      radial-gradient(ellipse at 50% 0%, rgba(184, 151, 104, 0.08) 0%, transparent 65%),
+      linear-gradient(180deg, #FFFFFF 0%, #FAF8F5 180px, #FAF8F5 100%);
+    padding: 40px 20px 80px;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    color: #16181B;
+    min-height: 80vh;
+    box-sizing: border-box;
+  }
+
+  .lto-container {
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  /* Header - Stable vertical stacking to prevent colliding/jumping */
+  .lto-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    text-align: center;
+    max-width: 660px;
+    margin: 0 auto 36px;
+  }
+
+  .lto-breadcrumb {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    color: #8C8479;
+    margin: 0;
+    text-transform: uppercase;
+  }
+
+  .lto-breadcrumb-link {
+    color: #8C8479;
+    text-decoration: none;
+    transition: color 0.2s ease;
+  }
+
+  .lto-breadcrumb-link:hover {
+    color: #163327;
+  }
+
+  .lto-breadcrumb-sep {
+    color: #C8C0B3;
+  }
+
+  .lto-breadcrumb-current {
+    color: #163327;
+  }
+
+  .lto-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    background: rgba(184, 151, 104, 0.12);
+    border: 1px solid rgba(184, 151, 104, 0.3);
+    color: #8C6A35;
+    font-size: 10.5px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 4px 14px;
+    border-radius: 9999px;
+    margin: 0;
+  }
+
+  .lto-badge-icon {
+    color: #8C6A35;
+    flex-shrink: 0;
+  }
+
+  .lto-title {
+    font-family: var(--font-heading-family, "Cormorant Garamond", Georgia, serif) !important;
+    font-size: 38px;
+    font-weight: 600;
+    line-height: 1.2;
+    color: #163327;
+    letter-spacing: -0.01em;
+    margin: 6px 0 0;
+    text-wrap: balance;
+    font-feature-settings: "liga" 1, "kern" 1;
+  }
+
+  .lto-subtitle {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    font-size: 14.5px;
+    line-height: 1.6;
+    color: #5C5750;
+    max-width: 620px;
+    margin: 0 auto;
+    text-wrap: pretty;
+  }
+
+  /* Luxury Form Card */
+  .lto-card {
+    max-width: 540px;
+    margin: 0 auto 40px;
+    background: #FFFFFF;
+    border: 1px solid #EBE5DB;
+    border-radius: 18px;
+    box-shadow: 0 12px 36px rgba(22, 51, 39, 0.05), 0 2px 8px rgba(0, 0, 0, 0.02);
+    overflow: hidden;
+    transition: box-shadow 0.25s ease, border-color 0.25s ease;
+  }
+
+  .lto-card:hover {
+    border-color: #DDD4C5;
+    box-shadow: 0 16px 44px rgba(22, 51, 39, 0.08), 0 4px 12px rgba(0, 0, 0, 0.03);
+  }
+
+  .lto-card-inner {
+    padding: 32px 30px 24px;
+  }
+
+  .lto-form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .lto-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: #4A4641;
+  }
+
+  .lto-label svg {
+    color: #8C6A35;
+    flex-shrink: 0;
+  }
+
+  .lto-input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+
+  .lto-search-icon {
+    position: absolute;
+    left: 14px;
+    color: #9C9488;
+    pointer-events: none;
+    flex-shrink: 0;
+  }
+
+  .lto-input {
+    width: 100%;
+    height: 48px;
+    padding: 0 14px 0 42px;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 500;
+    color: #16181B;
+    background: #FAF8F5;
+    border: 1.5px solid #DCD3C5;
+    border-radius: 10px;
+    outline: none;
+    box-sizing: border-box;
+    transition: all 0.2s ease;
+  }
+
+  .lto-input:focus {
+    background: #FFFFFF;
+    border-color: #163327;
+    box-shadow: 0 0 0 3px rgba(22, 51, 39, 0.08);
+  }
+
+  .lto-input::placeholder {
+    color: #A0988D;
+    font-weight: 400;
+  }
+
+  .lto-error-msg {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    padding: 8px 12px;
+    background: #FDF2F2;
+    border: 1px solid #F8D4D4;
+    border-radius: 8px;
+    color: #C02626;
+    font-size: 12.5px;
+    font-weight: 500;
+  }
+
+  .lto-error-msg svg {
+    flex-shrink: 0;
+  }
+
+  .lto-submit-btn {
+    width: 100%;
+    height: 48px;
+    background: linear-gradient(180deg, #1D4B37 0%, #163327 50%, #0E221A 100%);
+    border: none;
+    border-radius: 10px;
+    color: #FFFFFF;
+    font-family: inherit;
+    font-size: 13.5px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    cursor: pointer;
+    box-shadow: 0 4px 14px rgba(22, 51, 39, 0.22);
+    transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+    margin-top: 4px;
+  }
+
+  .lto-submit-btn:hover {
+    background: linear-gradient(180deg, #245A42 0%, #1B3E2F 50%, #12281E 100%);
+    box-shadow: 0 6px 20px rgba(22, 51, 39, 0.32);
+    transform: translateY(-1.5px);
+  }
+
+  .lto-submit-btn:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 8px rgba(22, 51, 39, 0.2);
+  }
+
+  .lto-card-footer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    margin-top: 20px;
+    padding-top: 16px;
+    border-top: 1px solid #F0ECE4;
+    font-size: 12px;
+    color: #6B655D;
+  }
+
+  .lto-check-icon {
+    color: #00B67A;
+    flex-shrink: 0;
+  }
+
+  .lto-help-icon {
+    color: #8C6A35;
+    flex-shrink: 0;
+  }
+
+  .lto-support-link {
+    color: #163327;
+    font-weight: 600;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    transition: color 0.2s ease;
+  }
+
+  .lto-support-link:hover {
+    color: #8C6A35;
+  }
+
+  /* Embedded Result Wrapper */
+  .lto-result-wrapper {
+    max-width: 780px;
+    margin: 0 auto 46px;
+    background: #FFFFFF;
+    border: 1px solid #EBE5DB;
+    border-radius: 16px;
+    box-shadow: 0 10px 32px rgba(22, 51, 39, 0.06);
+    overflow: hidden;
+  }
+
+  .lto-result-header {
+    padding: 14px 20px;
+    background: #FAF8F5;
+    border-bottom: 1px solid #ECE7E1;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .lto-result-header-title {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13.5px;
+    font-weight: 700;
+    color: #163327;
+  }
+
+  .lto-yq-container {
+    min-height: 280px;
+    background: #FFFFFF;
+  }
+
+  /* 3 Reassurance Pillars - Stable Equal Height Layout */
+  .lto-pillars {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+    max-width: 860px;
+    margin: 0 auto;
+    align-items: stretch;
+  }
+
+  .lto-pillar-card {
+    background: #FFFFFF;
+    border: 1px solid #ECE7E1;
+    border-radius: 14px;
+    padding: 22px 20px;
+    box-shadow: 0 2px 8px rgba(22, 51, 39, 0.03);
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    height: 100%;
+    box-sizing: border-box;
+    transition: transform 0.2s ease, border-color 0.2s ease;
+  }
+
+  .lto-pillar-card:hover {
+    border-color: #DCD3C5;
+    transform: translateY(-2px);
+  }
+
+  .lto-pillar-icon-badge {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: rgba(22, 51, 39, 0.07);
+    color: #163327;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 4px;
+    flex-shrink: 0;
+  }
+
+  .lto-pillar-title {
+    font-family: var(--font-heading-family, "Cormorant Garamond", Georgia, serif) !important;
+    font-size: 17.5px;
+    font-weight: 700;
+    color: #163327;
+    margin: 0 0 3px 0;
+    line-height: 1.3;
+    letter-spacing: -0.01em;
+  }
+
+  .lto-pillar-subtitle {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    font-size: 13.5px;
+    font-weight: 600;
+    color: #141517;
+    margin: 0 0 5px 0;
+    line-height: 1.4;
+  }
+
+  .lto-pillar-text {
+    flex-grow: 1;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    font-size: 13px;
+    color: #635F5A;
+    line-height: 1.55;
+    margin: 0;
+  }
+
+  .lto-pillar-link {
+    color: #163327;
+    font-weight: 600;
+    text-decoration: underline;
+    text-underline-offset: 2.5px;
+    transition: color 0.2s ease;
+  }
+
+  .lto-pillar-link:hover {
+    color: #275844;
+  }
+
+  /* Smooth Responsive Breakpoints without Jumps */
+  @media (max-width: 899px) and (min-width: 601px) {
+    .lto-pillars {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    .lto-pillar-card:last-child {
+      grid-column: 1 / -1;
+    }
+  }
+
+  @media (max-width: 600px) {
+    .lto-page-wrapper {
+      padding: 24px 16px 50px;
+    }
+    .lto-title {
+      font-size: 28px;
+    }
+    .lto-subtitle {
+      font-size: 13.5px;
+    }
+    .lto-card-inner {
+      padding: 24px 18px 20px;
+    }
+    .lto-pillars {
+      grid-template-columns: 1fr;
+      gap: 12px;
+    }
+    .lto-pillar-card {
+      padding: 18px 16px;
+    }
+  }
+</style>
+
+<div class="lto-page-wrapper">
+  <div class="lto-container">
+    
+    <!-- Breadcrumb & Eyebrow in stable vertical hierarchy -->
+    <div class="lto-header">
+      <nav class="lto-breadcrumb" aria-label="Breadcrumb">
+        <a href="/" class="lto-breadcrumb-link">HOME</a>
+        <span class="lto-breadcrumb-sep">/</span>
+        <span class="lto-breadcrumb-current">TRACK ORDER</span>
+      </nav>
+
+      <div class="lto-badge">
+        <svg class="lto-badge-icon" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="12" cy="12" r="10"></circle>
+          <polyline points="12 6 12 12 16 14"></polyline>
+        </svg>
+        <span>DELIVERY UPDATES</span>
+      </div>
+
+      <h1 class="lto-title">{{ section.settings.heading | default: 'Track Your Order' }}</h1>
+      <p class="lto-subtitle">
+        {{ section.settings.subheading | default: 'Enter your tracking number to check the latest shipping updates and estimated delivery date.' }}
+      </p>
+    </div>
+
+    <!-- Main Card -->
+    <div class="lto-card">
+      <div class="lto-card-inner">
+        <div class="lto-form-group">
+          <label for="YQNum" class="lto-label">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <rect x="1" y="3" width="15" height="13"></rect>
+              <polygon points="16 8 20 8 23 11 23 16 16 8"></polygon>
+              <circle cx="5.5" cy="18.5" r="2.5"></circle>
+              <circle cx="18.5" cy="18.5" r="2.5"></circle>
+            </svg>
+            <span>TRACKING NUMBER</span>
+          </label>
+
+          <div class="lto-input-wrapper">
+            <svg class="lto-search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+            <input 
+              type="text" 
+              id="YQNum" 
+              class="lto-input" 
+              placeholder="Enter your tracking number" 
+              maxlength="50" 
+              autocomplete="off"
+              spellcheck="false"
+              aria-label="Enter your tracking number"
+            />
+          </div>
+
+          <!-- Inline error alert (replaces raw browser alert) -->
+          <div id="ltoInputError" class="lto-error-msg" style="display: none;" role="alert">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"></circle>
+              <line x1="12" y1="8" x2="12" y2="12"></line>
+              <line x1="12" y1="16" x2="12.01" y2="16"></line>
+            </svg>
+            <span>Please enter a valid tracking reference number before searching.</span>
+          </div>
+
+          <button type="button" class="lto-submit-btn" id="ltoTrackBtn" onclick="doTrack()">
+            <span>TRACK ORDER</span>
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+              <polyline points="12 5 19 12 12 19"></polyline>
+            </svg>
+          </button>
+        </div>
+
+        <div class="lto-card-footer">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" class="lto-help-icon">
+            <circle cx="12" cy="12" r="10"></circle>
+            <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+            <line x1="12" y1="17" x2="12.01" y2="17"></line>
+          </svg>
+          <span>Need help with your delivery? Contact us at <a href="mailto:care@mahjiva.com" class="lto-support-link">care@mahjiva.com</a>.</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 17Track Embedded Result Container -->
+    <div id="ltoResultWrapper" class="lto-result-wrapper" style="display: none;">
+      <div class="lto-result-header">
+        <div class="lto-result-header-title">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
+          </svg>
+          <span>Live Courier Transit Telemetry</span>
+        </div>
+      </div>
+      <div id="YQContainer" class="lto-yq-container"></div>
+    </div>
+
+    <!-- 3 Reassurance Pillars -->
+    <div class="lto-pillars">
+      <div class="lto-pillar-card">
+        <div class="lto-pillar-icon-badge" aria-hidden="true">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M16.5 9.4 7.55 4.24"></path>
+            <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+            <polyline points="3.29 7 12 12.63 20.71 7"></polyline>
+            <line x1="12" y1="22.08" x2="12" y2="12"></line>
+          </svg>
+        </div>
+        <h3 class="lto-pillar-title">Order Tracking</h3>
+        <div class="lto-pillar-subtitle">Follow Your Delivery</div>
+        <p class="lto-pillar-text">Stay informed with tracking updates as your Mahjong essentials make their way to you.</p>
+      </div>
+
+      <div class="lto-pillar-card">
+        <div class="lto-pillar-icon-badge" aria-hidden="true">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="1" y="3" width="15" height="13"></rect>
+            <polygon points="16 8 20 8 23 11 23 16 16 8"></polygon>
+            <circle cx="5.5" cy="18.5" r="2.5"></circle>
+            <circle cx="18.5" cy="18.5" r="2.5"></circle>
+          </svg>
+        </div>
+        <h3 class="lto-pillar-title">Shipping Information</h3>
+        <div class="lto-pillar-subtitle">Estimated Delivery: 1–3 Weeks</div>
+        <p class="lto-pillar-text">All orders include <strong>Complimentary Worldwide Shipping</strong> and typically arrive within <strong>1–3 weeks</strong> (domestic US delivery takes 3–7 business days; overseas atelier delivery takes 7–12 business days). Every piece is protected by our <strong>30-Day Mahjiva Guarantee</strong>: if anything arrives damaged, defective, or incorrect, we provide a complimentary prepaid return shipping label and arrange an immediate replacement or full refund. Simply reach out to <a href="mailto:care@mahjiva.com">care@mahjiva.com</a> with your order number. For complete details, see our <a href="/policies/shipping-policy">Shipping Policy</a> and <a href="/policies/refund-policy">Return &amp; Refund Policy</a>.</p>
+      </div>
+
+      <div class="lto-pillar-card">
+        <div class="lto-pillar-icon-badge" aria-hidden="true">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 18v-6a9 9 0 0 1 18 0v6"></path>
+            <path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"></path>
+            <path d="M18 19v2a2 2 0 0 1-2 2h-4"></path>
+          </svg>
+        </div>
+        <h3 class="lto-pillar-title">Customer Support</h3>
+        <div class="lto-pillar-subtitle">We're Here to Help</div>
+        <p class="lto-pillar-text">Have questions about your order or delivery? Our team is happy to assist you at <a href="mailto:care@mahjiva.com" class="lto-pillar-link">care@mahjiva.com</a>.</p>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- 17Track External API Script deferred to prevent render blocking -->
+<script type="text/javascript" src="//www.17track.net/externalcall.js" defer></script>
+
+<script>
+  function doTrack() {
+    var inputEl = document.getElementById("YQNum");
+    var errorEl = document.getElementById("ltoInputError");
+    var resultWrap = document.getElementById("ltoResultWrapper");
+    var num = inputEl ? inputEl.value.trim() : "";
+    
+    if (!num) {
+      if (errorEl) {
+        errorEl.style.display = "flex";
+      }
+      if (inputEl) {
+        inputEl.focus();
+      }
+      return;
+    }
+    
+    if (errorEl) {
+      errorEl.style.display = "none";
+    }
+
+    if (resultWrap) {
+      resultWrap.style.display = "block";
+      resultWrap.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    if (typeof YQV5 !== 'undefined') {
+      YQV5.trackSingle({
+        YQ_ContainerId: "YQContainer",
+        YQ_Height: 600,
+        YQ_Fc: "0",
+        YQ_Lang: "en",
+        YQ_Num: num
+      });
+    }
+  }
+
+  // Allow pressing Enter key to track
+  document.addEventListener("DOMContentLoaded", function() {
+    var input = document.getElementById("YQNum");
+    if (input) {
+      input.addEventListener("keydown", function(e) {
+        if (e.key === "Enter") {
+          e.preventDefault();
+          doTrack();
+        }
+      });
+      input.addEventListener("input", function() {
+        var errorEl = document.getElementById("ltoInputError");
+        if (errorEl && errorEl.style.display !== "none") {
+          errorEl.style.display = "none";
+        }
+      });
+    }
+  });
+</script>
+
+{% schema %}
+{
+  "name": "Luxury Track Order",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Track Your Order"
+    },
+    {
+      "type": "textarea",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Enter your tracking number to check the latest shipping updates and estimated delivery date."
+    }
+  ],
+  "presets": [
+    {
+      "name": "Luxury Track Order"
+    }
+  ]
+}
+{% endschema %}

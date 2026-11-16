@@ -16,11 +16,13 @@
   }
 
   #LuxuryFeaturedCollections-{{ section.id }} {
-    background: {{ section.settings.bg_gradient | default: 'radial-gradient(ellipse 95% 75% at 50% 25%, #235a43 0%, #174230 48%, #0e2a1e 100%)' }};
+    background: {{ section.settings.bg_gradient | default: 'radial-gradient(ellipse 95% 75% at 50% 20%, #1e4d38 0%, #133927 48%, #091f15 100%)' }};
     padding: {{ section.settings.padding_top | default: 80 }}px 0 {{ section.settings.padding_bottom | default: 88 }}px;
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     position: relative;
     overflow: hidden;
+    border-top: 1px solid rgba(226, 199, 142, 0.22);
+    border-bottom: 1px solid rgba(226, 199, 142, 0.22);
   }
 
   .lfc-container {
@@ -50,32 +52,34 @@
     font-size: 11px;
     letter-spacing: 0.28em;
     text-transform: uppercase;
-    color: #E2C78E;
+    color: #E2C78E !important;
     font-weight: 700;
     margin: 0 !important;
     display: inline-block;
+    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
   }
 
   .lfc-heading {
-    font-family: "Cormorant Garamond", Garamond, Georgia, serif;
-    font-size: 36px;
-    font-weight: 500;
-    color: #FFFFFF;
-    text-shadow: 0 2px 16px rgba(0, 0, 0, 0.35);
-    line-height: 1.15;
+    font-family: var(--font-heading-family, "Cormorant Garamond", Garamond, Georgia, serif) !important;
+    font-size: 38px;
+    font-weight: 700;
+    color: #FFFFFF !important;
+    text-shadow: 0 2px 24px rgba(0, 0, 0, 0.55), 0 0 12px rgba(30, 77, 56, 0.4) !important;
+    line-height: 1.18;
     margin: 0 !important;
   }
 
-  @media (min-width: 768px) {
+  @media (min-width: 740px) {
     .lfc-heading {
       font-size: 46px;
     }
   }
 
   .lfc-description {
-    font-size: 14.5px;
-    font-weight: 450;
-    color: rgba(255, 255, 255, 0.88);
+    font-size: 15px;
+    font-weight: 400;
+    color: rgba(255, 255, 255, 0.88) !important;
+    text-shadow: 0 1px 8px rgba(0, 0, 0, 0.3);
     line-height: 1.6;
     margin: 4px 0 0 !important;
   }
@@ -122,22 +126,22 @@
   /* Pillar Card */
   .lfc-card {
     position: relative;
-    border-radius: 22px;
+    border-radius: 20px;
     overflow: hidden;
     aspect-ratio: 3 / 4;
     width: 100%;
     display: block;
     text-decoration: none;
-    background: #FFFFFF;
-    border: 1px solid rgba(255, 255, 255, 0.25);
-    box-shadow: 0 16px 38px rgba(5, 20, 14, 0.38), 0 4px 10px rgba(0, 0, 0, 0.18);
-    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s ease;
+    background: #0d2218 !important;
+    border: 1px solid rgba(226, 199, 142, 0.28) !important;
+    box-shadow: 0 16px 36px rgba(0, 0, 0, 0.45), 0 2px 8px rgba(0, 0, 0, 0.25);
+    transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.35s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.25s ease;
   }
 
   .lfc-card:hover {
-    transform: translateY(-7px);
-    box-shadow: 0 26px 54px rgba(5, 20, 14, 0.55), 0 6px 14px rgba(0, 0, 0, 0.25);
-    border-color: #E2C78E;
+    transform: translateY(-7px) !important;
+    box-shadow: 0 26px 54px rgba(0, 0, 0, 0.65), 0 0 24px rgba(226, 199, 142, 0.22) !important;
+    border-color: #E2C78E !important;
   }
 
   /* Media Background Full-bleed */
@@ -149,7 +153,7 @@
     height: 100%;
     z-index: 1;
     overflow: hidden;
-    background-color: #F7F4EE;
+    background-color: #0d2218 !important;
   }
 
   .lfc-card-img {
@@ -210,73 +214,79 @@
     text-align: center;
   }
 
-  /* Card Overlay */
+  /* Seamless Progressive Shadow Gradient Scrim Overlay */
   .lfc-card-overlay {
-    display: none;
+    display: block !important;
+    position: absolute !important;
+    inset: 0 !important;
+    z-index: 2 !important;
+    pointer-events: none !important;
+    background: linear-gradient(
+      180deg,
+      rgba(9, 23, 16, 0) 0%,
+      rgba(9, 23, 16, 0.03) 24%,
+      rgba(9, 23, 16, 0.16) 42%,
+      rgba(7, 18, 12, 0.52) 62%,
+      rgba(5, 14, 9, 0.85) 80%,
+      rgba(4, 12, 8, 0.98) 100%
+    ) !important;
   }
 
-  /* Pillar Badge (Top Left) - Frosted pearl pill with refined green accents */
+  /* Pillar Badge (Top Left) - Frosted dark jewel pill with champagne gold accents */
   .lfc-card-badge {
     position: absolute;
-    top: 18px;
-    left: 18px;
+    top: 16px;
+    left: 16px;
     z-index: 3;
     font-size: 10px;
     font-weight: 700;
-    letter-spacing: 0.2em;
+    letter-spacing: 0.18em;
     text-transform: uppercase;
-    color: #143828;
-    background: rgba(255, 255, 255, 0.94);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
+    color: #E2C78E !important;
+    background: rgba(9, 23, 16, 0.88) !important;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
     padding: 5px 12px;
     border-radius: 9999px;
-    border: 1px solid rgba(20, 56, 40, 0.25);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+    border: 1px solid rgba(226, 199, 142, 0.45) !important;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
   }
 
-  /* Card Content (Bottom) - Luminous frosted glass panel with high contrast typography */
+  /* Card Content (Bottom) - Champagne typography over smooth progressive blur */
   .lfc-card-body {
     position: absolute;
     bottom: 0;
     left: 0;
     width: 100%;
-    padding: 44px 20px 22px;
+    padding: 24px 18px 20px;
     z-index: 3;
     display: flex;
     flex-direction: column;
-    gap: 6px;
-    background: linear-gradient(
-      180deg,
-      rgba(255, 255, 255, 0) 0%,
-      rgba(255, 255, 255, 0.68) 22%,
-      rgba(255, 255, 255, 0.94) 54%,
-      rgba(255, 255, 255, 0.99) 100%
-    );
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    -webkit-mask-image: linear-gradient(to top, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 1) 65%, rgba(0, 0, 0, 0) 100%);
-    mask-image: linear-gradient(to top, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 1) 65%, rgba(0, 0, 0, 0) 100%);
+    gap: 5px;
+    background: transparent !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
   }
 
   .lfc-card-title {
-    font-family: "Cormorant Garamond", Garamond, Georgia, serif;
-    font-size: 24px;
-    font-weight: 600;
-    line-height: 1.18;
-    color: #141517;
+    font-family: var(--font-heading-family, "Cormorant Garamond", Garamond, Georgia, serif) !important;
+    font-size: 22px;
+    font-weight: 700;
+    line-height: 1.2;
+    color: #FAF8F5 !important;
+    text-shadow: 0 1px 8px rgba(0, 0, 0, 0.5);
     margin: 0;
     transition: color 0.25s ease;
   }
 
   .lfc-card:hover .lfc-card-title {
-    color: #1B3B2B;
+    color: #E2C78E !important;
   }
 
   .lfc-card-desc {
-    font-size: 12.5px;
+    font-size: 12px;
     line-height: 1.5;
-    color: #4A4D55;
+    color: #B2C2B9 !important;
     margin: 0 0 4px 0;
     display: -webkit-box;
     -webkit-line-clamp: 2;
@@ -285,23 +295,23 @@
   }
 
   .lfc-card-link-text {
-    font-size: 11px;
+    font-size: 10.5px;
     font-weight: 700;
-    letter-spacing: 0.14em;
+    letter-spacing: 0.16em;
     text-transform: uppercase;
-    color: #1B3B2B;
+    color: #E2C78E !important;
     display: inline-flex;
     align-items: center;
     gap: 6px;
     padding-bottom: 2px;
-    border-bottom: 1.5px solid #1B3B2B;
+    border-bottom: 1.5px solid #E2C78E !important;
     width: fit-content;
     transition: all 0.25s ease;
   }
 
   .lfc-card:hover .lfc-card-link-text {
-    color: #B89768;
-    border-color: #B89768;
+    color: #FFFFFF !important;
+    border-color: #FFFFFF !important;
     gap: 9px;
   }
 </style>
@@ -373,9 +383,6 @@
           {%- endif -%}
 
           {%- assign pillar_badge = block.settings.custom_badge -%}
-          {%- if pillar_badge == blank -%}
-            {%- assign pillar_badge = 'PILLAR 0' | append: forloop.index -%}
-          {%- endif -%}
 
           {%- assign has_hover_img = false -%}
           {%- if img_2 != blank -%}
@@ -409,8 +416,10 @@
             <!-- Chiaroscuro Gradient Overlay -->
             <div class="lfc-card-overlay"></div>
 
-            <!-- Pillar Badge -->
-            <span class="lfc-card-badge">{{ pillar_badge }}</span>
+            {%- if pillar_badge != blank -%}
+              <!-- Pillar Badge -->
+              <span class="lfc-card-badge">{{ pillar_badge }}</span>
+            {%- endif -%}
 
             <!-- Content Area (Bottom) -->
             <div class="lfc-card-body">
@@ -488,7 +497,7 @@
       "type": "color_background",
       "id": "bg_gradient",
       "label": "Section Background Gradient",
-      "default": "radial-gradient(ellipse 95% 75% at 50% 25%, #235a43 0%, #174230 48%, #0e2a1e 100%)"
+      "default": "radial-gradient(ellipse 95% 75% at 50% 20%, #1e4d38 0%, #133927 48%, #091f15 100%)"
     },
     {
       "type": "range",
@@ -544,8 +553,7 @@
         {
           "type": "text",
           "id": "custom_badge",
-          "label": "Corner Badge (e.g. PILLAR 01, BESPOKE)",
-          "default": "PILLAR"
+          "label": "Corner Badge (Optional, leave blank to hide)"
         },
         {
           "type": "text",

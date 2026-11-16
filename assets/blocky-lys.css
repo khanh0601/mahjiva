@@ -239,41 +239,61 @@
 *******************/
 .track-order-container {
   width: 100%;
-  max-width: 400px;
-  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
-  border-radius: 15px;
-  padding: 30px;
+  max-width: 520px;
+  box-shadow: 0 12px 36px rgba(22, 51, 39, 0.05), 0 2px 8px rgba(0, 0, 0, 0.02);
+  border-radius: 16px;
+  border: 1px solid #EBE5DB;
+  padding: 32px 28px;
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  gap: 1.25rem;
   margin-right: auto;
   margin-left: auto;
-  margin-bottom: 65px;
-  background-color: white;
-  color: black;
+  margin-bottom: 60px;
+  background-color: #FFFFFF;
+  color: #16181B;
+  box-sizing: border-box;
 }
 
 .track-order-input {
-  height: 40px;
-  border-radius: 8px;
-  border-width: 1px;
-  padding-left: 12px;
+  height: 46px;
+  border-radius: 10px;
+  border: 1.5px solid #DCD3C5;
+  padding: 0 14px;
+  font-family: inherit;
+  font-size: 14px;
+  background-color: #FAF8F5;
+  color: #16181B;
+  outline: none;
+  transition: all 0.2s ease;
+  box-sizing: border-box;
+}
+
+.track-order-input:focus {
+  background-color: #FFFFFF;
+  border-color: #163327;
+  box-shadow: 0 0 0 3px rgba(22, 51, 39, 0.08);
 }
 
 .track-order-button {
-  height: 40px;
-  border-radius: 8px;
+  height: 46px;
+  border-radius: 10px;
   border-width: 0px;
-  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
-  background-color: rgb(var(--color-button));
-  color: rgb(var(--color-button-text));
-  font-weight: bold;
-  font-size: 1.4rem;
+  box-shadow: 0 4px 14px rgba(22, 51, 39, 0.22);
+  background: linear-gradient(180deg, #1D4B37 0%, #163327 50%, #0E221A 100%);
+  color: #FFFFFF;
+  font-weight: 700;
+  font-size: 13.5px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
   cursor: pointer;
+  transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .track-order-button:hover {
-  background-color: rgba(var(--color-button), 0.80);
+  background: linear-gradient(180deg, #245A42 0%, #1B3E2F 50%, #12281E 100%);
+  box-shadow: 0 6px 20px rgba(22, 51, 39, 0.32);
+  transform: translateY(-1.5px);
 }
 
 /*******************

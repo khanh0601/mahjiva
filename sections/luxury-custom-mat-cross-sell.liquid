@@ -1,0 +1,297 @@
+{%- comment -%}
+  -----------------------------------------------------------------------------
+  SECTION: LUXURY CUSTOM MAT CROSS-SELL ("Complete Your Table")
+  - 100% Real Shopify Data (Strict Policy: No Mock)
+  - Connects to a real collection or collections.all
+  - Empty state handles request.design_mode gracefully
+  -----------------------------------------------------------------------------
+{%- endcomment -%}
+
+{%- assign target_collection = collections[section.settings.collection] -%}
+{%- if target_collection == blank or target_collection.products_count == 0 -%}
+  {%- assign target_collection = collections['all'] -%}
+{%- endif -%}
+
+<style>
+  #CustomMatCrossSell-{{ section.id }},
+  #CustomMatCrossSell-{{ section.id }} * {
+    box-sizing: border-box !important;
+  }
+
+  #CustomMatCrossSell-{{ section.id }} {
+    background-color: {{ section.settings.bg_color | default: '#FCFAF8' }};
+    padding-top: {{ section.settings.padding_top | default: 72 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | default: 80 }}px;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    color: #141517;
+    border-top: 1px solid #ECE7E1;
+  }
+
+  .cmc-container {
+    max-width: {{ section.settings.container_max_width | default: 1280 }}px;
+    margin: 0 auto;
+    padding: 0 24px;
+    width: 100%;
+  }
+
+  .cmc-header {
+    text-align: center;
+    max-width: 760px;
+    margin: 0 auto 48px auto;
+  }
+
+  .cmc-eyebrow {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: #7F5260;
+    margin-bottom: 12px;
+  }
+
+  .cmc-title {
+    font-family: var(--font-heading-family, serif);
+    font-size: 36px;
+    font-weight: 700;
+    line-height: 1.25;
+    color: #141517;
+    margin: 0 0 14px 0;
+  }
+
+  @media (min-width: 768px) {
+    .cmc-title {
+      font-size: 40px;
+    }
+  }
+
+  .cmc-subtitle {
+    font-size: 15.5px;
+    line-height: 1.6;
+    color: #55504C;
+    margin: 0;
+  }
+
+  .cmc-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+
+  @media (min-width: 768px) {
+    .cmc-grid {
+      grid-template-columns: repeat(4, 1fr);
+      gap: 24px;
+    }
+  }
+
+  .cmc-card {
+    background: #FFFFFF;
+    border: 1px solid #ECE7E1;
+    border-radius: 16px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    text-decoration: none;
+    color: inherit;
+    transition: all 0.25s ease;
+  }
+
+  .cmc-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.05);
+    border-color: #D5CEC7;
+  }
+
+  .cmc-media {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    background: #FAF8F5;
+    overflow: hidden;
+  }
+
+  .cmc-media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.4s ease;
+  }
+
+  .cmc-card:hover .cmc-media img {
+    transform: scale(1.05);
+  }
+
+  .cmc-info {
+    padding: 16px 18px 20px 18px;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    justify-content: space-between;
+  }
+
+  .cmc-prod-title {
+    font-size: 14.5px;
+    font-weight: 600;
+    color: #141517;
+    margin: 0 0 8px 0;
+    line-height: 1.35;
+  }
+
+  .cmc-price-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 8px;
+  }
+
+  .cmc-price {
+    font-size: 15px;
+    font-weight: 700;
+    color: #163327;
+  }
+
+  .cmc-btn-view {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: #7F5260;
+  }
+
+  /* Admin Empty State */
+  .cmc-admin-empty {
+    border: 2px dashed #B89768;
+    background: #FDFBF7;
+    border-radius: 16px;
+    padding: 40px 24px;
+    text-align: center;
+    color: #55504C;
+  }
+</style>
+
+<section id="CustomMatCrossSell-{{ section.id }}">
+  <div class="cmc-container">
+    
+    <div class="cmc-header">
+      <span class="cmc-eyebrow">{{ section.settings.eyebrow | default: 'PERFECT COMPANIONS' }}</span>
+      <h2 class="cmc-title">{{ section.settings.heading | default: 'Complete Your Table' }}</h2>
+      <p class="cmc-subtitle">
+        {{ section.settings.subtitle | default: 'Pair your bespoke custom mat with our luxury American Mahjong tile sets, crystal acrylic racks, and quilted bags.' }}
+      </p>
+    </div>
+
+    {%- if target_collection and target_collection.products_count > 0 -%}
+      <div class="cmc-grid">
+        {%- for prod in target_collection.products limit: section.settings.products_to_show -%}
+          {%- unless prod.id == product.id -%}
+            <a href="{{ prod.url }}" class="cmc-card">
+              <div class="cmc-media">
+                {%- if prod.featured_image -%}
+                  <img src="{{ prod.featured_image | image_url: width: 600 }}" alt="{{ prod.title | escape }}" loading="lazy">
+                {%- endif -%}
+              </div>
+              <div class="cmc-info">
+                <h4 class="cmc-prod-title">{{ prod.title }}</h4>
+                <div class="cmc-price-row">
+                  <span class="cmc-price">{{ prod.price | money }}</span>
+                  <span class="cmc-btn-view">View Set →</span>
+                </div>
+              </div>
+            </a>
+          {%- endunless -%}
+        {%- endfor -%}
+      </div>
+    {%- else -%}
+      {%- if request.design_mode -%}
+        <div class="cmc-admin-empty">
+          <p style="font-weight: 700; margin-bottom: 6px;">[Theme Editor] Chưa có sản phẩm trong bộ sưu tập này.</p>
+          <p style="font-size: 13px; margin: 0;">Vui lòng chọn một Collection có sản phẩm từ Shopify Admin để hiển thị khối Complete Your Table.</p>
+        </div>
+      {%- endif -%}
+    {%- endif -%}
+
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Custom Mat Cross-Sell",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background Color",
+      "default": "#FCFAF8"
+    },
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Collection Source"
+    },
+    {
+      "type": "range",
+      "id": "products_to_show",
+      "min": 2,
+      "max": 8,
+      "step": 1,
+      "label": "Products to Show",
+      "default": 4
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow Text",
+      "default": "PERFECT COMPANIONS"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Complete Your Table"
+    },
+    {
+      "type": "textarea",
+      "id": "subtitle",
+      "label": "Subtitle",
+      "default": "Pair your bespoke custom mat with our luxury American Mahjong tile sets, crystal acrylic racks, and quilted bags."
+    },
+    {
+      "type": "range",
+      "id": "container_max_width",
+      "min": 1000,
+      "max": 1400,
+      "step": 20,
+      "unit": "px",
+      "label": "Container Max Width",
+      "default": 1280
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 20,
+      "max": 120,
+      "step": 2,
+      "unit": "px",
+      "label": "Padding Top",
+      "default": 72
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 20,
+      "max": 120,
+      "step": 2,
+      "unit": "px",
+      "label": "Padding Bottom",
+      "default": 80
+    }
+  ],
+  "presets": [
+    {
+      "name": "Custom Mat Cross-Sell"
+    }
+  ]
+}
+{% endschema %}

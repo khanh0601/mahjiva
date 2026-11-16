@@ -1,0 +1,2291 @@
+{%- comment -%}
+  -----------------------------------------------------------------------------
+  SECTION: LUXURY CUSTOM MAT HERO & BESPOKE ATELIER PDP STUDIO
+  - 100% Dynamic Shopify Architecture (Zero Hardcoded Blocks)
+  - All right-column elements are modular Shopify Blocks (Add / Remove / Reorder / Customize):
+      * 'badge': Atelier Eyebrow Tag
+      * 'title': Product Title (Dynamic from Shopify Product or Custom override)
+      * 'rating': Star Rating & Reviews Count
+      * 'price': Dynamic Shopify Price, Compare Price & Stock Status
+      * 'customizer_text': Monogram / Name text fields
+      * 'customizer_font': Lettering style selector
+      * 'customizer_palette': Mat color palette swatches
+      * 'customizer_motif': Design motif selector
+      * 'customizer_upload': File upload area
+      * 'customizer_notes': Artist notes textarea
+      * 'buy_buttons': Quantity selector, AJAX Add to Cart & Buy It Now
+      * 'trust_badges': Reassurance 4-grid badges
+      * 'collapsible_tab': Unlimited expandable product accordions
+      * 'text': Rich text description
+      * 'custom_liquid': Custom liquid/HTML code injection
+  -----------------------------------------------------------------------------
+{%- endcomment -%}
+
+{%- assign custom_mat_product = section.settings.custom_product -%}
+{%- if custom_mat_product == blank and product != blank -%}
+  {%- assign custom_mat_product = product -%}
+{%- endif -%}
+{%- if custom_mat_product == blank -%}
+  {%- assign custom_mat_product = all_products['tiger-peony-mahjong-mat'] -%}
+{%- endif -%}
+{%- if custom_mat_product == blank -%}
+  {%- assign custom_mat_product = collections['mats'].products.first -%}
+{%- endif -%}
+{%- if custom_mat_product == blank -%}
+  {%- assign custom_mat_product = collections.all.products.first -%}
+{%- endif -%}
+
+{%- assign current_variant = custom_mat_product.selected_or_first_available_variant | default: custom_mat_product.variants.first -%}
+
+{%- comment -%}
+  Personalizer (data-driven): active when the 'personalizer' block is added AND the product
+  has steps in product.metafields.custom.personalization_options. The first text / second text /
+  first font / first color step drive the live preview; every swatch step with a Layer Image
+  gets its own preview layer.
+{%- endcomment -%}
+{%- assign pz_block = section.blocks | where: 'type', 'personalizer' | first -%}
+{%- assign pz_options = custom_mat_product.metafields.custom.personalization_options.value -%}
+{%- assign pz_active = false -%}
+{%- if pz_block != blank and pz_options != blank -%}
+  {%- assign pz_active = true -%}
+{%- endif -%}
+{%- assign pz_text_1 = '' -%}
+{%- assign pz_text_1_title = '' -%}
+{%- assign pz_text_2 = '' -%}
+{%- assign pz_text_2_title = '' -%}
+{%- assign pz_font = '' -%}
+{%- assign pz_color = '' -%}
+{%- assign pz_layer_keys = '' -%}
+{%- if pz_active -%}
+  {%- for pz_opt in pz_options -%}
+    {%- assign pz_opt_type = pz_opt.type.value -%}
+    {%- assign pz_opt_key = pz_opt.system.handle -%}
+    {%- case pz_opt_type -%}
+      {%- when 'text' -%}
+        {%- if pz_text_1 == '' -%}
+          {%- assign pz_text_1 = pz_opt_key -%}
+          {%- assign pz_text_1_title = pz_opt.title.value -%}
+        {%- elsif pz_text_2 == '' -%}
+          {%- assign pz_text_2 = pz_opt_key -%}
+          {%- assign pz_text_2_title = pz_opt.title.value -%}
+        {%- endif -%}
+      {%- when 'font' -%}
+        {%- if pz_font == '' -%}{%- assign pz_font = pz_opt_key -%}{%- endif -%}
+      {%- when 'color_swatch' -%}
+        {%- if pz_color == '' -%}{%- assign pz_color = pz_opt_key -%}{%- endif -%}
+    {%- endcase -%}
+    {%- if pz_opt_type == 'image_swatch' or pz_opt_type == 'color_swatch' or pz_opt_type == 'dropdown' -%}
+      {%- assign pz_layer_keys = pz_layer_keys | append: pz_opt_key | append: ',' -%}
+    {%- endif -%}
+  {%- endfor -%}
+{%- endif -%}
+
+<style>
+  #CustomMatHero-{{ section.id }},
+  #CustomMatHero-{{ section.id }} * {
+    box-sizing: border-box !important;
+  }
+
+  #CustomMatHero-{{ section.id }} {
+    background-color: {{ section.settings.bg_color | default: '#FCFAF8' }};
+    padding-top: {{ section.settings.padding_top | default: 32 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | default: 64 }}px;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    color: #141517;
+    position: relative;
+    overflow-x: clip;
+  }
+
+  .cmh-container {
+    max-width: {{ section.settings.container_max_width | default: 1280 }}px;
+    margin: 0 auto;
+    padding: 0 24px;
+    width: 100%;
+  }
+
+  @media (max-width: 767px) {
+    #CustomMatHero-{{ section.id }} {
+      padding-top: 20px;
+      padding-bottom: 44px;
+    }
+    .cmh-container {
+      padding: 0 16px;
+    }
+  }
+
+  /* Breadcrumb Navigation */
+  .cmh-breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #7A7571;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+  }
+  .cmh-breadcrumb a {
+    color: #7A7571;
+    text-decoration: none;
+    transition: color 0.2s ease;
+  }
+  .cmh-breadcrumb a:hover {
+    color: #163327;
+  }
+  .cmh-breadcrumb .cmh-sep {
+    color: #B89768;
+    font-size: 9px;
+  }
+
+  /* Grid Layout (PDP Two Columns) */
+  .cmh-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 36px;
+    align-items: start;
+  }
+
+  @media (min-width: 992px) {
+    .cmh-grid {
+      grid-template-columns: 1.05fr 0.95fr;
+      gap: 52px;
+    }
+  }
+
+  @media (min-width: 1200px) {
+    .cmh-grid {
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 64px;
+    }
+  }
+
+  /* Sticky Left Column */
+  .cmh-stage-sticky {
+    position: relative;
+  }
+  @media (min-width: 992px) {
+    .cmh-stage-sticky {
+      position: sticky;
+      top: 100px;
+    }
+  }
+
+  /* Mode Switcher Tabs */
+  .cmh-mode-tabs {
+    display: inline-flex;
+    background: #EFECE6;
+    padding: 4px;
+    border-radius: 9999px;
+    margin-bottom: 16px;
+    gap: 4px;
+    border: 1px solid #E2DDD5;
+  }
+  .cmh-mode-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 7px 16px;
+    border-radius: 9999px;
+    border: none;
+    background: transparent;
+    font-size: 11.5px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    color: #5C5651;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  .cmh-mode-btn:hover {
+    color: #163327;
+  }
+  .cmh-mode-btn.is-active {
+    background: #FFFFFF;
+    color: #163327;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  }
+
+  /* Stage Frame */
+  .cmh-stage-frame {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    max-height: 560px;
+    background: #0d2218;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 16px 40px rgba(22, 51, 39, 0.12), 0 2px 10px rgba(0, 0, 0, 0.04);
+    border: 1px solid rgba(22, 51, 39, 0.15);
+  }
+
+  /* Live Canvas Preview Stage */
+  .cmh-preview-box {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 32px;
+    background-color: #163327;
+    transition: background-color 0.4s ease;
+  }
+
+  .cmh-preview-border {
+    position: absolute;
+    inset: 18px;
+    border: 1.5px solid rgba(226, 199, 142, 0.45);
+    border-radius: 8px;
+    pointer-events: none;
+  }
+  .cmh-preview-border::after {
+    content: '';
+    position: absolute;
+    inset: 6px;
+    border: 0.5px dashed rgba(226, 199, 142, 0.25);
+    border-radius: 4px;
+  }
+
+  .cmh-wind-marker {
+    position: absolute;
+    font-family: var(--font-heading-family, "Cormorant Garamond", Garamond, Georgia, serif);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    color: rgba(226, 199, 142, 0.7);
+    text-transform: uppercase;
+  }
+  .cmh-wind-north { top: 26px; left: 50%; transform: translateX(-50%); }
+  .cmh-wind-south { bottom: 26px; left: 50%; transform: translateX(-50%); }
+  .cmh-wind-east  { right: 26px; top: 50%; transform: translateY(-50%); }
+  .cmh-wind-west  { left: 26px; top: 50%; transform: translateY(-50%); }
+
+  .cmh-preview-center {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    max-width: 82%;
+    padding: 24px;
+    border-radius: 12px;
+  }
+  .cmh-preview-icon-wrapper {
+    margin: 0 auto 14px;
+    width: 64px;
+    height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #E2C78E;
+  }
+  .cmh-preview-title {
+    font-family: var(--font-heading-family, "Cormorant Garamond", Garamond, Georgia, serif);
+    font-size: 26px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    color: #FAF8F5;
+    text-transform: uppercase;
+    text-shadow: 0 2px 14px rgba(0, 0, 0, 0.45);
+    margin: 0 0 6px 0;
+    line-height: 1.15;
+    word-break: break-word;
+    transition: all 0.2s ease;
+  }
+  @media (min-width: 768px) {
+    .cmh-preview-title {
+      font-size: 32px;
+    }
+  }
+  .cmh-preview-sub {
+    font-size: 11px;
+    letter-spacing: 0.22em;
+    font-weight: 500;
+    color: rgba(226, 199, 142, 0.85);
+    text-transform: uppercase;
+    text-shadow: 0 1px 8px rgba(0, 0, 0, 0.3);
+    margin: 0;
+  }
+  .cmh-preview-badge-bottom {
+    position: absolute;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(9, 23, 16, 0.75);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    border: 1px solid rgba(226, 199, 142, 0.35);
+    border-radius: 9999px;
+    padding: 4px 14px;
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    font-weight: 600;
+    color: #FAF8F5;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  /* Photos Stage Frame */
+  .cmh-photo-stage {
+    position: absolute;
+    inset: 0;
+    display: none;
+    background: #0d2218;
+  }
+  .cmh-photo-stage.is-active {
+    display: block;
+  }
+  .cmh-photo-stage img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  /* Thumbnails Track */
+  .cmh-thumbs-track {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 14px;
+    overflow-x: auto;
+    padding-bottom: 6px;
+    scrollbar-width: thin;
+  }
+  .cmh-thumb-item {
+    position: relative;
+    flex-shrink: 0;
+    width: 64px;
+    height: 64px;
+    border-radius: 10px;
+    border: 2px solid transparent;
+    cursor: pointer;
+    overflow: hidden;
+    background: #FAF8F5;
+    transition: all 0.2s ease;
+  }
+  .cmh-thumb-item:hover {
+    border-color: #B89768;
+    transform: translateY(-2px);
+  }
+  .cmh-thumb-item.is-active {
+    border-color: #163327;
+    box-shadow: 0 0 0 1px #163327, 0 4px 12px rgba(22, 51, 39, 0.25);
+  }
+  .cmh-thumb-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  .cmh-thumb-preview-label {
+    width: 100%;
+    height: 100%;
+    background: #163327;
+    color: #E2C78E;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    line-height: 1.1;
+    border: 1px solid rgba(226, 199, 142, 0.3);
+  }
+
+  /* Right Column (PDP Buy Box Form Container) */
+  .cmh-form-column {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  /* Block: Badge */
+  .cmh-badge-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: #F4EFE6;
+    color: #8C6D3B;
+    border: 1px solid #E6DBC9;
+    padding: 5px 12px;
+    border-radius: 9999px;
+    font-size: 10.5px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    width: fit-content;
+  }
+
+  /* Block: Product Title */
+  .cmh-title {
+    font-family: var(--font-heading-family, "Cormorant Garamond", Garamond, Georgia, serif);
+    font-size: 32px;
+    font-weight: 700;
+    line-height: 1.15;
+    color: #141517;
+    margin: 0;
+    letter-spacing: -0.01em;
+  }
+  @media (min-width: 768px) {
+    .cmh-title {
+      font-size: 38px;
+    }
+  }
+
+  /* Block: Rating */
+  .cmh-rating-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12.5px;
+    color: #5C5651;
+    flex-wrap: wrap;
+  }
+  .cmh-stars {
+    color: #D4AF37;
+    letter-spacing: 2px;
+    font-size: 13px;
+  }
+  .cmh-rating-dot {
+    color: #C8C2BA;
+  }
+
+  /* Block: Price */
+  .cmh-price-block {
+    display: flex;
+    align-items: baseline;
+    gap: 14px;
+    flex-wrap: wrap;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #ECE7E1;
+  }
+  .cmh-price-current {
+    font-family: var(--font-heading-family, "Cormorant Garamond", Garamond, Georgia, serif);
+    font-size: 34px;
+    font-weight: 700;
+    color: #141517;
+    letter-spacing: -0.01em;
+    line-height: 1;
+  }
+  .cmh-price-compare {
+    font-size: 20px;
+    color: #8A857D;
+    text-decoration: line-through;
+  }
+  .cmh-price-badge {
+    background: #EAF3EC;
+    color: #163327;
+    border: 1px solid #C8E0CD;
+    border-radius: 6px;
+    padding: 4px 10px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  .cmh-stock-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    color: #2E5C38;
+    font-weight: 600;
+    margin-top: 6px;
+  }
+  .cmh-stock-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #2E5C38;
+    box-shadow: 0 0 0 3px rgba(46, 92, 56, 0.18);
+  }
+
+  /* Customizer Card Containers */
+  .cmh-customizer-card {
+    background: #FAF8F5;
+    border: 1px solid #ECE7E1;
+    border-radius: 12px;
+    padding: 16px 18px;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  }
+  .cmh-customizer-card:hover {
+    border-color: #D8D1C7;
+  }
+  .cmh-step-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+  }
+  .cmh-step-title {
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: #141517;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .cmh-step-num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: #163327;
+    color: #FFFFFF;
+    font-size: 11px;
+    font-weight: 700;
+  }
+  .cmh-step-help {
+    font-size: 11px;
+    color: #7A7571;
+  }
+
+  /* Text Inputs */
+  .cmh-input-text {
+    width: 100%;
+    padding: 11px 14px;
+    border: 1.5px solid #DCD6CF;
+    border-radius: 8px;
+    font-size: 14.5px;
+    color: #141517;
+    background: #FFFFFF;
+    transition: all 0.2s ease;
+    font-family: inherit;
+  }
+  .cmh-input-text:focus {
+    outline: none;
+    border-color: #163327;
+    box-shadow: 0 0 0 3px rgba(22, 51, 39, 0.1);
+  }
+
+  /* Font Pills */
+  .cmh-pills-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+  }
+  @media (min-width: 480px) {
+    .cmh-pills-grid {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+  .cmh-pill-label {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 9px 6px;
+    border: 1.5px solid #E6E1DC;
+    border-radius: 8px;
+    background: #FFFFFF;
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.2s ease;
+  }
+  .cmh-pill-label:hover {
+    border-color: #163327;
+  }
+  .cmh-pill-label.is-selected {
+    border-color: #163327;
+    background: #F4F7F5;
+    box-shadow: 0 2px 6px rgba(22, 51, 39, 0.1);
+  }
+  .cmh-pill-preview {
+    font-size: 15px;
+    margin-bottom: 2px;
+    color: #141517;
+  }
+  .cmh-pill-name {
+    font-size: 10px;
+    color: #7A7571;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  /* Color Swatches */
+  .cmh-color-swatches {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .cmh-color-btn {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: 2px solid #FFFFFF;
+    box-shadow: 0 0 0 1px #DCD6CF;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  .cmh-color-btn:hover {
+    transform: scale(1.1);
+  }
+  .cmh-color-btn.is-active {
+    box-shadow: 0 0 0 2px #163327;
+    transform: scale(1.1);
+  }
+
+  /* Motifs Grid */
+  .cmh-motif-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+  }
+  .cmh-motif-card {
+    border: 1.5px solid #E6E1DC;
+    border-radius: 8px;
+    padding: 9px 6px;
+    text-align: center;
+    cursor: pointer;
+    background: #FFFFFF;
+    transition: all 0.2s ease;
+  }
+  .cmh-motif-card:hover {
+    border-color: #163327;
+  }
+  .cmh-motif-card.is-active {
+    border-color: #163327;
+    background: #F4F7F5;
+    box-shadow: 0 2px 6px rgba(22, 51, 39, 0.1);
+  }
+  .cmh-motif-emoji {
+    font-size: 18px;
+    display: block;
+    margin-bottom: 2px;
+  }
+  .cmh-motif-title {
+    font-size: 10.5px;
+    font-weight: 600;
+    color: #141517;
+    line-height: 1.2;
+  }
+
+  /* Upload Box */
+  .cmh-upload-area {
+    border: 1.5px dashed #C8C2BA;
+    border-radius: 8px;
+    padding: 14px;
+    text-align: center;
+    background: #FFFFFF;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  .cmh-upload-area:hover {
+    border-color: #163327;
+    background: #FAF8F5;
+  }
+  .cmh-upload-icon {
+    font-size: 18px;
+    margin-bottom: 2px;
+  }
+  .cmh-upload-text {
+    font-size: 12px;
+    font-weight: 600;
+    color: #163327;
+    margin: 0 0 2px 0;
+  }
+  .cmh-upload-sub {
+    font-size: 10px;
+    color: #7A7571;
+    margin: 0;
+  }
+  .cmh-file-input {
+    display: none;
+  }
+  .cmh-file-chosen-name {
+    margin-top: 6px;
+    font-size: 11px;
+    font-weight: 600;
+    color: #163327;
+    display: none;
+  }
+
+  /* Special Notes Textarea */
+  .cmh-textarea {
+    width: 100%;
+    padding: 10px 14px;
+    border: 1.5px solid #DCD6CF;
+    border-radius: 8px;
+    font-size: 13px;
+    color: #141517;
+    background: #FFFFFF;
+    resize: vertical;
+    min-height: 56px;
+    font-family: inherit;
+  }
+  .cmh-textarea:focus {
+    outline: none;
+    border-color: #163327;
+    box-shadow: 0 0 0 3px rgba(22, 51, 39, 0.1);
+  }
+
+  /* Quantity & Dual Action Buttons */
+  .cmh-actions-group {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 6px;
+  }
+
+  .cmh-qty-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .cmh-qty-label {
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: #141517;
+  }
+  .cmh-qty-selector {
+    display: inline-flex;
+    align-items: center;
+    border: 1.5px solid #DCD6CF;
+    border-radius: 8px;
+    background: #FFFFFF;
+    overflow: hidden;
+  }
+  .cmh-qty-btn {
+    background: transparent;
+    border: none;
+    width: 36px;
+    height: 38px;
+    font-size: 18px;
+    font-weight: 500;
+    color: #141517;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.2s ease;
+  }
+  .cmh-qty-btn:hover {
+    background: #EFECE6;
+  }
+  .cmh-qty-input {
+    width: 44px;
+    height: 38px;
+    border: none;
+    border-left: 1px solid #ECE7E1;
+    border-right: 1px solid #ECE7E1;
+    text-align: center;
+    font-size: 14px;
+    font-weight: 600;
+    color: #141517;
+    -moz-appearance: textfield;
+  }
+  .cmh-qty-input::-webkit-outer-spin-button,
+  .cmh-qty-input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  /* Primary & Secondary Buttons */
+  .cmh-btn-primary {
+    width: 100%;
+    background: #163327;
+    color: #FFFFFF;
+    border: none;
+    border-radius: 10px;
+    padding: 16px 22px;
+    font-size: 14.5px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    box-shadow: 0 4px 16px rgba(22, 51, 39, 0.22);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+  }
+  .cmh-btn-primary:hover:not(:disabled) {
+    background: #0F221A;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(22, 51, 39, 0.32);
+  }
+  .cmh-btn-primary:disabled {
+    opacity: 0.65;
+    cursor: not-allowed;
+  }
+
+  .cmh-btn-secondary {
+    width: 100%;
+    background: transparent;
+    color: #163327;
+    border: 1.5px solid #163327;
+    border-radius: 10px;
+    padding: 14px 22px;
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+  .cmh-btn-secondary:hover:not(:disabled) {
+    background: #163327;
+    color: #FFFFFF;
+  }
+
+  /* Loading Spinner */
+  .cmh-spinner-svg {
+    width: 18px;
+    height: 18px;
+    animation: cmhSpin 0.8s linear infinite;
+  }
+  @keyframes cmhSpin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+
+  /* Trust Badges Grid */
+  .cmh-trust-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+    margin-top: 4px;
+  }
+  @media (min-width: 480px) {
+    .cmh-trust-grid {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+  .cmh-trust-item {
+    background: #FAF8F5;
+    border: 1px solid #ECE7E1;
+    border-radius: 8px;
+    padding: 10px 6px;
+    text-align: center;
+  }
+  .cmh-trust-icon {
+    font-size: 15px;
+    margin-bottom: 2px;
+    display: block;
+  }
+  .cmh-trust-text {
+    font-size: 9.5px;
+    font-weight: 600;
+    color: #4A4541;
+    line-height: 1.3;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+
+  /* Product Accordions (PDP standard) */
+  .cmh-accordions {
+    margin-top: 6px;
+    border-top: 1px solid #ECE7E1;
+  }
+  .cmh-accordion-item {
+    border-bottom: 1px solid #ECE7E1;
+  }
+  .cmh-accordion-summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 0;
+    font-size: 13.5px;
+    font-weight: 600;
+    color: #141517;
+    cursor: pointer;
+    list-style: none;
+    user-select: none;
+  }
+  .cmh-accordion-summary::-webkit-details-marker {
+    display: none;
+  }
+  .cmh-accordion-icon {
+    font-size: 16px;
+    color: #7A7571;
+    transition: transform 0.2s ease;
+  }
+  .cmh-accordion-item[open] .cmh-accordion-icon {
+    transform: rotate(45deg);
+  }
+  .cmh-accordion-body {
+    padding: 0 0 16px 0;
+    font-size: 13px;
+    line-height: 1.6;
+    color: #5C5651;
+  }
+  .cmh-accordion-body ul {
+    margin: 0;
+    padding-left: 18px;
+  }
+  .cmh-accordion-body li {
+    margin-bottom: 6px;
+  }
+
+  /* Empty state in theme editor */
+  .cmh-empty-state-notice {
+    padding: 24px;
+    border: 2px dashed #DCD6CF;
+    border-radius: 12px;
+    text-align: center;
+    background: #FAF8F5;
+    color: #5C5651;
+    font-size: 13px;
+  }
+</style>
+
+<section id="CustomMatHero-{{ section.id }}" class="cmh-section" data-pz-scope>
+  <div class="cmh-container">
+    
+    <!-- Breadcrumb Navigation -->
+    <nav class="cmh-breadcrumb" aria-label="Breadcrumb">
+      <a href="/">Mahjiva</a>
+      <span class="cmh-sep">/</span>
+      <a href="/collections/mats">Mahjong Mats</a>
+      <span class="cmh-sep">/</span>
+      <span style="color: #141517; font-weight: 600;">{{ custom_mat_product.title | default: 'Custom Mahjong Mat — Hand-Drawn Just for You' }}</span>
+    </nav>
+
+    <div class="cmh-grid">
+      
+      <!-- LEFT COLUMN: Stage with Live Preview & Photos -->
+      <div class="cmh-stage-column">
+        <div class="cmh-stage-sticky">
+          
+          <!-- Mode Tabs -->
+          <div class="cmh-mode-tabs">
+            <button type="button" class="cmh-mode-btn is-active" id="btnModePreview-{{ section.id }}" onclick="switchCmhMode('preview', '{{ section.id }}')">
+              <span>🎨</span> Live Preview Studio
+            </button>
+            <button type="button" class="cmh-mode-btn" id="btnModePhotos-{{ section.id }}" onclick="switchCmhMode('photos', '{{ section.id }}')">
+              <span>📷</span> Photos & Details ({{ custom_mat_product.media.size | default: 4 }})
+            </button>
+          </div>
+
+          <!-- Main Stage Frame -->
+          <div class="cmh-stage-frame">
+            
+            <!-- LIVE CANVAS PREVIEW -->
+            <div class="cmh-preview-box" id="cmhPreviewBox-{{ section.id }}"{% if pz_active and pz_color != '' %} data-pz-bg="{{ pz_color }}"{% endif %}>
+              <div class="cmh-preview-border"></div>
+
+              {%- if pz_active and pz_layer_keys != '' -%}
+                <div class="pz-layers" aria-hidden="true">
+                  {%- assign pz_layer_list = pz_layer_keys | split: ',' -%}
+                  {%- for pz_layer_key in pz_layer_list -%}
+                    {%- if pz_layer_key != blank -%}
+                      <img data-pz-layer="{{ pz_layer_key }}" alt="" width="1600" height="1600" hidden>
+                    {%- endif -%}
+                  {%- endfor -%}
+                </div>
+              {%- endif -%}
+              
+              <!-- Traditional Wind Markers -->
+              <span class="cmh-wind-marker cmh-wind-north">N · 北</span>
+              <span class="cmh-wind-marker cmh-wind-south">S · 南</span>
+              <span class="cmh-wind-marker cmh-wind-east">E · 東</span>
+              <span class="cmh-wind-marker cmh-wind-west">W · 西</span>
+              
+              <!-- Center Monogram / Crest -->
+              <div class="cmh-preview-center">
+                <div class="cmh-preview-icon-wrapper" id="cmhPreviewIconWrap-{{ section.id }}">
+                  <svg class="cmh-preview-icon" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <circle cx="32" cy="32" r="28" stroke="currentColor" stroke-dasharray="2 3"/>
+                    <path d="M32 10 L35 25 L50 28 L37 36 L41 51 L32 41 L23 51 L27 36 L14 28 L29 25 Z" fill="currentColor" fill-opacity="0.15"/>
+                    <circle cx="32" cy="32" r="16" stroke="currentColor"/>
+                  </svg>
+                </div>
+                {%- if pz_active -%}
+                  <h3
+                    class="cmh-preview-title{% if pz_text_1 != '' %} pz-is-empty{% endif %}"
+                    id="cmhPreviewTitle-{{ section.id }}"
+                    {% if pz_text_1 != '' %}data-pz-text="{{ pz_text_1 }}" data-pz-empty="{{ pz_text_1_title | escape }}"{% endif %}
+                    {% if pz_font != '' %}data-pz-font="{{ pz_font }}"{% endif %}
+                  >{{ pz_text_1_title }}</h3>
+                  {%- if pz_text_2 != '' -%}
+                    <p
+                      class="cmh-preview-sub pz-is-empty"
+                      id="cmhPreviewSub-{{ section.id }}"
+                      data-pz-text="{{ pz_text_2 }}"
+                      data-pz-empty="{{ pz_text_2_title | escape }}"
+                      {% if pz_font != '' %}data-pz-font="{{ pz_font }}"{% endif %}
+                    >{{ pz_text_2_title }}</p>
+                  {%- endif -%}
+                {%- else -%}
+                  <h3 class="cmh-preview-title" id="cmhPreviewTitle-{{ section.id }}">SARAH &amp; JANE</h3>
+                  <p class="cmh-preview-sub" id="cmhPreviewSub-{{ section.id }}">EST. 2026 · THURSDAY NIGHT CLUB</p>
+                {%- endif -%}
+              </div>
+
+              <div class="cmh-preview-badge-bottom">
+                {{ section.settings.mat_dimensions | default: '31.5" × 31.5" · High-Density Natural Rubber' }}
+              </div>
+            </div>
+
+            <!-- PHOTOS STAGE -->
+            <div class="cmh-photo-stage" id="cmhPhotoStage-{{ section.id }}">
+              {%- if custom_mat_product.featured_media -%}
+                <img id="cmhPhotoActive-{{ section.id }}" src="{{ custom_mat_product.featured_media | image_url: width: 1200 }}" alt="{{ custom_mat_product.title | escape }}">
+              {%- else -%}
+                <img id="cmhPhotoActive-{{ section.id }}" src="{{ 'Mats_Custom3_8df24f2c-9ee9-45a4-8463-4941278d7dd7.jpg' | asset_url | default: 'https://www.aloxo.store/cdn/shop/files/Mats_Custom20_96cd5514-649e-429c-98b6-2886cd64eccb.jpg?v=1787543350' }}" alt="Custom Mahjong Mat Hand Drawn">
+              {%- endif -%}
+            </div>
+
+          </div>
+
+          <!-- Thumbnails Track (Shopify Product Media) -->
+          <div class="cmh-thumbs-track">
+            <!-- First thumb is Live Studio -->
+            <div class="cmh-thumb-item is-active" onclick="switchCmhMode('preview', '{{ section.id }}')">
+              <div class="cmh-thumb-preview-label">
+                <span>LIVE</span>
+                <span>STUDIO</span>
+              </div>
+            </div>
+
+            {%- if custom_mat_product.media.size > 0 -%}
+              {%- for media in custom_mat_product.media -%}
+                <div class="cmh-thumb-item" onclick="selectCmhPhoto('{{ media | image_url: width: 1200 }}', this, '{{ section.id }}')">
+                  <img src="{{ media | image_url: width: 140, height: 140, crop: 'center' }}" alt="{{ media.alt | default: custom_mat_product.title | escape }}">
+                </div>
+              {%- endfor -%}
+            {%- else -%}
+              <div class="cmh-thumb-item" onclick="selectCmhPhoto('https://www.aloxo.store/cdn/shop/files/Mats_Custom20_96cd5514-649e-429c-98b6-2886cd64eccb.jpg?v=1787543350', this, '{{ section.id }}')">
+                <img src="https://www.aloxo.store/cdn/shop/files/Mats_Custom20_96cd5514-649e-429c-98b6-2886cd64eccb.jpg?v=1787543350" alt="Mat Overview">
+              </div>
+              <div class="cmh-thumb-item" onclick="selectCmhPhoto('https://www.aloxo.store/cdn/shop/files/Mats_Custom3_8df24f2c-9ee9-45a4-8463-4941278d7dd7.jpg?v=1787542875', this, '{{ section.id }}')">
+                <img src="https://www.aloxo.store/cdn/shop/files/Mats_Custom3_8df24f2c-9ee9-45a4-8463-4941278d7dd7.jpg?v=1787542875" alt="Art Deco Sample">
+              </div>
+            {%- endif -%}
+          </div>
+
+        </div>
+      </div>
+
+      <!-- RIGHT COLUMN: Buy Box & Modular Shopify Blocks -->
+      <div class="cmh-form-column">
+
+        <!-- Shopify Cart Form with Line Item Properties -->
+        {%- form 'product', custom_mat_product, id: 'CustomMatForm', class: 'cmh-form', enctype: 'multipart/form-data' -%}
+          <input type="hidden" name="id" value="{{ current_variant.id }}">
+
+          {%- unless pz_active -%}
+          <!-- Hidden Form Properties connected to JS (legacy customizer blocks only) -->
+          <input type="hidden" name="properties[Monogram / Text]" id="propMonogramText" value="SARAH & JANE">
+          <input type="hidden" name="properties[Subtitle / Year]" id="propSubtitleYear" value="EST. 2026 · THURSDAY NIGHT CLUB">
+          <input type="hidden" name="properties[Lettering Style]" id="propLetteringStyle" value="Art Deco Serif">
+          <input type="hidden" name="properties[Design Direction]" id="propDesignDirection" value="Art Deco Ballroom">
+          <input type="hidden" name="properties[Mat Color Palette]" id="propBaseColor" value="Emerald Forest (#163327)">
+          {%- endunless -%}
+
+          <div style="display: flex; flex-direction: column; gap: 14px;">
+            
+            {%- if section.blocks.size == 0 -%}
+              {%- if request.design_mode -%}
+                <div class="cmh-empty-state-notice">
+                  <strong>Khối tùy biến đang trống</strong>
+                  <p>Vui lòng nhấn <em>"Thêm khối" (Add Block)</em> ở cột bên trái của Theme Editor để thêm Tiêu đề, Giá, Các bước Customizer, Nút mua hàng, Accordion...</p>
+                </div>
+              {%- endif -%}
+            {%- else -%}
+              
+              {%- for block in section.blocks -%}
+                {%- case block.type -%}
+                  
+                  {%- when 'badge' -%}
+                    <div class="cmh-badge-tag" {{ block.shopify_attributes }}>
+                      <span>{{ block.settings.icon | default: '✦' }}</span>
+                      <span>{{ block.settings.text | default: '1-of-1 Bespoke Atelier · 3 Original Proofs' }}</span>
+                    </div>
+
+                  {%- when 'title' -%}
+                    <h1 class="cmh-title" {{ block.shopify_attributes }}>
+                      {{ block.settings.title | default: custom_mat_product.title | default: 'Custom Mahjong Mat — Hand-Drawn Just for You' }}
+                    </h1>
+
+                  {%- when 'rating' -%}
+                    <div class="cmh-rating-row" {{ block.shopify_attributes }}>
+                      <span class="cmh-stars">{{ block.settings.stars | default: '★★★★★' }}</span>
+                      <span style="font-weight: 600;">{{ block.settings.rating_score | default: '5.0' }} ({{ block.settings.reviews_count | default: '148 reviews' }})</span>
+                      {%- if block.settings.subtext != blank -%}
+                        <span class="cmh-rating-dot">•</span>
+                        <span>{{ block.settings.subtext }}</span>
+                      {%- endif -%}
+                    </div>
+
+                  {%- when 'price' -%}
+                    <div {{ block.shopify_attributes }}>
+                      <div class="cmh-price-block">
+                        <span class="cmh-price-current">
+                          {{ current_variant.price | money }}
+                        </span>
+                        {%- if current_variant.compare_at_price > current_variant.price -%}
+                          <span class="cmh-price-compare">
+                            {{ current_variant.compare_at_price | money }}
+                          </span>
+                        {%- endif -%}
+                        {%- if block.settings.shipping_badge != blank -%}
+                          <span class="cmh-price-badge">
+                            {{ block.settings.shipping_badge }}
+                          </span>
+                        {%- endif -%}
+                      </div>
+
+                      {%- if block.settings.show_stock -%}
+                        <div class="cmh-stock-row">
+                          {%- if current_variant.available -%}
+                            <span class="cmh-stock-dot"></span>
+                            <span>{{ block.settings.in_stock_text | default: 'In Stock · Bespoke Hand-Drawn to Order in Atelier' }}</span>
+                          {%- else -%}
+                            <span class="cmh-stock-dot" style="background: #999;"></span>
+                            <span style="color: #777;">{{ block.settings.sold_out_text | default: 'Currently Sold Out' }}</span>
+                          {%- endif -%}
+                        </div>
+                      {%- endif -%}
+                    </div>
+
+                  {%- when 'customizer_text' -%}
+                    <div class="cmh-customizer-card" {{ block.shopify_attributes }}>
+                      <div class="cmh-step-header">
+                        <span class="cmh-step-title">
+                          <span class="cmh-step-num">{{ block.settings.step_num | default: '1' }}</span>
+                          {{ block.settings.heading | default: 'Your Name, Monogram or Club' }}
+                        </span>
+                        <span class="cmh-step-help">{{ block.settings.help_text | default: 'Live preview updates' }}</span>
+                      </div>
+                      <input 
+                        type="text" 
+                        class="cmh-input-text" 
+                        id="cmhInputMainText-{{ section.id }}" 
+                        placeholder="{{ block.settings.placeholder_main | default: 'e.g. THE SOCIAL CLUB or K & M' }}" 
+                        value="{{ block.settings.default_main | default: 'SARAH & JANE' }}"
+                        oninput="updateCmhText('{{ section.id }}')"
+                        maxlength="36"
+                      >
+                      <div style="margin-top: 8px;">
+                        <input 
+                          type="text" 
+                          class="cmh-input-text" 
+                          id="cmhInputSubText-{{ section.id }}" 
+                          placeholder="{{ block.settings.placeholder_sub | default: 'Subline: e.g. EST. 1998 · THURSDAYS' }}" 
+                          value="{{ block.settings.default_sub | default: 'EST. 2026 · THURSDAY NIGHT CLUB' }}"
+                          oninput="updateCmhText('{{ section.id }}')"
+                          maxlength="45"
+                          style="font-size: 13px;"
+                        >
+                      </div>
+                    </div>
+
+                  {%- when 'customizer_font' -%}
+                    <div class="cmh-customizer-card" {{ block.shopify_attributes }}>
+                      <div class="cmh-step-header">
+                        <span class="cmh-step-title">
+                          <span class="cmh-step-num">{{ block.settings.step_num | default: '2' }}</span>
+                          {{ block.settings.heading | default: 'Lettering Style' }}
+                        </span>
+                        <span class="cmh-step-help">{{ block.settings.help_text | default: 'Drawn by artist' }}</span>
+                      </div>
+                      <div class="cmh-pills-grid">
+                        <div class="cmh-pill-label is-selected" onclick="selectCmhFont('Art Deco Serif', 'serif', this, '{{ section.id }}')">
+                          <span class="cmh-pill-preview" style="font-family: Georgia, serif;">Abc</span>
+                          <span class="cmh-pill-name">{{ block.settings.font_1_label | default: 'Art Deco' }}</span>
+                        </div>
+                        <div class="cmh-pill-label" onclick="selectCmhFont('Atelier Script', 'cursive', this, '{{ section.id }}')">
+                          <span class="cmh-pill-preview" style="font-family: cursive; font-style: italic;">Abc</span>
+                          <span class="cmh-pill-name">{{ block.settings.font_2_label | default: 'Script' }}</span>
+                        </div>
+                        <div class="cmh-pill-label" onclick="selectCmhFont('Modern Sans', 'sans-serif', this, '{{ section.id }}')">
+                          <span class="cmh-pill-preview" style="font-family: sans-serif; font-weight: 700;">ABC</span>
+                          <span class="cmh-pill-name">{{ block.settings.font_3_label | default: 'Modern' }}</span>
+                        </div>
+                        <div class="cmh-pill-label" onclick="selectCmhFont('Roman Classic', 'Times New Roman, serif', this, '{{ section.id }}')">
+                          <span class="cmh-pill-preview" style="font-family: 'Times New Roman', serif;">ABC</span>
+                          <span class="cmh-pill-name">{{ block.settings.font_4_label | default: 'Classic' }}</span>
+                        </div>
+                      </div>
+                    </div>
+
+                  {%- when 'customizer_palette' -%}
+                    <div class="cmh-customizer-card" {{ block.shopify_attributes }}>
+                      <div class="cmh-step-header">
+                        <span class="cmh-step-title">
+                          <span class="cmh-step-num">{{ block.settings.step_num | default: '3' }}</span>
+                          {{ block.settings.heading | default: 'Mat Color Palette' }}
+                        </span>
+                        <span class="cmh-step-help" id="cmhColorName-{{ section.id }}">{{ block.settings.color_1_name | default: 'Emerald Forest' }}</span>
+                      </div>
+                      <div class="cmh-color-swatches">
+                        <button type="button" class="cmh-color-btn is-active" style="background: {{ block.settings.color_1_hex | default: '#163327' }};" title="{{ block.settings.color_1_name | default: 'Emerald Forest' }}" onclick="selectCmhColor('{{ block.settings.color_1_hex | default: '#163327' }}', '{{ block.settings.color_1_name | default: 'Emerald Forest' }}', this, '{{ section.id }}')"></button>
+                        <button type="button" class="cmh-color-btn" style="background: {{ block.settings.color_2_hex | default: '#7F5260' }};" title="{{ block.settings.color_2_name | default: 'Royal Plum' }}" onclick="selectCmhColor('{{ block.settings.color_2_hex | default: '#7F5260' }}', '{{ block.settings.color_2_name | default: 'Royal Plum' }}', this, '{{ section.id }}')"></button>
+                        <button type="button" class="cmh-color-btn" style="background: {{ block.settings.color_3_hex | default: '#1A2844' }};" title="{{ block.settings.color_3_name | default: 'Midnight Navy' }}" onclick="selectCmhColor('{{ block.settings.color_3_hex | default: '#1A2844' }}', '{{ block.settings.color_3_name | default: 'Midnight Navy' }}', this, '{{ section.id }}')"></button>
+                        <button type="button" class="cmh-color-btn" style="background: {{ block.settings.color_4_hex | default: '#2B2825' }};" title="{{ block.settings.color_4_name | default: 'Obsidian Noir' }}" onclick="selectCmhColor('{{ block.settings.color_4_hex | default: '#2B2825' }}', '{{ block.settings.color_4_name | default: 'Obsidian Noir' }}', this, '{{ section.id }}')"></button>
+                        <button type="button" class="cmh-color-btn" style="background: {{ block.settings.color_5_hex | default: '#8E4A38' }};" title="{{ block.settings.color_5_name | default: 'Terracotta Rust' }}" onclick="selectCmhColor('{{ block.settings.color_5_hex | default: '#8E4A38' }}', '{{ block.settings.color_5_name | default: 'Terracotta Rust' }}', this, '{{ section.id }}')"></button>
+                      </div>
+                    </div>
+
+                  {%- when 'customizer_motif' -%}
+                    <div class="cmh-customizer-card" {{ block.shopify_attributes }}>
+                      <div class="cmh-step-header">
+                        <span class="cmh-step-title">
+                          <span class="cmh-step-num">{{ block.settings.step_num | default: '4' }}</span>
+                          {{ block.settings.heading | default: 'Initial Design Motif' }}
+                        </span>
+                        <span class="cmh-step-help">{{ block.settings.help_text | default: 'Họa sĩ sẽ vẽ 3 mẫu' }}</span>
+                      </div>
+                      <div class="cmh-motif-grid">
+                        <div class="cmh-motif-card is-active" onclick="selectCmhMotif('{{ block.settings.motif_1_title | default: 'Art Deco Ballroom' }}', '{{ block.settings.motif_1_icon | default: '🏛️' }}', this, '{{ section.id }}')">
+                          <span class="cmh-motif-emoji">{{ block.settings.motif_1_icon | default: '🏛️' }}</span>
+                          <span class="cmh-motif-title">{{ block.settings.motif_1_title | default: 'Art Deco' }}</span>
+                        </div>
+                        <div class="cmh-motif-card" onclick="selectCmhMotif('{{ block.settings.motif_2_title | default: 'Botanical Wreath & Birds' }}', '{{ block.settings.motif_2_icon | default: '🌸' }}', this, '{{ section.id }}')">
+                          <span class="cmh-motif-emoji">{{ block.settings.motif_2_icon | default: '🌸' }}</span>
+                          <span class="cmh-motif-title">{{ block.settings.motif_2_title | default: 'Botanical' }}</span>
+                        </div>
+                        <div class="cmh-motif-card" onclick="selectCmhMotif('{{ block.settings.motif_3_title | default: 'Family Crest Monogram' }}', '{{ block.settings.motif_3_icon | default: '🛡️' }}', this, '{{ section.id }}')">
+                          <span class="cmh-motif-emoji">{{ block.settings.motif_3_icon | default: '🛡️' }}</span>
+                          <span class="cmh-motif-title">{{ block.settings.motif_3_title | default: 'Crest' }}</span>
+                        </div>
+                        <div class="cmh-motif-card" onclick="selectCmhMotif('{{ block.settings.motif_4_title | default: 'Midnight & Your Pet' }}', '{{ block.settings.motif_4_icon | default: '🐾' }}', this, '{{ section.id }}')">
+                          <span class="cmh-motif-emoji">{{ block.settings.motif_4_icon | default: '🐾' }}</span>
+                          <span class="cmh-motif-title">{{ block.settings.motif_4_title | default: 'Your Pet' }}</span>
+                        </div>
+                        <div class="cmh-motif-card" onclick="selectCmhMotif('{{ block.settings.motif_5_title | default: 'Coastal Ocean Waves' }}', '{{ block.settings.motif_5_icon | default: '🌊' }}', this, '{{ section.id }}')">
+                          <span class="cmh-motif-emoji">{{ block.settings.motif_5_icon | default: '🌊' }}</span>
+                          <span class="cmh-motif-title">{{ block.settings.motif_5_title | default: 'Coastal' }}</span>
+                        </div>
+                        <div class="cmh-motif-card" onclick="selectCmhMotif('{{ block.settings.motif_6_title | default: 'Asian Dragons & Clouds' }}', '{{ block.settings.motif_6_icon | default: '🐉' }}', this, '{{ section.id }}')">
+                          <span class="cmh-motif-emoji">{{ block.settings.motif_6_icon | default: '🐉' }}</span>
+                          <span class="cmh-motif-title">{{ block.settings.motif_6_title | default: 'Dragon' }}</span>
+                        </div>
+                      </div>
+                    </div>
+
+                  {%- when 'customizer_upload' -%}
+                    <div class="cmh-customizer-card" {{ block.shopify_attributes }}>
+                      <div class="cmh-step-header">
+                        <span class="cmh-step-title">
+                          <span class="cmh-step-num">{{ block.settings.step_num | default: '5' }}</span>
+                          {{ block.settings.heading | default: 'Upload Reference / Pet Photo' }}
+                        </span>
+                        <span class="cmh-step-help">{{ block.settings.help_text | default: 'Optional' }}</span>
+                      </div>
+                      <div class="cmh-upload-area" onclick="document.getElementById('cmhFileUpload-{{ section.id }}').click()">
+                        <div class="cmh-upload-icon">{{ block.settings.upload_icon | default: '📷' }}</div>
+                        <p class="cmh-upload-text">{{ block.settings.prompt_text | default: 'Click or drag photo here' }}</p>
+                        <p class="cmh-upload-sub">{{ block.settings.sub_text | default: 'PNG, JPG, or PDF (Pet photo, crest, or sketch)' }}</p>
+                        <span class="cmh-file-chosen-name" id="cmhFileName-{{ section.id }}"></span>
+                      </div>
+                      <input 
+                        type="file" 
+                        name="properties[Uploaded Reference]" 
+                        id="cmhFileUpload-{{ section.id }}" 
+                        class="cmh-file-input" 
+                        accept="image/*,.pdf"
+                        onchange="handleCmhFileUpload(this, '{{ section.id }}')"
+                      >
+                    </div>
+
+                  {%- when 'personalizer' -%}
+                    <div class="cmh-personalizer-block" {{ block.shopify_attributes }}>
+                      {%- render 'mahjiva-personalizer', product: custom_mat_product, section_id: section.id -%}
+                    </div>
+
+                  {%- when 'customizer_notes' -%}
+                    <div class="cmh-customizer-card" {{ block.shopify_attributes }}>
+                      <div class="cmh-step-header">
+                        <span class="cmh-step-title">
+                          <span class="cmh-step-num">{{ block.settings.step_num | default: '6' }}</span>
+                          {{ block.settings.heading | default: 'Special Requests for Artist' }}
+                        </span>
+                        <span class="cmh-step-help">{{ block.settings.help_text | default: 'Optional' }}</span>
+                      </div>
+                      <textarea 
+                        class="cmh-textarea" 
+                        name="properties[Artist Notes]" 
+                        placeholder="{{ block.settings.placeholder | default: 'Tell us any special wishes, e.g., Please include our dog Daisy on the bottom-right corner and use soft gold accents.' }}"
+                      ></textarea>
+                    </div>
+
+                  {%- when 'buy_buttons' -%}
+                    <div class="cmh-actions-group" {{ block.shopify_attributes }}>
+                      
+                      {%- if block.settings.show_quantity -%}
+                        <div class="cmh-qty-row">
+                          <span class="cmh-qty-label">{{ block.settings.quantity_label | default: 'Quantity:' }}</span>
+                          <div class="cmh-qty-selector">
+                            <button type="button" class="cmh-qty-btn" onclick="changeCmhQty(-1, '{{ section.id }}')" aria-label="Decrease quantity">−</button>
+                            <input 
+                              type="number" 
+                              name="quantity" 
+                              id="Quantity-{{ section.id }}" 
+                              class="cmh-qty-input" 
+                              value="1" 
+                              min="1" 
+                              max="99" 
+                              aria-label="Quantity"
+                            >
+                            <button type="button" class="cmh-qty-btn" onclick="changeCmhQty(1, '{{ section.id }}')" aria-label="Increase quantity">+</button>
+                          </div>
+                        </div>
+                      {%- endif -%}
+
+                      <!-- Primary Button: AJAX Add to Cart & Open Drawer -->
+                      <button 
+                        type="button" 
+                        class="cmh-btn-primary" 
+                        id="cmhAddToCartBtn-{{ section.id }}"
+                        onclick="handleCmhAddToCart('add', '{{ section.id }}')"
+                        {% unless current_variant.available %}disabled{% endunless %}
+                      >
+                        <span class="cmh-btn-text">
+                          {% if current_variant.available %}
+                            {{ block.settings.atc_button_text | default: 'ADD TO CART' }} — {{ current_variant.price | money }}
+                          {% else %}
+                            SOLD OUT
+                          {% endif %}
+                        </span>
+                        <span class="cmh-btn-spinner" style="display: none; align-items: center; gap: 8px;">
+                          <svg class="cmh-spinner-svg" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="3" fill="none" stroke-dasharray="32" stroke-linecap="round"></circle></svg>
+                          <span>Adding to Cart...</span>
+                        </span>
+                      </button>
+
+                      <!-- Secondary Button: Buy It Now Direct Checkout -->
+                      {%- if block.settings.show_buy_now and current_variant.available -%}
+                        <button 
+                          type="button" 
+                          class="cmh-btn-secondary" 
+                          id="cmhBuyNowBtn-{{ section.id }}"
+                          onclick="handleCmhAddToCart('checkout', '{{ section.id }}')"
+                        >
+                          <span>{{ block.settings.buy_now_text | default: 'BUY IT NOW' }}</span>
+                          <span>→</span>
+                        </button>
+                      {%- endif -%}
+
+                    </div>
+
+                  {%- when 'trust_badges' -%}
+                    <div class="cmh-trust-grid" {{ block.shopify_attributes }}>
+                      <div class="cmh-trust-item">
+                        <span class="cmh-trust-icon">{{ block.settings.badge_1_icon | default: '🎨' }}</span>
+                        <span class="cmh-trust-text">{{ block.settings.badge_1_text | default: '3 Proofs in 24h' }}</span>
+                      </div>
+                      <div class="cmh-trust-item">
+                        <span class="cmh-trust-icon">{{ block.settings.badge_2_icon | default: '✍️' }}</span>
+                        <span class="cmh-trust-text">{{ block.settings.badge_2_text | default: '3 Revisions' }}</span>
+                      </div>
+                      <div class="cmh-trust-item">
+                        <span class="cmh-trust-icon">{{ block.settings.badge_3_icon | default: '🛡️' }}</span>
+                        <span class="cmh-trust-text">{{ block.settings.badge_3_text | default: 'Approval First' }}</span>
+                      </div>
+                      <div class="cmh-trust-item">
+                        <span class="cmh-trust-icon">{{ block.settings.badge_4_icon | default: '✈️' }}</span>
+                        <span class="cmh-trust-text">{{ block.settings.badge_4_text | default: 'Free Shipping' }}</span>
+                      </div>
+                    </div>
+
+                  {%- when 'collapsible_tab' -%}
+                    <div class="cmh-accordions" {{ block.shopify_attributes }}>
+                      <details class="cmh-accordion-item" {% if block.settings.open_by_default %}open{% endif %}>
+                        <summary class="cmh-accordion-summary">
+                          <span>{{ block.settings.heading | default: 'Product Specifications' }}</span>
+                          <span class="cmh-accordion-icon">+</span>
+                        </summary>
+                        <div class="cmh-accordion-body">
+                          {{ block.settings.content }}
+                        </div>
+                      </details>
+                    </div>
+
+                  {%- when 'text' -%}
+                    <div class="cmh-text-block" {{ block.shopify_attributes }}>
+                      {{ block.settings.text }}
+                    </div>
+
+                  {%- when 'custom_liquid' -%}
+                    <div class="cmh-custom-liquid-block" {{ block.shopify_attributes }}>
+                      {{ block.settings.custom_liquid }}
+                    </div>
+
+                {%- endcase -%}
+              {%- endfor -%}
+
+            {%- endif -%}
+
+          </div>
+        {%- endform -%}
+
+      </div>
+
+    </div>
+
+  </div>
+</section>
+
+<script>
+  function switchCmhMode(mode, sectionId) {
+    const btnPreview = document.getElementById('btnModePreview-' + sectionId);
+    const btnPhotos = document.getElementById('btnModePhotos-' + sectionId);
+    const previewBox = document.getElementById('cmhPreviewBox-' + sectionId);
+    const photoStage = document.getElementById('cmhPhotoStage-' + sectionId);
+
+    if (mode === 'preview') {
+      if (btnPreview) btnPreview.classList.add('is-active');
+      if (btnPhotos) btnPhotos.classList.remove('is-active');
+      if (previewBox) previewBox.style.display = 'flex';
+      if (photoStage) photoStage.classList.remove('is-active');
+    } else {
+      if (btnPhotos) btnPhotos.classList.add('is-active');
+      if (btnPreview) btnPreview.classList.remove('is-active');
+      if (previewBox) previewBox.style.display = 'none';
+      if (photoStage) photoStage.classList.add('is-active');
+    }
+  }
+
+  function selectCmhPhoto(imgSrc, thumbEl, sectionId) {
+    switchCmhMode('photos', sectionId);
+    const activePhoto = document.getElementById('cmhPhotoActive-' + sectionId);
+    if (activePhoto) activePhoto.src = imgSrc;
+    
+    if (thumbEl && thumbEl.parentElement) {
+      const track = thumbEl.parentElement;
+      track.querySelectorAll('.cmh-thumb-item').forEach(el => el.classList.remove('is-active'));
+      thumbEl.classList.add('is-active');
+    }
+  }
+
+  function updateCmhText(sectionId) {
+    const mainInput = document.getElementById('cmhInputMainText-' + sectionId);
+    const subInput = document.getElementById('cmhInputSubText-' + sectionId);
+    const previewTitle = document.getElementById('cmhPreviewTitle-' + sectionId);
+    const previewSub = document.getElementById('cmhPreviewSub-' + sectionId);
+
+    const mainVal = (mainInput && mainInput.value ? mainInput.value : '').trim() || 'YOUR NAME / CLUB';
+    const subVal = (subInput && subInput.value ? subInput.value : '').trim() || 'EST. 2026';
+
+    if (previewTitle) previewTitle.textContent = mainVal;
+    if (previewSub) previewSub.textContent = subVal;
+
+    const propMonogram = document.getElementById('propMonogramText');
+    const propSubtitle = document.getElementById('propSubtitleYear');
+    if (propMonogram) propMonogram.value = mainVal;
+    if (propSubtitle) propSubtitle.value = subVal;
+  }
+
+  function selectCmhFont(fontName, fontFamilyCss, pillEl, sectionId) {
+    const previewTitle = document.getElementById('cmhPreviewTitle-' + sectionId);
+    if (previewTitle) previewTitle.style.fontFamily = fontFamilyCss;
+
+    if (pillEl && pillEl.parentElement) {
+      const parent = pillEl.parentElement;
+      parent.querySelectorAll('.cmh-pill-label').forEach(el => el.classList.remove('is-selected'));
+      pillEl.classList.add('is-selected');
+    }
+
+    const propFont = document.getElementById('propLetteringStyle');
+    if (propFont) propFont.value = fontName;
+  }
+
+  function selectCmhColor(hex, colorName, btnEl, sectionId) {
+    const previewBox = document.getElementById('cmhPreviewBox-' + sectionId);
+    const colorLabel = document.getElementById('cmhColorName-' + sectionId);
+
+    if (previewBox) previewBox.style.backgroundColor = hex;
+    if (colorLabel) colorLabel.textContent = colorName;
+
+    if (btnEl && btnEl.parentElement) {
+      const parent = btnEl.parentElement;
+      parent.querySelectorAll('.cmh-color-btn').forEach(el => el.classList.remove('is-active'));
+      btnEl.classList.add('is-active');
+    }
+
+    const propColor = document.getElementById('propBaseColor');
+    if (propColor) propColor.value = colorName + ' (' + hex + ')';
+  }
+
+  function selectCmhMotif(motifName, emoji, cardEl, sectionId) {
+    const iconWrap = document.getElementById('cmhPreviewIconWrap-' + sectionId);
+    if (iconWrap) {
+      iconWrap.innerHTML = '<span style="font-size: 38px; filter: drop-shadow(0 4px 10px rgba(0,0,0,0.3));">' + emoji + '</span>';
+    }
+
+    if (cardEl && cardEl.parentElement) {
+      const parent = cardEl.parentElement;
+      parent.querySelectorAll('.cmh-motif-card').forEach(el => el.classList.remove('is-active'));
+      cardEl.classList.add('is-active');
+    }
+
+    const propMotif = document.getElementById('propDesignDirection');
+    if (propMotif) propMotif.value = motifName;
+  }
+
+  function handleCmhFileUpload(inputEl, sectionId) {
+    const nameLabel = document.getElementById('cmhFileName-' + sectionId);
+    if (inputEl && inputEl.files && inputEl.files[0] && nameLabel) {
+      nameLabel.textContent = '✓ Selected: ' + inputEl.files[0].name;
+      nameLabel.style.display = 'block';
+    }
+  }
+
+  function changeCmhQty(delta, sectionId) {
+    const qtyInput = document.getElementById('Quantity-' + sectionId);
+    if (!qtyInput) return;
+    let current = parseInt(qtyInput.value, 10) || 1;
+    current = Math.max(1, Math.min(99, current + delta));
+    qtyInput.value = current;
+  }
+
+  async function handleCmhAddToCart(mode, sectionId) {
+    const form = document.getElementById('CustomMatForm');
+    if (!form) return;
+    if (typeof form.reportValidity === 'function' && !form.reportValidity()) return;
+
+    const atcBtn = document.getElementById('cmhAddToCartBtn-' + sectionId);
+    const buyBtn = document.getElementById('cmhBuyNowBtn-' + sectionId);
+    const btnText = atcBtn ? atcBtn.querySelector('.cmh-btn-text') : null;
+    const btnSpinner = atcBtn ? atcBtn.querySelector('.cmh-btn-spinner') : null;
+
+    if (btnText && btnSpinner) {
+      btnText.style.display = 'none';
+      btnSpinner.style.display = 'inline-flex';
+    }
+    if (atcBtn) atcBtn.disabled = true;
+    if (buyBtn) buyBtn.disabled = true;
+
+    try {
+      const formData = new FormData(form);
+      formData.set('sections', 'cart-drawer,cart-icon-bubble');
+      formData.set('sections_url', window.location.pathname);
+
+      const response = await fetch('/cart/add.js', {
+        method: 'POST',
+        headers: {
+          'X-Requested-With': 'XMLHttpRequest'
+        },
+        body: formData
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.description || data.message || 'Error adding item to cart');
+      }
+
+      if (mode === 'checkout') {
+        window.location.href = '/checkout';
+        return;
+      }
+
+      // Success visual feedback
+      if (btnText && btnSpinner) {
+        btnSpinner.style.display = 'none';
+        btnText.innerHTML = '✓ Added to Cart!';
+        btnText.style.display = 'inline-block';
+      }
+
+      // Update and open cart drawer if available
+      const cartDrawer = document.querySelector('cart-drawer');
+      if (cartDrawer && typeof cartDrawer.renderContents === 'function' && data.sections) {
+        cartDrawer.renderContents(data);
+      } else {
+        // Fallback: update header bubble count if present
+        fetch('/cart.js')
+          .then(res => res.json())
+          .then(cart => {
+            const bubbles = document.querySelectorAll('.cart-count-bubble, [id^="cart-icon-bubble"]');
+            bubbles.forEach(b => {
+              b.textContent = cart.item_count;
+              b.classList.remove('is-empty');
+            });
+          })
+          .catch(() => {});
+      }
+
+      setTimeout(() => {
+        if (btnText) {
+          btnText.innerHTML = 'ADD TO CART — {{ current_variant.price | money }}';
+        }
+        if (atcBtn) atcBtn.disabled = false;
+        if (buyBtn) buyBtn.disabled = false;
+      }, 2500);
+
+    } catch (err) {
+      console.error('Cart add error:', err);
+      alert('Could not add item to cart: ' + err.message);
+      if (btnText && btnSpinner) {
+        btnSpinner.style.display = 'none';
+        btnText.style.display = 'inline-block';
+      }
+      if (atcBtn) atcBtn.disabled = false;
+      if (buyBtn) buyBtn.disabled = false;
+    }
+  }
+</script>
+
+{% schema %}
+{
+  "name": "Custom Mat PDP Studio",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "product",
+      "id": "custom_product",
+      "label": "Associated Product for Dynamic Data & Cart",
+      "info": "Select the Mahjong Mat product from Shopify Admin"
+    },
+    {
+      "type": "text",
+      "id": "mat_dimensions",
+      "label": "Dimensions Badge on Canvas",
+      "default": "31.5\" × 31.5\" · High-Density Natural Rubber"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background Color",
+      "default": "#FCFAF8"
+    },
+    {
+      "type": "range",
+      "id": "container_max_width",
+      "min": 1000,
+      "max": 1400,
+      "step": 20,
+      "unit": "px",
+      "label": "Container Max Width",
+      "default": 1280
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 10,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "label": "Padding Top",
+      "default": 32
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 20,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding Bottom",
+      "default": 64
+    }
+  ],
+  "blocks": [
+    {
+      "type": "personalizer",
+      "name": "Personalization steps",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "paragraph",
+          "content": "Renders the steps assigned to this product in Products → Metafields → Personalization Options. Edit steps and choices in Content → Metaobjects (Personalization Option / Personalization Value). Remove the old 'Step: ...' blocks when using this block."
+        }
+      ]
+    },
+    {
+      "type": "badge",
+      "name": "Eyebrow Badge",
+      "settings": [
+        {
+          "type": "text",
+          "id": "icon",
+          "label": "Icon / Symbol",
+          "default": "✦"
+        },
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Badge Text",
+          "default": "1-of-1 Bespoke Atelier · 3 Original Proofs"
+        }
+      ]
+    },
+    {
+      "type": "title",
+      "name": "Product Title",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Custom Title Override",
+          "info": "Leave blank to dynamically use the Shopify product title"
+        }
+      ]
+    },
+    {
+      "type": "rating",
+      "name": "Rating & Reviews",
+      "settings": [
+        {
+          "type": "text",
+          "id": "stars",
+          "label": "Stars",
+          "default": "★★★★★"
+        },
+        {
+          "type": "text",
+          "id": "rating_score",
+          "label": "Score",
+          "default": "5.0"
+        },
+        {
+          "type": "text",
+          "id": "reviews_count",
+          "label": "Reviews Count",
+          "default": "148 reviews"
+        },
+        {
+          "type": "text",
+          "id": "subtext",
+          "label": "Approval Guarantee Subtext",
+          "default": "100% Hand-Drawn Approval"
+        }
+      ]
+    },
+    {
+      "type": "price",
+      "name": "Price & Inventory",
+      "settings": [
+        {
+          "type": "text",
+          "id": "shipping_badge",
+          "label": "Shipping Badge",
+          "default": "Free Worldwide Shipping Included"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_stock",
+          "label": "Show Stock Status",
+          "default": true
+        },
+        {
+          "type": "text",
+          "id": "in_stock_text",
+          "label": "In Stock Text",
+          "default": "In Stock · Bespoke Hand-Drawn to Order in Atelier"
+        },
+        {
+          "type": "text",
+          "id": "sold_out_text",
+          "label": "Sold Out Text",
+          "default": "Currently Sold Out"
+        }
+      ]
+    },
+    {
+      "type": "customizer_text",
+      "name": "Step: Name & Monogram",
+      "settings": [
+        {
+          "type": "text",
+          "id": "step_num",
+          "label": "Step Number",
+          "default": "1"
+        },
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Step Heading",
+          "default": "Your Name, Monogram or Club"
+        },
+        {
+          "type": "text",
+          "id": "help_text",
+          "label": "Help Text",
+          "default": "Live preview updates"
+        },
+        {
+          "type": "text",
+          "id": "placeholder_main",
+          "label": "Main Input Placeholder",
+          "default": "e.g. THE SOCIAL CLUB or K & M"
+        },
+        {
+          "type": "text",
+          "id": "default_main",
+          "label": "Main Input Default Value",
+          "default": "SARAH & JANE"
+        },
+        {
+          "type": "text",
+          "id": "placeholder_sub",
+          "label": "Subline Input Placeholder",
+          "default": "Subline: e.g. EST. 1998 · THURSDAYS"
+        },
+        {
+          "type": "text",
+          "id": "default_sub",
+          "label": "Subline Input Default Value",
+          "default": "EST. 2026 · THURSDAY NIGHT CLUB"
+        }
+      ]
+    },
+    {
+      "type": "customizer_font",
+      "name": "Step: Lettering Style",
+      "settings": [
+        {
+          "type": "text",
+          "id": "step_num",
+          "label": "Step Number",
+          "default": "2"
+        },
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Step Heading",
+          "default": "Lettering Style"
+        },
+        {
+          "type": "text",
+          "id": "help_text",
+          "label": "Help Text",
+          "default": "Drawn by artist"
+        },
+        {
+          "type": "text",
+          "id": "font_1_label",
+          "label": "Font 1 Label",
+          "default": "Art Deco"
+        },
+        {
+          "type": "text",
+          "id": "font_2_label",
+          "label": "Font 2 Label",
+          "default": "Script"
+        },
+        {
+          "type": "text",
+          "id": "font_3_label",
+          "label": "Font 3 Label",
+          "default": "Modern"
+        },
+        {
+          "type": "text",
+          "id": "font_4_label",
+          "label": "Font 4 Label",
+          "default": "Classic"
+        }
+      ]
+    },
+    {
+      "type": "customizer_palette",
+      "name": "Step: Color Palette",
+      "settings": [
+        {
+          "type": "text",
+          "id": "step_num",
+          "label": "Step Number",
+          "default": "3"
+        },
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Step Heading",
+          "default": "Mat Color Palette"
+        },
+        {
+          "type": "text",
+          "id": "color_1_name",
+          "label": "Color 1 Name",
+          "default": "Emerald Forest"
+        },
+        {
+          "type": "color",
+          "id": "color_1_hex",
+          "label": "Color 1 Hex",
+          "default": "#163327"
+        },
+        {
+          "type": "text",
+          "id": "color_2_name",
+          "label": "Color 2 Name",
+          "default": "Royal Plum"
+        },
+        {
+          "type": "color",
+          "id": "color_2_hex",
+          "label": "Color 2 Hex",
+          "default": "#7F5260"
+        },
+        {
+          "type": "text",
+          "id": "color_3_name",
+          "label": "Color 3 Name",
+          "default": "Midnight Navy"
+        },
+        {
+          "type": "color",
+          "id": "color_3_hex",
+          "label": "Color 3 Hex",
+          "default": "#1A2844"
+        },
+        {
+          "type": "text",
+          "id": "color_4_name",
+          "label": "Color 4 Name",
+          "default": "Obsidian Noir"
+        },
+        {
+          "type": "color",
+          "id": "color_4_hex",
+          "label": "Color 4 Hex",
+          "default": "#2B2825"
+        },
+        {
+          "type": "text",
+          "id": "color_5_name",
+          "label": "Color 5 Name",
+          "default": "Terracotta Rust"
+        },
+        {
+          "type": "color",
+          "id": "color_5_hex",
+          "label": "Color 5 Hex",
+          "default": "#8E4A38"
+        }
+      ]
+    },
+    {
+      "type": "customizer_motif",
+      "name": "Step: Design Motif",
+      "settings": [
+        {
+          "type": "text",
+          "id": "step_num",
+          "label": "Step Number",
+          "default": "4"
+        },
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Step Heading",
+          "default": "Initial Design Motif"
+        },
+        {
+          "type": "text",
+          "id": "help_text",
+          "label": "Help Text",
+          "default": "Họa sĩ sẽ vẽ 3 mẫu"
+        },
+        {
+          "type": "text",
+          "id": "motif_1_icon",
+          "label": "Motif 1 Icon",
+          "default": "🏛️"
+        },
+        {
+          "type": "text",
+          "id": "motif_1_title",
+          "label": "Motif 1 Title",
+          "default": "Art Deco"
+        },
+        {
+          "type": "text",
+          "id": "motif_2_icon",
+          "label": "Motif 2 Icon",
+          "default": "🌸"
+        },
+        {
+          "type": "text",
+          "id": "motif_2_title",
+          "label": "Motif 2 Title",
+          "default": "Botanical"
+        },
+        {
+          "type": "text",
+          "id": "motif_3_icon",
+          "label": "Motif 3 Icon",
+          "default": "🛡️"
+        },
+        {
+          "type": "text",
+          "id": "motif_3_title",
+          "label": "Motif 3 Title",
+          "default": "Crest"
+        },
+        {
+          "type": "text",
+          "id": "motif_4_icon",
+          "label": "Motif 4 Icon",
+          "default": "🐾"
+        },
+        {
+          "type": "text",
+          "id": "motif_4_title",
+          "label": "Motif 4 Title",
+          "default": "Your Pet"
+        },
+        {
+          "type": "text",
+          "id": "motif_5_icon",
+          "label": "Motif 5 Icon",
+          "default": "🌊"
+        },
+        {
+          "type": "text",
+          "id": "motif_5_title",
+          "label": "Motif 5 Title",
+          "default": "Coastal"
+        },
+        {
+          "type": "text",
+          "id": "motif_6_icon",
+          "label": "Motif 6 Icon",
+          "default": "🐉"
+        },
+        {
+          "type": "text",
+          "id": "motif_6_title",
+          "label": "Motif 6 Title",
+          "default": "Dragon"
+        }
+      ]
+    },
+    {
+      "type": "customizer_upload",
+      "name": "Step: Upload Photo",
+      "settings": [
+        {
+          "type": "text",
+          "id": "step_num",
+          "label": "Step Number",
+          "default": "5"
+        },
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Step Heading",
+          "default": "Upload Reference / Pet Photo"
+        },
+        {
+          "type": "text",
+          "id": "help_text",
+          "label": "Help Text",
+          "default": "Optional"
+        },
+        {
+          "type": "text",
+          "id": "upload_icon",
+          "label": "Icon",
+          "default": "📷"
+        },
+        {
+          "type": "text",
+          "id": "prompt_text",
+          "label": "Prompt Text",
+          "default": "Click or drag photo here"
+        },
+        {
+          "type": "text",
+          "id": "sub_text",
+          "label": "Sub Text",
+          "default": "PNG, JPG, or PDF (Pet photo, crest, or sketch)"
+        }
+      ]
+    },
+    {
+      "type": "customizer_notes",
+      "name": "Step: Artist Notes",
+      "settings": [
+        {
+          "type": "text",
+          "id": "step_num",
+          "label": "Step Number",
+          "default": "6"
+        },
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Step Heading",
+          "default": "Special Requests for Artist"
+        },
+        {
+          "type": "text",
+          "id": "help_text",
+          "label": "Help Text",
+          "default": "Optional"
+        },
+        {
+          "type": "text",
+          "id": "placeholder",
+          "label": "Placeholder Text",
+          "default": "Tell us any special wishes, e.g., Please include our dog Daisy on the bottom-right corner and use soft gold accents."
+        }
+      ]
+    },
+    {
+      "type": "buy_buttons",
+      "name": "Buy & Cart Buttons",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "checkbox",
+          "id": "show_quantity",
+          "label": "Show Quantity Selector",
+          "default": true
+        },
+        {
+          "type": "text",
+          "id": "quantity_label",
+          "label": "Quantity Label",
+          "default": "Quantity:"
+        },
+        {
+          "type": "text",
+          "id": "atc_button_text",
+          "label": "Add to Cart Button Text",
+          "default": "ADD TO CART"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_buy_now",
+          "label": "Show Buy It Now Button",
+          "default": true
+        },
+        {
+          "type": "text",
+          "id": "buy_now_text",
+          "label": "Buy It Now Button Text",
+          "default": "BUY IT NOW"
+        }
+      ]
+    },
+    {
+      "type": "trust_badges",
+      "name": "Trust & Service Grid",
+      "settings": [
+        {
+          "type": "text",
+          "id": "badge_1_icon",
+          "label": "Badge 1 Icon",
+          "default": "🎨"
+        },
+        {
+          "type": "text",
+          "id": "badge_1_text",
+          "label": "Badge 1 Text",
+          "default": "3 Proofs in 24h"
+        },
+        {
+          "type": "text",
+          "id": "badge_2_icon",
+          "label": "Badge 2 Icon",
+          "default": "✍️"
+        },
+        {
+          "type": "text",
+          "id": "badge_2_text",
+          "label": "Badge 2 Text",
+          "default": "3 Revisions"
+        },
+        {
+          "type": "text",
+          "id": "badge_3_icon",
+          "label": "Badge 3 Icon",
+          "default": "🛡️"
+        },
+        {
+          "type": "text",
+          "id": "badge_3_text",
+          "label": "Badge 3 Text",
+          "default": "Approval First"
+        },
+        {
+          "type": "text",
+          "id": "badge_4_icon",
+          "label": "Badge 4 Icon",
+          "default": "✈️"
+        },
+        {
+          "type": "text",
+          "id": "badge_4_text",
+          "label": "Badge 4 Text",
+          "default": "Free Shipping"
+        }
+      ]
+    },
+    {
+      "type": "collapsible_tab",
+      "name": "Collapsible Tab",
+      "settings": [
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Tab Heading",
+          "default": "Product Specifications & Materials"
+        },
+        {
+          "type": "richtext",
+          "id": "content",
+          "label": "Tab Content"
+        },
+        {
+          "type": "checkbox",
+          "id": "open_by_default",
+          "label": "Open by Default",
+          "default": false
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "name": "Rich Text",
+      "settings": [
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Text Content"
+        }
+      ]
+    },
+    {
+      "type": "custom_liquid",
+      "name": "Custom Liquid",
+      "settings": [
+        {
+          "type": "liquid",
+          "id": "custom_liquid",
+          "label": "Custom Liquid / HTML"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Custom Mat PDP Studio",
+      "blocks": [
+        { "type": "badge" },
+        { "type": "title" },
+        { "type": "rating" },
+        { "type": "price" },
+        { "type": "customizer_text" },
+        { "type": "customizer_font" },
+        { "type": "customizer_palette" },
+        { "type": "customizer_motif" },
+        { "type": "customizer_upload" },
+        { "type": "customizer_notes" },
+        { "type": "buy_buttons" },
+        { "type": "trust_badges" },
+        { "type": "collapsible_tab" }
+      ]
+    }
+  ]
+}
+{% endschema %}

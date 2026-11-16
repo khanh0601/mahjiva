@@ -1,0 +1,550 @@
+{%- comment -%}
+  -----------------------------------------------------------------------------
+  SECTION: LUXURY CUSTOM MAT DIRECTIONS / GALLERY ("A Few Directions to Start From")
+  - 3-Column Visual Direction Cards
+  - 100% Dynamic - ZERO HARDCODED TEXT OR IMAGES:
+    * All images come directly from block.settings.image (or block.settings.custom_image_url)
+    * All titles and descriptions come directly from block.settings
+    * Fully controllable via Shopify Theme Editor (Blocks & Section settings)
+  -----------------------------------------------------------------------------
+{%- endcomment -%}
+
+{%- style -%}
+  #CustomMatGallery-{{ section.id }} {
+    background-color: {{ section.settings.bg_color | default: '#FFFFFF' }};
+    padding-top: {{ section.settings.padding_top_mobile | default: 48 }}px;
+    padding-bottom: {{ section.settings.padding_bottom_mobile | default: 56 }}px;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    color: {{ section.settings.heading_color | default: '#141517' }};
+    position: relative;
+    overflow: hidden;
+  }
+
+  @media (min-width: 768px) {
+    #CustomMatGallery-{{ section.id }} {
+      padding-top: {{ section.settings.padding_top | default: 72 }}px;
+      padding-bottom: {{ section.settings.padding_bottom | default: 80 }}px;
+    }
+  }
+
+  #CustomMatGallery-{{ section.id }} * {
+    box-sizing: border-box !important;
+  }
+
+  .cmg-container-{{ section.id }} {
+    max-width: {{ section.settings.container_max_width | default: 1240 }}px;
+    margin: 0 auto;
+    padding: 0 24px;
+    width: 100%;
+  }
+
+  .cmg-header-{{ section.id }} {
+    text-align: {{ section.settings.header_alignment | default: 'left' }};
+    max-width: {% if section.settings.header_alignment == 'center' %}820px{% else %}100%{% endif %};
+    margin: 0 {% if section.settings.header_alignment == 'center' %}auto{% else %}0{% endif %} 40px {% if section.settings.header_alignment == 'center' %}auto{% else %}0{% endif %};
+  }
+
+  .cmg-title-{{ section.id }} {
+    font-family: var(--font-heading-family, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif);
+    font-size: {{ section.settings.heading_size_mobile | default: 28 }}px;
+    font-weight: 700;
+    line-height: 1.25;
+    color: {{ section.settings.heading_color | default: '#141517' }};
+    margin: 0 0 10px 0;
+    letter-spacing: -0.01em;
+  }
+
+  @media (min-width: 768px) {
+    .cmg-title-{{ section.id }} {
+      font-size: {{ section.settings.heading_size | default: 38 }}px;
+    }
+  }
+
+  .cmg-subtitle-{{ section.id }} {
+    font-size: 15px;
+    line-height: 1.6;
+    color: {{ section.settings.subtitle_color | default: '#55504C' }};
+    margin: 0;
+    max-width: 780px;
+  }
+
+  /* Grid Layout */
+  .cmg-grid-{{ section.id }} {
+    display: grid;
+    grid-template-columns: repeat({{ section.settings.columns_mobile | default: 1 }}, 1fr);
+    gap: 36px 24px;
+  }
+
+  @media (min-width: 640px) {
+    .cmg-grid-{{ section.id }} {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 36px 24px;
+    }
+  }
+
+  @media (min-width: 992px) {
+    .cmg-grid-{{ section.id }} {
+      grid-template-columns: repeat({{ section.settings.columns_desktop | default: 3 }}, 1fr);
+      gap: 40px 28px;
+    }
+  }
+
+  /* Direction Card Item */
+  .cmg-card-item-{{ section.id }} {
+    display: flex;
+    flex-direction: column;
+    text-decoration: none;
+    color: inherit;
+    position: relative;
+    border-radius: {{ section.settings.card_radius | default: 16 }}px;
+    {%- if section.settings.show_card_border -%}
+      border: 1px solid {{ section.settings.card_border_color | default: '#ECE7E1' }};
+      background: {{ section.settings.card_bg | default: '#FFFFFF' }};
+      padding: {{ section.settings.card_padding | default: 16 }}px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03);
+    {%- endif -%}
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .cmg-card-item-{{ section.id }}:hover {
+    transform: translateY(-4px);
+    {%- if section.settings.show_card_border -%}
+      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.07);
+    {%- endif -%}
+  }
+
+  /* Top Text Header */
+  .cmg-card-header-{{ section.id }} {
+    margin-bottom: 14px;
+    display: flex;
+    flex-direction: column;
+    min-height: 64px;
+  }
+
+  .cmg-card-title-{{ section.id }} {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    font-size: 17px;
+    font-weight: 700;
+    color: {{ section.settings.card_heading_color | default: '#141517' }};
+    margin: 0 0 6px 0;
+    line-height: 1.35;
+  }
+
+  .cmg-card-desc-{{ section.id }} {
+    font-size: 13.5px;
+    line-height: 1.5;
+    color: {{ section.settings.card_desc_color | default: '#635E59' }};
+    margin: 0;
+  }
+
+  .cmg-card-desc-{{ section.id }} p {
+    margin: 0;
+    font-size: inherit;
+    line-height: inherit;
+    color: inherit;
+  }
+
+  /* Bottom Image Container */
+  .cmg-card-media-{{ section.id }} {
+    position: relative;
+    width: 100%;
+    aspect-ratio: {% if section.settings.image_aspect_ratio == 'landscape' %}4 / 3{% elsif section.settings.image_aspect_ratio == 'portrait' %}3 / 4{% else %}1 / 1{% endif %};
+    border-radius: {{ section.settings.image_border_radius | default: 16 }}px;
+    overflow: hidden;
+    background: #F4EFEB;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+    border: 1px solid rgba(0, 0, 0, 0.04);
+  }
+
+  .cmg-card-media-{{ section.id }} img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.4s ease;
+  }
+
+  .cmg-card-item-{{ section.id }}:hover .cmg-card-media-{{ section.id }} img {
+    transform: scale(1.04);
+  }
+
+  .cmg-placeholder-svg {
+    width: 100%;
+    height: 100%;
+    fill: #D5CEC7;
+    background: #F4EFEB;
+  }
+{%- endstyle -%}
+
+<section id="CustomMatGallery-{{ section.id }}" class="cmg-section">
+  <div class="cmg-container-{{ section.id }}">
+    
+    {%- if section.settings.heading != blank or section.settings.subtitle != blank -%}
+      <div class="cmg-header-{{ section.id }}">
+        {%- if section.settings.heading != blank -%}
+          <h2 class="cmg-title-{{ section.id }}">{{ section.settings.heading }}</h2>
+        {%- endif -%}
+        {%- if section.settings.subtitle != blank -%}
+          <p class="cmg-subtitle-{{ section.id }}">{{ section.settings.subtitle }}</p>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+
+    <div class="cmg-grid-{{ section.id }}">
+      {%- for block in section.blocks -%}
+        {%- if block.settings.link != blank -%}
+          <a href="{{ block.settings.link }}" class="cmg-card-item-{{ section.id }}" {{ block.shopify_attributes }}>
+        {%- else -%}
+          <div class="cmg-card-item-{{ section.id }}" {{ block.shopify_attributes }}>
+        {%- endif -%}
+
+          <div class="cmg-card-header-{{ section.id }}">
+            {%- if block.settings.heading != blank -%}
+              <h3 class="cmg-card-title-{{ section.id }}">{{ block.settings.heading }}</h3>
+            {%- endif -%}
+            {%- if block.settings.description != blank -%}
+              <div class="cmg-card-desc-{{ section.id }}">{{ block.settings.description }}</div>
+            {%- endif -%}
+          </div>
+
+          <div class="cmg-card-media-{{ section.id }}">
+            {%- if block.settings.image != blank -%}
+              {{ block.settings.image | image_url: width: 600 | image_tag: loading: 'lazy', alt: block.settings.heading }}
+            {%- elsif block.settings.custom_image_url != blank -%}
+              <img src="{{ block.settings.custom_image_url }}" alt="{{ block.settings.heading | escape }}" loading="lazy">
+            {%- else -%}
+              {{ 'image' | placeholder_svg_tag: 'cmg-placeholder-svg' }}
+            {%- endif -%}
+          </div>
+
+        {%- if block.settings.link != blank -%}
+          </a>
+        {%- else -%}
+          </div>
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Custom Mat Directions",
+  "tag": "section",
+  "class": "section",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "settings": [
+    {
+      "type": "header",
+      "content": "Section Header"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "A Few Directions to Start From"
+    },
+    {
+      "type": "range",
+      "id": "heading_size",
+      "min": 24,
+      "max": 60,
+      "step": 2,
+      "unit": "px",
+      "label": "Heading Size (Desktop)",
+      "default": 38
+    },
+    {
+      "type": "range",
+      "id": "heading_size_mobile",
+      "min": 20,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "label": "Heading Size (Mobile)",
+      "default": 28
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading Color",
+      "default": "#141517"
+    },
+    {
+      "type": "textarea",
+      "id": "subtitle",
+      "label": "Subtitle",
+      "default": "You do not have to arrive with a finished idea. Point at one of these and we will take it from there."
+    },
+    {
+      "type": "color",
+      "id": "subtitle_color",
+      "label": "Subtitle Color",
+      "default": "#55504C"
+    },
+    {
+      "type": "select",
+      "id": "header_alignment",
+      "label": "Header Alignment",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "header",
+      "content": "Grid & Card Layout"
+    },
+    {
+      "type": "select",
+      "id": "columns_desktop",
+      "label": "Columns on Desktop",
+      "options": [
+        { "value": "2", "label": "2 Columns" },
+        { "value": "3", "label": "3 Columns" },
+        { "value": "4", "label": "4 Columns" }
+      ],
+      "default": "3"
+    },
+    {
+      "type": "select",
+      "id": "columns_mobile",
+      "label": "Columns on Mobile",
+      "options": [
+        { "value": "1", "label": "1 Column" },
+        { "value": "2", "label": "2 Columns" }
+      ],
+      "default": "1"
+    },
+    {
+      "type": "select",
+      "id": "image_aspect_ratio",
+      "label": "Image Aspect Ratio",
+      "options": [
+        { "value": "square", "label": "Square (1:1)" },
+        { "value": "landscape", "label": "Landscape (4:3)" },
+        { "value": "portrait", "label": "Portrait (3:4)" }
+      ],
+      "default": "square"
+    },
+    {
+      "type": "range",
+      "id": "image_border_radius",
+      "min": 0,
+      "max": 32,
+      "step": 2,
+      "unit": "px",
+      "label": "Image Border Radius",
+      "default": 16
+    },
+    {
+      "type": "color",
+      "id": "card_heading_color",
+      "label": "Card Title Color",
+      "default": "#141517"
+    },
+    {
+      "type": "color",
+      "id": "card_desc_color",
+      "label": "Card Description Color",
+      "default": "#635E59"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_card_border",
+      "label": "Show Card Container Box",
+      "default": false
+    },
+    {
+      "type": "color",
+      "id": "card_bg",
+      "label": "Card Background",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "card_border_color",
+      "label": "Card Border Color",
+      "default": "#ECE7E1"
+    },
+    {
+      "type": "range",
+      "id": "card_radius",
+      "min": 0,
+      "max": 32,
+      "step": 2,
+      "unit": "px",
+      "label": "Card Container Radius",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "card_padding",
+      "min": 8,
+      "max": 32,
+      "step": 2,
+      "unit": "px",
+      "label": "Card Padding (if box enabled)",
+      "default": 16
+    },
+    {
+      "type": "header",
+      "content": "Section Spacing"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Section Background",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "range",
+      "id": "container_max_width",
+      "min": 1000,
+      "max": 1400,
+      "step": 20,
+      "unit": "px",
+      "label": "Container Max Width",
+      "default": 1240
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 160,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding Top (Desktop)",
+      "default": 72
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 160,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding Bottom (Desktop)",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "padding_top_mobile",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding Top (Mobile)",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_mobile",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding Bottom (Mobile)",
+      "default": 56
+    }
+  ],
+  "blocks": [
+    {
+      "type": "direction",
+      "name": "Design Direction",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Direction Image",
+          "info": "Upload or pick image from Shopify media library"
+        },
+        {
+          "type": "text",
+          "id": "custom_image_url",
+          "label": "Or Image URL",
+          "info": "Direct image link or Shopify CDN URL"
+        },
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Direction Title",
+          "default": "Direction Title"
+        },
+        {
+          "type": "textarea",
+          "id": "description",
+          "label": "Direction Description",
+          "default": "Description of this design direction."
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Card Link (Optional)"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Custom Mat Directions",
+      "settings": {
+        "heading": "A Few Directions to Start From",
+        "subtitle": "You do not have to arrive with a finished idea. Point at one of these and we will take it from there.",
+        "header_alignment": "left",
+        "columns_desktop": "3",
+        "bg_color": "#FFFFFF"
+      },
+      "blocks": [
+        {
+          "type": "direction",
+          "settings": {
+            "heading": "Art Deco Monogram",
+            "description": "Two initials in black and gold, geometry borrowed from a 1920s ballroom."
+          }
+        },
+        {
+          "type": "direction",
+          "settings": {
+            "heading": "Blossom & Birds",
+            "description": "Two initials tied with a ribbon, framed by blossom branches and small birds."
+          }
+        },
+        {
+          "type": "direction",
+          "settings": {
+            "heading": "Family Botanical",
+            "description": "A family name inside a hand-drawn wreath of olive, ivy and wildflowers."
+          }
+        },
+        {
+          "type": "direction",
+          "settings": {
+            "heading": "Midnight & Your Cat",
+            "description": "A night sky, gold stars, and the cat who sits on the table anyway."
+          }
+        },
+        {
+          "type": "direction",
+          "settings": {
+            "heading": "Coastal Blue",
+            "description": "A group name, shells and rope, in the soft blues of a summer house."
+          }
+        },
+        {
+          "type": "direction",
+          "settings": {
+            "heading": "Desert Terracotta",
+            "description": "The year you started playing, in warm clay and quiet southwestern lines."
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

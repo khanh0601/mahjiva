@@ -1,0 +1,722 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "luxury-main-product",
+      "blocks": {
+        "selleasy_lb_upsell_widget_ba_tmVjCT": {
+          "type": "shopify://apps/selleasy/blocks/lb-upsell-widget-ba/790c1a03-a71f-4bc1-9869-00dad526d3c2",
+          "disabled": true,
+          "settings": {}
+        }
+      },
+      "block_order": [
+        "selleasy_lb_upsell_widget_ba_tmVjCT"
+      ],
+      "settings": {
+        "bg_color": "#ffffff",
+        "container_max_width": 1100,
+        "padding_top": 24,
+        "padding_bottom": 32,
+        "show_pdp_faq_section": false,
+        "enable_bundle_deals": false,
+        "show_payment_guarantee": true,
+        "guarantee_1": "30-day returns",
+        "guarantee_2": "Ships in 1–2 days",
+        "guarantee_3": "Free Worldwide Shipping",
+        "enable_add_to_order": true,
+        "add_to_order_only_mahjong_sets": true,
+        "add_to_order_heading": "Add These to Your Order",
+        "add_to_order_subheading": "Choose any. Each one is 10% off.",
+        "add_to_order_discount": 10,
+        "add_to_order_products": [
+          "handcrafted-natural-gemstone-mahjong-dice-set",
+          "everyday-mahjong-tile-bag",
+          "leopard-lux-mahjong-tile-bag",
+          "leopard-print-mahjong-racks-set-of-4",
+          "palm-paradise-mahjong-mat"
+        ],
+        "add_to_order_button_text": "Add & Save",
+        "add_to_order_button_color": "#163327",
+        "add_to_order_card_bg": "#faf8f5",
+        "show_whatsapp_concierge": true,
+        "whatsapp_title": "Need Help Curating Your Mahjong Table?",
+        "whatsapp_subtitle": "Let us help you find the perfect tiles and coordinating accessories.",
+        "whatsapp_phone_display": "+1 323-366-6555",
+        "whatsapp_phone_number": "13233666555",
+        "whatsapp_default_message": "Hello Mahjiva Atelier Concierge, I need guidance curating my order.",
+        "whatsapp_border_color": "#d8c3a5",
+        "whatsapp_bg_color": "#faf7f2",
+        "enable_custom_set_request": false,
+        "custom_set_request_heading": "Tell Us What You’d Like for Your Set",
+        "custom_set_request_badge": "Optional",
+        "custom_set_request_placeholder": "I’d like a different mat with my tiles…\nI’d like a custom mat with my name…\nI'd like to choose different racks...",
+        "enable_custom_idea_fields": true,
+        "custom_idea_heading": "Tell us your idea",
+        "custom_idea_placeholder": "The Thursday Girls, est. 2005 — soft greens and gold, with peonies",
+        "custom_idea_subtext": "A name, a year, colours you love, a motif, a pet. A few words are enough. Not ready yet? Order now and reply to your confirmation email — we will not start drawing until we hear from you.",
+        "custom_photos_heading": "Reference photos",
+        "custom_photos_button_text": "Add photos",
+        "custom_photos_subtext": "A pet, a room, a fabric, a style you love. Optional — you can also send these later by replying to your order confirmation."
+      }
+    },
+    "1792980473329fe382": {
+      "type": "apps",
+      "blocks": {
+        "selleasy_lb_upsell_widget_cpac_pmEVRh": {
+          "type": "shopify://apps/selleasy/blocks/lb-upsell-widget-cpac/790c1a03-a71f-4bc1-9869-00dad526d3c2",
+          "settings": {}
+        }
+      },
+      "block_order": [
+        "selleasy_lb_upsell_widget_cpac_pmEVRh"
+      ],
+      "settings": {
+        "include_margins": true
+      }
+    },
+    "related-products": {
+      "type": "related-products",
+      "disabled": true,
+      "settings": {
+        "heading": "You may also like",
+        "heading_size": "h2",
+        "products_to_show": 2,
+        "columns_desktop": 4,
+        "color_scheme": "scheme-1",
+        "image_ratio": "portrait",
+        "image_shape": "default",
+        "show_secondary_image": true,
+        "show_vendor": false,
+        "show_rating": false,
+        "columns_mobile": "2",
+        "padding_top": 0,
+        "padding_bottom": 60
+      }
+    },
+    "1792975426d99486a6": {
+      "type": "apps",
+      "blocks": {
+        "selleasy_lb_upsell_widget_cpac_qgnL74": {
+          "type": "shopify://apps/selleasy/blocks/lb-upsell-widget-cpac/790c1a03-a71f-4bc1-9869-00dad526d3c2",
+          "settings": {}
+        }
+      },
+      "block_order": [
+        "selleasy_lb_upsell_widget_cpac_qgnL74"
+      ],
+      "settings": {
+        "include_margins": true
+      }
+    },
+    "custom_mat_story": {
+      "type": "luxury-custom-mat-story",
+      "blocks": {
+        "story_card_1": {
+          "type": "card",
+          "settings": {
+            "text": "The same mat three other groups in town already own",
+            "icon_type": "flower",
+            "custom_emoji": "🌸"
+          }
+        },
+        "story_card_2": {
+          "type": "card",
+          "settings": {
+            "text": "A table full of things that came off a shelf",
+            "icon_type": "flower",
+            "custom_emoji": "🌸"
+          }
+        },
+        "story_card_3": {
+          "type": "card",
+          "settings": {
+            "text": "Nothing that shows the years, the names, the Thursdays",
+            "icon_type": "flower",
+            "custom_emoji": "🌸"
+          }
+        },
+        "story_card_4": {
+          "type": "card",
+          "settings": {
+            "text": "Nothing on it you would think to photograph",
+            "icon_type": "flower",
+            "custom_emoji": "🌸"
+          }
+        }
+      },
+      "block_order": [
+        "story_card_1",
+        "story_card_2",
+        "story_card_3",
+        "story_card_4"
+      ],
+      "settings": {
+        "show_badge": false,
+        "badge_text": "",
+        "badge_bg_color": "#6e2a5d",
+        "badge_text_color": "#ffffff",
+        "heading": "Twenty Years at This Table. Nothing on It Says So.",
+        "heading_size": 38,
+        "heading_size_mobile": 28,
+        "heading_color": "#141517",
+        "subtitle": "You have played with the same women through birthdays, moves, the ones who left, and every Thursday in between.",
+        "subtitle_color": "#55504c",
+        "show_question": false,
+        "question_text": "Sound familiar?",
+        "question_color": "#7e22ce",
+        "card_bg": "#ffffff",
+        "card_border_color": "#e7e2dc",
+        "card_text_color": "#2e2c2a",
+        "bullet_color": "#7e22ce",
+        "custom_image_url": "https://lh3.googleusercontent.com/d/1ypkY4coP5IYL7Jf5bpFgIuTH2mx_0v6B",
+        "image_position": "right",
+        "image_aspect_ratio": "4 / 3",
+        "image_radius": 20,
+        "show_button": false,
+        "button_label": "Create Your Personal Mat →",
+        "button_link": "",
+        "button_bg_color": "#16302b",
+        "button_text_color": "#ffffff",
+        "bg_color": "#faf8f5",
+        "container_max_width": 1220,
+        "padding_top": 64,
+        "padding_bottom": 72,
+        "padding_top_mobile": 40,
+        "padding_bottom_mobile": 48
+      }
+    },
+    "custom_mat_process": {
+      "type": "luxury-custom-mat-process",
+      "blocks": {
+        "step_1": {
+          "type": "step",
+          "settings": {
+            "custom_image_url": "process-step-1.png",
+            "step_number": "",
+            "heading": "Choose Your Starting Point",
+            "description": "<p>Select a Mahjiva design, upload your own artwork, or share your ideas for something uniquely yours.</p>",
+            "custom_badge_color": "",
+            "custom_ring_color": ""
+          }
+        },
+        "step_2": {
+          "type": "step",
+          "settings": {
+            "custom_image_url": "process-step-2.png",
+            "step_number": "",
+            "heading": "We Prepare Your Design",
+            "description": "<p>We’ll prepare your design for review. Starting from an idea? We’ll create 3 unique concepts within 24 hours of receiving your brief.</p>",
+            "custom_badge_color": "",
+            "custom_ring_color": ""
+          }
+        },
+        "step_3": {
+          "type": "step",
+          "settings": {
+            "custom_image_url": "process-step-3.png",
+            "step_number": "",
+            "heading": "Review, Refine & Approve",
+            "description": "<p>Explore your design, request adjustments, and approve every detail before production begins.</p>",
+            "custom_badge_color": "",
+            "custom_ring_color": ""
+          }
+        },
+        "step_4": {
+          "type": "step",
+          "settings": {
+            "image": "shopify://shop_images/ae6d054d-2777-4ea0-a1b7-308ea37015dd.png",
+            "custom_image_url": "",
+            "step_number": "",
+            "heading": "Print & Deliver",
+            "description": "<p>Once approved, your custom mat is printed, carefully packaged, and shipped to your doorstep.</p>",
+            "custom_badge_color": "",
+            "custom_ring_color": ""
+          }
+        }
+      },
+      "block_order": [
+        "step_1",
+        "step_2",
+        "step_3",
+        "step_4"
+      ],
+      "settings": {
+        "show_eyebrow": false,
+        "eyebrow": "THE BESPOKE 4-STEP ATELIER JOURNEY",
+        "heading": "From Your Vision to Your Table",
+        "heading_size": 44,
+        "heading_size_mobile": 30,
+        "heading_color": "#16302b",
+        "subtitle": "Three ways to begin, with your final approval before we print.",
+        "subtitle_color": "#55504c",
+        "header_alignment": "center",
+        "columns_desktop": "4",
+        "card_text_alignment": "left",
+        "card_bg": "#ffffff",
+        "card_border_color": "#ece7e1",
+        "card_heading_color": "#141517",
+        "card_desc_color": "#635e59",
+        "card_corner_radius": 18,
+        "circle_size": 108,
+        "ring_color": "#d4af37",
+        "ring_width": 3,
+        "accent_color": "#16302b",
+        "number_text_color": "#ffffff",
+        "show_connecting_line": true,
+        "line_color": "#e5dfd7",
+        "bg_color": "#fcfaf8",
+        "container_max_width": 1220,
+        "padding_top": 12,
+        "padding_bottom": 44,
+        "padding_top_mobile": 28,
+        "padding_bottom_mobile": 64
+      }
+    },
+    "luxury_custom_mat_gallery_dr6TGG": {
+      "type": "luxury-custom-mat-gallery",
+      "blocks": {
+        "direction_Di4MqT": {
+          "type": "direction",
+          "settings": {
+            "image": "shopify://shop_images/7a762018-ea04-4469-be71-b15768cf65a1.png",
+            "custom_image_url": "",
+            "heading": "Signature Initials",
+            "description": "Your initials at the center, framed by elegant lines and your favorite colors.",
+            "link": ""
+          }
+        },
+        "direction_Dcrwda": {
+          "type": "direction",
+          "settings": {
+            "image": "shopify://shop_images/126d5ec6-0379-497d-89f7-22a07ae2395f.png",
+            "custom_image_url": "",
+            "heading": "Garden Gatherings",
+            "description": "Delicate flowers and leafy details around a meaningful name or phrase.",
+            "link": ""
+          }
+        },
+        "direction_PcC9wQ": {
+          "type": "direction",
+          "settings": {
+            "image": "shopify://shop_images/727294bd-f2e7-4f38-9dc4-fe62702cac51.png",
+            "custom_image_url": "",
+            "heading": "The Mahjong Circle",
+            "description": "Your group’s name and a special year, made part of your weekly ritual.",
+            "link": ""
+          }
+        },
+        "direction_XeDiHi": {
+          "type": "direction",
+          "settings": {
+            "image": "shopify://shop_images/839e3aa4-8288-4d34-918f-8f71d51b89ea.png",
+            "custom_image_url": "",
+            "heading": "Coastal Days",
+            "description": "Soft blues, sea-inspired details, and the feeling of a favorite getaway.",
+            "link": ""
+          }
+        },
+        "direction_EVHiyh": {
+          "type": "direction",
+          "settings": {
+            "image": "shopify://shop_images/7c54d170-1885-4ee0-9722-6c86dd262559.png",
+            "custom_image_url": "",
+            "heading": "A Favorite Companion",
+            "description": "A beloved pet as the inspiration for a playful, personal design.",
+            "link": ""
+          }
+        },
+        "direction_JzkGLp": {
+          "type": "direction",
+          "settings": {
+            "image": "shopify://shop_images/4c3a820b-78e3-4ff8-8b29-e9d7978e63c4.png",
+            "custom_image_url": "",
+            "heading": "Colors That Feel Like You",
+            "description": "A palette you love, brought together with thoughtful patterns and lettering.",
+            "link": ""
+          }
+        }
+      },
+      "block_order": [
+        "direction_Di4MqT",
+        "direction_Dcrwda",
+        "direction_PcC9wQ",
+        "direction_XeDiHi",
+        "direction_EVHiyh",
+        "direction_JzkGLp"
+      ],
+      "name": "Custom Mat Directions",
+      "settings": {
+        "heading": "Find A Style That Feels Like You",
+        "heading_size": 38,
+        "heading_size_mobile": 28,
+        "heading_color": "#141517",
+        "subtitle": "Explore a few starting points. Your colors, lettering, and personal details make them your own.",
+        "subtitle_color": "#55504c",
+        "header_alignment": "left",
+        "columns_desktop": "3",
+        "columns_mobile": "1",
+        "image_aspect_ratio": "square",
+        "image_border_radius": 16,
+        "card_heading_color": "#141517",
+        "card_desc_color": "#635e59",
+        "show_card_border": false,
+        "card_bg": "#fcfaf8",
+        "card_border_color": "#ece7e1",
+        "card_radius": 16,
+        "card_padding": 16,
+        "bg_color": "#fcfaf8",
+        "container_max_width": 1220,
+        "padding_top": 72,
+        "padding_bottom": 80,
+        "padding_top_mobile": 48,
+        "padding_bottom_mobile": 56
+      }
+    },
+    "luxury_custom_mat_prompts_zg84KY": {
+      "type": "luxury-custom-mat-prompts",
+      "blocks": {
+        "prompt_XYJx6n": {
+          "type": "prompt",
+          "settings": {
+            "heading": "Your group's name",
+            "description": "The name you call yourselves around the table.",
+            "card_link": "",
+            "icon": "users",
+            "custom_icon_svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"1em\" height=\"1em\" viewbox=\"0 0 640 640\"><title>users</title>\n<path fill=\"currentColor\" d=\"M320 80c57.4 0 104 46.6 104 104s-46.6 104-104 104s-104-46.6-104-104S262.6 80 320 80M96 152c39.8 0 72 32.2 72 72s-32.2 72-72 72s-72-32.2-72-72s32.2-72 72-72M0 480c0-70.7 57.3-128 128-128c12.8 0 25.2 1.9 36.9 5.4C132 394.2 112 442.8 112 496v16c0 11.4 2.4 22.2 6.7 32H32c-17.7 0-32-14.3-32-32zm521.3 64c4.3-9.8 6.7-20.6 6.7-32v-16c0-53.2-20-101.8-52.9-138.6c11.7-3.5 24.1-5.4 36.9-5.4c70.7 0 128 57.3 128 128v32c0 17.7-14.3 32-32 32zM472 224c0-39.8 32.2-72 72-72s72 32.2 72 72s-32.2 72-72 72s-72-32.2-72-72M160 496c0-88.4 71.6-160 160-160s160 71.6 160 160v16c0 17.7-14.3 32-32 32H192c-17.7 0-32-14.3-32-32z\"></path></svg>",
+            "custom_badge_color": "",
+            "custom_icon_color": "",
+            "custom_card_hover_bg": "",
+            "custom_card_hover_border": ""
+          }
+        },
+        "prompt_XaJrXV": {
+          "type": "prompt",
+          "settings": {
+            "heading": "A Year to Remember",
+            "description": "When your group began, or another date that matters.",
+            "card_link": "",
+            "icon": "calendar",
+            "custom_icon_svg": "",
+            "custom_badge_color": "",
+            "custom_icon_color": "",
+            "custom_card_hover_bg": "",
+            "custom_card_hover_border": ""
+          }
+        },
+        "prompt_RgrwNB": {
+          "type": "prompt",
+          "settings": {
+            "heading": "Initials or a Family Name",
+            "description": "A personal signature in a style you love.",
+            "card_link": "",
+            "icon": "monogram",
+            "custom_icon_svg": "",
+            "custom_badge_color": "",
+            "custom_icon_color": "",
+            "custom_card_hover_bg": "",
+            "custom_card_hover_border": ""
+          }
+        },
+        "prompt_bnVLAD": {
+          "type": "prompt",
+          "settings": {
+            "heading": "Your Favorite Colors",
+            "description": "Soft and subtle, rich and dramatic, or somewhere in between.",
+            "card_link": "",
+            "icon": "palette",
+            "custom_icon_svg": "",
+            "custom_badge_color": "",
+            "custom_icon_color": "",
+            "custom_card_hover_bg": "",
+            "custom_card_hover_border": ""
+          }
+        },
+        "prompt_4Meh4k": {
+          "type": "prompt",
+          "settings": {
+            "heading": "A Pet, Flower, or Motif",
+            "description": "A familiar detail that makes you smile.",
+            "card_link": "",
+            "icon": "paw",
+            "custom_icon_svg": "",
+            "custom_badge_color": "",
+            "custom_icon_color": "",
+            "custom_card_hover_bg": "",
+            "custom_card_hover_border": ""
+          }
+        },
+        "prompt_EUAKBd": {
+          "type": "prompt",
+          "settings": {
+            "heading": "A Special Place",
+            "description": "A garden, a coastline, or somewhere that brings back memories",
+            "card_link": "",
+            "icon": "location",
+            "custom_icon_svg": "",
+            "custom_badge_color": "",
+            "custom_icon_color": "",
+            "custom_card_hover_bg": "",
+            "custom_card_hover_border": ""
+          }
+        }
+      },
+      "block_order": [
+        "prompt_XYJx6n",
+        "prompt_XaJrXV",
+        "prompt_RgrwNB",
+        "prompt_bnVLAD",
+        "prompt_4Meh4k",
+        "prompt_EUAKBd"
+      ],
+      "name": "Custom Mat Idea Prompts",
+      "settings": {
+        "show_eyebrow": true,
+        "eyebrow": "Start with One Meaningful Detail",
+        "eyebrow_color": "#16302b",
+        "heading": "Not Sure Where to Start? Most People Aren’t.",
+        "heading_size": 38,
+        "heading_size_mobile": 28,
+        "heading_color": "#141517",
+        "subtitle": "Your design can begin with something small. Choose a detail you love, and we’ll help shape the rest.",
+        "subtitle_color": "#55504c",
+        "header_alignment": "left",
+        "show_card_icons": true,
+        "icon_style": "badge",
+        "icon_badge_bg": "#16302b",
+        "icon_color": "#ffffff",
+        "icon_hover_badge_bg": "",
+        "icon_hover_color": "",
+        "icon_size": 44,
+        "icon_radius": 12,
+        "card_title_font": "serif",
+        "card_title_size": 18,
+        "card_desc_size": 14,
+        "card_padding_vertical": 18,
+        "card_padding_horizontal": 22,
+        "card_radius": 14,
+        "card_bg": "#ffffff",
+        "card_border_color": "#ece7e1",
+        "card_title_color": "#141517",
+        "card_desc_color": "#635e59",
+        "card_hover_bg": "#faf8f5",
+        "card_hover_border_color": "#d0c7bd",
+        "card_hover_title_color": "#141517",
+        "card_hover_desc_color": "#22201e",
+        "card_hover_lift": true,
+        "card_hover_shadow": true,
+        "image": "shopify://shop_images/371e17cf-d8e1-4208-a377-0c17d1520d63.png",
+        "custom_image_url": "",
+        "image_aspect_ratio": "1 / 1",
+        "image_radius": 20,
+        "image_shadow": true,
+        "image_sticky": true,
+        "button_label": "Share My Idea →",
+        "button_link": "#",
+        "button_alignment": "center",
+        "button_bg_color": "#16302b",
+        "button_text_color": "#ffffff",
+        "button_border_color": "rgba(0,0,0,0)",
+        "button_hover_bg_color": "#163327",
+        "button_hover_text_color": "#ffffff",
+        "button_hover_border_color": "rgba(0,0,0,0)",
+        "button_radius": 30,
+        "button_font_size": 15,
+        "bg_color": "#ffffff",
+        "accent_color": "#16302b",
+        "container_max_width": 1220,
+        "column_gap": 48,
+        "card_gap": 14,
+        "padding_top": 0,
+        "padding_bottom": 0,
+        "padding_top_mobile": 16,
+        "padding_bottom_mobile": 16
+      }
+    },
+    "luxury_custom_mat_faq_mK7d4Q": {
+      "type": "luxury-custom-mat-faq",
+      "blocks": {
+        "faq_item_1": {
+          "type": "faq_item",
+          "settings": {
+            "question": "How can I start designing my mat?",
+            "subtitle": "",
+            "answer": "<p>Choose a Mahjiva design to personalize, upload your own artwork, or simply share your ideas and let us create something for you.</p>",
+            "is_open_by_default": true
+          }
+        },
+        "faq_item_2": {
+          "type": "faq_item",
+          "settings": {
+            "question": "What can I personalize?",
+            "subtitle": "",
+            "answer": "<p>Add names, monograms, club names, dates, colors, or special motifs. You can also request a design that coordinates with your favorite Mahjong tiles.</p>",
+            "is_open_by_default": false
+          }
+        },
+        "faq_item_3": {
+          "type": "faq_item",
+          "settings": {
+            "question": "Can I upload my own design?",
+            "subtitle": "",
+            "answer": "<p>Absolutely! Upload your artwork or reference images. Our team will review your design and help prepare it for printing.</p>",
+            "is_open_by_default": false
+          }
+        },
+        "faq_item_4": {
+          "type": "faq_item",
+          "settings": {
+            "question": "What if I don't have a design idea?",
+            "subtitle": "",
+            "answer": "<p>No problem! Share your favorite colors, themes, or inspirations. We'll create 3 unique design concepts within 24 hours of receiving your brief.</p>",
+            "is_open_by_default": false
+          }
+        },
+        "faq_item_5": {
+          "type": "faq_item",
+          "settings": {
+            "question": "Will I see my design before printing?",
+            "subtitle": "",
+            "answer": "<p>Yes! You'll review your design, request refinements, and approve the final version before production begins.</p>",
+            "is_open_by_default": false
+          }
+        },
+        "faq_item_6": {
+          "type": "faq_item",
+          "settings": {
+            "question": "What happens after I approve my design?",
+            "subtitle": "",
+            "answer": "<p>Once approved, your custom mat moves into production. We'll print, carefully package, and ship it to your address.</p>",
+            "is_open_by_default": false
+          }
+        },
+        "faq_item_7": {
+          "type": "faq_item",
+          "settings": {
+            "question": "What is the size, and how should I care for it?",
+            "subtitle": "",
+            "answer": "<p>Our mats measure 31.5″ × 31.5″ (80 × 80 cm). Gently wipe the surface with a soft, damp cloth and let it air-dry completely before storing.</p>",
+            "is_open_by_default": false
+          }
+        },
+        "faq_item_8": {
+          "type": "faq_item",
+          "settings": {
+            "question": "How long does a custom mat take?",
+            "subtitle": "",
+            "answer": "<p>Design concepts are created within 24 hours for idea-based requests. Production time depends on your final design and any revisions. We'll confirm the estimated timeline before printing.</p>",
+            "is_open_by_default": false
+          }
+        },
+        "faq_item_9": {
+          "type": "faq_item",
+          "settings": {
+            "question": "How long does shipping take?",
+            "subtitle": "",
+            "answer": "<p>We offer complimentary worldwide shipping. Custom mats require design approval and production before dispatch, so total delivery times may vary. You'll receive tracking details once your order ships. Visit our <a href=\"/policies/shipping-policy\">Shipping Policy</a> for more information.</p>",
+            "is_open_by_default": false
+          }
+        },
+        "faq_item_10": {
+          "type": "faq_item",
+          "settings": {
+            "question": "What if I need help with my design or order?",
+            "subtitle": "",
+            "answer": "<p>Contact us at <a href=\"mailto:care@mahjiva.com\">care@mahjiva.com</a> with your questions or order number. We're happy to help with design requests, revisions, and order updates.</p>",
+            "is_open_by_default": false
+          }
+        }
+      },
+      "block_order": [
+        "faq_item_1",
+        "faq_item_2",
+        "faq_item_3",
+        "faq_item_4",
+        "faq_item_5",
+        "faq_item_6",
+        "faq_item_7",
+        "faq_item_8",
+        "faq_item_9",
+        "faq_item_10"
+      ],
+      "settings": {
+        "show_eyebrow": true,
+        "eyebrow": "Everything you need to know before creating your personalized Mahjong mat.",
+        "eyebrow_bg": "#16302b",
+        "eyebrow_color": "#ffffff",
+        "heading": "Custom Mat FAQs",
+        "heading_font_style": "sans",
+        "heading_size": 42,
+        "heading_size_mobile": 28,
+        "heading_color": "#141517",
+        "header_alignment": "left",
+        "left_card_bg": "#ffffff",
+        "left_card_border": "#ece7e1",
+        "left_card_radius": 28,
+        "allow_multiple_open": true,
+        "question_font_size": 16,
+        "answer_font_size": 14,
+        "card_bg": "#ffffff",
+        "card_border_color": "#ece7e1",
+        "card_hover_bg": "#faf8f5",
+        "card_hover_border_color": "#d0c7bd",
+        "card_active_border_color": "#c8bfb5",
+        "question_color": "#141517",
+        "question_hover_color": "#141517",
+        "subtitle_color": "#635e59",
+        "answer_color": "#44403c",
+        "accent_icon_color": "#16302b",
+        "card_radius": 14,
+        "card_padding_vertical": 16,
+        "card_padding_horizontal": 20,
+        "image": "shopify://shop_images/23c69d49-b0a6-47a2-a0d2-0a93a39c6c5f.png",
+        "custom_image_url": "",
+        "image_aspect_ratio": "1 / 1",
+        "image_radius": 22,
+        "image_badge_text": "",
+        "image_badge_bg": "#16302b",
+        "image_badge_color": "#ffffff",
+        "button_label": "Start My Design →",
+        "button_link": "#",
+        "button_bg_color": "#16302b",
+        "button_text_color": "#ffffff",
+        "button_border_color": "rgba(0,0,0,0)",
+        "button_hover_bg_color": "#112420",
+        "button_hover_text_color": "#ffffff",
+        "button_hover_border_color": "rgba(0,0,0,0)",
+        "button_font_size": 16,
+        "show_trust_badge": true,
+        "trust_text": "30-day returns · Free Worldwide Shipping",
+        "trust_color": "#635e59",
+        "bg_color": "#faf8f5",
+        "accent_color": "#16302b",
+        "container_max_width": 1220,
+        "column_gap": 48,
+        "card_gap": 12,
+        "padding_top": 64,
+        "padding_bottom": 72,
+        "padding_top_mobile": 40,
+        "padding_bottom_mobile": 48
+      }
+    }
+  },
+  "order": [
+    "main",
+    "1792980473329fe382",
+    "related-products",
+    "1792975426d99486a6",
+    "custom_mat_story",
+    "custom_mat_process",
+    "luxury_custom_mat_gallery_dr6TGG",
+    "luxury_custom_mat_prompts_zg84KY",
+    "luxury_custom_mat_faq_mK7d4Q"
+  ]
+}

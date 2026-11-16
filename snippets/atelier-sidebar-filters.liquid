@@ -45,7 +45,14 @@
         {%- assign is_all_products_page = true -%}
       {%- endif -%}
 
-      {%- assign rendered_handles = '' -%}
+      <li class="atelier-filter-item atelier-filter-type-item{% if is_all_products_page %} is-active{% endif %}" data-val="all" data-url="{{ routes.all_products_collection_url }}">
+        <a href="{{ routes.all_products_collection_url }}" class="atelier-filter-link">
+          <span class="atelier-filter-name">All Products</span>
+          <span class="atelier-filter-count">({{ collections.all.all_products_count | default: 18 }})</span>
+        </a>
+      </li>
+
+      {%- assign rendered_handles = 'all,' -%}
       {%- assign priority_handles = 'mahjong-set,mats,racks,tile-bag,dices,new-array,best-seller' | split: ',' -%}
 
       {%- for handle in priority_handles -%}

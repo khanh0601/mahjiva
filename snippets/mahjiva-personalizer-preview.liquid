@@ -1,0 +1,144 @@
+{%- comment -%}
+  Mahjiva Personalizer — live preview stage
+  Draws a preview from the product's personalization steps (Shopify data only):
+    - first 'text' step  -> main line, second 'text' step -> sub line
+    - first 'font' step  -> font of both lines (needs Font File on the values)
+    - first 'color_swatch' step -> stage background (needs Color on the values)
+    - every swatch / dropdown step -> one image layer (needs Layer Image on the values)
+  The stage is bound by assets/mahjiva-personalizer.js; it must share a [data-pz-scope]
+  ancestor with the steps snippet (mahjiva-personalizer).
+
+  Params:
+    product          - product object (required)
+    photos_selector  - CSS selector of the photo stage to swap with (optional)
+    triggers_selector- CSS selector of elements (e.g. thumbnails) that switch back to photos (optional)
+{%- endcomment -%}
+
+{%- assign pzp_options = product.metafields.custom.personalization_options.value -%}
+{%- if pzp_options != blank -%}
+  {%- assign pzp_text_1 = '' -%}
+  {%- assign pzp_text_1_title = '' -%}
+  {%- assign pzp_text_2 = '' -%}
+  {%- assign pzp_text_2_title = '' -%}
+  {%- assign pzp_font = '' -%}
+  {%- assign pzp_color = '' -%}
+  {%- assign pzp_text_color = '' -%}
+  {%- assign pzp_text_size = '' -%}
+  {%- assign pzp_layer_keys = '' -%}
+  {%- for opt in pzp_options -%}
+    {%- assign opt_type = opt.type.value -%}
+    {%- assign opt_key = opt.system.handle -%}
+    {%- if opt.title.value == blank or opt_type == blank -%}{%- continue -%}{%- endif -%}
+    {%- case opt_type -%}
+      {%- when 'text' -%}
+        {%- if pzp_text_1 == '' -%}
+          {%- assign pzp_text_1 = opt_key -%}
+          {%- assign pzp_text_1_title = opt.title.value -%}
+        {%- elsif pzp_text_2 == '' -%}
+          {%- assign pzp_text_2 = opt_key -%}
+          {%- assign pzp_text_2_title = opt.title.value -%}
+        {%- endif -%}
+      {%- when 'font' -%}
+        {%- if pzp_font == '' -%}{%- assign pzp_font = opt_key -%}{%- endif -%}
+      {%- when 'color_swatch' -%}
+        {%- if pzp_color == '' -%}{%- assign pzp_color = opt_key -%}{%- endif -%}
+      {%- when 'text_color' -%}
+        {%- if pzp_text_color == '' -%}{%- assign pzp_text_color = opt_key -%}{%- endif -%}
+      {%- when 'text_size' -%}
+        {%- if pzp_text_size == '' -%}{%- assign pzp_text_size = opt_key -%}{%- endif -%}
+    {%- endcase -%}
+    {%- if opt_type == 'image_swatch' or opt_type == 'color_swatch' or opt_type == 'dropdown' -%}
+      {%- assign pzp_layer_keys = pzp_layer_keys | append: opt_key | append: ',' -%}
+    {%- endif -%}
+  {%- endfor -%}
+
+  {{ 'mahjiva-personalizer.css' | asset_url | stylesheet_tag }}
+
+  <div
+    class="pz-view"
+    data-pz-view
+    {% if photos_selector != blank %}data-pz-photos="{{ photos_selector }}"{% endif %}
+    {% if triggers_selector != blank %}data-pz-triggers="{{ triggers_selector }}"{% endif %}
+  >
+    <div class="pz-view__tabs" role="tablist" aria-label="Preview mode">
+      <button type="button" class="pz-view__tab" role="tab" aria-selected="false" data-pz-view-tab="preview">Live preview</button>
+      <button type="button" class="pz-view__tab is-active" role="tab" aria-selected="true" data-pz-view-tab="photos">Photos</button>
+    </div>
+
+    {%- assign pzp_base = product.metafields.custom.personalization_base_image.value -%}
+    <div
+      class="pz-stage{% if pzp_base != blank %} pz-stage--has-base{% endif %}"
+      data-pz-stage
+      hidden
+      {% if pzp_color != '' %}data-pz-bg="{{ pzp_color }}"{% endif %}
+    >
+      {%- if pzp_base != blank -%}
+        {%- comment -%} Base image set by the shop in Products → Metafields → Personalization Base Image {%- endcomment -%}
+        <img
+          class="pz-stage__base"
+          src="{{ pzp_base | image_url: width: 1600 }}"
+          srcset="{{ pzp_base | image_url: width: 800 }} 800w, {{ pzp_base | image_url: width: 1200 }} 1200w, {{ pzp_base | image_url: width: 1600 }} 1600w"
+          sizes="(min-width: 992px) 56vw, 100vw"
+          alt=""
+          width="1600"
+          height="1600"
+          loading="lazy"
+        >
+      {%- endif -%}
+
+      {%- if pzp_layer_keys != '' -%}
+        <div class="pz-layers" aria-hidden="true">
+          {%- assign pzp_layer_list = pzp_layer_keys | split: ',' -%}
+          {%- for layer_key in pzp_layer_list -%}
+            {%- if layer_key != blank -%}
+              <img data-pz-layer="{{ layer_key }}" alt="" width="1600" height="1600" hidden>
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+      {%- endif -%}
+
+      {%- comment -%}
+        Text lines are draggable: the customer can move each line; the position is sent to the
+        cart through the hidden "<Step title> – position" input rendered by mahjiva-personalizer.
+        left/top = centre of the text, in % of the preview.
+      {%- endcomment -%}
+      <div class="pz-stage__text">
+        {%- if pzp_text_1 != '' -%}
+          <p
+            class="pz-stage__line pz-stage__line--main pz-is-empty"
+            style="left: 50%; top: 46%;"
+            data-pz-text="{{ pzp_text_1 }}"
+            data-pz-empty="{{ pzp_text_1_title | escape }}"
+            data-pz-drag="{{ pzp_text_1 }}"
+            tabindex="0"
+            aria-label="{{ pzp_text_1_title | escape }}: drag or use arrow keys to move"
+            {% if pzp_font != '' %}data-pz-font="{{ pzp_font }}"{% endif %}
+            {% if pzp_text_color != '' %}data-pz-textcolor="{{ pzp_text_color }}"{% endif %}
+            {% if pzp_text_size != '' %}data-pz-textsize="{{ pzp_text_size }}"{% endif %}
+          >{{ pzp_text_1_title }}</p>
+        {%- endif -%}
+        {%- if pzp_text_2 != '' -%}
+          <p
+            class="pz-stage__line pz-stage__line--sub pz-is-empty"
+            style="left: 50%; top: 57%;"
+            data-pz-text="{{ pzp_text_2 }}"
+            data-pz-empty="{{ pzp_text_2_title | escape }}"
+            data-pz-drag="{{ pzp_text_2 }}"
+            tabindex="0"
+            aria-label="{{ pzp_text_2_title | escape }}: drag or use arrow keys to move"
+            {% if pzp_font != '' %}data-pz-font="{{ pzp_font }}"{% endif %}
+            {% if pzp_text_color != '' %}data-pz-textcolor="{{ pzp_text_color }}"{% endif %}
+            {% if pzp_text_size != '' %}data-pz-textsize="{{ pzp_text_size }}"{% endif %}
+          >{{ pzp_text_2_title }}</p>
+        {%- endif -%}
+      </div>
+
+      {%- if pzp_text_1 != '' or pzp_text_2 != '' -%}
+        <div class="pz-stage__tools">
+          <span class="pz-stage__hint">Drag the text to move it</span>
+          <button type="button" class="pz-stage__reset" data-pz-reset hidden>Reset position</button>
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+{%- endif -%}

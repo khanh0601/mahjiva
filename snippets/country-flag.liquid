@@ -9,17 +9,38 @@
     assign c_code = country_code | downcase
     assign c_name = country_code
   endif
+
+  assign is_current = false
+  assign current_market_code = localization.country.iso_code | downcase
+  if is_selected == true or c_code == current_market_code
+    assign is_current = true
+  endif
 -%}
 {%- if c_code != blank -%}
-  <img 
-    src="https://cdn.shopify.com/static/images/flags/{{ c_code }}.svg" 
-    alt="{{ c_name | escape }}" 
-    class="country-flag-icon" 
-    width="20" 
-    height="15" 
-    loading="lazy"
-    style="width: 20px; height: 15px; object-fit: cover; border-radius: 2px; box-shadow: 0 0 1px rgba(0,0,0,0.4); vertical-align: middle; margin-right: 7px; display: inline-block; flex-shrink: 0;"
-  >
+  {%- if is_current -%}
+    <img 
+      src="https://cdn.shopify.com/static/images/flags/{{ c_code }}.svg" 
+      alt="{{ c_name | escape }}" 
+      class="country-flag-icon" 
+      width="20" 
+      height="15" 
+      loading="lazy"
+      decoding="async"
+      style="width: 20px; height: 15px; object-fit: cover; border-radius: 2px; box-shadow: 0 0 1px rgba(0,0,0,0.4); vertical-align: middle; margin-right: 7px; display: inline-block; flex-shrink: 0;"
+    >
+  {%- else -%}
+    <img 
+      src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 15'%3E%3C/svg%3E"
+      data-src="https://cdn.shopify.com/static/images/flags/{{ c_code }}.svg" 
+      alt="{{ c_name | escape }}" 
+      class="country-flag-icon country-flag-lazy" 
+      width="20" 
+      height="15" 
+      loading="lazy"
+      decoding="async"
+      style="width: 20px; height: 15px; object-fit: cover; border-radius: 2px; box-shadow: 0 0 1px rgba(0,0,0,0.2); vertical-align: middle; margin-right: 7px; display: inline-block; flex-shrink: 0; background: rgba(0,0,0,0.04);"
+    >
+  {%- endif -%}
 {%- else -%}
   <span class="country-flag-fallback" style="margin-right: 6px; font-size: 14px; vertical-align: middle;">🌐</span>
 {%- endif -%}

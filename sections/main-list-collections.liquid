@@ -159,10 +159,24 @@
     transform: scale(1.06);
   }
 
-  .alc-card-badge {
+  /* Badges Header on Media */
+  .alc-card-badges {
     position: absolute;
-    top: 14px;
-    right: 14px;
+    top: 12px;
+    left: 12px;
+    right: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    z-index: 2;
+    pointer-events: none;
+  }
+
+  .alc-card-badge {
+    position: relative;
+    top: auto;
+    right: auto;
     background: rgba(20, 21, 23, 0.78);
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
@@ -173,13 +187,14 @@
     padding: 6px 12px;
     border-radius: 100px;
     border: 0.5px solid rgba(255, 255, 255, 0.25);
-    z-index: 2;
+    white-space: nowrap;
+    margin-left: auto;
   }
 
   .alc-card-tag {
-    position: absolute;
-    top: 14px;
-    left: 14px;
+    position: relative;
+    top: auto;
+    left: auto;
     background: rgba(255, 255, 255, 0.9);
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
@@ -191,7 +206,39 @@
     padding: 5px 10px;
     border-radius: 6px;
     border: 0.5px solid rgba(184, 151, 104, 0.3);
-    z-index: 2;
+    white-space: nowrap;
+  }
+
+  .alc-card-eyebrow {
+    display: none;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: #9E7D47;
+    margin-bottom: 4px;
+    line-height: 1;
+  }
+
+  @media (max-width: 768px) {
+    .alc-card-badges {
+      top: 10px;
+      left: 10px;
+      right: 10px;
+      justify-content: flex-end;
+    }
+    /* Hide floating tag on mobile to prevent overlapping */
+    .alc-card-tag {
+      display: none !important;
+    }
+    .alc-card-eyebrow {
+      display: block !important;
+    }
+    .alc-card-badge {
+      font-size: 10.5px !important;
+      padding: 4px 10px !important;
+      font-weight: 700 !important;
+    }
   }
 
   /* Card Body */
@@ -285,7 +332,7 @@
         {%- if section.settings.title != blank -%}
           {{ section.settings.title }}
         {%- else -%}
-          Accessories & Suites
+          Mahjiva Collections
         {%- endif -%}
       </h1>
       <p class="alc-subtitle">
@@ -321,7 +368,7 @@
             {%- if col_img != blank -%}
               <img 
                 src="{{ col_img | image_url: width: 800 }}" 
-                alt="{{ col_img.alt | default: col.title | escape }}"
+                alt="{{ col.title | append: ' - Mahjiva Collection' | escape }}"
                 class="alc-card-img"
                 loading="lazy"
                 width="400"
@@ -333,12 +380,15 @@
               </div>
             {%- endif -%}
 
-            <span class="alc-card-tag">Collection</span>
-            <span class="alc-card-badge">{{ col_count }} {% if col_count == 1 %}Product{% else %}Products{% endif %}</span>
+            <div class="alc-card-badges">
+              <span class="alc-card-tag">Collection</span>
+              <span class="alc-card-badge">{{ col_count }} {% if col_count == 1 %}Product{% else %}Products{% endif %}</span>
+            </div>
           </div>
 
           <div class="alc-card-body">
             <div class="alc-card-content">
+              <span class="alc-card-eyebrow">Collection</span>
               <h2 class="alc-card-title">{{ col.title }}</h2>
               {%- if col.description != blank -%}
                 <p class="alc-card-desc">{{ col.description | strip_html | truncatewords: 16 }}</p>
@@ -346,7 +396,7 @@
             </div>
 
             <div class="alc-card-footer">
-              <span>Explore Repertoire</span>
+              <span>{{ section.settings.card_cta_label | default: 'EXPLORE COLLECTION' }}</span>
               <span class="alc-card-arrow">&rarr;</span>
             </div>
           </div>
@@ -370,13 +420,19 @@
       "type": "inline_richtext",
       "id": "title",
       "label": "Heading",
-      "default": "Accessories & Suites"
+      "default": "Mahjiva Collections"
     },
     {
       "type": "textarea",
       "id": "subtitle",
       "label": "Subtitle",
       "default": "Discover handcrafted playing mats, precision racks, artisanal dice, and bespoke cases designed to elevate your game."
+    },
+    {
+      "type": "text",
+      "id": "card_cta_label",
+      "label": "Card CTA Label",
+      "default": "EXPLORE COLLECTION"
     },
     {
       "type": "select",

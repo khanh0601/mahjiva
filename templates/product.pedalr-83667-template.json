@@ -636,9 +636,25 @@
       "settings": {
         "include_margins": true
       }
+    },
+    "17925732762d33e5d7": {
+      "type": "apps",
+      "blocks": {
+        "selleasy_lb_upsell_widget_cpac_9yCCr6": {
+          "type": "shopify://apps/selleasy/blocks/lb-upsell-widget-cpac/790c1a03-a71f-4bc1-9869-00dad526d3c2",
+          "settings": {}
+        }
+      },
+      "block_order": [
+        "selleasy_lb_upsell_widget_cpac_9yCCr6"
+      ],
+      "settings": {
+        "include_margins": true
+      }
     }
   },
   "order": [
+    "17925732762d33e5d7",
     "blocky_main_product_inJazX",
     "blocky_scrolling_image_bar_pQrPhB",
     "blocky_multiimage_timeline_VNXYVH",

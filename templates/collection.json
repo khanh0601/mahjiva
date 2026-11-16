@@ -43,9 +43,9 @@
         "question_1": {
           "type": "question",
           "settings": {
-            "question": "1. What products does MAHJIVA offer?",
+            "question": "What products does MAHJIVA offer?",
             "content": "<p>MAHJIVA offers a curated collection of American Mahjong essentials, including tile sets, tile bags, playing mats, racks, and dice. Each piece is thoughtfully selected to bring elegance, personality, and style to your Mahjong experience.</p>",
-            "default_open": false,
+            "default_open": true,
             "icon_code": "",
             "icon_color": "#000000"
           }
@@ -53,7 +53,7 @@
         "question_2": {
           "type": "question",
           "settings": {
-            "question": "2. Are MAHJIVA Mahjong tiles compatible with American Mahjong?",
+            "question": "Are MAHJIVA Mahjong tiles compatible with American Mahjong?",
             "content": "<p>Our American Mahjong tile sets are designed for American Mahjong play. Tile counts and included pieces may vary by collection, so please check the individual product description for details.</p>",
             "default_open": false,
             "icon_code": "",
@@ -63,7 +63,7 @@
         "question_3": {
           "type": "question",
           "settings": {
-            "question": "3. Can I purchase Mahjong accessories separately?",
+            "question": "Can I purchase Mahjong accessories separately?",
             "content": "<p>Absolutely! Our tile bags, mats, racks, and dice are available separately, making it easy to mix and match your favorites to create a Mahjong setup that reflects your personal style.</p>",
             "default_open": false,
             "icon_code": "",
@@ -73,7 +73,7 @@
         "question_4": {
           "type": "question",
           "settings": {
-            "question": "4. How do I choose the right Mahjong products?",
+            "question": "How do I choose the right Mahjong products?",
             "content": "<p>Start with your favorite tile set, then explore our coordinating accessories to complete your table. Each product page includes details to help you find the perfect pieces for your Mahjong experience.</p>",
             "default_open": false,
             "icon_code": "",
@@ -83,8 +83,8 @@
         "question_5": {
           "type": "question",
           "settings": {
-            "question": "5. How long does shipping take?",
-            "content": "<p>Shipping times vary depending on your location and the items ordered. Please refer to our Shipping Policy for the latest processing times, delivery estimates, and shipping information.</p>",
+            "question": "How long does shipping take?",
+            "content": "<p>We provide <strong>Complimentary Worldwide Shipping</strong> with end-to-end tracking on every order. Orders are carefully hand-inspected and dispatched within 1–2 business days. Total delivery typically takes <strong>1–3 weeks</strong> depending on your destination and fulfilling atelier (domestic US shipments arrive in 3–7 business days; handcrafted pieces from our overseas atelier arrive in 7–12 business days). You will receive an automated tracking link by email as soon as your parcel ships. For full details, view our <a href=\"/policies/shipping-policy\">Shipping Policy</a>.</p>",
             "default_open": false,
             "icon_code": "",
             "icon_color": "#000000"
@@ -93,8 +93,8 @@
         "question_6": {
           "type": "question",
           "settings": {
-            "question": "6. What if I need to return or exchange an item?",
-            "content": "<p>We want you to feel confident shopping with MAHJIVA. Return and exchange eligibility is outlined in our Return & Refund Policy. Please review the policy for details before making a request.</p>",
+            "question": "What if I need to return or exchange an item?",
+            "content": "<p>Every purchase is protected by our <strong>30-Day Mahjiva Guarantee</strong>. You have 30 days from delivery to request a return or exchange. If your piece arrives damaged, defective, or incorrect, Mahjiva covers all return shipping costs with a <strong>complimentary prepaid return shipping label</strong> and arranges an immediate replacement or full refund. For change-of-mind returns, our concierge team will guide you through a smooth domestic return to our US facility. Simply contact us at <a href=\"mailto:care@mahjiva.com\">care@mahjiva.com</a> with your order number. For complete guidelines, view our <a href=\"/policies/refund-policy\">Return &amp; Refund Policy</a>.</p>",
             "default_open": false,
             "icon_code": "",
             "icon_color": "#000000"
@@ -103,7 +103,7 @@
         "question_7": {
           "type": "question",
           "settings": {
-            "question": "7. How can I contact MAHJIVA?",
+            "question": "How can I contact MAHJIVA?",
             "content": "<p>We're always happy to help! Whether you have a product question, need assistance with an order, or want help choosing your Mahjong essentials, feel free to reach out through our Contact Us page.</p>",
             "default_open": false,
             "icon_code": "",

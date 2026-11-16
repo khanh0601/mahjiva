@@ -142,6 +142,11 @@
   color: rgba(var(--color-foreground), 0.7);
 }
 
+.unit-price:empty,
+.unit-price.hidden {
+  display: none !important;
+}
+
 .lbs-discount-pill {
   width: auto !important;
   max-width: fit-content !important;

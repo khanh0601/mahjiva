@@ -4,12 +4,50 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <meta name="theme-color" content="">
+    <meta name="theme-color" content="#163327">
     <link rel="canonical" href="{{ canonical_url }}">
-
-    {%- if settings.favicon != blank -%}
-      <link rel="icon" type="image/png" href="{{ settings.favicon | image_url: width: 32, height: 32 }}">
+    {%- if request.path == '/pages/about' or request.path == '/pages/contact-information' or request.path == '/pages/our-story' -%}
+      <script>window.location.replace('/pages/about-us');</script>
+      <meta http-equiv="refresh" content="0;url=/pages/about-us">
+    {%- elsif request.path == '/pages/refund-policy' or request.path contains '/pages/refund' or request.path contains '/pages/return' -%}
+      <script>window.location.replace('/policies/refund-policy');</script>
+      <meta http-equiv="refresh" content="0;url=/policies/refund-policy">
     {%- endif -%}
+    <meta name="google-site-verification" content="EP0pmUmfLixU262xK2JPSOJC2KY854f2Zq1RTbnvdQw">
+
+    <script>
+      (function() {
+        if (window.location.hash === '#FooterNewsletterForm' || (window.location.search && window.location.search.indexOf('customer_posted=true') !== -1)) {
+          try {
+            if ('scrollRestoration' in history) {
+              history.scrollRestoration = 'manual';
+            }
+            var cleanSearch = window.location.search.replace(/[?&]customer_posted=true/g, '').replace(/^[?&]/, '');
+            var cleanUrl = window.location.pathname + (cleanSearch ? '?' + cleanSearch : '');
+            history.replaceState(null, document.title, cleanUrl);
+            window.scrollTo(0, 0);
+          } catch(e) {}
+        }
+        var p = window.location.pathname.toLowerCase().replace(/\/+$/, '');
+        if (p === '/pages/about' || p === '/pages/contact-information' || p === '/pages/our-story') {
+          window.location.replace('/pages/about-us');
+        }
+      })();
+    </script>
+
+    <!-- =========================================================================
+         BRAND FAVICON & GOOGLE SEARCH SITE ICON
+         - Uses official high-res square Monogram M (1254x1254) in Imperial Jade
+         - Supports Google Search Favicon specifications (multiples of 48px square)
+         - Supports Desktop & Mobile Browser tabs, iOS Apple Touch Icon, Android Chrome
+         ========================================================================= -->
+    <link rel="icon" type="image/png" sizes="192x192" href="{{ '06262745-02ba-47c9-8d8b-a167a610554c.png' | asset_url }}">
+    <link rel="icon" type="image/png" sizes="96x96" href="{{ '06262745-02ba-47c9-8d8b-a167a610554c.png' | asset_url }}">
+    <link rel="icon" type="image/png" sizes="48x48" href="{{ '06262745-02ba-47c9-8d8b-a167a610554c.png' | asset_url }}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ '06262745-02ba-47c9-8d8b-a167a610554c.png' | asset_url }}">
+    <link rel="shortcut icon" type="image/png" href="{{ '06262745-02ba-47c9-8d8b-a167a610554c.png' | asset_url }}">
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ '06262745-02ba-47c9-8d8b-a167a610554c.png' | asset_url }}">
+    <link rel="apple-touch-icon" href="{{ '06262745-02ba-47c9-8d8b-a167a610554c.png' | asset_url }}">
 
     {%- unless settings.type_header_font.system? and settings.type_body_font.system? -%}
       <link rel="preconnect" href="https://fonts.shopifycdn.com" crossorigin>
@@ -24,8 +62,14 @@
         {{ shop.name }} | American Mahjong Sets &amp; Accessories
       {%- elsif collection.handle == 'all' and page_title == 'Products' -%}
         All Products
+      {%- elsif template.name == 'product' and product.handle contains 'classic-canvas' -%}
+        Everyday Mahjong Tile Bag &ndash; {{ shop.name }}
+      {%- elsif template.name == 'product' and product.handle contains 'clear-acrylic' -%}
+        Crystal Clear Mahjong Racks - Set of 4 &ndash; {{ shop.name }}
       {%- elsif request.path contains 'about' or page.handle contains 'about' or request.path contains 'contact-information' -%}
         About Us &ndash; {{ shop.name }}
+      {%- elsif request.path contains 'refund' or page.handle contains 'refund' -%}
+        Refund Policy &ndash; {{ shop.name }}
       {%- else -%}
         {{ page_title }}
       {%- endif -%}
@@ -36,9 +80,21 @@
 
     {%- liquid
       assign seo_description = page_description
-      if seo_description == blank
+      if request.page_type == 'index'
+        if seo_description == blank or seo_description == page_title or seo_description contains 'Luxury American Mahjong Sets' or seo_description contains 'Shop Mahjiva American Mahjong'
+          assign seo_description = "Luxury American Mahjong sets and bespoke accessories crafted to NMJL standards. Discover artful tile designs, complimentary worldwide shipping, and dedicated concierge care."
+        endif
+      elsif seo_description contains 'Spooky Haven' or seo_description contains 'DASON' or request.path contains 'refund' or page.handle contains 'refund'
+        assign seo_description = "Read Mahjiva's official 30-day return and exchange policy. Handcrafted luxury American Mahjong sets, mats, and accessories with dedicated client care."
+      elsif template.name == 'product' and product.handle contains 'tiger-peony'
+        assign seo_description = "Inspired by Asian artistry, the Tiger & Peony Mahjong Mat features majestic tigers, blooming peonies, and water-resistant neoprene with non-slip rubber backing."
+      elsif template.name == 'product' and product.handle contains 'classic-canvas'
+        assign seo_description = "Explore the Everyday Mahjong Tile Bag by Mahjiva. Handcrafted with durable quilted canvas, padded lining, and elegant storage for your tiles."
+      elsif template.name == 'product' and product.handle contains 'clear-acrylic'
+        assign seo_description = "Explore the Crystal Clear Mahjong Racks (Set of 4) by Mahjiva. Handcrafted high-clarity acrylic with integrated brass pushers."
+      elsif seo_description == blank
         if request.page_type == 'index'
-          assign seo_description = 'Shop Mahjiva American Mahjong tile sets, mats, racks, tile bags, and dice designed to bring personality and style to every game.'
+          assign seo_description = "Luxury American Mahjong sets and bespoke accessories crafted to NMJL standards. Discover artful tile designs, complimentary worldwide shipping, and dedicated concierge care."
         elsif request.page_type == 'collection'
           capture seo_description
             echo 'Shop '
@@ -58,13 +114,53 @@
 
     {% render 'meta-tags', seo_description: seo_description %}
 
+    <meta name="keywords" content="mahjiva, mahjiva mahjong, mahjiva sets, mahjiva.com, luxury mahjong, american mahjong sets">
+
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
         "@type": "Organization",
-        "name": {{ shop.name | json }},
-        "url": {{ shop.url | json }}{% if settings.logo != blank %},
-        "logo": {{ settings.logo | image_url: width: 600 | prepend: 'https:' | json }}{% endif %}
+        "name": "Mahjiva",
+        "legalName": "FR SUMMER LLC",
+        "alternateName": ["Mahjiva", "Mahjiva Mahjong", "Mahjiva Official", "Mahjiva Store", "mahjiva.com"],
+        "url": "https://www.mahjiva.com",
+        "logo": {{ '06262745-02ba-47c9-8d8b-a167a610554c.png' | asset_url | prepend: 'https:' | json }},
+        "description": "Mahjiva is an American luxury atelier offering artisan American Mahjong tile sets, designer play mats, acrylic racks, and bespoke tabletop accessories. Operated by FR SUMMER LLC.",
+        "brand": {
+          "@type": "Brand",
+          "name": "Mahjiva",
+          "alternateName": "Mahjiva Mahjong",
+          "url": "https://www.mahjiva.com"
+        },
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "1401 PENNSYLVANIA AVE STE 105 5132",
+          "addressLocality": "WILMINGTON",
+          "addressRegion": "DE",
+          "postalCode": "19806-4125",
+          "addressCountry": "US"
+        },
+        "contactPoint": [
+          {
+            "@type": "ContactPoint",
+            "telephone": "+1-323-366-6555",
+            "contactType": "customer service",
+            "email": "care@mahjiva.com",
+            "availableLanguage": "English",
+            "areaServed": "US",
+            "hoursAvailable": "Mo-Sa 09:00-18:00 EST"
+          }
+        ],
+        "founder": {
+          "@type": "Person",
+          "name": "Frank R.",
+          "jobTitle": "Creative Director"
+        },
+        "sameAs": [
+          "https://www.facebook.com/mahjiva",
+          "https://www.instagram.com/mahjiva",
+          "https://www.pinterest.com/mahjiva"
+        ]
       }
     </script>
     {%- if request.page_type == 'index' -%}
@@ -109,12 +205,15 @@
     <script src="{{ 'constants.js' | asset_url }}" defer="defer"></script>
     <script src="{{ 'pubsub.js' | asset_url }}" defer="defer"></script>
     <script src="{{ 'global.js' | asset_url }}" defer="defer"></script>
-    <script src="{{ 'blocky-lys-global.js' | asset_url }}" defer="defer"></script>
     {%- if settings.animations_reveal_on_scroll -%}
       <script src="{{ 'animations.js' | asset_url }}" defer="defer"></script>
     {%- endif -%}
 
-    {{ content_for_header }}
+    {%- capture header_content -%}
+      {{ content_for_header }}
+    {%- endcapture -%}
+    {%- assign cleaned_content_for_header = header_content | replace: 'Luxury_MAHJIQUE_Tea_Still_Life_dd0bc589-ae59-4eac-bee6-243c3cb54bcf.png', '1_ea6a10ae-5f5b-410c-bb50-b2fdeb8b33fa.png' | replace: 'Luxury_MAHJIQUE_Tea_Still_Life', '1_ea6a10ae-5f5b-410c-bb50-b2fdeb8b33fa' | replace: 'Luxury_MAHJIQUE', 'MAHJIVA' -%}
+    {{ cleaned_content_for_header }}
 
     {%- liquid
       assign body_font_bold = settings.type_body_font | font_modify: 'weight', 'bold'
@@ -404,6 +503,7 @@
 
     {{ 'base.css' | asset_url | stylesheet_tag }}
     {{ 'blocky-lys.css' | asset_url | stylesheet_tag }}
+    {{ 'responsive-fixes.css' | asset_url | stylesheet_tag }}
 
     {%- unless settings.type_body_font.system? -%}
       {% comment %}theme-check-disable AssetPreload{% endcomment %}
@@ -449,7 +549,13 @@
     {% sections 'header-group' %}
 
     <main id="MainContent" class="content-for-layout focus-none" role="main" tabindex="-1">
-      {%- if request.path contains 'refund-policy' or page.handle == 'refund-policy' or page.handle == 'returns' -%}
+      {%- if request.path contains 'privacy-policy' or page.handle == 'privacy-policy' -%}
+        {%- render 'mahjiva-privacy-policy' -%}
+      {%- elsif request.path contains 'terms' or page.handle contains 'terms' -%}
+        {%- render 'mahjiva-terms-of-service' -%}
+      {%- elsif request.path contains 'shipping-policy' or request.path contains 'shipping-information' or page.handle == 'shipping-policy' or page.handle == 'shipping-information' -%}
+        {%- render 'mahjiva-shipping-policy' -%}
+      {%- elsif request.path contains 'refund' or request.path contains 'return' or request.path == '/pages/policy' or request.path == '/policies' or page.handle == 'returns' or page.handle == 'refund-policy' -%}
         {%- render 'mahjiva-refund-policy' -%}
       {%- elsif request.path contains 'about' or page.handle contains 'about' or request.path contains 'contact-information' -%}
         {%- render 'mahjiva-about-us' -%}
@@ -459,6 +565,10 @@
     </main>
 
     {% sections 'footer-group' %}
+
+    {%- if template.name == 'index' or request.path == '/' -%}
+      {%- render 'mahjiva-newsletter-popup' -%}
+    {%- endif -%}
 
     <ul hidden>
       <li id="a11y-refresh-page-message">{{ 'accessibility.refresh_page' | t }}</li>
@@ -514,126 +624,100 @@
       <script src="{{ 'predictive-search.js' | asset_url }}" defer="defer"></script>
     {%- endif -%}
 
+    <!-- Header scroll logic is handled natively and cleanly in sections/atelier-header.liquid -->
+
+    <!-- =========================================================================
+         GLOBAL AUTO-DISCOUNT CHECKOUT SYNC (MAHJIVA15)
+         Automatically attaches discount code to cart forms and checkout links
+         whenever the customer has entered their email in popup or newsletter.
+         ========================================================================= -->
     <script>
       (function() {
-        const headerSection = document.querySelector('.section-header');
-        const headerWrapper = document.querySelector('.header-wrapper');
-        const marqueeSection = document.querySelector('.section-mahjong-marquee');
-        if (!headerSection || !headerWrapper) return;
-
-        let isSticky = false;
-        let isPastBanner = false;
-        let ticking = false;
-        let lastWidth = window.innerWidth;
-
-        const getBannerSection = () => {
-          return document.querySelector('body.template-index #MainContent > .shopify-section:first-child') ||
-                 document.querySelector('#MainContent > .shopify-section:first-child');
-        };
-
-        const syncHeight = () => {
-          const h = headerWrapper.getBoundingClientRect().height;
-          if (h > 0) {
-            document.documentElement.style.setProperty('--header-height', `${Math.round(h)}px`);
+        function getDiscountCode() {
+          try {
+            return sessionStorage.getItem('mahjiva_discount_code') || localStorage.getItem('mahjiva_discount_code') || '';
+          } catch(e) {
+            return '';
           }
-        };
+        }
 
-        const updateScroll = () => {
-          const scrollY = window.pageYOffset || document.documentElement.scrollTop;
-          const barHeight = marqueeSection ? marqueeSection.offsetHeight : 0;
-
-          // Header luôn trượt theo màn hình:
-          // Ở đỉnh (scrollY = 0), top = 40px (ngay dưới thanh bar 40px).
-          // Khi cuộn 0 -> 40px, header trượt lên từ 40px về 0px khớp 100% với thanh bar.
-          // Khi scrollY >= 40px, top = 0px cố định bám sát đỉnh màn hình.
-          const topPos = Math.max(0, barHeight - scrollY);
-          headerWrapper.style.setProperty('top', `${topPos}px`, 'important');
-
-          // Thêm class .is-scrolled khi người dùng trượt cuộn xuống để hiện background luôn
-          if (scrollY > 15) {
-            headerWrapper.classList.add('is-scrolled');
-            headerSection.classList.add('is-scrolled');
+        function injectDiscount(form) {
+          var code = getDiscountCode();
+          if (!code || !form || !form.action || form.action.indexOf('/cart') === -1) return;
+          var existing = form.querySelector('input[name="discount"]');
+          if (existing) {
+            existing.value = code;
           } else {
-            headerWrapper.classList.remove('is-scrolled');
-            headerSection.classList.remove('is-scrolled');
+            var input = document.createElement('input');
+            input.type = 'hidden';
+            input.name = 'discount';
+            input.value = code;
+            form.appendChild(input);
           }
+        }
 
-          // 2. Logic Mờ / Hết mờ với vùng đệm Hysteresis chống rung giật tuyệt đối
-          const banner = getBannerSection();
-          if (banner) {
-            const bannerRect = banner.getBoundingClientRect();
-            const h = headerWrapper.offsetHeight || 75;
+        function syncAllCartForms() {
+          var forms = document.querySelectorAll('form[action*="/cart"], form#CartDrawer-Form, form#cart');
+          forms.forEach(injectDiscount);
+        }
 
-            // Vùng đệm 8px ngăn chặn tuyệt đối dao động qua lại quanh đường biên
-            if (!isPastBanner && bannerRect.bottom <= h) {
-              isPastBanner = true;
-              headerWrapper.classList.add('is-past-banner');
-              headerSection.classList.add('is-past-banner');
-            } else if (isPastBanner && bannerRect.bottom > (h + 8)) {
-              isPastBanner = false;
-              headerWrapper.classList.remove('is-past-banner');
-              headerSection.classList.remove('is-past-banner');
+        if (document.readyState === 'loading') {
+          document.addEventListener('DOMContentLoaded', syncAllCartForms);
+        } else {
+          syncAllCartForms();
+        }
+
+        // Catch dynamically opened CartDrawer or dynamically rendered forms
+        document.addEventListener('submit', function(e) {
+          if (e.target && e.target.tagName === 'FORM') {
+            injectDiscount(e.target);
+          }
+        }, true);
+
+        // Catch checkout button clicks
+        document.addEventListener('click', function(e) {
+          var code = getDiscountCode();
+          if (!code) return;
+          var btn = e.target.closest('button[name="checkout"], a[href*="/checkout"]');
+          if (btn) {
+            if (btn.tagName === 'A' && btn.href && btn.href.indexOf('discount=') === -1) {
+              btn.href += (btn.href.indexOf('?') === -1 ? '?' : '&') + 'discount=' + encodeURIComponent(code);
+            } else if (btn.form) {
+              injectDiscount(btn.form);
             }
-          } else {
-            const past = scrollY > 80;
-            if (past !== isPastBanner) {
-              isPastBanner = past;
-              if (isPastBanner) {
-                headerWrapper.classList.add('is-past-banner');
-                headerSection.classList.add('is-past-banner');
-              } else {
-                headerWrapper.classList.remove('is-past-banner');
-                headerSection.classList.remove('is-past-banner');
-              }
+          }
+        }, true);
+      })();
+
+      // High-Performance On-Demand Country Flag Loader (Eliminates 700+ redundant image requests)
+      (function() {
+        var flagsLoaded = false;
+        function loadLazyFlags() {
+          if (flagsLoaded) return;
+          flagsLoaded = true;
+          var lazyFlags = document.querySelectorAll('.country-flag-lazy[data-src]');
+          for (var i = 0; i < lazyFlags.length; i++) {
+            var img = lazyFlags[i];
+            var src = img.getAttribute('data-src');
+            if (src) {
+              img.src = src;
+              img.removeAttribute('data-src');
             }
           }
-
-          ticking = false;
-        };
-
-        // Front-end performance: Debounce & Throttle
-        const maisonThrottle = (fn, limit) => {
-          let inThrottle = false;
-          return function(...args) {
-            if (!inThrottle) {
-              fn.apply(this, args);
-              inThrottle = true;
-              setTimeout(() => { inThrottle = false; }, limit);
-            }
-          };
-        };
-
-        const maisonDebounce = (fn, delay) => {
-          let timer;
-          return function(...args) {
-            clearTimeout(timer);
-            timer = setTimeout(() => fn.apply(this, args), delay);
-          };
-        };
-
-        const onScrollRequest = () => {
-          if (!ticking) {
-            requestAnimationFrame(updateScroll);
-            ticking = true;
+        }
+        document.addEventListener('click', function(e) {
+          if (e.target.closest('.lh-curr-trigger, .lf-country-trigger, .pdp-delivery-trigger, .pdp-country-trigger, .lh-drawer-trigger, .pdp-country-dropdown-wrapper, .lh-curr-popover, .lf-country-popover')) {
+            loadLazyFlags();
           }
-        };
-
-        window.addEventListener('scroll', onScrollRequest, { passive: true });
-
-        // Chống giật trên Mobile: Debounce 150ms khi thay đổi kích thước màn hình
-        window.addEventListener('resize', maisonDebounce(() => {
-          if (window.innerWidth !== lastWidth) {
-            lastWidth = window.innerWidth;
-            syncHeight();
+        }, { capture: true, passive: true });
+        document.addEventListener('mouseover', function(e) {
+          if (e.target.closest('.lh-curr-trigger, .lf-country-trigger, .pdp-delivery-trigger, .pdp-country-trigger')) {
+            loadLazyFlags();
           }
-          onScrollRequest();
-        }, 150), { passive: true });
-
-        // Khởi tạo
-        syncHeight();
-        updateScroll();
+        }, { passive: true });
       })();
     </script>
 
+    <script src="{{ 'bundle-draggable.js' | asset_url }}" defer="defer"></script>
   </body>
 </html>

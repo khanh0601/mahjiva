@@ -54,7 +54,11 @@
     <div class="lqa-details-col">
       <!-- Eyebrow & Title -->
       <div class="lqa-eyebrow">
-        {{ card_product.metafields.custom.subtitle.value | default: card_product.type | default: 'MAHJIVA ATELIER' | upcase }}
+        {%- assign lqa_eyebrow = card_product.metafields.custom.subtitle.value | default: card_product.type | default: 'MAHJIVA ATELIER' | upcase -%}
+        {%- if lqa_eyebrow == 'TILE BAG' or lqa_eyebrow == 'TILE-BAG' or lqa_eyebrow == 'TILE BAGS' -%}
+          {%- assign lqa_eyebrow = 'BAG' -%}
+        {%- endif -%}
+        {{ lqa_eyebrow }}
       </div>
       <h3 class="lqa-title">{{ card_product.title | escape }}</h3>
 

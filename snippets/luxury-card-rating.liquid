@@ -1,0 +1,30 @@
+{%- comment -%}
+  Luxury Card Rating Snippet - Renders Judge.me reviews if product has reviews (>0).
+  Strictly does not render anything if product has 0 reviews or no reviews.
+{%- endcomment -%}
+{%- if product != blank and product.metafields.judgeme.badge != blank -%}
+  {%- assign jm_badge = product.metafields.judgeme.badge -%}
+  {%- unless jm_badge contains 'data-number-of-reviews="0"' or jm_badge contains "data-number-of-reviews='0'" or jm_badge contains 'data-average-rating="0.00"' or jm_badge contains "data-average-rating='0.00'" -%}
+    <div class="card-judgeme-rating" title="{{ product.title | escape }} reviews">
+      <div class="jdgm-widget jdgm-preview-badge" data-id="{{ product.id }}">
+        {{ jm_badge }}
+      </div>
+    </div>
+  {%- endunless -%}
+{%- elsif product != blank and product.metafields.reviews.rating.value != blank and product.metafields.reviews.rating_count > 0 -%}
+  {% liquid
+    assign rating_decimal = 0
+    assign decimal = product.metafields.reviews.rating.value.rating | modulo: 1
+    if decimal >= 0.3 and decimal <= 0.7
+      assign rating_decimal = 0.5
+    elsif decimal > 0.7
+      assign rating_decimal = 1
+    endif
+  %}
+  <div class="card-judgeme-rating" title="{{ product.title | escape }} reviews">
+    <div class="rating" role="img" aria-label="{{ product.metafields.reviews.rating.value }} of 5 stars">
+      <span aria-hidden="true" class="rating-star" style="--rating: {{ product.metafields.reviews.rating.value.rating | floor }}; --rating-max: {{ product.metafields.reviews.rating.value.scale_max }}; --rating-decimal: {{ rating_decimal }};"></span>
+    </div>
+    <span class="rating-count">({{ product.metafields.reviews.rating_count }})</span>
+  </div>
+{%- endif -%}

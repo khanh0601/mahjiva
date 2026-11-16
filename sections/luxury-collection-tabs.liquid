@@ -62,8 +62,8 @@
   .lct-heading {
     font-family: "Cormorant Garamond", Garamond, Georgia, serif;
     font-size: 36px;
-    font-weight: 500;
-    color: #141517;
+    font-weight: 700;
+    color: #0D1110;
     line-height: 1.15;
     margin: 0 !important;
     padding: 0 !important;
@@ -138,10 +138,10 @@
   }
 
   .lct-tab-btn.is-active {
-    background: #141517;
-    color: #FAF8F5;
-    border-color: #141517;
-    box-shadow: 0 6px 20px rgba(20, 21, 23, 0.16);
+    background: linear-gradient(180deg, #1D4B37 0%, #143828 42%, #081610 100%) !important;
+    color: #FAF8F5 !important;
+    border-color: rgba(216, 184, 140, 0.4) !important;
+    box-shadow: 0 4px 16px rgba(8, 22, 16, 0.35);
   }
 
   .lct-tab-btn.is-active .lct-tab-count {
@@ -185,8 +185,10 @@
       flex-direction: row !important;
       gap: {{ section.settings.card_gap_mobile | default: 14 }}px !important;
       overflow-x: auto !important;
-      scroll-snap-type: x mandatory !important;
+      scroll-snap-type: x proximity !important;
       -webkit-overflow-scrolling: touch !important;
+      touch-action: pan-x pan-y !important;
+      overscroll-behavior-x: contain !important;
       padding-bottom: 16px !important;
       padding-right: 20px !important;
       justify-content: flex-start !important;
@@ -247,6 +249,21 @@
     .lct-grid.lct-grid--mobile-vertical_2 .lct-inquire-btn {
       padding: 6px 10px !important;
       font-size: 10px !important;
+    }
+  }
+
+  /* Dedicated iPad Portrait Grid (3 Columns, Balanced 4:3 Ratio) */
+  @media (min-width: 740px) and (max-width: 1023px) {
+    .lct-grid {
+      display: grid !important;
+      grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+      gap: 16px !important;
+      overflow-x: visible !important;
+      padding-bottom: 0 !important;
+    }
+    .lct-card {
+      flex: 1 1 0 !important;
+      max-width: none !important;
     }
   }
 
@@ -389,9 +406,9 @@
 
   .lct-title {
     font-family: "Cormorant Garamond", Georgia, serif;
-    font-size: 18px;
-    font-weight: 500;
-    color: #141517;
+    font-size: 19px;
+    font-weight: 700;
+    color: #0D1110;
     line-height: 1.25;
     margin: 0 0 6px;
   }
@@ -451,9 +468,9 @@
   }
 
   .lct-inquire-btn:hover {
-    background: #141517;
-    color: #FFFFFF;
-    border-color: #141517;
+    background: linear-gradient(180deg, #1D4B37 0%, #143828 42%, #081610 100%) !important;
+    color: #FFFFFF !important;
+    border-color: #143828 !important;
   }
 
   .lct-btn-svg {
@@ -858,7 +875,7 @@
       "type": "text",
       "id": "eyebrow",
       "label": "Eyebrow Subheading",
-      "default": "CURATED REPERTOIRE"
+      "default": "CURATED COLLECTION"
     },
     {
       "type": "text",
@@ -874,7 +891,7 @@
     },
     {
       "type": "header",
-      "content": "Product Repertoire"
+      "content": "Product Collection"
     },
     {
       "type": "range",

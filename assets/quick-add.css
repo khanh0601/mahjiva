@@ -473,7 +473,7 @@ quick-add-bulk .quantity__input {
   aspect-ratio: 1 / 1;
   border-radius: 18px;
   overflow: hidden;
-  background: #FAF8F5;
+  background: #FFFFFF;
   border: 1px solid rgba(22, 51, 39, 0.08);
   box-shadow: 0 4px 16px rgba(22, 51, 39, 0.04);
 }
@@ -481,7 +481,7 @@ quick-add-bulk .quantity__input {
 .lqa-img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
   display: block;
   transition: opacity 0.3s ease;
 }
@@ -683,9 +683,9 @@ quick-add-bulk .quantity__input {
   flex: 1;
   height: 46px;
   border-radius: 999px;
-  background: #163327;
-  color: #FAF8F5;
-  border: none;
+  background: linear-gradient(180deg, #1D4B37 0%, #143828 42%, #081610 100%) !important;
+  color: #FAF8F5 !important;
+  border: 1px solid rgba(216, 184, 140, 0.4) !important;
   font-size: 12px;
   font-weight: 700;
   letter-spacing: 0.12em;
@@ -696,13 +696,15 @@ quick-add-bulk .quantity__input {
   gap: 8px;
   cursor: pointer;
   transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-  box-shadow: 0 4px 14px rgba(22, 51, 39, 0.2);
+  box-shadow: 0 4px 16px rgba(8, 22, 16, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.15) !important;
 }
 
 .lqa-atc-btn:hover:not(:disabled) {
-  background: #1d4233;
+  background: linear-gradient(180deg, #245E45 0%, #18422F 42%, #0C1E15 100%) !important;
+  border-color: #D8B88C !important;
+  color: #FFFFFF !important;
   transform: translateY(-1.5px);
-  box-shadow: 0 8px 20px rgba(22, 51, 39, 0.28);
+  box-shadow: 0 8px 24px rgba(8, 22, 16, 0.45), 0 0 14px rgba(36, 94, 69, 0.25) !important;
 }
 
 .lqa-atc-btn:disabled,
@@ -752,7 +754,7 @@ quick-add-bulk .quantity__input {
 }
 
 .quick-add-modal__toggle:hover {
-  background: #163327 !important;
+  background: linear-gradient(180deg, #1D4B37 0%, #143828 42%, #081610 100%) !important;
   color: #FFFFFF !important;
   transform: rotate(90deg) !important;
 }

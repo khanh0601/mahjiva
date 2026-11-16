@@ -1,203 +1,508 @@
 {%- comment -%}
   -----------------------------------------------------------------------------
-  SNIPPET: MAHJOVA ABOUT US
-  - 100% Brand Story & Company Philosophy
-  - Haute Horlogerie / Atelier Luxury Typography
+  SNIPPET: MAHJIVA ABOUT US (HAUTE EDITORIAL EDITION - BALANCED & COHESIVE)
+  - 100% Exact Copy from Google Doc (Zero invented text)
+  - Cohesive Vertical Rhythm & Tight Spacing
+  - 100% Fill High-Resolution Photography with Museum Framing
+  - Elegant Editorial Dialogue Styling & Gold Atelier Accents
   -----------------------------------------------------------------------------
 {%- endcomment -%}
 
 <style>
   .mab-page-wrap {
     background-color: #FCFAF8;
+    color: #2C2D30;
     min-height: 70vh;
-    padding: 60px 20px 100px;
+    padding: 44px 20px 72px;
+    font-family: var(--font-body-family, "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
   }
 
   .mab-container {
-    max-width: 820px;
+    max-width: 880px;
     margin: 0 auto;
-    color: #2C2D30;
-    font-family: var(--font-body-family, "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif);
-    font-size: 15.5px;
-    line-height: 1.75;
   }
 
-  .mab-header {
-    margin-bottom: 44px;
-    border-bottom: 1px solid #ECE7DE;
-    padding-bottom: 28px;
+  /* --- HEADER: A Place At The Table --- */
+  .mab-hero-header {
+    text-align: center;
+    margin-bottom: 38px;
+    position: relative;
   }
 
-  .mab-eyebrow {
-    display: inline-block;
-    font-size: 12px;
-    font-weight: 700;
-    letter-spacing: 0.22em;
-    text-transform: uppercase;
-    color: #8C7355;
-    margin-bottom: 8px;
-  }
-
-  .mab-brand-title {
+  .mab-title {
     font-family: var(--font-heading-family, "Cormorant Garamond", Georgia, serif);
-    font-size: 42px;
-    font-weight: 600;
+    font-size: 46px;
+    font-weight: 500;
     line-height: 1.15;
     color: #163327;
     margin: 0;
-    letter-spacing: -0.01em;
+    letter-spacing: -0.015em;
   }
 
   @media (min-width: 768px) {
-    .mab-brand-title {
-      font-size: 52px;
+    .mab-title {
+      font-size: 56px;
     }
   }
 
+  .mab-title-accent {
+    display: block;
+    width: 54px;
+    height: 1.5px;
+    background: linear-gradient(90deg, transparent, #B89768, transparent);
+    margin: 16px auto 0;
+  }
+
+  /* --- STORY SECTIONS --- */
   .mab-section {
-    margin-bottom: 40px;
+    margin-bottom: 46px;
+    position: relative;
   }
 
   .mab-section-heading {
     font-family: var(--font-heading-family, "Cormorant Garamond", Georgia, serif);
-    font-size: 28px;
-    font-weight: 600;
-    line-height: 1.25;
+    font-size: 30px;
+    font-weight: 500;
+    line-height: 1.2;
     color: #163327;
-    margin: 0 0 16px 0;
+    margin: 0 0 14px;
     letter-spacing: -0.01em;
+    text-align: center;
   }
 
   @media (min-width: 768px) {
     .mab-section-heading {
-      font-size: 34px;
+      font-size: 38px;
+      margin-bottom: 16px;
     }
   }
 
+  /* 100% Fill Image with Museum-Grade Framing */
+  .mab-image-frame {
+    width: 100%;
+    margin: 0 0 18px;
+    border-radius: 16px;
+    overflow: hidden;
+    background: #F4EFE6;
+    border: 1px solid rgba(184, 151, 104, 0.35);
+    box-shadow: 0 14px 36px -8px rgba(22, 51, 39, 0.08), 0 4px 12px -2px rgba(0, 0, 0, 0.03);
+    transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.5s ease;
+  }
+
+  .mab-image-frame:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 20px 44px -8px rgba(22, 51, 39, 0.12), 0 6px 16px -2px rgba(0, 0, 0, 0.05);
+  }
+
+  .mab-image {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .mab-image-frame:hover .mab-image {
+    transform: scale(1.015);
+  }
+
+  /* Narrative Body Text */
+  .mab-prose {
+    max-width: 760px;
+    margin: 0 auto;
+  }
+
   .mab-p {
-    font-size: 15.5px;
-    line-height: 1.75;
-    color: #3E3B36;
-    margin: 0 0 16px 0;
+    font-size: 16px;
+    line-height: 1.72;
+    color: #38342E;
+    margin: 0 0 12px;
   }
 
   .mab-p:last-child {
     margin-bottom: 0;
   }
 
-  .mab-highlight {
-    font-family: var(--font-heading-family, "Cormorant Garamond", Georgia, serif);
-    font-size: 20px;
-    font-weight: 600;
-    color: #163327;
-    margin-top: 24px;
-    display: block;
-    letter-spacing: 0.02em;
+  /* Editorial Dialogue Pullout */
+  .mab-dialogue-block {
+    background: #FAF7F2;
+    border-left: 2.5px solid #B89768;
+    padding: 14px 22px;
+    border-radius: 0 10px 10px 0;
+    margin: 16px 0;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.02);
   }
 
+  .mab-dialogue-p {
+    font-family: var(--font-heading-family, "Cormorant Garamond", Georgia, serif);
+    font-size: 19px;
+    font-style: italic;
+    line-height: 1.48;
+    color: #1F1D19;
+    margin: 0 0 5px;
+  }
+
+  .mab-dialogue-p:last-child {
+    margin-bottom: 0;
+  }
+
+  .mab-dialogue-reply {
+    color: #163327;
+    font-weight: 500;
+  }
+
+  /* --- BRAND PHILOSOPHY BANNER --- */
+  .mab-philosophy-banner {
+    background: radial-gradient(circle at 50% 20%, #1e4535 0%, #11261d 100%);
+    color: #FCFAF8;
+    border-radius: 20px;
+    padding: 44px 28px;
+    text-align: center;
+    margin: 44px 0 38px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 18px 48px rgba(22, 51, 39, 0.15);
+    border: 1px solid rgba(226, 199, 142, 0.28);
+  }
+
+  .mab-philosophy-banner::before {
+    content: "“";
+    position: absolute;
+    top: -24px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: var(--font-heading-family, "Cormorant Garamond", Georgia, serif);
+    font-size: 160px;
+    line-height: 1;
+    color: rgba(255, 255, 255, 0.04);
+    pointer-events: none;
+  }
+
+  .mab-philosophy-quote {
+    font-family: var(--font-heading-family, "Cormorant Garamond", Georgia, serif);
+    font-size: 24px;
+    font-weight: 400;
+    font-style: italic;
+    line-height: 1.42;
+    color: #FAF6ED;
+    max-width: 720px;
+    margin: 0 auto 16px;
+    letter-spacing: 0.01em;
+  }
+
+  @media (min-width: 768px) {
+    .mab-philosophy-quote {
+      font-size: 30px;
+    }
+  }
+
+  .mab-philosophy-tagline {
+    font-size: 12.5px;
+    font-weight: 700;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: #E2C78E;
+    margin: 0;
+    display: inline-block;
+    padding-top: 12px;
+    border-top: 1px solid rgba(226, 199, 142, 0.35);
+  }
+
+  /* --- DIVIDER --- */
   .mab-divider {
     border: 0;
-    border-top: 1px solid #ECE7DE;
-    margin: 44px 0 32px 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, #D8CFBE, transparent);
+    margin: 38px 0 36px;
   }
 
-  .mab-entity-box {
-    background: #F7F4EE;
-    border-left: 3px solid #8C7355;
-    padding: 20px 24px;
-    border-radius: 4px;
+  /* --- BUSINESS INFORMATION CARD --- */
+  .mab-business-box {
+    background: #FFFFFF;
+    border: 1px solid #EAE3D5;
+    border-radius: 18px;
+    padding: 34px 30px;
+    box-shadow: 0 10px 32px rgba(22, 51, 39, 0.04);
   }
 
-  .mab-entity-text {
-    font-size: 14px;
-    line-height: 1.68;
-    color: #55514B;
-    margin: 0;
+  @media (min-width: 768px) {
+    .mab-business-box {
+      padding: 40px 38px;
+    }
   }
 
+  .mab-business-heading {
+    font-family: var(--font-heading-family, "Cormorant Garamond", Georgia, serif);
+    font-size: 28px;
+    font-weight: 500;
+    color: #163327;
+    margin: 0 0 16px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #F0ECE4;
+    letter-spacing: -0.01em;
+  }
+
+  @media (min-width: 768px) {
+    .mab-business-heading {
+      font-size: 32px;
+    }
+  }
+
+  .mab-business-p {
+    font-size: 15.5px;
+    line-height: 1.65;
+    color: #38342E;
+    margin: 0 0 10px;
+  }
+
+  .mab-business-p strong {
+    color: #163327;
+  }
+
+  .mab-contact-link-wrap {
+    margin-top: 22px;
+    padding-top: 18px;
+    border-top: 1px solid #F0ECE4;
+    display: flex;
+    justify-content: flex-start;
+  }
+
+  .mab-contact-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: #163327;
+    color: #FCFAF8;
+    padding: 13px 30px;
+    border-radius: 99px;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: 0 5px 16px rgba(22, 51, 39, 0.18);
+    border: 1px solid rgba(226, 199, 142, 0.25);
+  }
+
+  .mab-contact-btn:hover {
+    background: #234d3c;
+    color: #FFFFFF;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 22px rgba(22, 51, 39, 0.26);
+    border-color: #E2C78E;
+  }
+
+  .mab-contact-btn svg {
+    width: 14px;
+    height: 14px;
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .mab-contact-btn:hover svg {
+    transform: translateX(4px);
+  }
+
+  /* --- MOBILE OPTIMIZATION --- */
   @media (max-width: 767px) {
     .mab-page-wrap {
-      padding: 40px 16px 72px;
+      padding: 30px 16px 56px;
     }
-    .mab-header {
-      margin-bottom: 32px;
-      padding-bottom: 20px;
+    .mab-hero-header {
+      margin-bottom: 28px;
     }
-    .mab-brand-title {
+    .mab-title {
       font-size: 36px;
     }
+    .mab-title-accent {
+      margin-top: 14px;
+    }
+    .mab-section {
+      margin-bottom: 34px;
+    }
     .mab-section-heading {
-      font-size: 23px;
+      font-size: 26px;
       margin-bottom: 12px;
+    }
+    .mab-image-frame {
+      border-radius: 12px;
+      margin-bottom: 14px;
     }
     .mab-p {
       font-size: 15px;
-      line-height: 1.7;
+      line-height: 1.65;
+      margin-bottom: 10px;
     }
-    .mab-entity-box {
-      padding: 16px 18px;
+    .mab-dialogue-block {
+      padding: 12px 16px;
+      margin: 12px 0;
+      border-radius: 0 8px 8px 0;
+    }
+    .mab-dialogue-p {
+      font-size: 17px;
+      margin-bottom: 4px;
+    }
+    .mab-philosophy-banner {
+      padding: 32px 18px;
+      margin: 32px 0 28px;
+      border-radius: 16px;
+    }
+    .mab-philosophy-quote {
+      font-size: 21px;
+      line-height: 1.38;
+      margin-bottom: 12px;
+    }
+    .mab-divider {
+      margin: 28px 0;
+    }
+    .mab-business-box {
+      padding: 22px 18px;
+      border-radius: 14px;
+    }
+    .mab-business-heading {
+      font-size: 24px;
+      margin-bottom: 12px;
+      padding-bottom: 10px;
+    }
+    .mab-business-p {
+      font-size: 14.5px;
+      line-height: 1.6;
+      margin-bottom: 8px;
+    }
+    .mab-contact-link-wrap {
+      margin-top: 16px;
+      padding-top: 14px;
+    }
+    .mab-contact-btn {
+      width: 100%;
+      justify-content: center;
+      padding: 12px 20px;
     }
   }
 </style>
 
 <div class="mab-page-wrap">
   <div class="mab-container">
-    
-    <!-- Top Header -->
-    <header class="mab-header">
-      <span class="mab-eyebrow">About Us</span>
-      <h1 class="mab-brand-title">Mahjiva</h1>
+
+    <!-- Title -->
+    <header class="mab-hero-header">
+      <h1 class="mab-title">A Place At The Table</h1>
+      <span class="mab-title-accent"></span>
     </header>
 
-    <!-- Section 1: Where Elegance Meets Connection -->
+    <!-- Chapter 1 -->
     <section class="mab-section">
-      <h2 class="mab-section-heading">Where Elegance Meets Connection</h2>
-      <p class="mab-p">
-        At Mahjiva, we believe Mahjong is more than just a game &mdash; it's a beautiful tradition that brings people together, creates lasting memories, and turns ordinary moments into something extraordinary.
-      </p>
-      <p class="mab-p">
-        Born from a love for timeless elegance and thoughtful design, Mahjiva celebrates the artistry of Mahjong through distinctive tile collections and beautifully coordinated accessories. Every pattern, color, and detail reflects our passion for bringing personality, sophistication, and joy to the table.
-      </p>
+      <h2 class="mab-section-heading">The Invitation</h2>
+      
+      <div class="mab-image-frame">
+        <img
+          src="{{ 'about-story-1.jpg' | asset_url }}"
+          alt="The Invitation"
+          class="mab-image"
+          loading="lazy"
+          width="1600"
+          height="900"
+        >
+      </div>
+
+      <div class="mab-prose">
+        <p class="mab-p">Claire had recently moved into the neighborhood when Frank invited her over for Mahjong.</p>
+        
+        <div class="mab-dialogue-block">
+          <p class="mab-dialogue-p">&ldquo;I don&rsquo;t know how to play,&rdquo; she said.</p>
+          <p class="mab-dialogue-p mab-dialogue-reply">&ldquo;Come anyway. We&rsquo;ll show you.&rdquo;</p>
+        </div>
+
+        <p class="mab-p">At his house, sunlight fell across an ivory mat and delicate floral tiles. Maya moved her bag to make room. Evelyn offered Claire a cookie. Frank poured her tea.</p>
+        <p class="mab-p">Before the first hand began, Claire already knew everyone&rsquo;s name.</p>
+      </div>
     </section>
 
-    <!-- Section 2: Thoughtfully Curated, Beautifully Played -->
+    <!-- Chapter 2 -->
     <section class="mab-section">
-      <h2 class="mab-section-heading">Thoughtfully Curated, Beautifully Played</h2>
-      <p class="mab-p">
-        From statement-making Mahjong tiles to elegant mats, racks, dice, and carrying cases, our collections are thoughtfully curated to complement your personal style.
-      </p>
-      <p class="mab-p">
-        Whether you're hosting a lively Mahjong night, enjoying a quiet afternoon with friends, or searching for a meaningful gift, Mahjiva brings a touch of beauty to every occasion.
-      </p>
-      <p class="mab-p">
-        We believe the most memorable tables aren't simply about how they look, but about the laughter, conversations, and connections shared around them.
-      </p>
+      <h2 class="mab-section-heading">The Hand That Made Room</h2>
+      
+      <div class="mab-image-frame">
+        <img
+          src="{{ 'about-story-2.jpg' | asset_url }}"
+          alt="The Hand That Made Room"
+          class="mab-image"
+          loading="lazy"
+          width="1600"
+          height="900"
+        >
+      </div>
+
+      <div class="mab-prose">
+        <p class="mab-p">A little later, Claire paused with a tile between her fingers.</p>
+        
+        <div class="mab-dialogue-block">
+          <p class="mab-dialogue-p">&ldquo;I&rsquo;m afraid I&rsquo;m slowing everyone down.&rdquo;</p>
+          <p class="mab-dialogue-p mab-dialogue-reply">Frank smiled. &ldquo;Then we&rsquo;ll take our time.&rdquo;</p>
+        </div>
+
+        <p class="mab-p">Evelyn explained it again. Maya shared a story about her own first game. Soon, Claire was asking questions without apologizing.</p>
+        <p class="mab-p">Between hands, they talked about gardens, favorite recipes, and the neighborhood. By the end of the afternoon, Claire felt part of the group.</p>
+      </div>
     </section>
 
-    <!-- Section 3: Grace in Every Hand -->
+    <!-- Chapter 3 -->
     <section class="mab-section">
-      <h2 class="mab-section-heading">Grace in Every Hand</h2>
-      <p class="mab-p">
-        More than a slogan, <strong>Grace in Every Hand</strong> is the philosophy at the heart of Mahjiva.
-      </p>
-      <p class="mab-p">
-        It's the elegance of a beautifully designed tile, the joy of a perfectly styled table, and the warmth of gathering with the people who matter most.
-      </p>
-      <p class="mab-p">
-        Because true elegance isn't only found in beautiful things &mdash; it's found in the moments we create and the memories we share.
-      </p>
-      <span class="mab-highlight">Mahjiva &mdash; Grace in Every Hand.</span>
+      <h2 class="mab-section-heading">The Beginning of Mahjiva</h2>
+      
+      <div class="mab-image-frame">
+        <img
+          src="{{ 'about-story-3.jpg' | asset_url }}"
+          alt="The Beginning of Mahjiva"
+          class="mab-image"
+          loading="lazy"
+          width="1600"
+          height="900"
+        >
+      </div>
+
+      <div class="mab-prose">
+        <p class="mab-p">A few weeks later, Frank received a message from Claire.</p>
+        
+        <div class="mab-dialogue-block">
+          <p class="mab-dialogue-p mab-dialogue-reply">&ldquo;Saturday at mine? I&rsquo;ll put the kettle on.&rdquo;</p>
+        </div>
+
+        <p class="mab-p">She prepared the table and baked a lemon cake with Evelyn&rsquo;s advice. This time, she was welcoming everyone in.</p>
+        <p class="mab-p">For Frank, that afternoon sparked an idea: thoughtfully designed Mahjong pieces could make gathering feel even more special.</p>
+        <p class="mab-p">That belief inspired him to create Mahjiva—expressive tiles and coordinating accessories that bring personality to the table and celebrate the connections around it.</p>
+      </div>
     </section>
 
-    <!-- Horizontal Divider -->
+    <!-- Philosophy -->
+    <div class="mab-philosophy-banner">
+      <p class="mab-philosophy-quote">Grace lives in the care we put into our tables and the kindness we share across them.</p>
+      <p class="mab-philosophy-tagline">Mahjiva &mdash; Grace in Every Hand.</p>
+    </div>
+
+    <!-- Divider -->
     <hr class="mab-divider">
 
-    <!-- Company Entity Note -->
-    <div class="mab-entity-box">
-      <p class="mab-entity-text">
-        Mahjiva is owned and operated by TAY Global Commerce LLC, a legally registered business entity in the United States, dedicated to bringing thoughtfully curated Mahjong collections and attentive customer service to every player.
-      </p>
-    </div>
+    <!-- Business Information -->
+    <section class="mab-business-box">
+      <h2 class="mab-business-heading">Business Information</h2>
+      <p class="mab-business-p">Mahjiva is owned and operated by FR SUMMER LLC, a company registered in the United States.</p>
+      <p class="mab-business-p">Founder &amp; Creative Director: Frank R.</p>
+      <p class="mab-business-p">Business Address: 1401 Pennsylvania Ave Ste 105 5132, Wilmington, DE 19806-4125, USA.</p>
+      
+      <div class="mab-contact-link-wrap">
+        <a href="mailto:care@mahjiva.com" class="mab-contact-btn">
+          <span>CONTACT US</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+            <polyline points="12 5 19 12 12 19"></polyline>
+          </svg>
+        </a>
+      </div>
+    </section>
 
   </div>
 </div>

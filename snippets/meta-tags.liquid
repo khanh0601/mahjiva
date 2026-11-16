@@ -5,7 +5,7 @@
   endif
   assign og_url = canonical_url | default: request.origin
   assign og_type = 'website'
-  assign og_description = page_description | default: seo_description | default: shop.description | default: shop.name
+  assign og_description = seo_description | default: page_description | default: shop.description | default: shop.name
 
   if request.page_type == 'product'
     assign og_type = 'product'
@@ -20,13 +20,25 @@
 <meta property="og:url" content="{{ og_url }}">
 <meta property="og:title" content="{{ og_title | escape }}">
 <meta property="og:type" content="{{ og_type }}">
-<meta property="og:description" content="{{ og_description | escape }}">
+<meta property="og:description" content="{{ og_description | strip_html | strip_newlines | escape }}">
 
-{%- if page_image -%}
-  <meta property="og:image" content="http:{{ page_image | image_url }}">
-  <meta property="og:image:secure_url" content="https:{{ page_image | image_url }}">
-  <meta property="og:image:width" content="{{ page_image.width }}">
-  <meta property="og:image:height" content="{{ page_image.height }}">
+{%- liquid
+  assign og_image_url = ''
+  if page_image != blank
+    assign raw_img_url = page_image | image_url: width: 1200
+    if raw_img_url contains 'MAHJIQUE'
+      assign og_image_url = 'https://cdn.shopify.com/s/files/1/0953/0707/1735/files/1_ea6a10ae-5f5b-410c-bb50-b2fdeb8b33fa.png?width=1200'
+    else
+      assign og_image_url = raw_img_url
+    endif
+  else
+    assign og_image_url = 'https://cdn.shopify.com/s/files/1/0953/0707/1735/files/1_ea6a10ae-5f5b-410c-bb50-b2fdeb8b33fa.png?width=1200'
+  endif
+-%}
+{%- if og_image_url != blank -%}
+  <meta property="og:image" content="{{ og_image_url }}">
+  <meta property="og:image:secure_url" content="{{ og_image_url }}">
+  <meta name="twitter:image" content="{{ og_image_url }}">
 {%- endif -%}
 
 {%- if request.page_type == 'product' -%}

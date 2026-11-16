@@ -12,18 +12,64 @@
   .luxury-hero-slider {
     position: relative !important;
     width: 100% !important;
-    height: {{ section.settings.desktop_height | default: '100vh' }} !important;
-    min-height: 580px !important;
+    touch-action: pan-y !important;
+    {%- case section.settings.desktop_height -%}
+      {%- when 'fit_screen' -%}
+        height: calc(100vh - var(--header-height, 70px)) !important;
+        min-height: 520px !important;
+      {%- when 'adapt_image' -%}
+        height: auto !important;
+        aspect-ratio: 2060 / 763 !important;
+        max-height: calc(100vh - var(--header-height, 70px)) !important;
+      {%- when '80vh' -%}
+        height: 80vh !important;
+        min-height: 520px !important;
+      {%- when '70vh' -%}
+        height: 70vh !important;
+        min-height: 480px !important;
+      {%- when '90vh' -%}
+        height: 90vh !important;
+        min-height: 560px !important;
+      {%- when '800px' -%}
+        height: 800px !important;
+      {%- when '650px' -%}
+        height: 650px !important;
+      {%- when '100vh' -%}
+        height: 100vh !important;
+        min-height: 580px !important;
+      {%- else -%}
+        height: calc(100vh - var(--header-height, 70px)) !important;
+        min-height: 520px !important;
+    {%- endcase -%}
     overflow: hidden !important;
     margin: 0 !important;
     padding: 0 !important;
     background-color: #0E1210 !important;
   }
 
-  @media (max-width: 767px) {
+  @media (max-width: 739px) {
     .luxury-hero-slider {
-      height: {{ section.settings.mobile_height | default: '100vh' }} !important;
-      min-height: 480px !important;
+      {%- case section.settings.mobile_height -%}
+        {%- when 'fit_screen' -%}
+          height: calc(100dvh - var(--header-height, 60px)) !important;
+          min-height: 480px !important;
+        {%- when 'adapt_image' -%}
+          height: auto !important;
+          aspect-ratio: 800 / 1200 !important;
+          max-height: calc(100dvh - var(--header-height, 60px)) !important;
+        {%- when '85vh' -%}
+          height: 85dvh !important;
+        {%- when '75vh' -%}
+          height: 75dvh !important;
+        {%- when '550px' -%}
+          height: 550px !important;
+        {%- when '100vh' -%}
+          height: 100dvh !important;
+          min-height: 480px !important;
+        {%- else -%}
+          height: calc(100dvh - var(--header-height, 60px)) !important;
+          min-height: 480px !important;
+      {%- endcase -%}
     }
   }
 
@@ -32,6 +78,7 @@
     position: relative !important;
     width: 100% !important;
     height: 100% !important;
+    touch-action: pan-y !important;
   }
 
   /* Individual Slide */
@@ -79,14 +126,64 @@
     transform: scale(1) !important;
   }
 
-  /* Overlay System */
+  /* Multi-Layer Cinematic Scrim: Gradient sâu xuống đáy banner (100% trong suốt phía trên, KHÔNG blur để giữ ảnh nét căng) */
   .lhs-overlay {
+    display: block !important;
     position: absolute !important;
     inset: 0 !important;
-    background-color: {{ section.settings.overlay_color | default: '#0A120E' }} !important;
-    opacity: {{ section.settings.overlay_opacity | default: 40 | divided_by: 100.0 }} !important;
     z-index: 2 !important;
     pointer-events: none !important;
+    opacity: 1 !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    background: 
+      /* 1. Gradient dọc: mờ dần xuống đen sâu ở đáy banner */
+      linear-gradient(
+        180deg,
+        rgba(9, 23, 16, 0) 0%,
+        rgba(9, 23, 16, 0.04) 20%,
+        rgba(9, 23, 16, 0.25) 42%,
+        rgba(7, 18, 12, 0.65) 62%,
+        rgba(5, 14, 9, 0.88) 78%,
+        rgba(4, 12, 8, 0.98) 92%,
+        #020704 100%
+      ),
+      /* 2. Đệm sáng tối góc dưới bên chữ (Bottom Reading Scrim Anchor), giữ nửa trên banner 100% trong suốt */
+      {% if section.settings.text_alignment == 'center' %}
+        radial-gradient(
+          ellipse 90% 65% at 50% 100%,
+          rgba(4, 12, 8, 0.75) 0%,
+          rgba(4, 12, 8, 0.35) 50%,
+          rgba(4, 12, 8, 0) 85%
+        )
+      {% else %}
+        radial-gradient(
+          ellipse 85% 65% at 0% 100%,
+          rgba(4, 12, 8, 0.80) 0%,
+          rgba(4, 12, 8, 0.45) 45%,
+          rgba(4, 12, 8, 0.12) 75%,
+          rgba(4, 12, 8, 0) 100%
+        )
+      {% endif %} !important;
+  }
+
+  @media (max-width: 739px) {
+    .lhs-overlay {
+      display: block !important;
+      backdrop-filter: none !important;
+      -webkit-backdrop-filter: none !important;
+      background: 
+        linear-gradient(
+          180deg,
+          rgba(9, 23, 16, 0) 0%,
+          rgba(9, 23, 16, 0.06) 18%,
+          rgba(9, 23, 16, 0.32) 36%,
+          rgba(7, 18, 12, 0.72) 54%,
+          rgba(5, 14, 9, 0.92) 72%,
+          rgba(4, 12, 8, 0.98) 88%,
+          #020704 100%
+        ) !important;
+    }
   }
 
   /* Slide Content Area */
@@ -134,22 +231,30 @@
     transform: translateY(0) !important;
   }
 
+  /* Slide đầu tiên hiển thị ngay lập tức, không bị giật CSS khi vừa load trang */
+  .lhs-slide:first-child.is-active .lhs-content-box {
+    opacity: 1 !important;
+    transform: translateY(0) !important;
+    transition: none !important;
+  }
+
   .lhs-badge-chip {
     display: inline-flex !important;
     align-items: center !important;
     padding: 6px 16px !important;
     border-radius: 9999px !important;
-    background: rgba(255, 255, 255, 0.14) !important;
-    backdrop-filter: blur(8px) !important;
-    -webkit-backdrop-filter: blur(8px) !important;
-    border: 0.5px solid rgba(255, 255, 255, 0.3) !important;
-    color: {{ section.settings.accent_color | default: '#B89768' }} !important;
+    background: rgba(9, 23, 16, 0.90) !important;
+    background-color: rgba(9, 23, 16, 0.90) !important;
+    border: 1px solid rgba(226, 199, 142, 0.45) !important;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.45) !important;
+    color: #E2C78E !important;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
-    font-size: 10px !important;
-    font-weight: 600 !important;
-    letter-spacing: 0.22em !important;
+    font-size: 10.5px !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.2em !important;
     text-transform: uppercase !important;
     margin-bottom: 18px !important;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8) !important;
   }
 
   {%- assign hero_title_font = "'Cormorant Garamond', Georgia, serif" -%}
@@ -167,18 +272,18 @@
     font-size: {{ section.settings.title_size_desktop | default: 52 }}px !important;
     font-weight: {{ section.settings.title_weight | default: '400' }} !important;
     line-height: 1.15 !important;
-    color: {{ section.settings.title_color | default: '#FFFFFF' }} !important;
+    color: {{ section.settings.title_color | default: '#FAF8F5' }} !important;
     letter-spacing: -0.01em !important;
     margin: 0 0 16px 0 !important;
-    text-shadow: 0 2px 12px rgba(0, 0, 0, 0.5) !important;
+    text-shadow: 0 2px 20px rgba(0, 0, 0, 0.85), 0 1px 4px rgba(0, 0, 0, 0.95) !important;
   }
 
   .lhs-title em {
     font-style: italic !important;
-    color: {{ section.settings.accent_color | default: '#B89768' }} !important;
+    color: {{ section.settings.accent_color | default: '#E2C78E' }} !important;
   }
 
-  @media (max-width: 767px) {
+  @media (max-width: 739px) {
     .lhs-title {
       font-size: {{ section.settings.title_size_mobile | default: 32 }}px !important;
     }
@@ -186,13 +291,14 @@
 
   .lhs-subtitle {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
-    font-size: 15px !important;
+    font-size: 15.5px !important;
     font-weight: 450 !important;
     line-height: 1.6 !important;
-    color: {{ section.settings.subtitle_color | default: 'rgba(255, 255, 255, 0.88)' }} !important;
-    letter-spacing: 0.04em !important;
-    margin: 0 0 24px 0 !important;
+    color: {{ section.settings.subtitle_color | default: '#D6E2DB' }} !important;
+    letter-spacing: 0.03em !important;
+    margin: 0 0 26px 0 !important;
     max-width: 580px !important;
+    text-shadow: 0 2px 12px rgba(0, 0, 0, 0.85), 0 1px 3px rgba(0, 0, 0, 0.95) !important;
   }
 
   .lhs-subtitle p {
@@ -203,12 +309,12 @@
     display: inline-flex !important;
     align-items: center !important;
     gap: 8px !important;
-    padding: 12px 28px !important;
-    border: 1px solid {{ section.settings.btn_border_color | default: 'rgba(255, 255, 255, 0.5)' }} !important;
-    background: {{ section.settings.btn_bg_color | default: 'rgba(0, 0, 0, 0.2)' }} !important;
-    backdrop-filter: blur(8px) !important;
-    -webkit-backdrop-filter: blur(8px) !important;
-    color: {{ section.settings.btn_text_color | default: '#FFFFFF' }} !important;
+    padding: 13px 30px !important;
+    border: 1.5px solid rgba(226, 199, 142, 0.75) !important;
+    background: #0E1A14 !important;
+    background-color: #0E1A14 !important;
+    box-shadow: 0 6px 22px rgba(0, 0, 0, 0.55) !important;
+    color: #FAF8F5 !important;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
     font-size: 11px !important;
     font-weight: 600 !important;
@@ -216,14 +322,16 @@
     text-transform: uppercase !important;
     text-decoration: none !important;
     border-radius: 2px !important;
-    transition: all 0.3s ease !important;
+    transition: transform 0.22s ease, background-color 0.22s ease, border-color 0.22s ease, color 0.22s ease, box-shadow 0.22s ease !important;
   }
 
   .lhs-cta-btn:hover {
-    background: #FFFFFF !important;
-    color: #16181B !important;
-    border-color: #FFFFFF !important;
+    background: #E2C78E !important;
+    background-color: #E2C78E !important;
+    color: #0E1A14 !important;
+    border-color: #E2C78E !important;
     transform: translateY(-2px) !important;
+    box-shadow: 0 8px 28px rgba(0, 0, 0, 0.7) !important;
   }
 
   /* Slide Capsule Pagination */
@@ -301,7 +409,7 @@
   }
 
   /* Mobile Pagination: Sequential dashes indicator aligned Left / Center / Right per schema */
-  @media (max-width: 767px) {
+  @media (max-width: 739px) {
     .lhs-capsule-counter {
       bottom: clamp(18px, 4vw, 30px) !important;
       padding: 6px 14px !important;
@@ -355,7 +463,6 @@
     endif
   -%}
   <div class="luxury-hero-slider" id="LuxuryHero-{{ section.id }}" data-section-id="{{ section.id }}" data-autoplay="{{ section.settings.auto_rotate }}" data-duration="{{ section.settings.slide_duration | default: 6 }}">
-    <h1 class="visually-hidden">{{ hero_heading | strip | escape }}</h1>
     <div class="lhs-track">
       {%- for block in section.blocks -%}
         <div class="lhs-slide {% if forloop.first %}is-active{% endif %}" data-slide-index="{{ forloop.index0 }}" {{ block.shopify_attributes }}>
@@ -390,7 +497,7 @@
                 height="{{ block.settings.image.height }}"
               >
             {%- endif -%}
-            <div class="lhs-overlay"></div>
+            <div class="lhs-overlay" aria-hidden="true">&nbsp;</div>
           </div>
 
           {%- assign has_content = false -%}
@@ -408,7 +515,11 @@
                 {%- endif -%}
 
                 {%- if block.settings.title != blank -%}
-                  <h2 class="lhs-title">{{ block.settings.title }}</h2>
+                  {%- if forloop.first -%}
+                    <h1 class="lhs-title">{{ block.settings.title }}</h1>
+                  {%- else -%}
+                    <h2 class="lhs-title">{{ block.settings.title }}</h2>
+                  {%- endif -%}
                 {%- endif -%}
 
                 {%- if block.settings.subtitle != blank -%}
@@ -488,23 +599,82 @@
         sectionEl.addEventListener('mouseenter', stopAuto);
         sectionEl.addEventListener('mouseleave', startAuto);
 
-        // Touch swiping on mobile
+        // Touch & Gesture Swiping on Mobile & iPad
         let touchStartX = 0;
+        let touchStartY = 0;
         let touchEndX = 0;
+        let touchEndY = 0;
+        let isTouching = false;
+        const swipeMinDistance = 35;
+
         sectionEl.addEventListener('touchstart', function(e) {
-          touchStartX = e.changedTouches[0].screenX;
+          if (!e.touches || e.touches.length === 0) return;
+          isTouching = true;
+          touchStartX = e.touches[0].clientX;
+          touchStartY = e.touches[0].clientY;
+          touchEndX = touchStartX;
+          touchEndY = touchStartY;
+          stopAuto();
         }, { passive: true });
-        sectionEl.addEventListener('touchend', function(e) {
-          touchEndX = e.changedTouches[0].screenX;
-          const diff = touchStartX - touchEndX;
-          if (Math.abs(diff) > 40) {
-            if (diff > 0) {
+
+        sectionEl.addEventListener('touchmove', function(e) {
+          if (!isTouching || !e.touches || e.touches.length === 0) return;
+          touchEndX = e.touches[0].clientX;
+          touchEndY = e.touches[0].clientY;
+        }, { passive: true });
+
+        const finishSwipe = function() {
+          if (!isTouching) return;
+          isTouching = false;
+          const diffX = touchStartX - touchEndX;
+          const diffY = touchStartY - touchEndY;
+          // Must be horizontal gesture (> diffY) and at least 35px
+          if (Math.abs(diffX) > swipeMinDistance && Math.abs(diffX) > Math.abs(diffY)) {
+            if (diffX > 0) {
               showSlide(currentIndex + 1);
             } else {
               showSlide(currentIndex - 1);
             }
-            startAuto();
           }
+          startAuto();
+        };
+
+        sectionEl.addEventListener('touchend', function(e) {
+          if (e.changedTouches && e.changedTouches.length > 0) {
+            touchEndX = e.changedTouches[0].clientX;
+            touchEndY = e.changedTouches[0].clientY;
+          }
+          finishSwipe();
+        }, { passive: true });
+
+        sectionEl.addEventListener('touchcancel', finishSwipe, { passive: true });
+
+        // Pointer event support for iPad Apple Pencil, trackpads, and stylus
+        let isPointerDown = false;
+        let pointerStartX = 0;
+        let pointerStartY = 0;
+
+        sectionEl.addEventListener('pointerdown', function(e) {
+          if (e.pointerType === 'touch') return; // Handled by touch events
+          isPointerDown = true;
+          pointerStartX = e.clientX;
+          pointerStartY = e.clientY;
+          stopAuto();
+        }, { passive: true });
+
+        sectionEl.addEventListener('pointerup', function(e) {
+          if (!isPointerDown) return;
+          isPointerDown = false;
+          const pDiffX = pointerStartX - e.clientX;
+          const pDiffY = pointerStartY - e.clientY;
+          if (Math.abs(pDiffX) > 40 && Math.abs(pDiffX) > Math.abs(pDiffY)) {
+            if (pDiffX > 0) {
+              showSlide(currentIndex + 1);
+            } else {
+              showSlide(currentIndex - 1);
+            }
+          }
+          startAuto();
         }, { passive: true });
 
         startAuto();
@@ -530,23 +700,30 @@
       "id": "desktop_height",
       "label": "Desktop Slider Height",
       "options": [
-        { "value": "100vh", "label": "Full Viewport (100vh)" },
-        { "value": "90vh", "label": "Sub-Full (90vh)" },
-        { "value": "800px", "label": "Large Fixed (800px)" },
-        { "value": "650px", "label": "Medium Fixed (650px)" }
+        { "value": "fit_screen", "label": "Khít màn hình (100vh - Header)" },
+        { "value": "adapt_image", "label": "Tỉ lệ ảnh gốc (2060 x 763)" },
+        { "value": "80vh", "label": "Vừa vặn (80vh)" },
+        { "value": "70vh", "label": "Gọn gàng (70vh)" },
+        { "value": "90vh", "label": "Lớn (90vh)" },
+        { "value": "100vh", "label": "Toàn màn hình (100vh)" },
+        { "value": "800px", "label": "Cố định 800px" },
+        { "value": "650px", "label": "Cố định 650px" }
       ],
-      "default": "100vh"
+      "default": "fit_screen"
     },
     {
       "type": "select",
       "id": "mobile_height",
       "label": "Mobile Slider Height",
       "options": [
-        { "value": "100vh", "label": "Full Viewport (100vh)" },
-        { "value": "85vh", "label": "Sub-Full (85vh)" },
-        { "value": "550px", "label": "Fixed (550px)" }
+        { "value": "fit_screen", "label": "Khít màn hình điện thoại" },
+        { "value": "adapt_image", "label": "Tỉ lệ ảnh mobile" },
+        { "value": "85vh", "label": "Vừa vặn (85dvh)" },
+        { "value": "75vh", "label": "Gọn gàng (75dvh)" },
+        { "value": "100vh", "label": "Toàn màn hình (100dvh)" },
+        { "value": "550px", "label": "Cố định 550px" }
       ],
-      "default": "100vh"
+      "default": "fit_screen"
     },
     {
       "type": "checkbox",
@@ -593,11 +770,11 @@
       "type": "range",
       "id": "overlay_opacity",
       "min": 0,
-      "max": 80,
+      "max": 100,
       "step": 5,
       "unit": "%",
       "label": "Overlay Opacity",
-      "default": 40
+      "default": 90
     },
     {
       "type": "header",

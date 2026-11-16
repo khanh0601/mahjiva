@@ -1,0 +1,73 @@
+{%- comment -%}
+  MAHJIVA Luxury Image Alt Text Sanitizer & SEO Optimizer
+  Sanitizes supplier generic alt texts like "[Title] - Image 1", "[Title] - Image 2"
+  and replaces them with rich, elegant, Google-SEO-optimized descriptive text.
+  If a genuine custom alt text is provided (not containing " - Image "), it preserves it.
+{%- endcomment -%}
+{%- liquid
+  assign raw_alt = image.alt | default: '' | strip
+  assign prod_title = product.title | default: '' | strip
+  if prod_title == blank and product_title != blank
+    assign prod_title = product_title | strip
+  endif
+
+  assign is_generic = false
+  if raw_alt == blank
+    assign is_generic = true
+  elsif raw_alt contains ' - Image ' or raw_alt contains ' - Image' or raw_alt contains '- Image' or raw_alt == prod_title
+    assign is_generic = true
+  elsif raw_alt contains 'Majong' or raw_alt contains 'majong' or raw_alt contains 'Pearl Swirl'
+    assign is_generic = true
+  endif
+
+  if is_generic
+    assign pos = index | default: image.position | default: 1 | plus: 0
+    assign title_down = prod_title | downcase
+    assign type_down = product.type | downcase
+
+    if pos <= 1
+      if title_down contains 'mat' or type_down contains 'mat'
+        assign caption = 'Premium Mahjong Playing Mat & Non-Slip Surface'
+      elsif title_down contains 'bag' or type_down contains 'bag'
+        assign caption = 'Luxury Quilted Mahjong Tile Carrying Case'
+      elsif title_down contains 'rack' or type_down contains 'rack'
+        assign caption = 'Precision Acrylic Mahjong Racks Set of 4'
+      elsif title_down contains 'dice' or type_down contains 'dice'
+        assign caption = 'Handcrafted Natural Gemstone Mahjong Dice Pair'
+      else
+        assign caption = 'Master Edition & Handcrafted Tiles Set'
+      endif
+    elsif pos == 2
+      assign caption = 'Handcrafted Detail & Surface Texture Plate 2'
+    elsif pos == 3
+      assign caption = 'Artisanal Composition & Tile Inspection Plate 3'
+    elsif pos == 4
+      assign caption = 'Premium Engravings & Distinctive Motifs Plate 4'
+    elsif pos == 5
+      assign caption = 'Side Profile & Multi-Layer Construction Plate 5'
+    elsif pos == 6
+      assign caption = 'Amber Tortoiseshell & Edge Craftsmanship Plate 6'
+    elsif pos == 7
+      assign caption = 'Character & Suit Typography Engravings Plate 7'
+    elsif pos == 8
+      assign caption = 'Joker & Flower Tiles Artisanal Showcase Plate 8'
+    elsif pos == 9
+      assign caption = 'Heirloom Presentation & Table Setting Plate 9'
+    elsif pos == 10
+      assign caption = 'Full Suite Composition & Tile Pattern Guide Plate 10'
+    elsif pos == 11
+      assign caption = 'Three-Dimensional Dimensions & Scale Plate 11'
+    elsif pos == 12
+      assign caption = 'Atelier Sunlight Atmosphere & Lifestyle Setting Plate 12'
+    else
+      assign caption = 'Atelier Archive Plate ' | append: pos
+    endif
+
+    assign final_alt = prod_title | append: ' - ' | append: caption
+    assign final_alt = final_alt | replace: 'Majong', 'Mahjong' | replace: 'majong', 'mahjong' | replace: 'Dices', 'Dice Set'
+    echo final_alt | escape
+  else
+    assign sanitized_alt = raw_alt | replace: 'Majong', 'Mahjong' | replace: 'majong', 'mahjong' | replace: 'Dices', 'Dice Set'
+    echo sanitized_alt | escape
+  endif
+-%}

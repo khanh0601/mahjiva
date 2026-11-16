@@ -73,7 +73,7 @@
                 "
                 src="{{ card_product.featured_media | image_url: width: 533 }}"
                 sizes="(min-width: {{ settings.page_width }}px) {{ settings.page_width | minus: 130 | divided_by: 4 }}px, (min-width: 990px) calc((100vw - 130px) / 4), (min-width: 750px) calc((100vw - 120px) / 3), calc((100vw - 35px) / 2)"
-                alt="{{ card_product.featured_media.alt | escape }}"
+                alt="{% render 'luxury-image-alt', image: card_product.featured_media, product: card_product, index: 1 %}"
                 class="motion-reduce"
                 {% unless lazy_load == false %}
                   loading="lazy"
@@ -83,7 +83,7 @@
               >
               {% comment %}theme-check-enable ImgLazyLoading{% endcomment %}
 
-              {%- if card_product.media[1] != null and show_secondary_image -%}
+              {%- if card_product.media[1] != null and show_secondary_image and card_product.media[1].src != card_product.featured_media.src -%}
                 <img
                   srcset="
                     {%- if card_product.media[1].width >= 165 -%}{{ card_product.media[1] | image_url: width: 165 }} 165w,{%- endif -%}
@@ -96,7 +96,7 @@
                   "
                   src="{{ card_product.media[1] | image_url: width: 533 }}"
                   sizes="(min-width: {{ settings.page_width }}px) {{ settings.page_width | minus: 130 | divided_by: 4 }}px, (min-width: 990px) calc((100vw - 130px) / 4), (min-width: 750px) calc((100vw - 120px) / 3), calc((100vw - 35px) / 2)"
-                  alt=""
+                  alt="{% render 'luxury-image-alt', image: card_product.media[1], product: card_product, index: 2 %}"
                   class="motion-reduce"
                   loading="lazy"
                   width="{{ card_product.media[1].width }}"
@@ -151,7 +151,11 @@
           {%- if prod_eyebrow == blank -%}
             {%- assign prod_eyebrow = 'TILES' -%}
           {%- endif -%}
-          <span class="card__eyebrow">{{ prod_eyebrow | upcase }}</span>
+          {%- assign prod_eyebrow_clean = prod_eyebrow | upcase -%}
+          {%- if prod_eyebrow_clean == 'TILE BAG' or prod_eyebrow_clean == 'TILE-BAG' or prod_eyebrow_clean == 'TILE BAGS' -%}
+            {%- assign prod_eyebrow_clean = 'BAG' -%}
+          {%- endif -%}
+          <span class="card__eyebrow">{{ prod_eyebrow_clean }}</span>
           <h3
             class="card__heading{% if card_product.featured_media or settings.card_style == 'standard' %} h5{% endif %}"
             {% if card_product.featured_media or settings.card_style == 'card' %}
@@ -174,6 +178,8 @@
             {%- endif -%}
 
             <span class="caption-large light">{{ block.settings.description | escape }}</span>
+
+            {% render 'luxury-card-rating', product: card_product %}
 
             {%- if show_rating and card_product.metafields.reviews.rating.value != blank -%}
               {% liquid

@@ -18,11 +18,11 @@
             "image": "shopify://shop_images/1_ea6a10ae-5f5b-410c-bb50-b2fdeb8b33fa.png",
             "image_mobile": "shopify://shop_images/e3d5cc48-5a4b-45b5-9eaa-3f279eaa7561.png",
             "show_badge": true,
-            "badge": "",
-            "title": "",
-            "subtitle": "",
-            "button_label": "",
-            "button_link": ""
+            "badge": "GRACE IN EVERY HAND",
+            "title": "The Art of American Mahjong",
+            "subtitle": "<p>Distinctive Mahjong tile sets and thoughtfully curated accessories for beautiful games and memorable gatherings.</p>",
+            "button_label": "EXPLORE THE COLLECTION →",
+            "button_link": "/collections/all"
           }
         },
         "slide_2": {
@@ -31,24 +31,24 @@
             "image": "shopify://shop_images/3.png",
             "image_mobile": "shopify://shop_images/Untitled_design_5.png",
             "show_badge": true,
-            "badge": "",
-            "title": "",
-            "subtitle": "",
-            "button_label": "",
-            "button_link": ""
+            "badge": "SIGNATURE COLLECTION",
+            "title": "Crimson Leopard Mahjong Set",
+            "subtitle": "<p>Bold crimson leopard prints, striking feline Jokers, and rich black accents — a statement of wild elegance and timeless glamour.</p>",
+            "button_label": "SHOP CRIMSON LEOPARD →",
+            "button_link": "/products/crimson-leopard-mahjong-set"
           }
         },
         "slide_3": {
           "type": "slide",
           "settings": {
-            "image": "shopify://shop_images/2_19418755-8705-46f8-b1e4-f70e7e3caa3c.png",
-            "image_mobile": "shopify://shop_images/4a099735-6c6b-4bc9-a88e-4152eb0e5796.png",
+            "image": "shopify://shop_images/image_2026-10-27_16-35-10.png",
+            "image_mobile": "shopify://shop_images/be089207-bda2-4840-ae39-d93fdea5172e.png",
             "show_badge": true,
-            "badge": "",
-            "title": "",
-            "subtitle": "",
-            "button_label": "",
-            "button_link": ""
+            "badge": "PERSONALIZED DESIGN",
+            "title": "Your Mat, Your Signature Style",
+            "subtitle": "<p>From favorite colors to meaningful motifs, create a one-of-a-kind Mahjong mat designed around you.</p>",
+            "button_label": "Design Your Mat →",
+            "button_link": "/products/custom-mahjong-mat-made-personal"
           }
         }
       },
@@ -58,25 +58,25 @@
         "slide_3"
       ],
       "settings": {
-        "desktop_height": "100vh",
-        "mobile_height": "100vh",
+        "desktop_height": "fit_screen",
+        "mobile_height": "fit_screen",
         "auto_rotate": true,
         "slide_duration": 6,
         "mobile_pagination_position": "center",
         "overlay_color": "#0a120e",
-        "overlay_opacity": 40,
+        "overlay_opacity": 90,
         "title_font_family": "cormorant",
         "title_size_desktop": 52,
         "title_size_mobile": 32,
         "title_weight": "400",
         "text_alignment": "left",
         "content_padding_bottom": 50,
-        "title_color": "#ffffff",
-        "subtitle_color": "#efefef",
-        "accent_color": "#b89768",
-        "btn_bg_color": "#00000033",
-        "btn_border_color": "#ffffff80",
-        "btn_text_color": "#ffffff"
+        "title_color": "#faf8f5",
+        "subtitle_color": "#d6e2db",
+        "accent_color": "#e2c78e",
+        "btn_bg_color": "#0e1a14",
+        "btn_border_color": "#e2c78e",
+        "btn_text_color": "#faf8f5"
       }
     },
     "luxury_best_sellers_qGNWGH": {
@@ -147,7 +147,7 @@
       "settings": {
         "layout_style": "grid_2x2",
         "image_position": "left",
-        "craftsman_image": "shopify://shop_images/Bo_mat_chuoc_MAHJOVA_thanh_lich.png",
+        "craftsman_image": "shopify://shop_images/ee6881cd-e3f9-4196-8d7b-4a7f11dc37d5.png",
         "eyebrow": "THE MAHJIVA DETAILS",
         "heading": "Beauty in Every Detail",
         "description": "From expressive artwork to coordinating accessories, Mahjiva brings a little more beauty to the table—and a little more joy to every hand.",
@@ -171,7 +171,7 @@
             "product": "woodland-bloom-mahjong-set",
             "collection": "mahjong-set",
             "custom_title": "Mahjong Set",
-            "custom_badge": "PILLAR 01",
+            "custom_badge": "",
             "card_link_text": "Explore Sets →",
             "custom_desc": "Distinctive artwork, beautiful colors, and a set that feels like you."
           }
@@ -179,10 +179,10 @@
         "pillar_2": {
           "type": "collection_pillar",
           "settings": {
-            "product": "classic-canvas-mahjong-tile-carrying-bag",
+            "product": "everyday-mahjong-tile-bag",
             "collection": "tile-bag",
             "custom_title": "Tile Bag",
-            "custom_badge": "PILLAR 02",
+            "custom_badge": "",
             "card_link_text": "Explore Bags →",
             "custom_desc": "Keep your favorite tiles together, ready for your next gathering."
           }
@@ -193,7 +193,7 @@
             "product": "crimson-leopard-mahjong-mat",
             "collection": "mats",
             "custom_title": "Mahjong Mat",
-            "custom_badge": "PILLAR 03",
+            "custom_badge": "",
             "card_link_text": "Explore Mats →",
             "custom_desc": "Set the scene with colors and patterns that bring your table to life."
           }
@@ -204,7 +204,7 @@
             "product": "leopard-print-mahjong-racks-set-of-4",
             "collection": "racks",
             "custom_title": "Rack & Pusher",
-            "custom_badge": "PILLAR 04",
+            "custom_badge": "",
             "card_link_text": "Explore Racks →",
             "custom_desc": "Frame your favorite tiles with a little extra personality."
           }
@@ -213,10 +213,10 @@
           "type": "collection_pillar",
           "settings": {
             "product": "handcrafted-natural-gemstone-mahjong-dice-set",
-            "collection": "dices",
+            "collection": "dice",
             "custom_title": "Mahjong Dice",
-            "custom_badge": "PILLAR 05",
-            "card_link_text": "Explore Dices →",
+            "custom_badge": "",
+            "card_link_text": "Explore Dice →",
             "custom_desc": "A small detail that adds charm to every roll."
           }
         }
@@ -233,7 +233,7 @@
         "heading": "Your Table, Your Style",
         "description": "Discover expressive tiles and beautiful accessories to make every Mahjong gathering your own.",
         "container_max_width": 1360,
-        "bg_gradient": "radial-gradient(ellipse 95% 75% at 50% 25%, #235a43 0%, #174230 48%, #0e2a1e 100%)",
+        "bg_gradient": "radial-gradient(ellipse 95% 75% at 50% 20%, #1e4d38 0%, #133927 48%, #091f15 100%)",
         "padding_top": 80,
         "padding_bottom": 88
       }
@@ -244,28 +244,28 @@
         "cat_tab_1": {
           "type": "category_tab",
           "settings": {
-            "collection": "travel-comfort",
-            "tab_title": "Leather Trunks",
+            "collection": "mahjong-set",
+            "tab_title": "Mahjong Sets",
             "tab_badge": "",
-            "custom_card_tag": "HEIRLOOM PIECE"
+            "custom_card_tag": "NMJL READY"
           }
         },
         "cat_tab_2": {
           "type": "category_tab",
           "settings": {
-            "collection": "nursing-pillows",
-            "tab_title": "Acoustic Tablecraft",
+            "collection": "mats",
+            "tab_title": "Tournament Mats",
             "tab_badge": "",
-            "custom_card_tag": "SALON ALLOCATION"
+            "custom_card_tag": "31.5\" STANDARD"
           }
         },
         "cat_tab_3": {
           "type": "category_tab",
           "settings": {
-            "collection": "frontpage",
-            "tab_title": "Bespoke Orders",
+            "collection": "all",
+            "tab_title": "Table Accessories",
             "tab_badge": "",
-            "custom_card_tag": "HEIRLOOM PIECE"
+            "custom_card_tag": "CURATED ESSENTIALS"
           }
         }
       },
@@ -276,11 +276,11 @@
       ],
       "disabled": true,
       "settings": {
-        "eyebrow": "CURATED ALLOCATION",
-        "heading": "The Atelier Repertoire",
-        "description": "A singular repertoire of Hetian nephrite suites, hand-stitched leather trunks, and acoustic felt mats curated for private salons.",
+        "eyebrow": "CURATED COLLECTION",
+        "heading": "The Mahjiva Collection",
+        "description": "A singular collection of American Mahjong sets, non-slip playing mats, and coordinating accessories curated for your game night.",
         "products_to_show": 8,
-        "btn_label": "INQUIRE",
+        "btn_label": "EXPLORE",
         "container_max_width": 1360,
         "bg_color": "#fcfaf8",
         "padding_top": 64,
@@ -311,7 +311,7 @@
           "settings": {
             "icon_type": "shield",
             "title": "Here for You, Beyond Checkout",
-            "description": "Enjoy delivery in 1–2 weeks and returns or exchanges within 30 days of arrival. Have a question or an order issue? Contact us—we’re happy to help."
+            "description": "Enjoy delivery in 1–3 weeks and returns or exchanges within 30 days of arrival. Have a question or an order issue? Contact us—we’re happy to help."
           }
         }
       },
@@ -323,7 +323,7 @@
       "settings": {
         "eyebrow": "WHY MAHJIVA",
         "eyebrow_color": "#7f5260",
-        "heading": "Grace in Every Hand",
+        "heading": "Artisan Craftsmanship & Precision",
         "heading_size": 38,
         "heading_color": "#163327",
         "subheading": "Elegant details for the game you love and the moments you share.",
@@ -361,23 +361,23 @@
             "display_order": "media_first",
             "no_image_fallback": "review_text_only",
             "max_reviews": 20,
-            "review_length": "medium",
+            "review_length": "small",
             "text_size": "medium",
-            "image_ratio": "0.75",
-            "reviews_shown": 4,
+            "image_ratio": "1",
+            "reviews_shown": 5,
             "show_reviewer_name": true,
             "show_product_name": true,
             "hide_arrows_mobile": true,
             "arrows_position": "sides",
             "max_width": 1600,
             "corner_styling": "soft",
-            "header_text_color": "#000000",
-            "text_color": "#000000",
-            "card_color": "#f9f9f9",
-            "stars_color": "",
+            "header_text_color": "#0B3A21",
+            "text_color": "#0B3A21",
+            "card_color": "#FCFAF8",
+            "stars_color": "#E6D659",
             "arrows_color": "#000000",
             "transition_speed": 5,
-            "header_text": "Customers are saying",
+            "header_text": "What customers are saying",
             "show_average_rating": true,
             "rating_display": "default"
           }
@@ -398,7 +398,7 @@
           "settings": {
             "question": "What products does MAHJIVA offer?",
             "content": "<p>MAHJIVA offers a curated collection of American Mahjong essentials, including tile sets, tile bags, playing mats, racks, and dice. Each piece is thoughtfully selected to bring elegance, personality, and style to your Mahjong experience.</p>",
-            "default_open": false,
+            "default_open": true,
             "icon_code": "",
             "icon_color": "#7f5260"
           }
@@ -437,7 +437,7 @@
           "type": "question",
           "settings": {
             "question": "How long does shipping take?",
-            "content": "<p>Shipping times vary depending on your location and the items ordered. Please refer to our Shipping Policy for the latest processing times, delivery estimates, and shipping information.</p>",
+            "content": "<p>We provide <strong>Complimentary Worldwide Shipping</strong> with end-to-end tracking on every order. Orders are carefully hand-inspected and dispatched within 1–2 business days. Total delivery typically takes <strong>1–3 weeks</strong> depending on your destination and fulfilling atelier (domestic US shipments arrive in 3–7 business days; handcrafted pieces from our overseas atelier arrive in 7–12 business days). You will receive an automated tracking link by email as soon as your parcel ships. For full details, view our <a href=\"/policies/shipping-policy\">Shipping Policy</a>.</p>",
             "default_open": false,
             "icon_code": "",
             "icon_color": "#7f5260"
@@ -447,7 +447,7 @@
           "type": "question",
           "settings": {
             "question": "What if I need to return or exchange an item?",
-            "content": "<p>We want you to feel confident shopping with MAHJIVA. Return and exchange eligibility is outlined in our Return & Refund Policy. Please review the policy for details before making a request.</p>",
+            "content": "<p>Every purchase is protected by our <strong>30-Day Mahjiva Guarantee</strong>. You have 30 days from delivery to request a return or exchange. If your piece arrives damaged, defective, or incorrect, Mahjiva covers all return shipping costs with a <strong>complimentary prepaid return shipping label</strong> and arranges an immediate replacement or full refund. For change-of-mind returns, our concierge team will guide you through a smooth domestic return to our US facility. Simply contact us at <a href=\"mailto:care@mahjiva.com\">care@mahjiva.com</a> with your order number. For complete guidelines, view our <a href=\"/policies/refund-policy\">Return &amp; Refund Policy</a>.</p>",
             "default_open": false,
             "icon_code": "",
             "icon_color": "#7f5260"
@@ -474,7 +474,7 @@
         "question_7"
       ],
       "settings": {
-        "title": "Before You Order",
+        "title": "Frequently Asked Questions",
         "title_size": 36,
         "title_color": "#3b2824",
         "body_text": "",

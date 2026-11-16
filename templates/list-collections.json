@@ -11,12 +11,11 @@
   "sections": {
     "slideshow": {
       "type": "slideshow",
-      "disabled": true,
       "blocks": {
         "slide": {
           "type": "slide",
           "settings": {
-            "heading": "Accessories & Suites",
+            "heading": "Mahjiva Collections",
             "heading_size": "h0",
             "subheading": "",
             "button_label": "",
@@ -34,6 +33,7 @@
       "block_order": [
         "slide"
       ],
+      "disabled": true,
       "settings": {
         "layout": "full_bleed",
         "slide_height": "small",
@@ -61,12 +61,12 @@
       "type": "main-list-collections",
       "settings": {
         "eyebrow": "",
-        "title": "Accessories & Suites",
+        "title": "Mahjiva Collections",
         "subtitle": "Discover handcrafted playing mats, precision racks, artisanal dice, and bespoke cases designed to elevate your game.",
         "sort": "alphabetical",
-        "columns_desktop": 3,
+        "columns_desktop": 4,
         "columns_mobile": "2",
-        "bg_color": "#FCFAF8"
+        "bg_color": "#fcfaf8"
       }
     },
     "rich-text-1": {

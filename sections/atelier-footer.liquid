@@ -3,9 +3,9 @@
   SECTION: ATELIER LUXURY FOOTER ("The Maison Atelier")
   - Warm Luxury Linen/Ivory Background (#F7F4EE) for high contrast and readability
   - Synchronized Header Logo (settings.logo / MAHJIVA Emerald Wordmark)
-  - Layout Inspired by Reference (Follow on Shop, Payment Icons, Trustpilot, DMCA)
+  - Layout Inspired by Reference (Follow on Shop, Payment Icons, Assurance Badges)
   - 4 Navigation Columns: Information, Customer Service, Policies, Help & Contact
-  - Real Support & Contact Information: 24/7 Support, Email, Phone/WhatsApp
+  - Real Support & Contact Information: Concierge Support (Mon–Sat 9AM–6PM EST), Email, Phone/WhatsApp
   - Submit a ticket CTA button
   - Bottom Bar: Shopify Native Currency/Country Selector, Copyright, Social Icons
   -----------------------------------------------------------------------------
@@ -35,34 +35,24 @@
   }
 
   /* Main 5-Column Grid */
+  /* Main 3-Column Grid */
   .af-main-grid {
     display: grid;
-    grid-template-columns: 1.3fr 1fr 1fr 1fr 1.35fr;
-    gap: 48px 44px;
+    grid-template-columns: 1.4fr 1fr 1.4fr;
+    gap: 52px 48px;
     align-items: flex-start;
-  }
-
-  @media (max-width: 1280px) {
-    .af-main-grid {
-      grid-template-columns: 1.3fr 1fr 1fr 1fr 1.35fr;
-      gap: 40px 32px;
-    }
   }
 
   @media (max-width: 1100px) {
     .af-main-grid {
-      grid-template-columns: 1.35fr 1fr 1fr 1fr;
-      gap: 36px 28px;
-    }
-    .af-col-contact {
-      grid-column: span 4;
-      margin-top: 24px;
+      grid-template-columns: 1.25fr 1fr 1.35fr;
+      gap: 40px 32px;
     }
   }
 
-  @media (max-width: 900px) {
+  @media (max-width: 860px) {
     .af-main-grid {
-      grid-template-columns: repeat(2, 1fr);
+      grid-template-columns: 1fr 1fr;
       gap: 36px 28px;
     }
     .af-col-brand {
@@ -70,7 +60,7 @@
     }
     .af-col-contact {
       grid-column: span 2;
-      margin-top: 0;
+      margin-top: 6px;
     }
   }
 
@@ -82,6 +72,7 @@
     .af-col-brand,
     .af-col-contact {
       grid-column: span 1;
+      margin-top: 0;
     }
     .af-container {
       padding-top: {{ section.settings.padding_top | default: 40 | times: 0.75 | round }}px;
@@ -130,12 +121,13 @@
   }
 
   .af-about-title {
-    font-family: "Cormorant Garamond", Georgia, serif;
-    font-size: 18px;
-    font-weight: 700;
-    color: #163327;
+    font-family: "Cormorant Garamond", Georgia, serif !important;
+    font-size: 22px;
+    font-weight: 700 !important;
+    color: #0A140F !important;
     margin: 0;
     letter-spacing: -0.01em;
+    line-height: 1.25;
   }
 
   .af-about-text {
@@ -145,33 +137,14 @@
     margin: 0;
   }
 
-  /* Follow on Shop Button */
-  .af-shop-btn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 6px;
-    background-color: #5A31F4;
-    color: #FFFFFF !important;
-    text-decoration: none !important;
-    font-size: 12px;
-    font-weight: 600;
-    padding: 7px 16px;
-    border-radius: 999px;
-    width: fit-content;
-    box-shadow: 0 3px 10px rgba(90, 49, 244, 0.22);
-    transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+  /* Follow on Shop Button (Shopify Official Native Component) */
+  .af-follow-on-shop {
+    display: block;
+    margin: 6px 0 8px 0;
   }
 
-  .af-shop-btn svg {
-    width: 13px;
-    height: 13px;
-  }
-
-  .af-shop-btn:hover {
-    background-color: #4A24DB;
-    transform: translateY(-2px);
-    box-shadow: 0 5px 14px rgba(90, 49, 244, 0.3);
+  .af-follow-on-shop shop-follow-button {
+    display: inline-block;
   }
 
   /* Payment Icons Grid */
@@ -214,71 +187,27 @@
     margin-top: 6px;
   }
 
-  .af-trustpilot-box {
+  .af-assurance-pill {
     display: inline-flex;
     align-items: center;
-    gap: 5px;
-    font-size: 11.5px;
-    font-weight: 700;
-    color: #141517;
-    text-decoration: none;
+    gap: 6px;
+    font-size: 11px;
+    font-weight: 500;
+    color: #4A463F;
+    background: #FAF8F5;
+    border: 1px solid #E8E2D8;
+    border-radius: 4px;
+    padding: 5px 9px;
+    letter-spacing: 0.02em;
   }
 
-  .af-tp-star-icon {
-    color: #00B67A;
-    font-size: 14px;
+  .af-assurance-pill svg {
+    color: #16302B;
+    flex-shrink: 0;
   }
 
-  .af-tp-stars-row {
-    display: inline-flex;
-    gap: 2px;
-  }
 
-  .af-tp-star-box {
-    width: 13px;
-    height: 13px;
-    background-color: #00B67A;
-    color: #FFFFFF;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 9.5px;
-    line-height: 1;
-    border-radius: 2px;
-  }
-
-  .af-tp-count {
-    color: #00B67A;
-    font-weight: 700;
-    text-decoration: underline;
-    margin-left: 2px;
-  }
-
-  .af-dmca-badge {
-    display: inline-flex;
-    align-items: center;
-    width: fit-content;
-    border-radius: 3px;
-    overflow: hidden;
-    font-size: 9.5px;
-    font-weight: 800;
-    letter-spacing: 0.04em;
-    border: 1px solid #163327;
-  }
-
-  .af-dmca-left {
-    background-color: #00B67A;
-    color: #FFFFFF;
-    padding: 2px 5px;
-  }
-
-  .af-dmca-right {
-    background-color: #163327;
-    color: #FFFFFF;
-    padding: 2px 5px;
-  }
-
-  /* Navigation Columns */
+  /* Navigation Column: More Info */
   .af-col-nav {
     display: flex;
     flex-direction: column;
@@ -287,11 +216,12 @@
 
   .af-col-title {
     font-family: "Cormorant Garamond", Georgia, serif !important;
-    font-size: 16.5px;
-    font-weight: 600;
-    color: #163327;
+    font-size: 22px;
+    font-weight: 700 !important;
+    color: #0A140F !important;
     margin: 0;
-    letter-spacing: 0.02em;
+    letter-spacing: -0.01em;
+    line-height: 1.25;
   }
 
   .af-nav-list {
@@ -300,31 +230,21 @@
     margin: 0;
     display: flex;
     flex-direction: column;
-    gap: 14px;
+    gap: 13px;
   }
 
   .af-nav-link {
-    font-size: 13px;
+    font-size: 13.5px;
     line-height: 1.45;
     color: #4A4743;
     text-decoration: none;
-    transition: color 0.2s ease, transform 0.2s ease;
+    transition: color 0.2s ease, text-decoration 0.2s ease;
     display: inline-block;
   }
 
   a.af-nav-link:hover {
-    color: #163327;
-    transform: translateX(2px);
-  }
-
-  .af-nav-static {
-    cursor: default;
-    user-select: text;
-  }
-
-  .af-nav-static:hover {
-    color: #4A4743 !important;
-    transform: none !important;
+    color: #0A140F !important;
+    text-decoration: underline;
   }
 
   /* Help & Contact Column */
@@ -348,81 +268,88 @@
 
   .af-contact-title {
     font-family: "Cormorant Garamond", Georgia, serif !important;
-    font-size: 16.5px;
-    font-weight: 600;
-    color: #163327;
+    font-size: 22px;
+    font-weight: 700 !important;
+    color: #0A140F !important;
     margin: 0;
+    letter-spacing: -0.01em;
+    line-height: 1.25;
   }
 
   .af-contact-sub {
-    font-size: 12px;
-    color: #5A5650;
+    font-size: 13px;
+    color: #38342F !important;
     font-weight: 600;
     margin: 0;
-    line-height: 1.4;
+    line-height: 1.45;
   }
 
   .af-contact-section {
     display: flex;
     flex-direction: column;
-    gap: 7px;
+    gap: 9px;
   }
 
   .af-contact-section-title {
-    font-size: 10.5px;
-    font-weight: 700;
-    color: #163327;
+    font-family: "Cormorant Garamond", Georgia, serif !important;
+    font-size: 16px;
+    font-weight: 700 !important;
+    color: #0A140F !important;
+    text-shadow: 0 0 0.35px #0A140F;
     text-transform: uppercase;
-    letter-spacing: 0.08em;
-    margin: 0 0 2px 0;
+    letter-spacing: 0.06em;
+    margin: 0 0 6px 0;
+    line-height: 1.35;
   }
 
   .af-contact-rows {
     display: flex;
     flex-direction: column;
     gap: 8px;
-    font-size: 11.5px;
-    line-height: 1.5;
-    color: #383633;
+    font-size: 12px;
+    line-height: 1.55;
+    color: #242220;
   }
 
   .af-contact-row strong {
-    color: #163327;
+    color: #0A140F !important;
+    font-weight: 700 !important;
   }
 
   .af-contact-row a {
-    color: #163327;
+    color: #0E241B !important;
     text-decoration: underline;
-    font-weight: 600;
+    font-weight: 700 !important;
   }
 
   .af-contact-row a:hover {
-    color: #B89768;
+    color: #B89768 !important;
   }
 
   .af-contact-biz-desc {
-    font-size: 11.5px;
+    font-size: 12px;
     line-height: 1.6;
-    color: #5A5650;
+    color: #38342F;
     margin: 0;
   }
 
   .af-contact-note {
     font-size: 11px;
     line-height: 1.4;
-    color: #75716A;
+    color: #615D56;
     margin: 0;
     font-style: italic;
   }
 
   .af-contact-operated {
-    font-size: 11px;
-    font-weight: 700;
-    color: #163327;
+    font-family: "Cormorant Garamond", Georgia, serif !important;
+    font-size: 14.5px;
+    font-weight: 700 !important;
+    color: #0A140F !important;
     letter-spacing: 0.04em;
     margin: 0;
     padding-top: 10px;
-    border-top: 1px dashed #E5DFD3;
+    border-top: 1px dashed #DDD6C8;
   }
 
   /* Middle CTA: Submit a ticket */
@@ -450,10 +377,11 @@
   }
 
   .af-ticket-btn:hover {
-    background-color: #163327;
+    background: linear-gradient(180deg, #1D4B37 0%, #143828 42%, #081610 100%) !important;
+    border-color: #143828 !important;
     color: #FFFFFF !important;
     transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(22, 51, 39, 0.2);
+    box-shadow: 0 4px 14px rgba(8, 22, 16, 0.35);
   }
 
   .af-ticket-note {
@@ -499,17 +427,17 @@
     position: relative;
   }
 
-  .af-country-select {
-    appearance: auto;
-    -webkit-appearance: menulist;
-    display: block;
-    max-width: min(320px, 82vw);
-    text-overflow: ellipsis;
+  .af-curr-flag {
+    display: inline-flex;
+    align-items: center;
+    line-height: 1;
   }
 
-  .af-country-select option {
-    color: #141517;
-    background: #FFFFFF;
+  .af-curr-current {
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    color: #163327;
   }
 
   .af-curr-btn {
@@ -554,10 +482,53 @@
     box-shadow: 0 -12px 36px rgba(0, 0, 0, 0.14), 0 2px 8px rgba(0, 0, 0, 0.04);
     border: 1px solid #ECE8E1;
     min-width: 280px;
-    max-width: 330px;
+    max-width: min(330px, calc(100vw - 32px));
     padding: 8px 0;
-    z-index: 100005;
+    z-index: 100010;
     animation: afFadeInUp 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .af-curr-backdrop {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.45);
+    backdrop-filter: blur(2px);
+    -webkit-backdrop-filter: blur(2px);
+    z-index: 100009;
+  }
+
+  .af-curr-backdrop.is-active {
+    display: block !important;
+  }
+
+  @media (max-width: 989px) {
+    .af-currency-box {
+      position: static !important;
+    }
+    .af-curr-form {
+      position: static !important;
+    }
+    .af-curr-menu {
+      position: fixed !important;
+      bottom: 16px !important;
+      left: 16px !important;
+      right: 16px !important;
+      width: auto !important;
+      min-width: 0 !important;
+      max-width: calc(100vw - 32px) !important;
+      transform: none !important;
+      border-radius: 16px !important;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.25) !important;
+      z-index: 100010 !important;
+    }
+    .af-curr-options {
+      max-height: 50vh !important;
+      padding-bottom: 28px !important;
+    }
   }
 
   @keyframes afFadeInUp {
@@ -756,7 +727,7 @@
   }
 
   /* =========================================================================
-     NEWSLETTER SIGNUP BANNER (Enjoy 10% Off Your First Order)
+     NEWSLETTER SIGNUP BANNER (Enjoy 15% Off Your First Order)
      ========================================================================= */
   .af-newsletter-wrap {
     width: 100%;
@@ -776,14 +747,14 @@
   .af-newsletter-heading {
     font-family: "Cormorant Garamond", Garamond, Georgia, serif;
     font-size: 32px;
-    font-weight: 500;
-    color: #163327;
+    font-weight: 700;
+    color: #0A140F !important;
     line-height: 1.2;
     margin: 0 0 14px 0;
     letter-spacing: -0.01em;
   }
 
-  @media (min-width: 768px) {
+  @media (min-width: 740px) {
     .af-newsletter-heading {
       font-size: 38px;
     }
@@ -846,8 +817,8 @@
     height: 48px;
     padding: 0 28px;
     border-radius: 999px;
-    background-color: #163327;
-    border: 1px solid #163327;
+    background: linear-gradient(180deg, #1D4B37 0%, #143828 42%, #081610 100%) !important;
+    border: 1px solid rgba(216, 184, 140, 0.4) !important;
     color: #FAF8F5;
     font-size: 12px;
     font-weight: 700;
@@ -860,15 +831,15 @@
     justify-content: center;
     gap: 6px;
     transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-    box-shadow: 0 4px 14px rgba(22, 51, 39, 0.18);
+    box-shadow: 0 4px 16px rgba(8, 22, 16, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.15);
   }
 
   .af-newsletter-btn:hover {
-    background-color: #1f4535;
-    border-color: #B89768;
+    background: linear-gradient(180deg, #245E45 0%, #18422F 42%, #0C1E15 100%) !important;
+    border-color: #D8B88C !important;
     color: #FFFFFF;
     transform: translateY(-1px);
-    box-shadow: 0 6px 18px rgba(22, 51, 39, 0.26);
+    box-shadow: 0 6px 20px rgba(8, 22, 16, 0.45);
   }
 
   .af-newsletter-feedback {
@@ -893,6 +864,92 @@
     border: 1px solid #F8C4C1;
   }
 
+  /* Footer Newsletter Dedicated Success Card */
+  .af-newsletter-success-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    max-width: 520px;
+    margin: 0 auto;
+    padding: 22px 28px 24px;
+    background: #FFFFFF;
+    border: 1.5px solid rgba(184, 151, 104, 0.4);
+    border-radius: 16px;
+    box-shadow: 0 8px 24px rgba(22, 51, 39, 0.06);
+    animation: afFadeIn 0.3s ease;
+    box-sizing: border-box;
+  }
+
+  @keyframes afFadeIn {
+    from { opacity: 0; transform: translateY(6px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .af-success-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 5px 14px;
+    background: rgba(35, 77, 60, 0.1);
+    border: 1px solid rgba(35, 77, 60, 0.25);
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    color: #163327;
+    margin-bottom: 10px;
+  }
+
+  .af-success-badge svg {
+    color: #234D3C;
+    flex-shrink: 0;
+  }
+
+  .af-success-msg {
+    font-size: 13.5px;
+    line-height: 1.55;
+    color: #4A4642;
+    margin: 0 0 14px 0;
+    text-align: center;
+  }
+
+  .af-code-card {
+    display: inline-flex;
+    align-items: center;
+    gap: 14px;
+    background: #FAF8F5;
+    border: 1.5px dashed #B89768;
+    border-radius: 10px;
+    padding: 8px 16px;
+  }
+
+  .af-code-text {
+    font-family: monospace;
+    font-size: 18px;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    color: #163327;
+  }
+
+  .af-copy-btn {
+    background: #163327;
+    color: #FAF8F5;
+    border: none;
+    border-radius: 6px;
+    padding: 6px 14px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .af-copy-btn:hover {
+    background: #B89768;
+    color: #163327;
+  }
+
   .af-newsletter-divider {
     display: block !important;
     width: 100% !important;
@@ -903,7 +960,7 @@
     line-height: 0 !important;
   }
 
-  @media (max-width: 767px) {
+  @media (max-width: 739px) {
     .af-newsletter-divider {
       margin: 28px 0 34px !important;
     }
@@ -914,44 +971,78 @@
   <div class="af-container">
 
     {%- if section.settings.enable_newsletter != false -%}
-      <!-- 0. NEWSLETTER SIGNUP BANNER (Enjoy 10% Off Your First Order) -->
+      <!-- 0. NEWSLETTER SIGNUP BANNER (Enjoy 15% Off Your First Order) -->
       <div class="af-newsletter-wrap" id="afNewsletterWrap-{{ section.id }}">
         <div class="af-newsletter-content">
-          <h3 class="af-newsletter-heading">{{ section.settings.newsletter_heading | default: 'Enjoy 10% Off Your First Order' }}</h3>
-          <p class="af-newsletter-sub">{{ section.settings.newsletter_subtext | default: 'Join the Mahjiva circle for new arrivals, table inspiration, and special offers. Sign up with your email to receive your 10% off welcome code.' }}</p>
+          <h3 class="af-newsletter-heading">{{ section.settings.newsletter_heading | default: 'Enjoy 15% Off Your First Order' }}</h3>
+          <p class="af-newsletter-sub">{{ section.settings.newsletter_subtext | default: 'Join the Mahjiva circle for new arrivals, table inspiration, and special offers. Sign up with your email to receive your 15% off welcome code.' }}</p>
           
-          {%- form 'customer', class: 'af-newsletter-form', id: 'FooterNewsletterForm' -%}
-            <input type="hidden" name="contact[tags]" value="newsletter,welcome-10">
-            <div class="af-newsletter-input-group">
-              <input 
-                type="email" 
-                name="contact[email]" 
-                class="af-newsletter-input" 
-                id="FooterNewsletterEmail"
-                value="{{ form.email }}"
-                placeholder="{{ section.settings.newsletter_placeholder | default: 'Enter your email' }}"
-                aria-label="{{ section.settings.newsletter_placeholder | default: 'Enter your email' }}"
-                autocorrect="off"
-                autocapitalize="off"
-                autocomplete="email"
-                required
-              >
-              <button type="submit" class="af-newsletter-btn" name="commit" id="FooterNewsletterSubmit">
-                <span>{{ section.settings.newsletter_button_text | default: 'Get My 10% Off →' | remove: '→' | remove: '->' | strip }}</span>
-                <span aria-hidden="true">→</span>
+          <!-- Newsletter Form Container -->
+          <div id="afNewsletterFormWrap-{{ section.id }}" style="width: 100%; max-width: 520px; margin: 0 auto;">
+            {%- form 'customer', class: 'af-newsletter-form', id: 'FooterNewsletterForm' -%}
+              <input type="hidden" name="contact[tags]" value="newsletter,welcome-10">
+              <div class="af-newsletter-input-group">
+                <input 
+                  type="email" 
+                  name="contact[email]" 
+                  class="af-newsletter-input" 
+                  id="FooterNewsletterEmail"
+                  value="{{ form.email }}"
+                  placeholder="{{ section.settings.newsletter_placeholder | default: 'Enter your email' }}"
+                  aria-label="{{ section.settings.newsletter_placeholder | default: 'Enter your email' }}"
+                  autocorrect="off"
+                  autocapitalize="off"
+                  autocomplete="email"
+                  required
+                >
+                <button type="submit" class="af-newsletter-btn" name="commit" id="FooterNewsletterSubmit">
+                  <span>{{ section.settings.newsletter_button_text | default: 'Get My 15% Off →' | remove: '→' | remove: '->' | strip }}</span>
+                  <span aria-hidden="true">→</span>
+                </button>
+              </div>
+
+              {%- if form.posted_successfully? -%}
+                <script>
+                  try {
+                    localStorage.setItem('mahjiva_discount_code', 'MAHJIVA15');
+                    sessionStorage.setItem('mahjiva_discount_code', 'MAHJIVA15');
+                    localStorage.setItem('mahjiva_footer_subscribed', 'true');
+                  } catch(e) {}
+                </script>
+              {%- endif -%}
+
+              {%- if form.errors -%}
+                <div class="af-newsletter-feedback af-newsletter-error" role="alert">
+                  {{ form.errors.translated_fields.email | capitalize }} {{ form.errors.messages.email }}
+                </div>
+              {%- endif -%}
+            {%- endform -%}
+          </div>
+
+          <!-- Dedicated Success State with MAHJIVA15 Code Box & Copy Button -->
+          <div class="af-newsletter-success-box" id="afNewsletterSuccess-{{ section.id }}" style="display: none;">
+            <div class="af-success-badge">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <polyline points="20 6 9 17 4 12"></polyline>
+              </svg>
+              <span>15% DISCOUNT ACTIVATED FOR YOUR ORDER</span>
+            </div>
+            
+            <p class="af-success-msg">
+              Welcome to the Mahjiva circle! Your <strong>15% off</strong> discount has been applied to your checkout session. Use this code if needed:
+            </p>
+
+            <div class="af-code-card">
+              <span class="af-code-text" id="afDiscountCodeText"></span>
+              <button type="button" class="af-copy-btn" id="afCopyCodeBtn" aria-label="Copy discount code">
+                <span id="afCopyCodeLabel">COPY</span>
               </button>
             </div>
 
-            {%- if form.posted_successfully? -%}
-              <div class="af-newsletter-feedback af-newsletter-success" role="status">
-                Welcome to the Mahjiva circle! Your 10% off code will arrive in your inbox shortly.
-              </div>
-            {%- elsif form.errors -%}
-              <div class="af-newsletter-feedback af-newsletter-error" role="alert">
-                {{ form.errors.translated_fields.email | capitalize }} {{ form.errors.messages.email }}
-              </div>
-            {%- endif -%}
-          {%- endform -%}
+            <button type="button" class="af-change-email-btn" id="afResetNewsletterBtn-{{ section.id }}" style="background: none; border: none; color: #7A7265; font-size: 12px; text-decoration: underline; cursor: pointer; margin-top: 14px; font-family: inherit;">
+              Enter a different email
+            </button>
+          </div>
         </div>
       </div>
 
@@ -987,18 +1078,18 @@
           </p>
         </div>
 
-        <!-- Follow on Shop Button -->
-        <a href="https://shop.app" target="_blank" rel="noopener noreferrer" class="af-shop-btn" aria-label="Follow MAHJIVA on Shop">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
-          </svg>
-          <span>Follow on shop</span>
-        </a>
+        <!-- Follow on Shop Button (Shopify Official Native Follow) -->
+        {%- if shop.features.follow_on_shop? -%}
+          <div class="af-follow-on-shop">
+            {{ shop | login_button: action: 'follow' }}
+          </div>
+        {%- endif -%}
 
-        <!-- Payment Icons Grid (100% Dynamic from Shopify Server shop.enabled_payment_types) -->
+        <!-- Payment Icons Grid (Filtered for US Market: Visa, MC, Amex, Apple Pay, Google Pay, Shop Pay, PayPal, Discover, Diners) -->
         {%- unless shop.enabled_payment_types == empty -%}
           <div class="af-payments-grid" aria-label="Accepted Payment Methods">
             {%- for type in shop.enabled_payment_types -%}
+              {%- assign type_lc = type | downcase -%}{%- if type_lc contains 'bancontact' or type_lc contains 'mbway' or type_lc contains 'mb_way' or type_lc contains 'mb-way' or type_lc contains 'blik' or type_lc contains 'ideal' or type_lc contains 'satispay' or type_lc contains 'twint' or type_lc contains 'przelewy24' or type_lc contains 'eps' or type_lc contains 'giropay' -%}{%- continue -%}{%- endif -%}
               {%- liquid
                 assign type_title = type | replace: '_', ' ' | capitalize
                 if type == 'american_express'
@@ -1015,16 +1106,8 @@
                   assign type_title = 'Diners Club'
                 elsif type == 'unionpay'
                   assign type_title = 'UnionPay'
-                elsif type == 'ideal'
-                  assign type_title = 'iDEAL'
                 elsif type == 'jcb'
                   assign type_title = 'JCB'
-                elsif type == 'blik'
-                  assign type_title = 'BLIK'
-                elsif type == 'mbway'
-                  assign type_title = 'MB WAY'
-                elsif type == 'bancontact'
-                  assign type_title = 'Bancontact'
                 endif
               -%}
               <span class="af-payment-pill" title="{{ type_title }}">
@@ -1034,143 +1117,168 @@
           </div>
         {%- endunless -%}
 
-        <!-- Trust Badges (Trustpilot & DMCA) -->
+        <!-- Authentic Atelier Assurance Badges -->
         <div class="af-trust-wrapper">
-          <a href="https://www.trustpilot.com" target="_blank" rel="noopener noreferrer" class="af-trustpilot-box" aria-label="Trustpilot Reviews">
-            <span class="af-tp-star-icon">★</span>
-            <span>Trustpilot</span>
-            <span class="af-tp-stars-row">
-              <span class="af-tp-star-box">★</span>
-              <span class="af-tp-star-box">★</span>
-              <span class="af-tp-star-box">★</span>
-              <span class="af-tp-star-box">★</span>
-              <span class="af-tp-star-box">★</span>
-            </span>
-            <span class="af-tp-count">13,578</span>
-          </a>
+          <div class="af-assurance-pill">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+              <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+            </svg>
+            <span>256-Bit SSL Secured</span>
+          </div>
 
-          <div class="af-dmca-badge" aria-label="DMCA Protected">
-            <span class="af-dmca-left">DMCA</span>
-            <span class="af-dmca-right">PROTECTED</span>
+          <div class="af-assurance-pill">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+            </svg>
+            <span>30-Day Guaranteed Returns</span>
           </div>
         </div>
       </div>
 
-      <!-- COLUMN 2: More Infor -->
+      <!-- COLUMN 2: More Info -->
       <div class="af-col-nav">
-        <h4 class="af-col-title">More Infor</h4>
+        <h4 class="af-col-title">More Info</h4>
         <ul class="af-nav-list" role="list">
-          <li><a href="/policies/contact-information" class="af-nav-link">About Us</a></li>
-          <li><span class="af-nav-link af-nav-static">Search</span></li>
-          <li><span class="af-nav-link af-nav-static">Contact Us</span></li>
-          <li><span class="af-nav-link af-nav-static">Track Order</span></li>
-        </ul>
-      </div>
-
-      <!-- COLUMN 3: Customer Service -->
-      <div class="af-col-nav">
-        <h4 class="af-col-title">Customer Service</h4>
-        <ul class="af-nav-list" role="list">
-          <li><span class="af-nav-link af-nav-static">Track Order</span></li>
-          <li><span class="af-nav-link af-nav-static">Cancellation &amp; Modification</span></li>
-          <li><span class="af-nav-link af-nav-static">Refund &amp; Replacement</span></li>
-          <li><span class="af-nav-link af-nav-static">Shipping And Delivery</span></li>
-        </ul>
-      </div>
-
-      <!-- COLUMN 4: Policies -->
-      <div class="af-col-nav">
-        <h4 class="af-col-title">Policies</h4>
-        <ul class="af-nav-list" role="list">
-          <li><span class="af-nav-link af-nav-static">Terms of Service</span></li>
-          <li><span class="af-nav-link af-nav-static">Privacy Policy</span></li>
-          <li><a href="/pages/refund-policy" class="af-nav-link">Refund Policy</a></li>
+          <li><a href="/pages/track-order" class="af-nav-link">Track Order</a></li>
+          <li><a href="/pages/about-us" class="af-nav-link">About Us</a></li>
+          <li><a href="/policies/refund-policy" class="af-nav-link">Returns &amp; Exchanges Policy</a></li>
           <li><a href="/policies/shipping-policy" class="af-nav-link">Shipping Policy</a></li>
-          <li><span class="af-nav-link af-nav-static">Disclaimer Regarding Fake Websites</span></li>
+          <li><a href="/policies/privacy-policy" class="af-nav-link">Privacy Policy</a></li>
+          <li><a href="/policies/terms-of-service" class="af-nav-link">Terms of Service</a></li>
+          <li><a href="/pages/contact" class="af-nav-link">Contact Us</a></li>
         </ul>
       </div>
 
-      <!-- COLUMN 5: Contact Information & Business Information -->
+      <!-- COLUMN 3: Contact Information & Business Information -->
       <div class="af-col-contact">
         <div class="af-contact-heading-group">
           <h4 class="af-contact-title">Contact Information</h4>
-          <p class="af-contact-sub">Mahjiva, operated by TAY Global Commerce LLC</p>
-        </div>
-
-        <div class="af-contact-section">
-          <div class="af-contact-rows">
-            <div class="af-contact-row">
-              <strong>Email:</strong> <a href="mailto:care@mahjiva.com">care@mahjiva.com</a>
-            </div>
-            <div class="af-contact-row">
-              <strong>Phone / WhatsApp:</strong> <a href="tel:+13212333336">+1 321-233-3336</a>
-            </div>
-            <div class="af-contact-row">
-              <strong>Address:</strong> 530-B HARKLE ROAD STE 100, Santa Fe, NM 87505
-            </div>
-            <div class="af-contact-row">
-              <strong>Email and WhatsApp:</strong> 7 days a week — we reply within 24 hours
-            </div>
-            <div class="af-contact-row">
-              <strong>Phone hours:</strong> Monday to Friday, 07:00–11:00 ET
-            </div>
-          </div>
+          <p class="af-contact-sub">Mahjiva, operated by FR SUMMER LLC</p>
         </div>
 
         <div class="af-contact-section">
           <h5 class="af-contact-section-title">Business Information</h5>
           <div class="af-contact-rows">
-            <div class="af-contact-row af-contact-biz-desc">
-              Mahjiva is owned and operated by TAY Global Commerce LLC, a legally registered business entity in the United States. All products, transactions, and customer support are managed under this entity.
+            <div class="af-contact-row">
+              <strong>Brand:</strong> Mahjiva
+            </div>
+            <div class="af-contact-row">
+              <strong>Legal Entity:</strong> FR SUMMER LLC
+            </div>
+            <div class="af-contact-row">
+              <strong>Founder &amp; Creative Director:</strong> Frank R.
+            </div>
+          </div>
+        </div>
+
+        <div class="af-contact-section">
+          <h5 class="af-contact-section-title">Contact Information</h5>
+          <div class="af-contact-rows">
+            <div class="af-contact-row">
+              <strong>Business:</strong> FR SUMMER LLC
+            </div>
+            <div class="af-contact-row">
+              <strong>Address:</strong> 1401 PENNSYLVANIA AVE STE 105 5132, WILMINGTON DE 19806-4125, US
+            </div>
+            <div class="af-contact-row">
+              <strong>Contact Person:</strong> Frank R.
+            </div>
+          </div>
+        </div>
+
+        <div class="af-contact-section">
+          <h5 class="af-contact-section-title">Client Concierge</h5>
+          <div class="af-contact-rows">
+            <div class="af-contact-row">
+              <strong>Email:</strong> <a href="mailto:care@mahjiva.com">care@mahjiva.com</a>
+            </div>
+            <div class="af-contact-row">
+              <strong>Phone / WhatsApp:</strong> <a href="https://wa.me/13233666555" target="_blank" rel="noopener">+1 323-366-6555</a>
+            </div>
+            <div class="af-contact-row">
+              <strong>Hours:</strong> Mon–Sat 9AM–6PM EST (Inquiries answered within 24h)
             </div>
           </div>
         </div>
 
         <p class="af-contact-operated">
-          Operated by TAY Global Commerce LLC
+          Operated by FR SUMMER LLC
         </p>
       </div>
 
     </div>
 
-    <!-- 2. CENTER ACTION CTA: Contact us -->
-    <div class="af-ticket-section">
-      <span class="af-ticket-btn" style="cursor: default;">Contact us</span>
-      <p class="af-ticket-note">Support time: 24/7 (US, AU &amp; CA) — Real Support</p>
-    </div>
-
     <!-- 3. BOTTOM BAR -->
     <div class="af-bottom-bar">
 
-      <!-- Left: Native Shopify Localization / Currency Dropup Selector -->
+      <!-- Left: Native Shopify Localization / Currency Dropup Selector (Compact Atelier Pill) -->
       <div class="af-currency-box">
         {%- form 'localization', id: 'FooterLocalizationForm', class: 'af-curr-form' -%}
-          <label class="visually-hidden" for="FooterCountryCode">Shipping destination and currency</label>
-          <select
-            name="country_code"
-            id="FooterCountryCode"
-            class="af-curr-btn af-country-select"
-            aria-label="Shipping destination and currency"
-            onchange="this.form.submit()"
+          <input type="hidden" name="country_code" id="FooterCountryCode" value="{{ localization.country.iso_code }}">
+          <button
+            type="button"
+            class="af-curr-btn"
+            id="afCurrencyToggle"
+            aria-expanded="false"
+            aria-label="Shipping destination and currency (Currently {{ localization.country.name }} — {{ localization.country.currency.iso_code }} {{ localization.country.currency.symbol }})"
+            {% if localization.available_countries.size <= 1 %}style="cursor: default;"{% endif %}
           >
-            {%- for country in localization.available_countries -%}
-              <option value="{{ country.iso_code }}"{% if country.iso_code == localization.country.iso_code %} selected{% endif %}>
-                {{ country.name }} — {{ country.currency.iso_code }} {{ country.currency.symbol }}
-              </option>
-            {%- endfor -%}
-          </select>
+            <span class="af-curr-flag" aria-hidden="true">
+              {% render 'country-flag', country: localization.country, country_code: localization.country.iso_code %}
+            </span>
+            <span class="af-curr-current">{{ localization.country.currency.iso_code }} ({{ localization.country.currency.symbol }})</span>
+            {%- if localization.available_countries.size > 1 -%}
+              <svg class="af-curr-arrow" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <polyline points="18 15 12 9 6 15"></polyline>
+              </svg>
+            {%- endif -%}
+          </button>
+
+          {%- if localization.available_countries.size > 1 -%}
+            <div class="af-curr-menu" id="afCurrencyMenu" hidden>
+              <div class="af-curr-header">Shipping Destination &amp; Currency</div>
+
+              <div class="af-curr-search-box">
+                <input
+                  type="search"
+                  class="af-curr-search-input"
+                  id="afCurrSearchFooter"
+                  placeholder="Search region or currency..."
+                  aria-label="Search region or currency"
+                  autocomplete="off"
+                >
+              </div>
+
+              <ul class="af-curr-options" role="list">
+                {%- for country in localization.available_countries -%}
+                  <li class="af-curr-option-item">
+                    <button
+                      type="button"
+                      class="af-curr-select-btn{% if country.iso_code == localization.country.iso_code %} is-active{% endif %}"
+                      data-country-code="{{ country.iso_code }}"
+                      data-currency="{{ country.currency.iso_code }}"
+                    >
+                      <div class="af-curr-btn-left">
+                        {% render 'country-flag', country: country, country_code: country.iso_code %}
+                        <span class="af-curr-country-name">{{ country.name }}</span>
+                      </div>
+                      <span class="af-curr-currency-tag">
+                        {{ country.currency.iso_code }} {{ country.currency.symbol }}
+                      </span>
+                    </button>
+                  </li>
+                {%- endfor -%}
+              </ul>
+            </div>
+            <div class="af-curr-backdrop" id="afCurrBackdrop"></div>
+          {%- endif -%}
         {%- endform -%}
       </div>
 
       <!-- Center: Legal Links & Copyright -->
       <div class="af-bottom-legal">
-        <span>&copy; {{ 'now' | date: '%Y' }}, Mahjiva</span>
-        <span class="af-dot">&bull;</span>
-        <a href="/policies/contact-information">About us</a>
-        <span class="af-dot">&bull;</span>
-        <a href="/pages/refund-policy">Policy</a>
-        <span class="af-dot">&bull;</span>
-        <a href="/policies/shipping-policy">Shipping policy</a>
+        <span>&copy; {{ 'now' | date: '%Y' }}, Mahjiva &bull; Operated by FR SUMMER LLC</span>
       </div>
 
       <!-- Right: Social Links -->
@@ -1203,6 +1311,319 @@
   </div>
 </footer>
 
+<script>
+  (function() {
+    const footerCurrToggle = document.getElementById('afCurrencyToggle');
+    const footerCurrMenu = document.getElementById('afCurrencyMenu');
+    const footerCurrBackdrop = document.getElementById('afCurrBackdrop');
+    const footerCurrCode = document.getElementById('FooterCountryCode');
+    const footerCurrForm = document.getElementById('FooterLocalizationForm');
+
+    function closeFooterCurr() {
+      if (footerCurrMenu) footerCurrMenu.setAttribute('hidden', 'true');
+      if (footerCurrToggle) footerCurrToggle.setAttribute('aria-expanded', 'false');
+      if (footerCurrBackdrop) footerCurrBackdrop.classList.remove('is-active');
+      document.body.classList.remove('af-curr-open');
+      const chatWidget = document.querySelector('shopify-chat') || document.getElementById('shopify-chat');
+      if (chatWidget) {
+        chatWidget.style.removeProperty('display');
+      }
+      if (window.scrollX !== 0) window.scrollTo(0, window.scrollY);
+    }
+
+    function openFooterCurr() {
+      if (footerCurrMenu) footerCurrMenu.removeAttribute('hidden');
+      if (footerCurrToggle) footerCurrToggle.setAttribute('aria-expanded', 'true');
+      if (footerCurrBackdrop) footerCurrBackdrop.classList.add('is-active');
+      document.body.classList.add('af-curr-open');
+      const chatWidget = document.querySelector('shopify-chat') || document.getElementById('shopify-chat');
+      if (chatWidget) {
+        chatWidget.style.setProperty('display', 'none', 'important');
+      }
+      const searchInput = document.getElementById('afCurrSearchFooter');
+      if (searchInput) {
+        setTimeout(() => {
+          try {
+            searchInput.focus({ preventScroll: true });
+          } catch (err) {
+            searchInput.focus();
+          }
+          if (window.scrollX !== 0) {
+            window.scrollTo(0, window.scrollY);
+          }
+        }, 60);
+      }
+    }
+
+    if (footerCurrToggle && footerCurrMenu) {
+      footerCurrToggle.addEventListener('click', function(e) {
+        e.stopPropagation();
+        const isHidden = footerCurrMenu.hasAttribute('hidden');
+        if (isHidden) {
+          openFooterCurr();
+        } else {
+          closeFooterCurr();
+        }
+      });
+
+      if (footerCurrBackdrop) {
+        footerCurrBackdrop.addEventListener('click', function(e) {
+          e.stopPropagation();
+          closeFooterCurr();
+        });
+      }
+
+      document.querySelectorAll('.af-curr-select-btn').forEach(function(btn) {
+        btn.addEventListener('click', function(e) {
+          e.preventDefault();
+          const code = this.getAttribute('data-country-code');
+          if (code && footerCurrCode && footerCurrForm) {
+            footerCurrCode.value = code;
+            footerCurrForm.submit();
+          }
+        });
+      });
+
+      const searchInput = document.getElementById('afCurrSearchFooter');
+      if (searchInput) {
+        searchInput.addEventListener('input', function() {
+          const q = this.value.toLowerCase().trim();
+          footerCurrMenu.querySelectorAll('.af-curr-option-item').forEach(function(item) {
+            const text = item.textContent.toLowerCase();
+            item.style.display = text.includes(q) ? '' : 'none';
+          });
+        });
+        searchInput.addEventListener('click', function(e) {
+          e.stopPropagation();
+        });
+      }
+
+      document.addEventListener('click', function(e) {
+        if (!footerCurrToggle.contains(e.target) && !footerCurrMenu.contains(e.target)) {
+          closeFooterCurr();
+        }
+      });
+    }
+
+    // Footer Newsletter AJAX Submission & Code Copy
+    (function initFooterNewsletter() {
+      const sectionId = '{{ section.id }}';
+      const formWrap = document.getElementById('afNewsletterFormWrap-' + sectionId);
+      const successBox = document.getElementById('afNewsletterSuccess-' + sectionId);
+      const copyBtn = document.getElementById('afCopyCodeBtn');
+      const copyLabel = document.getElementById('afCopyCodeLabel');
+      const resetBtn = document.getElementById('afResetNewsletterBtn-' + sectionId);
+      const discountCode = 'MAHJIVA15';
+
+      function getFooterForm() {
+        if (formWrap) {
+          const innerForm = formWrap.querySelector('form');
+          if (innerForm) return innerForm;
+        }
+        return document.getElementById('FooterNewsletterForm') || document.querySelector('.af-newsletter-form');
+      }
+
+      function getEmailInput() {
+        const f = getFooterForm();
+        if (f) {
+          const inp = f.querySelector('input[type="email"]');
+          if (inp) return inp;
+        }
+        return document.getElementById('FooterNewsletterEmail');
+      }
+
+      function showSuccess(shouldFocus) {
+        if (formWrap) formWrap.style.display = 'none';
+        if (successBox) {
+          successBox.style.display = 'flex';
+          const codeEl = document.getElementById('afDiscountCodeText');
+          if (codeEl) codeEl.textContent = discountCode;
+          if (shouldFocus && copyBtn) {
+            try { copyBtn.focus({ preventScroll: true }); } catch(e) {}
+          }
+        }
+      }
+
+      function showForm() {
+        if (successBox) successBox.style.display = 'none';
+        if (formWrap) {
+          formWrap.style.display = 'block';
+          const emailInput = getEmailInput();
+          if (emailInput) {
+            emailInput.value = '';
+          }
+        }
+      }
+
+      // Check on page load if user already claimed discount or submitted footer
+      try {
+        const hasHash = window.location.hash === '#FooterNewsletterForm';
+        const hasQuery = window.location.search && window.location.search.indexOf('customer_posted=true') !== -1;
+        const isClaimed = localStorage.getItem('mahjiva_footer_subscribed') === 'true' ||
+                          sessionStorage.getItem('mahjiva_footer_subscribed') === 'true' ||
+                          hasHash || hasQuery;
+        if (isClaimed) {
+          showSuccess(false); // NEVER focus or scroll on page load!
+        }
+
+        // Clean up hash or customer_posted query to prevent browser jumping on page refresh
+        if (hasHash || hasQuery) {
+          if (window.history && window.history.replaceState) {
+            const cleanSearch = window.location.search
+              .replace(/[?&]customer_posted=true/g, '')
+              .replace(/^[?&]/, '');
+            const cleanUrl = window.location.pathname + (cleanSearch ? '?' + cleanSearch : '');
+            window.history.replaceState(null, document.title, cleanUrl);
+          }
+        }
+      } catch(e) {}
+
+      // Reset button: allows entering a different email
+      if (resetBtn) {
+        resetBtn.addEventListener('click', function(e) {
+          e.preventDefault();
+          try {
+            localStorage.removeItem('mahjiva_footer_subscribed');
+            sessionStorage.removeItem('mahjiva_footer_subscribed');
+          } catch(err) {}
+          showForm();
+        });
+      }
+
+      // Copy Code functionality
+      if (copyBtn) {
+        copyBtn.addEventListener('click', function(e) {
+          e.preventDefault();
+          e.stopPropagation();
+          const code = discountCode;
+
+          function onCopied() {
+            if (copyLabel) copyLabel.innerText = 'COPIED!';
+            copyBtn.style.background = '#234D3C';
+            copyBtn.style.color = '#FFFFFF';
+            setTimeout(function() {
+              if (copyLabel) copyLabel.innerText = 'COPY';
+              copyBtn.style.background = '';
+              copyBtn.style.color = '';
+            }, 2500);
+          }
+
+          if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(code).then(onCopied).catch(function() {
+              fallbackCopy(code, onCopied);
+            });
+          } else {
+            fallbackCopy(code, onCopied);
+          }
+
+          function fallbackCopy(text, cb) {
+            const temp = document.createElement('textarea');
+            temp.value = text;
+            temp.style.position = 'fixed';
+            temp.style.opacity = '0';
+            document.body.appendChild(temp);
+            temp.select();
+            try {
+              document.execCommand('copy');
+              if (cb) cb();
+            } catch(e) {}
+            document.body.removeChild(temp);
+          }
+        });
+      }
+
+      // Guaranteed Submit Interceptor
+      function handleSubmission(e) {
+        if (e) {
+          e.preventDefault();
+          e.stopPropagation();
+          if (e.stopImmediatePropagation) e.stopImmediatePropagation();
+        }
+
+        const emailInput = getEmailInput();
+        const emailVal = emailInput ? emailInput.value.trim() : '';
+
+        if (!emailVal || emailVal.indexOf('@') === -1) {
+          if (emailInput) {
+            emailInput.focus();
+            if (emailInput.reportValidity) emailInput.reportValidity();
+          }
+          return false;
+        }
+
+        // 1. Immediately switch UI: hide form and show success card with MAHJIVA15 & copy button!
+        showSuccess(false);
+
+        // 2. Persist discount to storage & auto-apply to Shopify session
+        try {
+          localStorage.setItem('mahjiva_discount_code', discountCode);
+          sessionStorage.setItem('mahjiva_discount_code', discountCode);
+          localStorage.setItem('mahjiva_footer_subscribed', 'true');
+          sessionStorage.setItem('mahjiva_footer_subscribed', 'true');
+          localStorage.setItem('mahjiva_newsletter_popup_dismissed', 'true');
+          sessionStorage.setItem('mahjiva_newsletter_popup_dismissed', 'true');
+          localStorage.setItem('mahjiva_footer_email', emailVal);
+        } catch(err) {}
+
+        // Apply discount cookie via Shopify native endpoint
+        try {
+          fetch('/discount/' + encodeURIComponent(discountCode), {
+            method: 'GET',
+            headers: { 'X-Requested-With': 'XMLHttpRequest' }
+          });
+        } catch(err) {}
+
+        // 3. Submit customer form to Shopify in background (fire-and-forget, zero page reload)
+        const form = getFooterForm();
+        if (form) {
+          try {
+            const formData = new FormData(form);
+            fetch(form.action || '/contact', {
+              method: 'POST',
+              body: formData,
+              headers: { 'X-Requested-With': 'XMLHttpRequest', 'Accept': 'text/html' }
+            }).catch(function(err) {
+              console.warn('Footer newsletter sync notice:', err);
+            });
+          } catch(err) {}
+        }
+
+        return false;
+      }
+
+      // Attach direct event listeners
+      const initialForm = getFooterForm();
+      if (initialForm) {
+        initialForm.addEventListener('submit', handleSubmission, true);
+      }
+      if (formWrap) {
+        formWrap.addEventListener('submit', handleSubmission, true);
+        const submitBtn = formWrap.querySelector('button[type="submit"]') || document.getElementById('FooterNewsletterSubmit');
+        if (submitBtn) {
+          submitBtn.addEventListener('click', function(e) {
+            const emailInput = getEmailInput();
+            if (emailInput && emailInput.checkValidity && !emailInput.checkValidity()) {
+              return; // let native tooltip display
+            }
+            handleSubmission(e);
+          });
+        }
+      }
+
+      // Delegated document-level capture listener ensures zero reload even if elements render dynamically
+      document.addEventListener('submit', function(e) {
+        const target = e.target;
+        if (!target) return;
+        if (target.id === 'FooterNewsletterForm' || 
+            target.classList.contains('af-newsletter-form') || 
+            (formWrap && formWrap.contains(target))) {
+          handleSubmission(e);
+        }
+      }, true);
+    })();
+  })();
+</script>
+
 {% schema %}
 {
   "name": "Atelier Luxury Footer",
@@ -1223,13 +1644,13 @@
       "type": "text",
       "id": "newsletter_heading",
       "label": "Newsletter Heading",
-      "default": "Enjoy 10% Off Your First Order"
+      "default": "Enjoy 15% Off Your First Order"
     },
     {
       "type": "textarea",
       "id": "newsletter_subtext",
       "label": "Newsletter Subtext",
-      "default": "Join the Mahjiva circle for new arrivals, table inspiration, and special offers. Sign up with your email to receive your 10% off welcome code."
+      "default": "Join the Mahjiva circle for new arrivals, table inspiration, and special offers. Sign up with your email to receive your 15% off welcome code."
     },
     {
       "type": "text",
@@ -1241,7 +1662,7 @@
       "type": "text",
       "id": "newsletter_button_text",
       "label": "Button Label",
-      "default": "Get My 10% Off →"
+      "default": "Get My 15% Off →"
     },
     {
       "type": "header",

@@ -49,18 +49,30 @@
 
 {%- style -%}
   /* Zero Gap Fix: Ensure Hero Banner starts at the very top (Y = 0) with zero gap under header */
-  body.template-index #MainContent {
+  body,
+  body.template-index,
+  body:not(.template-index) {
+    display: flex !important;
+    flex-direction: column !important;
+    min-height: 100vh !important;
+  }
+  #MainContent,
+  body.template-index #MainContent,
+  body:not(.template-index) #MainContent {
+    flex: 1 0 auto !important;
     margin-top: 0 !important;
     padding-top: 0 !important;
   }
-  .shopify-section-group-header-group {
-    position: absolute !important;
+  .shopify-section-group-header-group,
+  body.template-index .shopify-section-group-header-group,
+  body:not(.template-index) .shopify-section-group-header-group {
+    position: sticky !important;
     top: 0 !important;
     left: 0 !important;
     width: 100% !important;
-    height: 0 !important;
-    overflow: visible !important;
+    height: auto !important;
     z-index: 99999 !important;
+    background-color: #FAF8F5 !important;
   }
   
   /* Scoped Reset to override Shopify Base.css styles */
@@ -74,75 +86,64 @@
      ========================================================================= */
   .luxury-header-wrapper,
   .luxury-header-wrapper.theme-glass,
-  .luxury-header-wrapper.theme-ivory {
-    --lh-bg: transparent;
-    --lh-bg-scrolled: {{ section.settings.bg_color_scrolled | default: '#FDFBF8' }};
-    --lh-border: rgba(255, 255, 255, 0.25);
-    --lh-border-scrolled: {{ section.settings.border_bottom_color | default: '#EAE6DF' }};
-    --lh-text: #FFFFFF;
-    --lh-text-scrolled: {{ section.settings.text_color | default: '#16181B' }};
-    --lh-text-muted: rgba(255, 255, 255, 0.85);
-    --lh-text-muted-scrolled: #7E7A73;
-    --lh-accent: #E5C38D;
-    --lh-accent-scrolled: {{ section.settings.accent_hover_color | default: '#B89768' }};
-    --lh-shadow: none;
-    --lh-shadow-scrolled: 0 4px 24px rgba(0, 0, 0, 0.08);
-    --lh-bubble-bg: {{ section.settings.accent_hover_color | default: '#B89768' }};
-    --lh-bubble-text: #FFFFFF;
-  }
-
-  .luxury-header-wrapper.theme-pure_white {
-    --lh-bg: transparent;
-    --lh-bg-scrolled: #FFFFFF;
-    --lh-border: rgba(255, 255, 255, 0.3);
-    --lh-border-scrolled: rgba(196, 164, 112, 0.35);
-    --lh-text: #FFFFFF;
+  .luxury-header-wrapper.theme-ivory,
+  .luxury-header-wrapper.theme-pure_white,
+  .luxury-header-wrapper.theme-dark {
+    --lh-bg: #FAF8F5;
+    --lh-bg-scrolled: #FAF6EE;
+    --lh-border: #ECE7DE;
+    --lh-border-scrolled: #E5DFD3;
+    --lh-text: #16181B;
     --lh-text-scrolled: #16181B;
-    --lh-text-muted: rgba(255, 255, 255, 0.85);
+    --lh-text-muted: #7E7A73;
     --lh-text-muted-scrolled: #7E7A73;
-    --lh-accent: #E5C38D;
+    --lh-accent: #B89768;
     --lh-accent-scrolled: #B89768;
-    --lh-shadow: none;
-    --lh-shadow-scrolled: 0 4px 20px rgba(0, 0, 0, 0.06);
+    --lh-shadow: 0 2px 14px rgba(22, 51, 39, 0.05);
+    --lh-shadow-scrolled: 0 4px 20px rgba(22, 51, 39, 0.08);
     --lh-bubble-bg: #16181B;
     --lh-bubble-text: #FFFFFF;
   }
 
-  .luxury-header-wrapper.theme-dark {
-    --lh-bg: rgba(14, 32, 26, 0.35);
-    --lh-bg-scrolled: rgba(10, 24, 19, 0.96);
-    --lh-border: rgba(255, 255, 255, 0.12);
-    --lh-border-scrolled: rgba(212, 175, 55, 0.22);
-    --lh-text: #F5F2EB;
-    --lh-text-scrolled: #F5F2EB;
-    --lh-text-muted: #C5A880;
-    --lh-text-muted-scrolled: #C5A880;
-    --lh-accent: #D4AF37;
-    --lh-accent-scrolled: #D4AF37;
-    --lh-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
-    --lh-shadow-scrolled: 0 4px 20px rgba(0, 0, 0, 0.2);
-    --lh-bubble-bg: #D4AF37;
-    --lh-bubble-text: #10241E;
-  }
-
-  /* Header Wrapper */
+  /* Header Wrapper - Always Solid Opaque Ivory White */
   .luxury-header-wrapper {
     width: 100% !important;
-    position: {% if section.settings.enable_sticky != false %}fixed{% else %}absolute{% endif %} !important;
+    position: sticky !important;
     top: 0 !important;
     left: 0 !important;
     right: 0 !important;
     z-index: 99999 !important;
-    background-color: var(--lh-bg) !important;
+    background-color: #FAF8F5 !important;
     backdrop-filter: none !important;
     -webkit-backdrop-filter: none !important;
-    border-bottom: none !important;
-    box-shadow: var(--lh-shadow) !important;
-    transition: background-color 0.35s cubic-bezier(0.16, 1, 0.3, 1),
-                border-color 0.35s ease,
-                box-shadow 0.35s ease,
-                backdrop-filter 0.35s ease,
-                -webkit-backdrop-filter 0.35s ease !important;
+    border-bottom: 0.5px solid #ECE7DE !important;
+    box-shadow: 0 2px 14px rgba(22, 51, 39, 0.05) !important;
+    transition: background-color 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease !important;
+  }
+
+  /* Text, Icons & Navigation: High-contrast Noir (#16181B) Everywhere */
+  .luxury-header-wrapper .lh-mobile-toggle,
+  .luxury-header-wrapper .lh-nav-link,
+  .luxury-header-wrapper .lh-curr-toggle,
+  .luxury-header-wrapper .lh-action-btn,
+  .luxury-header-wrapper .lh-action-link,
+  .luxury-header-wrapper .lh-brand-title,
+  .luxury-header-wrapper .lh-curr-current {
+    color: #16181B !important;
+    text-shadow: none !important;
+    filter: none !important;
+  }
+
+  .luxury-header-wrapper .lh-nav-link:hover,
+  .luxury-header-wrapper .lh-nav-item:hover > .lh-nav-link,
+  .luxury-header-wrapper .lh-curr-toggle:hover,
+  .luxury-header-wrapper .lh-action-btn:hover,
+  .luxury-header-wrapper .lh-action-link:hover {
+    color: #B89768 !important;
+  }
+
+  .luxury-header-wrapper .lh-divider {
+    background-color: rgba(196, 164, 112, 0.3) !important;
   }
 
   /* Smooth transition for text & icons */
@@ -158,61 +159,15 @@
                 text-shadow 0.3s ease !important;
   }
 
-  /* STATE 1: UNSCROLLED & UNHOVERED (Transparent overlay above Banner) */
-  .luxury-header-wrapper:not(.is-scrolled):not(:hover):not(.is-hovered) {
-    background-color: var(--lh-bg) !important;
-    backdrop-filter: none !important;
-    -webkit-backdrop-filter: none !important;
-    border-bottom: none !important;
-    box-shadow: none !important;
-  }
-
-  .luxury-header-wrapper:not(.is-scrolled):not(:hover):not(.is-hovered) .lh-mobile-toggle {
-    color: #FFFFFF !important;
-    filter: drop-shadow(0 1px 3px rgba(0, 0, 0, 0.65)) !important;
-  }
-
-  .luxury-header-wrapper:not(.is-scrolled):not(:hover):not(.is-hovered) .lh-nav-link {
-    color: #FFFFFF !important;
-    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.45) !important;
-  }
-  .luxury-header-wrapper:not(.is-scrolled):not(:hover):not(.is-hovered) .lh-nav-link:hover,
-  .luxury-header-wrapper:not(.is-scrolled):not(:hover):not(.is-hovered) .lh-nav-item:hover > .lh-nav-link {
-    color: var(--lh-accent) !important;
-  }
-
-  .luxury-header-wrapper:not(.is-scrolled):not(:hover):not(.is-hovered) .lh-curr-toggle {
-    color: #FFFFFF !important;
-    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.45) !important;
-  }
-  .luxury-header-wrapper:not(.is-scrolled):not(:hover):not(.is-hovered) .lh-curr-toggle:hover {
-    color: var(--lh-accent) !important;
-  }
-
-  .luxury-header-wrapper:not(.is-scrolled):not(:hover):not(.is-hovered) .lh-action-btn,
-  .luxury-header-wrapper:not(.is-scrolled):not(:hover):not(.is-hovered) .lh-action-link {
-    color: #FFFFFF !important;
-    filter: drop-shadow(0 1px 3px rgba(0, 0, 0, 0.5)) !important;
-  }
-  .luxury-header-wrapper:not(.is-scrolled):not(:hover):not(.is-hovered) .lh-action-btn:hover,
-  .luxury-header-wrapper:not(.is-scrolled):not(:hover):not(.is-hovered) .lh-action-link:hover {
-    color: var(--lh-accent) !important;
-  }
-
-  .luxury-header-wrapper:not(.is-scrolled):not(:hover):not(.is-hovered) .lh-divider {
-    background-color: rgba(255, 255, 255, 0.35) !important;
-  }
-
-  /* STATE 2: HOVERED OR SCROLLED DOWN
-     -> Smooth transition to luminous frosted pearl background, high-contrast Noir typography */
+  /* STATE 2: HOVERED OR SCROLLED DOWN */
   .luxury-header-wrapper:hover,
   .luxury-header-wrapper.is-hovered,
   .luxury-header-wrapper.is-scrolled {
-    background-color: var(--lh-bg-scrolled) !important;
-    backdrop-filter: blur(20px) saturate(180%) !important;
-    -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
-    border-bottom: 1px solid var(--lh-border-scrolled) !important;
-    box-shadow: var(--lh-shadow-scrolled) !important;
+    background-color: #FAF6EE !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    border-bottom: 0.5px solid #E5DFD3 !important;
+    box-shadow: 0 4px 20px rgba(22, 51, 39, 0.08) !important;
   }
 
   .luxury-header-wrapper:hover .lh-mobile-toggle,
@@ -662,6 +617,19 @@
     padding: 8px 0 !important;
     z-index: 100005 !important;
     animation: lhFadeInDown 0.18s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  }
+
+  @media (max-width: 749px) {
+    .lh-curr-menu {
+      position: fixed !important;
+      top: 64px !important;
+      left: 16px !important;
+      right: 16px !important;
+      width: auto !important;
+      min-width: 0 !important;
+      max-width: calc(100vw - 32px) !important;
+      z-index: 100010 !important;
+    }
   }
 
   .lh-curr-menu[hidden] {
@@ -1489,9 +1457,15 @@
      ========================================================================= */
   @media (max-width: 991px) {
     .luxury-header-wrapper {
-      background: #FFFFFF !important;
-      border-bottom: 1px solid rgba(20, 21, 23, 0.08) !important;
-      box-shadow: 0 2px 14px rgba(0, 0, 0, 0.04) !important;
+      background: #FAF8F5 !important;
+      border-bottom: 0.5px solid #ECE7DE !important;
+      box-shadow: 0 2px 14px rgba(22, 51, 39, 0.05) !important;
+    }
+
+    .luxury-header-wrapper.is-scrolled {
+      background: #FAF6EE !important;
+      border-bottom: 0.5px solid #E5DFD3 !important;
+      box-shadow: 0 4px 20px rgba(22, 51, 39, 0.08) !important;
     }
 
     .luxury-header-container {
@@ -1682,6 +1656,7 @@
           {%- assign menu_handle = section.settings.menu | default: 'main-menu' -%}
           {%- if linklists[menu_handle].links.size > 0 -%}
             {%- for link in linklists[menu_handle].links -%}
+              {%- assign link_t_down = link.title | downcase | strip -%}
               <li class="lh-nav-item{% if link.links != blank %} has-dropdown lh-has-dropdown{% endif %}">
                 {%- if link.links != blank -%}
                   <a href="{{ link.url }}" class="lh-nav-link{% if link.active %} is-active{% endif %}" aria-expanded="false" aria-haspopup="true">
@@ -1848,7 +1823,7 @@
           <!-- Search Floating / Popup Card -->
           <div class="lh-search-float-card" id="lhSearchFloatCard" hidden>
             <div class="lh-search-card-header">
-              <span class="lh-search-card-title">Search Repertoire</span>
+              <span class="lh-search-card-title">Search Collection</span>
               <button type="button" class="lh-search-card-close" id="lhSearchCloseBtn" aria-label="Close search">
                 <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                   <line x1="18" y1="6" x2="6" y2="18"></line>
@@ -1863,7 +1838,7 @@
                   name="q" 
                   class="lh-search-pill-input" 
                   id="lhSearchMiniInput"
-                  placeholder="{{ section.settings.search_placeholder | default: 'Search the Atelier repertoire...' }}"
+                  placeholder="{{ section.settings.search_placeholder | default: 'Search Mahjiva collections...' }}"
                   autocomplete="off"
                 >
                 <button type="submit" class="lh-search-pill-submit" aria-label="Search">
@@ -1926,7 +1901,7 @@
         </svg>
       </button>
       <div class="lh-drawer-brand-mark" style="margin-left: auto; font-family: 'Playfair Display', 'Cormorant Garamond', Georgia, serif; font-size: 14px; letter-spacing: 0.18em; color: rgba(255, 255, 255, 0.45); font-weight: 500; text-transform: uppercase;">
-        {{ section.settings.brand_name | default: 'MAHJIQUE' }}
+        {{ section.settings.brand_name | default: 'MAHJIVA' }}
       </div>
     </div>
 
@@ -1936,6 +1911,7 @@
         {%- assign menu_handle = section.settings.menu | default: 'main-menu' -%}
         {%- if linklists[menu_handle].links.size > 0 -%}
           {%- for link in linklists[menu_handle].links -%}
+            {%- assign link_t_down = link.title | downcase | strip -%}
             <li class="lh-drawer-item{% if link.links != blank %} has-submenu has-dropdown{% endif %}">
               {%- if link.links != blank -%}
                 <div class="lh-drawer-parent-row">
@@ -1972,7 +1948,7 @@
                   {%- endfor -%}
                 </ul>
               {%- else -%}
-                <a href="{{ link.url }}" class="lh-drawer-link">{{ link.title }}</a>
+                <a href="{{ link.url }}" class="lh-drawer-link{% if link.active %} is-active{% endif %}">{{ link.title }}</a>
               {%- endif -%}
             </li>
           {%- endfor -%}
@@ -2546,12 +2522,12 @@
       "type": "checkbox",
       "id": "enable_search",
       "default": true,
-      "label": "Enable Repertoire Search"
+      "label": "Enable Collection Search"
     },
     {
       "type": "text",
       "id": "search_placeholder",
-      "default": "Search the Atelier repertoire...",
+      "default": "Search Mahjiva collections...",
       "label": "Search Bar Placeholder"
     },
     {

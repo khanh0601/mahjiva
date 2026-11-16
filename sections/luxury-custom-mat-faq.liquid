@@ -1,0 +1,1176 @@
+{%- comment -%}
+  -----------------------------------------------------------------------------
+  SECTION: LUXURY CUSTOM MAT FAQ & SPECS ("Everything Else You Might Ask")
+  - High-end 2-Column Luxury Atelier Layout:
+      * Left Column: Dedicated Premium White Card containing Eyebrow Pill, Heading & Interactive Accordion Cards
+      * Right Column: Showcase media photo + "Approved by you before printing" verification pill badge
+  - Bottom Centered Elements:
+      * Large CTA button ("Start My Design →")
+      * Trust guarantee badge ("30-day returns · Free Worldwide Shipping")
+  - Brand Palette: Deep Forest Green (#16302B), Warm Alabaster (#FAF8F5), Crisp White (#FFFFFF)
+  - 100% Dynamic - ZERO HARDCODED DATA (All controlled from Theme Editor)
+  -----------------------------------------------------------------------------
+{%- endcomment -%}
+
+{%- style -%}
+  #CustomMatFaq-{{ section.id }} {
+    background-color: {{ section.settings.bg_color | default: '#FAF8F5' }};
+    padding-top: {{ section.settings.padding_top_mobile | default: 40 }}px;
+    padding-bottom: {{ section.settings.padding_bottom_mobile | default: 48 }}px;
+    color: {{ section.settings.heading_color | default: '#141517' }};
+    position: relative;
+    overflow: hidden;
+  }
+
+  @media (min-width: 768px) {
+    #CustomMatFaq-{{ section.id }} {
+      padding-top: {{ section.settings.padding_top | default: 60 }}px;
+      padding-bottom: {{ section.settings.padding_bottom | default: 68 }}px;
+    }
+  }
+
+  #CustomMatFaq-{{ section.id }} * {
+    box-sizing: border-box !important;
+  }
+
+  .cmfaq-container-{{ section.id }} {
+    max-width: {{ section.settings.container_max_width | default: 1180 }}px;
+    margin: 0 auto;
+    padding: 0 20px;
+    width: 100%;
+  }
+
+  @media (min-width: 768px) {
+    .cmfaq-container-{{ section.id }} {
+      padding: 0 28px;
+    }
+  }
+
+  /* 2-Column Split Layout */
+  .cmfaq-layout-{{ section.id }} {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 36px;
+    align-items: start;
+  }
+
+  @media (min-width: 900px) {
+    .cmfaq-layout-{{ section.id }} {
+      grid-template-columns: 1.22fr 0.78fr;
+      gap: {{ section.settings.column_gap | default: 44 }}px;
+    }
+  }
+
+  /* Left Column: Dedicated Premium White Card */
+  .cmfaq-left-card-{{ section.id }} {
+    background-color: {{ section.settings.left_card_bg | default: '#FFFFFF' }};
+    border: 1px solid {{ section.settings.left_card_border | default: '#ECE7E1' }};
+    border-radius: {{ section.settings.left_card_radius | default: 28 }}px;
+    padding: 28px 20px;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.02);
+    width: 100%;
+  }
+
+  @media (min-width: 768px) {
+    .cmfaq-left-card-{{ section.id }} {
+      padding: 40px 36px;
+      border-radius: {{ section.settings.left_card_radius | default: 28 }}px;
+    }
+  }
+
+  /* Header Section inside Left Card */
+  .cmfaq-header-{{ section.id }} {
+    text-align: {{ section.settings.header_alignment | default: 'left' }};
+    margin-bottom: 24px;
+  }
+
+  .cmfaq-eyebrow-pill-{{ section.id }} {
+    display: inline-block;
+    padding: 8px 24px;
+    background-color: {{ section.settings.eyebrow_bg | default: section.settings.accent_color | default: '#16302B' }};
+    color: {{ section.settings.eyebrow_color | default: '#FFFFFF' }};
+    border-radius: 9999px;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+    margin-bottom: 16px;
+    font-family: var(--font-body-family, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif) !important;
+    box-shadow: 0 2px 8px rgba(22, 48, 43, 0.16);
+  }
+
+  .cmfaq-title-{{ section.id }} {
+    {%- if section.settings.heading_font_style == 'serif' -%}
+      font-family: var(--font-heading-family, "Cormorant Garamond", Georgia, serif) !important;
+      font-weight: 700 !important;
+    {%- else -%}
+      font-family: var(--font-body-family, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif) !important;
+      font-weight: 800 !important;
+    {%- endif -%}
+    font-size: {{ section.settings.heading_size_mobile | default: 26 }}px !important;
+    line-height: 1.15 !important;
+    color: {{ section.settings.heading_color | default: '#141517' }} !important;
+    margin: 0 !important;
+    letter-spacing: -0.025em !important;
+  }
+
+  @media (min-width: 768px) {
+    .cmfaq-title-{{ section.id }} {
+      font-size: {{ section.settings.heading_size | default: 36 }}px !important;
+    }
+  }
+
+  /* Accordion Stack */
+  .cmfaq-accordion-stack-{{ section.id }} {
+    display: flex;
+    flex-direction: column;
+    gap: {{ section.settings.card_gap | default: 12 }}px;
+    width: 100%;
+  }
+
+  .cmfaq-item-{{ section.id }} {
+    background-color: {{ section.settings.card_bg | default: '#FFFFFF' }};
+    border: 1px solid {{ section.settings.card_border_color | default: '#ECE7E1' }};
+    border-radius: {{ section.settings.card_radius | default: 12 }}px;
+    padding: {{ section.settings.card_padding_vertical | default: 16 }}px {{ section.settings.card_padding_horizontal | default: 20 }}px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.01);
+    transition: background-color 0.22s ease, border-color 0.22s ease, box-shadow 0.22s ease, transform 0.2s ease;
+    overflow: hidden;
+  }
+
+  .cmfaq-item-{{ section.id }}:hover {
+    background-color: {{ section.settings.card_hover_bg | default: '#FAF8F5' }};
+    border-color: {{ section.settings.card_hover_border_color | default: '#D0C7BD' }};
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+  }
+
+  .cmfaq-item--open.cmfaq-item-{{ section.id }} {
+    border-color: {{ section.settings.card_active_border_color | default: '#C8BFB5' }};
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.03);
+  }
+
+  /* Item Header */
+  .cmfaq-item-header-{{ section.id }} {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    cursor: pointer;
+    user-select: none;
+    outline: none;
+  }
+
+  .cmfaq-question-wrap-{{ section.id }} {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .cmfaq-question-title-{{ section.id }} {
+    font-family: var(--font-body-family, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif) !important;
+    font-size: {{ section.settings.question_font_size | default: 15.5 }}px !important;
+    font-weight: 600 !important;
+    color: {{ section.settings.question_color | default: '#141517' }} !important;
+    margin: 0 !important;
+    line-height: 1.35 !important;
+    transition: color 0.2s ease;
+  }
+
+  .cmfaq-item-{{ section.id }}:hover .cmfaq-question-title-{{ section.id }},
+  .cmfaq-item--open .cmfaq-question-title-{{ section.id }} {
+    color: {{ section.settings.question_hover_color | default: section.settings.question_color | default: '#141517' }} !important;
+  }
+
+  .cmfaq-question-subtitle-{{ section.id }} {
+    font-family: var(--font-body-family, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif) !important;
+    font-size: 13px !important;
+    color: {{ section.settings.subtitle_color | default: '#635E59' }} !important;
+    margin-top: 4px !important;
+    line-height: 1.4 !important;
+  }
+
+  /* SVG Toggle Icon (+ / -) */
+  .cmfaq-toggle-icon-{{ section.id }} {
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    color: {{ section.settings.accent_icon_color | default: section.settings.accent_color | default: '#16302B' }};
+  }
+
+  .cmfaq-toggle-icon-{{ section.id }} svg {
+    width: 16px;
+    height: 16px;
+    display: block;
+    stroke: currentColor;
+    transition: transform 0.25s ease, opacity 0.2s ease;
+  }
+
+  .cmfaq-item-{{ section.id }} .cmfaq-icon-minus {
+    display: none !important;
+  }
+
+  .cmfaq-item-{{ section.id }} .cmfaq-icon-plus {
+    display: block !important;
+  }
+
+  .cmfaq-item--open.cmfaq-item-{{ section.id }} .cmfaq-icon-minus {
+    display: block !important;
+  }
+
+  .cmfaq-item--open.cmfaq-item-{{ section.id }} .cmfaq-icon-plus {
+    display: none !important;
+  }
+
+  /* Smooth Grid Animation for Content */
+  .cmfaq-answer-wrapper-{{ section.id }} {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .cmfaq-item--open .cmfaq-answer-wrapper-{{ section.id }} {
+    grid-template-rows: 1fr;
+  }
+
+  .cmfaq-answer-inner-{{ section.id }} {
+    overflow: hidden;
+  }
+
+  .cmfaq-answer-content-{{ section.id }} {
+    padding-top: 14px;
+    font-family: var(--font-body-family, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif) !important;
+    font-size: {{ section.settings.answer_font_size | default: 14 }}px;
+    line-height: 1.65;
+    color: {{ section.settings.answer_color | default: '#44403C' }};
+    border-top: 1px solid rgba(0, 0, 0, 0.05);
+    margin-top: 12px;
+  }
+
+  .cmfaq-answer-content-{{ section.id }} p {
+    margin: 0 0 10px 0;
+  }
+
+  .cmfaq-answer-content-{{ section.id }} p:last-child {
+    margin-bottom: 0;
+  }
+
+  .cmfaq-answer-content-{{ section.id }} strong {
+    color: {{ section.settings.heading_color | default: '#141517' }};
+    font-weight: 700;
+  }
+
+  .cmfaq-answer-content-{{ section.id }} a {
+    color: {{ section.settings.accent_color | default: '#16302B' }};
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    font-weight: 600;
+    transition: color 0.15s ease;
+  }
+
+  .cmfaq-answer-content-{{ section.id }} a:hover {
+    color: #000000;
+  }
+
+  /* Right Column: Visual Showcase Media & Verification Pill */
+  .cmfaq-showcase-{{ section.id }} {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+  }
+
+  @media (min-width: 900px) {
+    .cmfaq-showcase-{{ section.id }} {
+      position: sticky;
+      top: 100px;
+    }
+  }
+
+  .cmfaq-media-box-{{ section.id }} {
+    width: 100%;
+    max-width: 460px;
+    aspect-ratio: {{ section.settings.image_aspect_ratio | default: '1 / 1' }};
+    border-radius: {{ section.settings.image_radius | default: 24 }}px;
+    overflow: hidden;
+    background: #F4EFEB;
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.08);
+    border: 1px solid rgba(0, 0, 0, 0.04);
+    position: relative;
+  }
+
+  .cmfaq-media-box-{{ section.id }} img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+
+  .cmfaq-media-box-{{ section.id }}:hover img {
+    transform: scale(1.025);
+  }
+
+  /* Pill Badge Under Image */
+  .cmfaq-image-pill-{{ section.id }} {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px 30px;
+    background-color: {{ section.settings.image_badge_bg | default: section.settings.accent_color | default: '#16302B' }};
+    color: {{ section.settings.image_badge_color | default: '#FFFFFF' }};
+    border-radius: 9999px;
+    font-size: 14px;
+    font-weight: 700;
+    font-family: var(--font-body-family, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif) !important;
+    margin-top: 20px;
+    box-shadow: 0 4px 14px rgba(22, 48, 43, 0.22);
+    text-align: center;
+  }
+
+  /* Bottom Centered CTA Area */
+  .cmfaq-bottom-cta-{{ section.id }} {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 48px;
+  }
+
+  @media (min-width: 768px) {
+    .cmfaq-bottom-cta-{{ section.id }} {
+      margin-top: 56px;
+    }
+  }
+
+  .cmfaq-cta-btn-{{ section.id }} {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 16px 48px;
+    background-color: {{ section.settings.button_bg_color | default: section.settings.accent_color | default: '#16302B' }};
+    color: {{ section.settings.button_text_color | default: '#FFFFFF' }};
+    border: 1px solid {{ section.settings.button_border_color | default: 'transparent' }};
+    border-radius: 9999px;
+    font-size: {{ section.settings.button_font_size | default: 16 }}px;
+    font-family: var(--font-body-family, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif) !important;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    text-decoration: none;
+    cursor: pointer;
+    box-shadow: 0 6px 20px rgba(22, 48, 43, 0.26);
+    transition: background-color 0.25s ease, border-color 0.25s ease, color 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .cmfaq-cta-btn-{{ section.id }}:hover {
+    background-color: {{ section.settings.button_hover_bg_color | default: '#112420' }} !important;
+    color: {{ section.settings.button_hover_text_color | default: '#FFFFFF' }} !important;
+    border-color: {{ section.settings.button_hover_border_color | default: 'transparent' }} !important;
+    transform: translateY(-2px);
+    box-shadow: 0 10px 28px rgba(22, 48, 43, 0.36);
+  }
+
+  .cmfaq-cta-btn-{{ section.id }}:active {
+    transform: translateY(0);
+  }
+
+  /* Trust Guarantee */
+  .cmfaq-trust-bar-{{ section.id }} {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    margin-top: 14px;
+    color: {{ section.settings.trust_color | default: '#635E59' }};
+    font-size: 13.5px;
+    font-family: var(--font-body-family, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif) !important;
+    font-weight: 500;
+  }
+
+  .cmfaq-trust-icon-{{ section.id }} {
+    width: 16px;
+    height: 16px;
+    display: block;
+    stroke: currentColor;
+    fill: none;
+    flex-shrink: 0;
+  }
+{%- endstyle -%}
+
+<section id="CustomMatFaq-{{ section.id }}" class="cmfaq-section" data-allow-multiple="{{ section.settings.allow_multiple_open }}">
+  <div class="cmfaq-container-{{ section.id }}">
+    
+    <!-- 2-Column Split Layout -->
+    <div class="cmfaq-layout-{{ section.id }}">
+      
+      <!-- Left Column: Dedicated Premium White Card -->
+      <div class="cmfaq-left-card-{{ section.id }}">
+        
+        <!-- Header inside Left Card -->
+        <div class="cmfaq-header-{{ section.id }}">
+          {%- if section.settings.show_eyebrow and section.settings.eyebrow != blank -%}
+            <div class="cmfaq-eyebrow-pill-{{ section.id }}">{{ section.settings.eyebrow }}</div>
+          {%- endif -%}
+          {%- if section.settings.heading != blank -%}
+            <h2 class="cmfaq-title-{{ section.id }}">{{ section.settings.heading }}</h2>
+          {%- endif -%}
+        </div>
+
+        <!-- Accordion Stack -->
+        <div class="cmfaq-accordion-stack-{{ section.id }}">
+          {%- for block in section.blocks -%}
+            <div 
+              id="cmfaq-item-{{ block.id }}" 
+              class="cmfaq-item-{{ section.id }}{% if block.settings.is_open_by_default %} cmfaq-item--open{% endif %}" 
+              {{ block.shopify_attributes }}
+            >
+              <div 
+                class="cmfaq-item-header-{{ section.id }}" 
+                role="button" 
+                tabindex="0" 
+                aria-expanded="{% if block.settings.is_open_by_default %}true{% else %}false{% endif %}"
+              >
+                <div class="cmfaq-question-wrap-{{ section.id }}">
+                  <h3 class="cmfaq-question-title-{{ section.id }}">{{ block.settings.question }}</h3>
+                  {%- if block.settings.subtitle != blank -%}
+                    <div class="cmfaq-question-subtitle-{{ section.id }}">{{ block.settings.subtitle }}</div>
+                  {%- endif -%}
+                </div>
+                
+                <div class="cmfaq-toggle-icon-{{ section.id }}" aria-hidden="true">
+                  <svg class="cmfaq-icon-minus" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                  <svg class="cmfaq-icon-plus" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                </div>
+              </div>
+
+              <div class="cmfaq-answer-wrapper-{{ section.id }}">
+                <div class="cmfaq-answer-inner-{{ section.id }}">
+                  <div class="cmfaq-answer-content-{{ section.id }}">
+                    {{ block.settings.answer }}
+                  </div>
+                </div>
+              </div>
+            </div>
+          {%- endfor -%}
+        </div>
+      </div>
+
+      <!-- Right Column: Visual Showcase Media & Verification Pill -->
+      <div class="cmfaq-showcase-{{ section.id }}">
+        <div class="cmfaq-media-box-{{ section.id }}">
+          {%- if section.settings.image != blank -%}
+            {{ section.settings.image | image_url: width: 1000 | image_tag: loading: 'lazy', alt: section.settings.heading | escape }}
+          {%- elsif section.settings.custom_image_url != blank -%}
+            <img src="{{ section.settings.custom_image_url }}" alt="{{ section.settings.heading | escape }}" loading="lazy" />
+          {%- else -%}
+            {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+          {%- endif -%}
+        </div>
+
+        {%- if section.settings.image_badge_text != blank -%}
+          <div class="cmfaq-image-pill-{{ section.id }}">
+            {{ section.settings.image_badge_text }}
+          </div>
+        {%- endif -%}
+      </div>
+
+    </div>
+
+    <!-- Bottom Centered CTA Area -->
+    {%- if section.settings.button_label != blank -%}
+      <div class="cmfaq-bottom-cta-{{ section.id }}">
+        <a href="{{ section.settings.button_link | default: '#' }}" class="cmfaq-cta-btn-{{ section.id }}" id="cmfaq-cta-{{ section.id }}">
+          <span>{{ section.settings.button_label }}</span>
+        </a>
+
+        {%- if section.settings.show_trust_badge and section.settings.trust_text != blank -%}
+          <div class="cmfaq-trust-bar-{{ section.id }}">
+            <svg class="cmfaq-trust-icon-{{ section.id }}" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+              <polyline points="9 12 11 14 15 10"></polyline>
+            </svg>
+            <span>{{ section.settings.trust_text }}</span>
+          </div>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+
+  </div>
+</section>
+
+<script>
+  (function() {
+    function initCustomMatFaq(container) {
+      if (!container) return;
+      var items = container.querySelectorAll('.cmfaq-item-{{ section.id }}');
+      var allowMultiple = container.dataset.allowMultiple === 'true';
+
+      items.forEach(function(item) {
+        var header = item.querySelector('.cmfaq-item-header-{{ section.id }}');
+        if (!header) return;
+
+        function toggle() {
+          var isOpen = item.classList.contains('cmfaq-item--open');
+
+          if (!allowMultiple && !isOpen) {
+            items.forEach(function(otherItem) {
+              if (otherItem !== item) {
+                otherItem.classList.remove('cmfaq-item--open');
+                var otherHeader = otherItem.querySelector('.cmfaq-item-header-{{ section.id }}');
+                if (otherHeader) otherHeader.setAttribute('aria-expanded', 'false');
+              }
+            });
+          }
+
+          if (isOpen) {
+            item.classList.remove('cmfaq-item--open');
+            header.setAttribute('aria-expanded', 'false');
+          } else {
+            item.classList.add('cmfaq-item--open');
+            header.setAttribute('aria-expanded', 'true');
+          }
+        }
+
+        header.addEventListener('click', toggle);
+        header.addEventListener('keydown', function(e) {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            toggle();
+          }
+        });
+      });
+
+      // Smooth scroll if button_link is '#' or empty
+      var ctaBtn = container.querySelector('#cmfaq-cta-{{ section.id }}');
+      if (ctaBtn) {
+        var href = ctaBtn.getAttribute('href');
+        if (!href || href === '#' || href === 'javascript:void(0)') {
+          ctaBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            var target = document.querySelector('.custom-idea-field') || 
+                         document.querySelector('#custom-idea-field') || 
+                         document.querySelector('.product-form') || 
+                         document.querySelector('.product__info-container') ||
+                         document.querySelector('main');
+            if (target) {
+              target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            } else {
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+          });
+        }
+      }
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', function() {
+        initCustomMatFaq(document.getElementById('CustomMatFaq-{{ section.id }}'));
+      });
+    } else {
+      initCustomMatFaq(document.getElementById('CustomMatFaq-{{ section.id }}'));
+    }
+
+    if (window.Shopify && window.Shopify.designMode) {
+      document.addEventListener('shopify:section:load', function(e) {
+        if (e.target.id === 'CustomMatFaq-{{ section.id }}') {
+          initCustomMatFaq(e.target);
+        }
+      });
+      document.addEventListener('shopify:block:select', function(e) {
+        var blockItem = document.getElementById('cmfaq-item-' + e.detail.blockId);
+        if (blockItem) {
+          blockItem.classList.add('cmfaq-item--open');
+          var h = blockItem.querySelector('.cmfaq-item-header-{{ section.id }}');
+          if (h) h.setAttribute('aria-expanded', 'true');
+        }
+      });
+    }
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Custom Mat FAQ & Specs",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Section Header"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_eyebrow",
+      "label": "Show Eyebrow Pill",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow Text",
+      "default": "Specs, limits and the honest small print — all in one place."
+    },
+    {
+      "type": "color",
+      "id": "eyebrow_bg",
+      "label": "Eyebrow Background Color",
+      "default": "#16302B"
+    },
+    {
+      "type": "color",
+      "id": "eyebrow_color",
+      "label": "Eyebrow Text Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading Text",
+      "default": "Everything Else You Might Ask"
+    },
+    {
+      "type": "select",
+      "id": "heading_font_style",
+      "label": "Heading Font Style",
+      "options": [
+        {
+          "value": "sans",
+          "label": "Modern Clean (Sans-serif)"
+        },
+        {
+          "value": "serif",
+          "label": "Editorial Luxury (Serif)"
+        }
+      ],
+      "default": "sans"
+    },
+    {
+      "type": "range",
+      "id": "heading_size",
+      "label": "Heading Font Size (Desktop)",
+      "min": 24,
+      "max": 56,
+      "step": 2,
+      "unit": "px",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "heading_size_mobile",
+      "label": "Heading Font Size (Mobile)",
+      "min": 20,
+      "max": 36,
+      "step": 1,
+      "unit": "px",
+      "default": 26
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading Color",
+      "default": "#141517"
+    },
+    {
+      "type": "select",
+      "id": "header_alignment",
+      "label": "Header Alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "header",
+      "content": "Left Card Container"
+    },
+    {
+      "type": "color",
+      "id": "left_card_bg",
+      "label": "Left Card Background Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "left_card_border",
+      "label": "Left Card Border Color",
+      "default": "#ECE7E1"
+    },
+    {
+      "type": "range",
+      "id": "left_card_radius",
+      "label": "Left Card Border Radius",
+      "min": 12,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "default": 28
+    },
+    {
+      "type": "header",
+      "content": "Accordion Behavior & Colors"
+    },
+    {
+      "type": "checkbox",
+      "id": "allow_multiple_open",
+      "label": "Allow Multiple Items Open at Once",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "question_font_size",
+      "label": "Question Font Size",
+      "min": 14,
+      "max": 22,
+      "step": 0.5,
+      "unit": "px",
+      "default": 15.5
+    },
+    {
+      "type": "range",
+      "id": "answer_font_size",
+      "label": "Answer Font Size",
+      "min": 12,
+      "max": 18,
+      "step": 1,
+      "unit": "px",
+      "default": 14
+    },
+    {
+      "type": "color",
+      "id": "card_bg",
+      "label": "Card Background Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "card_border_color",
+      "label": "Card Border Color",
+      "default": "#ECE7E1"
+    },
+    {
+      "type": "color",
+      "id": "card_hover_bg",
+      "label": "Card Hover Background Color",
+      "default": "#FAF8F5"
+    },
+    {
+      "type": "color",
+      "id": "card_hover_border_color",
+      "label": "Card Hover Border Color",
+      "default": "#D0C7BD"
+    },
+    {
+      "type": "color",
+      "id": "card_active_border_color",
+      "label": "Card Active/Open Border Color",
+      "default": "#C8BFB5"
+    },
+    {
+      "type": "color",
+      "id": "question_color",
+      "label": "Question Text Color",
+      "default": "#141517"
+    },
+    {
+      "type": "color",
+      "id": "question_hover_color",
+      "label": "Question Hover Color",
+      "default": "#141517"
+    },
+    {
+      "type": "color",
+      "id": "subtitle_color",
+      "label": "Subtitle Color",
+      "default": "#635E59"
+    },
+    {
+      "type": "color",
+      "id": "answer_color",
+      "label": "Answer Text Color",
+      "default": "#44403C"
+    },
+    {
+      "type": "color",
+      "id": "accent_icon_color",
+      "label": "Toggle Icon (+/-) Color",
+      "default": "#16302B"
+    },
+    {
+      "type": "range",
+      "id": "card_radius",
+      "label": "Card Border Radius",
+      "min": 0,
+      "max": 30,
+      "step": 2,
+      "unit": "px",
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "card_padding_vertical",
+      "label": "Card Vertical Padding",
+      "min": 10,
+      "max": 30,
+      "step": 2,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "card_padding_horizontal",
+      "label": "Card Horizontal Padding",
+      "min": 12,
+      "max": 36,
+      "step": 2,
+      "unit": "px",
+      "default": 20
+    },
+    {
+      "type": "header",
+      "content": "Showcase Image (Right Column)"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Showcase Photo"
+    },
+    {
+      "type": "text",
+      "id": "custom_image_url",
+      "label": "Custom Image URL (Fallback)"
+    },
+    {
+      "type": "select",
+      "id": "image_aspect_ratio",
+      "label": "Image Aspect Ratio",
+      "options": [
+        {
+          "value": "1 / 1",
+          "label": "Square (1:1)"
+        },
+        {
+          "value": "4 / 3",
+          "label": "Landscape (4:3)"
+        },
+        {
+          "value": "3 / 4",
+          "label": "Portrait (3:4)"
+        },
+        {
+          "value": "auto",
+          "label": "Auto"
+        }
+      ],
+      "default": "1 / 1"
+    },
+    {
+      "type": "range",
+      "id": "image_radius",
+      "label": "Image Border Radius",
+      "min": 0,
+      "max": 36,
+      "step": 2,
+      "unit": "px",
+      "default": 24
+    },
+    {
+      "type": "text",
+      "id": "image_badge_text",
+      "label": "Badge Text Under Image",
+      "default": "Approved by you before printing"
+    },
+    {
+      "type": "color",
+      "id": "image_badge_bg",
+      "label": "Badge Background Color",
+      "default": "#16302B"
+    },
+    {
+      "type": "color",
+      "id": "image_badge_color",
+      "label": "Badge Text Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "header",
+      "content": "Bottom CTA Button"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button Label",
+      "default": "Start My Design →"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button Link"
+    },
+    {
+      "type": "color",
+      "id": "button_bg_color",
+      "label": "Button Background Color",
+      "default": "#16302B"
+    },
+    {
+      "type": "color",
+      "id": "button_text_color",
+      "label": "Button Text Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "button_border_color",
+      "label": "Button Border Color",
+      "default": "transparent"
+    },
+    {
+      "type": "color",
+      "id": "button_hover_bg_color",
+      "label": "Button Hover Background Color",
+      "default": "#112420"
+    },
+    {
+      "type": "color",
+      "id": "button_hover_text_color",
+      "label": "Button Hover Text Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "button_hover_border_color",
+      "label": "Button Hover Border Color",
+      "default": "transparent"
+    },
+    {
+      "type": "range",
+      "id": "button_font_size",
+      "label": "Button Font Size",
+      "min": 12,
+      "max": 20,
+      "step": 0.5,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "header",
+      "content": "Trust Guarantee"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_trust_badge",
+      "label": "Show Trust Guarantee",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "trust_text",
+      "label": "Trust Text",
+      "default": "30-day returns · Free Worldwide Shipping"
+    },
+    {
+      "type": "color",
+      "id": "trust_color",
+      "label": "Trust Text Color",
+      "default": "#635E59"
+    },
+    {
+      "type": "header",
+      "content": "Layout & Spacing"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Section Background Color",
+      "default": "#FAF8F5"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Accent Color",
+      "default": "#16302B"
+    },
+    {
+      "type": "range",
+      "id": "container_max_width",
+      "label": "Container Max Width",
+      "min": 900,
+      "max": 1400,
+      "step": 20,
+      "unit": "px",
+      "default": 1180
+    },
+    {
+      "type": "range",
+      "id": "column_gap",
+      "label": "Column Gap (Desktop)",
+      "min": 24,
+      "max": 80,
+      "step": 4,
+      "unit": "px",
+      "default": 44
+    },
+    {
+      "type": "range",
+      "id": "card_gap",
+      "label": "Card Vertical Gap",
+      "min": 8,
+      "max": 24,
+      "step": 2,
+      "unit": "px",
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding Top (Desktop)",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Padding Bottom (Desktop)",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 68
+    },
+    {
+      "type": "range",
+      "id": "padding_top_mobile",
+      "label": "Padding Top (Mobile)",
+      "min": 0,
+      "max": 80,
+      "step": 4,
+      "unit": "px",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_mobile",
+      "label": "Padding Bottom (Mobile)",
+      "min": 0,
+      "max": 80,
+      "step": 4,
+      "unit": "px",
+      "default": 48
+    }
+  ],
+  "blocks": [
+    {
+      "type": "faq_item",
+      "name": "FAQ Question Card",
+      "settings": [
+        {
+          "type": "text",
+          "id": "question",
+          "label": "Question Title",
+          "default": "What can I personalize?"
+        },
+        {
+          "type": "text",
+          "id": "subtitle",
+          "label": "Subtitle Note (Optional)"
+        },
+        {
+          "type": "richtext",
+          "id": "answer",
+          "label": "Answer Content",
+          "default": "<p>Share the names, initials, dates, colors, or motifs you would like included. Reference images can help us understand your preferred direction.</p>"
+        },
+        {
+          "type": "checkbox",
+          "id": "is_open_by_default",
+          "label": "Open by Default",
+          "default": false
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Luxury Custom Mat FAQ",
+      "blocks": [
+        {
+          "type": "faq_item",
+          "settings": {
+            "question": "What can I personalize?",
+            "answer": "<p>Share the names, initials, dates, colors, or motifs you would like included. Reference images can help us understand your preferred direction.</p>",
+            "is_open_by_default": true
+          }
+        },
+        {
+          "type": "faq_item",
+          "settings": {
+            "question": "Do I need a complete design idea?",
+            "answer": "<p>A favorite color, a name, or a simple theme is a good place to start. We’ll help you develop the details.</p>",
+            "is_open_by_default": false
+          }
+        },
+        {
+          "type": "faq_item",
+          "settings": {
+            "question": "Can my mat coordinate with my tiles?",
+            "answer": "<p>Yes. Tell us which Mahjiva set you have in mind, or share a photo of your own tiles to guide the design.</p>",
+            "is_open_by_default": false
+          }
+        },
+        {
+          "type": "faq_item",
+          "settings": {
+            "question": "Will I see the design before printing?",
+            "answer": "<p>Yes. You’ll review a preview and approve the final design before your mat goes into production.</p>",
+            "is_open_by_default": false
+          }
+        },
+        {
+          "type": "faq_item",
+          "settings": {
+            "question": "What is the size, and how should I care for it?",
+            "subtitle": "31.5″ × 31.5″ (80cm x 80cm)",
+            "answer": "<p>Your mat measures 31.5″ × 31.5″ (80cm x 80cm). Wipe the water-resistant neoprene surface with a soft, damp cloth and let it air-dry completely before storing.</p>",
+            "is_open_by_default": false
+          }
+        },
+        {
+          "type": "faq_item",
+          "settings": {
+            "question": "How long does a custom mat take?",
+            "answer": "<p>The schedule depends on your design and any revisions. Share your preferred date so we can confirm an estimated timeline.</p>",
+            "is_open_by_default": false
+          }
+        },
+        {
+          "type": "faq_item",
+          "settings": {
+            "question": "What if I have questions about changes or my order?",
+            "answer": "<p>Contact us with your request or order number. We’ll help you understand the next steps and the options available for your custom mat.</p>",
+            "is_open_by_default": false
+          }
+        },
+        {
+          "type": "faq_item",
+          "settings": {
+            "question": "How long does shipping take?",
+            "answer": "<p>All orders include <strong>Complimentary Worldwide Shipping</strong> and typically arrive within <strong>1–3 weeks</strong> (domestic US delivery takes 3–7 business days; overseas atelier delivery takes 7–12 business days). Every piece is protected by our <strong>30-Day Mahjiva Guarantee</strong>: if anything arrives damaged, defective, or incorrect, we provide a complimentary prepaid return shipping label and arrange an immediate replacement or full refund. Simply reach out to <a href=\"mailto:care@mahjiva.com\">care@mahjiva.com</a> with your order number. For complete details, see our <a href=\"/policies/shipping-policy\">Shipping Policy</a> and <a href=\"/policies/refund-policy\">Return &amp; Refund Policy</a>.</p>",
+            "is_open_by_default": false
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

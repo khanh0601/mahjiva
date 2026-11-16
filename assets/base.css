@@ -1,7 +1,8 @@
-/* Prevent layout shift caused by vertical scrollbar toggling */
+/* Prevent layout shift caused by vertical scrollbar toggling and preserve position: sticky */
 html {
   overflow-y: scroll !important;
-  overflow-x: hidden !important;
+  overflow-x: clip !important;
+  max-width: 100vw !important;
   scrollbar-gutter: stable;
 }
 
@@ -50,6 +51,9 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
+  overflow-x: clip !important;
+  max-width: 100vw !important;
+  width: 100% !important;
 }
 
 p, .p, span, a, li, input, textarea, select, button, label,
@@ -509,13 +513,13 @@ table:not([class]) th {
   border: 0.1rem solid rgba(var(--color-foreground), 0.2);
 }
 
-@media screen and (max-width: 749px) {
+@media screen and (max-width: 739px) {
   .small-hide {
     display: none !important;
   }
 }
 
-@media screen and (min-width: 750px) and (max-width: 989px) {
+@media screen and (min-width: 740px) and (max-width: 989px) {
   .medium-hide {
     display: none !important;
   }
@@ -3753,34 +3757,34 @@ details-disclosure > details {
   isolation: isolate;
 }
 
-.blocky-button,
-.blocky .blocky-button {
+.cart__checkout-button,
+#CartDrawer-Checkout {
   position: relative;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   text-align: center;
-  border-radius: 4px !important;
+  border-radius: 6px !important;
   font-family: inherit;
   font-size: 1.4rem;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 1.5px;
-  background-color: #163327 !important;
-  color: #ffffff !important;
-  border: 1px solid #163327 !important;
-  box-shadow: 0 2px 6px rgba(22, 51, 39, 0.15);
+  background: linear-gradient(180deg, #1D4B37 0%, #143828 42%, #081610 100%) !important;
+  color: #FAF8F5 !important;
+  border: 1px solid rgba(216, 184, 140, 0.4) !important;
+  box-shadow: 0 4px 16px rgba(8, 22, 16, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.15) !important;
   transform: translateY(0);
-  transition: all 0.22s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
   cursor: pointer;
   text-decoration: none;
-  overflow: visible;
+  overflow: hidden;
   isolation: isolate;
 }
 
-.blocky-button *,
-.blocky .blocky-button * {
-  color: #ffffff !important;
+.cart__checkout-button *,
+#CartDrawer-Checkout * {
+  color: #FAF8F5 !important;
 }
 
 /* Disable Dawn pseudo-element default shadows that interfere with 3D tile layers */
@@ -3806,18 +3810,18 @@ details-disclosure > details {
   box-shadow: 0 1px 0 #d1c7b7, 0 3px 0 #1b382b, 0 8px 16px rgba(0, 0, 0, 0.2) !important;
 }
 
-.blocky-button:hover,
-.blocky .blocky-button:hover {
-  background-color: #1f4534 !important;
-  color: #ffffff !important;
-  border-color: #1f4534 !important;
+.cart__checkout-button:hover,
+#CartDrawer-Checkout:hover {
+  background: linear-gradient(180deg, #245E45 0%, #18422F 42%, #0C1E15 100%) !important;
+  color: #FFFFFF !important;
+  border-color: #D8B88C !important;
   transform: translateY(-2px) !important;
-  box-shadow: 0 4px 14px rgba(22, 51, 39, 0.28) !important;
+  box-shadow: 0 8px 24px rgba(8, 22, 16, 0.45), 0 0 16px rgba(36, 94, 69, 0.25) !important;
 }
 
-.blocky-button:hover *,
-.blocky .blocky-button:hover * {
-  color: #ffffff !important;
+.cart__checkout-button:hover *,
+#CartDrawer-Checkout:hover * {
+  color: #FFFFFF !important;
 }
 
 /* Active / Press State */
@@ -3825,9 +3829,7 @@ details-disclosure > details {
 .button:not(.button--tertiary):not(.share-button__button):not([disabled]):active,
 .shopify-challenge__button:active,
 .customer button:not(.btn-link):active,
-.shopify-payment-button__button--unbranded:active,
-.blocky-button:active,
-.blocky .blocky-button:active {
+.shopify-payment-button__button--unbranded:active {
   transform: translateY(0) !important;
   box-shadow: 0 1px 0 #1b382b, 0 2px 4px rgba(0, 0, 0, 0.15) !important;
   transition-duration: 0.08s !important;
@@ -3924,10 +3926,10 @@ details[open] > .header__menu-item span {
 }
 
 .product-form__input--pill input[type='radio']:checked + label {
-  background-color: #1b382b !important;
-  color: #FAF7F2 !important;
-  border-color: #1b382b !important;
-  box-shadow: 0 2px 0 #0d1e16, 0 4px 8px rgba(0, 0, 0, 0.2) !important;
+  background: linear-gradient(180deg, #1D4B37 0%, #143828 42%, #081610 100%) !important;
+  color: #FAF8F5 !important;
+  border-color: #143828 !important;
+  box-shadow: 0 2px 0 #081610, 0 4px 8px rgba(0, 0, 0, 0.2) !important;
   transform: translateY(-1px);
 }
 
@@ -4109,7 +4111,8 @@ cart-drawer.drawer {
 }
 
 /* Fix product cards collapsing into narrow pills on collection grid */
-#product-grid .grid__item,
+.template-collection #product-grid .grid__item,
+#product-grid[class*="view-mode-"] .grid__item,
 .product-grid-item-filterable {
   width: 100% !important;
   max-width: 100% !important;
@@ -4279,4 +4282,706 @@ cart-drawer.drawer {
   }
 }
 
+/* =========================================================================
+   GLOBAL READABILITY ENHANCEMENTS: BOLD TITLES & PRODUCT NAMES
+   ========================================================================= */
+h1, h2, h3, h4,
+.h1, .h2, .h3, .h4,
+.card__heading,
+.card__heading a,
+.card__information .card__heading,
+.card__information .card__heading a,
+.card-information .card__heading,
+.card-information .card__heading a,
+.product__title,
+.product__title h1 {
+  font-weight: 700 !important;
+  color: #0D1110 !important;
+  letter-spacing: -0.01em !important;
+}
 
+.card__heading a:hover,
+.card__information .card__heading a:hover,
+.card-information .card__heading a:hover {
+  color: #B89768 !important;
+}
+
+/* =========================================================================
+   PRODUCT PAGE HARMONIZATION (100% #FCFAF8 Background & Gap Elimination)
+   - Harmonize entire PDP background to #FCFAF8 (Single luxury canvas)
+   - Eliminate awkward gaps & margins between blocks
+   - Max container width 1220px centered for Selleasy upsell carousel
+   ========================================================================= */
+body.template-product,
+.template-product #MainContent,
+.template-product main,
+.template-product .shopify-section,
+.template-product [class*="-padding"],
+.template-product .gradient,
+.template-product [class*="color-scheme-"],
+.template-product .isolate,
+.template-product .page-width,
+.template-product .lp-section,
+.template-product .pdp-section,
+.template-product .section,
+.template-product .image-with-text,
+.template-product .image-with-text__grid,
+.template-product .image-with-text__content,
+.template-product .section-new-arrivals-upsell,
+.template-product .luxury-new-arrivals,
+.template-product .blocky-faq,
+.template-product .luxury-best-sellers,
+.template-product .jdgm-widget,
+.template-product #judgeme_product_reviews,
+.shopify-section:has(.lb-widget-cpac),
+.shopify-section:has(.lb-addon-cont),
+.shopify-block.lb-widget-cpac,
+.lb-widget-cpac,
+[class*="lb-widget-cpac"],
+.lb-addon-cont {
+  background: #FCFAF8 !important;
+  background-color: #FCFAF8 !important;
+  --gradient-background: #FCFAF8 !important;
+  --color-background: 252, 250, 248 !important;
+}
+
+/* Constrain Selleasy Upsell carousel width to 1220px centered */
+.shopify-section:has(.lb-widget-cpac) .page-width,
+.shopify-section:has(.lb-addon-cont) .page-width,
+.shopify-block.lb-widget-cpac,
+.lb-widget-cpac,
+[class*="lb-widget-cpac"],
+.lb-addon-cont {
+  max-width: 1220px !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
+}
+
+/* Eliminate & streamline vertical gaps between all blocks on product page */
+#MainContent #LuxuryProduct-main,
+#MainContent [id^="LuxuryProduct-"],
+#MainContent [id^="LuxuryMainProduct-"],
+.template-product .lp-section.pdp-section,
+.template-product #LuxuryProduct-main {
+  padding-bottom: 8px !important;
+}
+
+.template-product .pdp-whatsapp-box {
+  margin-top: 14px !important;
+  margin-bottom: 4px !important;
+}
+
+/* Collapse empty apps section completely if no upsell recommendations */
+.shopify-section:has(.lb-widget-cpac):not(:has(.lb-addon-cont)),
+.shopify-section:has(.lb-widget-cpac):not(:has(.lb-carousel-cont)),
+.shopify-section:has(.lb-widget-cpac:empty) {
+  display: none !important;
+  height: 0 !important;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+/* When Selleasy Carousel is present, keep it tight and seamless */
+.template-product .shopify-section:has(.lb-addon-cont) {
+  padding-top: 8px !important;
+  padding-bottom: 12px !important;
+  margin: 0 !important;
+}
+
+.template-product .lb-addon-cont {
+  margin-top: 0px !important;
+  margin-bottom: 6px !important;
+}
+
+.template-product .lb-addon-head {
+  margin-top: 0px !important;
+  margin-bottom: 6px !important;
+}
+
+/* Harmonize and tighten vertical spacing between all blocks on PDP */
+.template-product .shopify-section {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.template-product [class*="-padding"] {
+  padding-top: 10px !important;
+  padding-bottom: 10px !important;
+}
+
+.template-product .shopify-section.section,
+.template-product .section-new-arrivals-upsell,
+.template-product .luxury-best-sellers {
+  padding-top: 10px !important;
+  padding-bottom: 10px !important;
+}
+
+.template-product .image-with-text {
+  padding-top: 6px !important;
+  padding-bottom: 6px !important;
+}
+
+.template-product .image-with-text .page-width {
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+}
+
+.template-product .image-with-text__content {
+  padding-top: 8px !important;
+  padding-bottom: 8px !important;
+}
+
+/* =========================================================================
+   SELLEASY BUNDLE CTAs & CHECKBOX LAYER
+   ========================================================================= */
+.lb-bundle .lb-flat-card .lb-cta-actions {
+  position: static !important;
+  display: flex !important;
+  align-items: center !important;
+  margin-left: auto !important;
+}
+
+.lb-bundle .lb-long-card .lb-cta-actions {
+  position: absolute !important;
+  z-index: 25 !important;
+}
+
+.lb-bundle .lb-card-checkbox-cont,
+.lb-bundle .lb-checkbox-cont,
+.lb-bundle .lb-custom-checkbox {
+  z-index: 26 !important;
+}
+
+@media (max-width: 767px) {
+
+    /* =========================================================================
+       SELLEASY BUNDLE BLOCK MOBILE REFINEMENT
+       - Perfect 50/50 symmetry without overflow or lopsided shift
+       - Fluid responsive widths matching container padding
+       ========================================================================= */
+    .lb-bundle-cont {
+      padding: 16px 12px 20px !important;
+      margin: 20px 0 !important;
+      border-radius: 12px !important;
+      box-sizing: border-box !important;
+      width: 100% !important;
+    }
+    .lb-bundle-header-cont {
+      width: 100% !important;
+      margin: 0 0 14px 0 !important;
+      box-sizing: border-box !important;
+    }
+    .lb-bundle-title {
+      font-size: 18px !important;
+    }
+    .lb-bundle-subTitle {
+      font-size: 13px !important;
+    }
+    .lb-bundle-wrap.lb-bundle-products-cont,
+    .lb-bundle-products.lb-tgrid,
+    .lb-bundle-tgrid {
+      width: 100% !important;
+      box-sizing: border-box !important;
+      margin: 0 !important;
+      padding: 0 !important;
+    }
+    .lb-bundle-tgrid-trigger {
+      width: 100% !important;
+      margin: 0 !important;
+      box-sizing: border-box !important;
+    }
+    .lb-bundle-tgrid-trigger lb-upsell-flat-card,
+    .lb-bundle-tgrid-trigger .lb-flat-card {
+      width: 100% !important;
+      box-sizing: border-box !important;
+      margin: 0 !important;
+    }
+    .lb-bundle-offers {
+      display: flex !important;
+      flex-direction: row !important;
+      flex-wrap: nowrap !important;
+      align-items: stretch !important;
+      justify-content: flex-start !important;
+      gap: 10px !important;
+      width: 100% !important;
+      max-width: 100% !important;
+      overflow-x: auto !important;
+      overflow-y: hidden !important;
+      -webkit-overflow-scrolling: touch !important;
+      scroll-behavior: auto !important;
+      scroll-snap-type: none !important;
+      margin: 0 !important;
+      padding: 4px 4px 10px 4px !important;
+      box-sizing: border-box !important;
+      cursor: default !important;
+      user-select: none !important;
+      -webkit-user-select: none !important;
+      touch-action: pan-x pan-y !important;
+      overscroll-behavior-x: contain !important;
+      scrollbar-width: none !important;
+      -ms-overflow-style: none !important;
+    }
+    .lb-bundle-offers::-webkit-scrollbar,
+    [class*="lb-bundle-offers"]::-webkit-scrollbar {
+      display: none !important;
+      height: 0 !important;
+      width: 0 !important;
+    }
+    .lb-bundle-offers lb-upsell-long-card.lb-product-card,
+    .lb-bundle-offers .lb-upsell-long-card.lb-product-card,
+    .lb-bundle-offers lb-upsell-long-card {
+      display: flex !important;
+      flex-direction: column !important;
+      flex: 0 0 76% !important;
+      width: 76% !important;
+      min-width: 175px !important;
+      max-width: 230px !important;
+      margin: 0 !important;
+      box-sizing: border-box !important;
+      scroll-snap-align: none !important;
+    }
+    .lb-bundle-offers .lb-bundle-divider {
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      flex: 0 0 auto !important;
+      align-self: center !important;
+      margin: 0 2px !important;
+    }
+    .lb-bundle-offers .lb-long-card {
+      width: 100% !important;
+      height: 100% !important;
+      box-sizing: border-box !important;
+      padding: 9px 8px 12px 8px !important;
+      display: flex !important;
+      flex-direction: column !important;
+      justify-content: space-between !important;
+      border-radius: 10px !important;
+      border: 1px solid #ECE7E1 !important;
+    }
+    .lb-bundle-offers .lb-card-image-cont {
+      width: 100% !important;
+      aspect-ratio: 1 / 1 !important;
+      border-radius: 6px !important;
+    }
+    .lb-bundle-offers .lb-card-img {
+      width: 100% !important;
+      height: 100% !important;
+      object-fit: cover !important;
+      border-radius: 6px !important;
+    }
+    .lb-bundle-offers .lb-card-title {
+      font-size: 12.5px !important;
+      line-height: 1.3 !important;
+      display: -webkit-box !important;
+      -webkit-line-clamp: 2 !important;
+      -webkit-box-orient: vertical !important;
+      overflow: hidden !important;
+    }
+    .lb-bundle-cta.lb-tgrid,
+    .lb-bundle-cta-cont,
+    .lb-bundle-cta-total-cont {
+      width: 100% !important;
+      box-sizing: border-box !important;
+    }
+    .lb-bundle-cta-button,
+    .lb-bundle-cta-button .lb-button {
+      width: 100% !important;
+      box-sizing: border-box !important;
+    }
+  }
+
+  /* =========================================================================
+     PRODUCT CARD STAR RATINGS (JUDGE.ME) - MAISON ATELIER LUXURY
+     - Warm golden stars (#E5A93C) with refined review count typography
+     - Strictly hidden when product has 0 reviews or no reviews
+     - Override Judge.me's default display:none rules on cards
+     ========================================================================= */
+  .card-judgeme-rating {
+    display: flex !important;
+    align-items: center !important;
+    min-height: 18px !important;
+    margin: -3px 0 8px 0 !important;
+    transition: opacity 0.2s ease;
+  }
+
+  .card-judgeme-rating:hover {
+    opacity: 0.85;
+  }
+
+  /* Strictly hide if 0 reviews or no reviews */
+  .card-judgeme-rating.is-empty-review,
+  .card-judgeme-rating .jdgm-prev-badge[data-number-of-reviews="0"],
+  .card-judgeme-rating .jdgm-preview-badge[data-number-of-reviews="0"],
+  .card-judgeme-rating .jdgm-prev-badge[data-average-rating="0.00"] {
+    display: none !important;
+  }
+
+  .card-judgeme-rating .jdgm-widget,
+  .card-judgeme-rating .jdgm-preview-badge,
+  .card-judgeme-rating .jdgm-preview-badge[data-template="index"],
+  .card-judgeme-rating .jdgm-preview-badge[data-template="collection"],
+  .card-judgeme-rating .jdgm-preview-badge[data-template="product"],
+  .card-judgeme-rating .jdgm-prev-badge {
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 4px !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+  }
+
+  .card-judgeme-rating .jdgm-prev-badge__stars {
+    display: inline-flex !important;
+    align-items: center !important;
+  }
+
+  .card-judgeme-rating .jdgm-star {
+    color: #E5A93C !important;
+    font-size: 13px !important;
+    line-height: 1 !important;
+    padding: 0 1px 0 0 !important;
+  }
+
+  .card-judgeme-rating .jdgm-prev-badge__text {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+    font-size: 11.5px !important;
+    color: #6B655F !important;
+    font-weight: 500 !important;
+    visibility: visible !important;
+    display: inline !important;
+    margin-left: 3px !important;
+    letter-spacing: 0.01em !important;
+  }
+
+  @media (max-width: 767px) {
+    .card-judgeme-rating {
+      margin: -2px 0 6px 0 !important;
+    }
+    .card-judgeme-rating .jdgm-star {
+      font-size: 12px !important;
+    }
+    .card-judgeme-rating .jdgm-prev-badge__text {
+      font-size: 11px !important;
+    }
+  }
+
+/* =========================================================================
+   SELLEASY BUNDLE & UPSELL CARDS ALIGNMENT FIX
+   - Aligns card images with square 1:1 aspect ratio
+   - Aligns product titles horizontally across cards
+   - Aligns prices horizontally across cards
+   - Accommodates variant dropdown differences without vertical misalignment
+   ========================================================================= */
+.lb-bundle-offers,
+[class*="lb-bundle-offers"],
+.lb-bundle-products-cont .lb-bundle-offers {
+  display: flex !important;
+  flex-direction: row !important;
+  flex-wrap: nowrap !important;
+  align-items: stretch !important;
+  justify-content: flex-start !important;
+  gap: 12px !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  overflow-x: auto !important;
+  overflow-y: hidden !important;
+  -webkit-overflow-scrolling: touch !important;
+  scroll-behavior: auto !important;
+  scroll-snap-type: none !important;
+  padding: 4px 4px 12px 4px !important;
+  box-sizing: border-box !important;
+  cursor: default !important;
+  user-select: none !important;
+  -webkit-user-select: none !important;
+  touch-action: pan-x pan-y !important;
+  overscroll-behavior-x: contain !important;
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
+}
+
+.lb-bundle-offers::-webkit-scrollbar,
+[class*="lb-bundle-offers"]::-webkit-scrollbar {
+  display: none !important;
+  height: 0 !important;
+  width: 0 !important;
+}
+
+/* Enable smooth touch swiping and scroll on Selleasy Upsell & Add-on Carousels */
+.lb-addon-cont,
+.lb-carousel-cont,
+[class*="lb-carousel"],
+[class*="lb-addon-cont"],
+[class*="lb-widget-cpac"],
+.lb-products-cont {
+  touch-action: pan-x pan-y !important;
+  overscroll-behavior-x: contain !important;
+  -webkit-overflow-scrolling: touch !important;
+}
+
+.lb-bundle-offers.is-dragging {
+  cursor: default !important;
+  scroll-behavior: auto !important;
+  scroll-snap-type: none !important;
+}
+
+.lb-bundle-offers *,
+[class*="lb-bundle-offers"] * {
+  user-select: none !important;
+  -webkit-user-select: none !important;
+  -webkit-user-drag: none !important;
+  user-drag: none !important;
+  scroll-snap-align: none !important;
+}
+
+.lb-bundle-offers select,
+.lb-bundle-offers option,
+.lb-bundle-offers input,
+.lb-bundle-offers label,
+.lb-bundle-offers button,
+.lb-bundle-offers a {
+  cursor: pointer !important;
+  user-select: auto !important;
+}
+
+.lb-bundle-offers .lb-card-img {
+  pointer-events: none !important;
+  -webkit-user-drag: none !important;
+}
+
+.lb-bundle-offers lb-upsell-long-card,
+.lb-bundle-offers [class*="lb-product-card"],
+.lb-bundle-offers .lb-upsell-long-card.lb-product-card {
+  flex: 0 0 205px !important;
+  min-width: 190px !important;
+  max-width: 220px !important;
+  width: 205px !important;
+  height: auto !important;
+  display: flex !important;
+  box-sizing: border-box !important;
+  scroll-snap-align: none !important;
+}
+
+.lb-bundle-offers .lb-bundle-divider {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  flex: 0 0 auto !important;
+  align-self: center !important;
+  margin: 0 2px !important;
+}
+
+.lb-bundle-offers .lb-long-card,
+[class*="lb-bundle-offers"] .lb-long-card {
+  display: flex !important;
+  flex-direction: column !important;
+  height: 100% !important;
+  box-sizing: border-box !important;
+  justify-content: flex-start !important;
+}
+
+.lb-bundle-offers lb-card-image,
+[class*="lb-bundle-offers"] lb-card-image {
+  display: block !important;
+  flex: 0 0 auto !important;
+  width: 100% !important;
+}
+
+.lb-bundle-offers .lb-card-image-cont,
+[class*="lb-bundle-offers"] .lb-card-image-cont {
+  width: 100% !important;
+  aspect-ratio: 1 / 1 !important;
+  position: relative !important;
+  overflow: hidden !important;
+}
+
+.lb-bundle-offers .lb-card-img,
+[class*="lb-bundle-offers"] .lb-card-img {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+}
+
+.lb-bundle-offers lb-card-title,
+[class*="lb-bundle-offers"] lb-card-title {
+  display: block !important;
+  flex: 0 0 auto !important;
+  margin-top: 8px !important;
+  min-height: 40px !important;
+}
+
+.lb-bundle-offers .lb-card-title,
+[class*="lb-bundle-offers"] .lb-card-title {
+  min-height: 40px !important;
+  display: -webkit-box !important;
+  -webkit-line-clamp: 2 !important;
+  -webkit-box-orient: vertical !important;
+  overflow: hidden !important;
+  line-height: 1.35 !important;
+}
+
+.lb-bundle-offers lb-price,
+[class*="lb-bundle-offers"] lb-price {
+  display: block !important;
+  flex: 0 0 auto !important;
+  margin-top: 6px !important;
+  min-height: 24px !important;
+}
+
+.lb-bundle-offers .lb-cta-container,
+[class*="lb-bundle-offers"] .lb-cta-container {
+  min-height: 38px !important;
+  display: flex !important;
+  align-items: center !important;
+  margin-top: 6px !important;
+  flex: 0 0 auto !important;
+}
+
+/* =========================================================================
+   SELLEASY PRODUCT CARDS: CLICKABLE IMAGE & TITLE TO PRODUCT PAGE
+   - Visual pointer cue & subtle underline on hover
+   ========================================================================= */
+[class*="lb-widget-"] lb-card-image,
+[class*="lb-widget-"] .lb-card-image-cont,
+[class*="lb-widget-"] .lb-card-img,
+[class*="lb-widget-"] lb-card-title,
+[class*="lb-widget-"] .lb-card-title,
+.lb-addon-cont lb-card-image,
+.lb-addon-cont .lb-card-image-cont,
+.lb-addon-cont .lb-card-img,
+.lb-addon-cont lb-card-title,
+.lb-addon-cont .lb-card-title,
+.lb-bundle-offers lb-card-image,
+.lb-bundle-offers .lb-card-image-cont,
+.lb-bundle-offers .lb-card-img,
+.lb-bundle-offers lb-card-title,
+.lb-bundle-offers .lb-card-title {
+  cursor: pointer !important;
+}
+
+[class*="lb-widget-"] .lb-card-title:hover,
+.lb-addon-cont .lb-card-title:hover,
+.lb-bundle-offers .lb-card-title:hover {
+  text-decoration: underline !important;
+}
+
+/* =========================================================================
+   SELLEASY BUNDLE & UPSELL NUMBERS & PRICING TYPOGRAPHY (BIGGER & BOLDER)
+   - High legibility, crisp contrast, elegant prominence
+   ========================================================================= */
+/* 1. Main sale price */
+[class*="lb-bundle"] .lb-price-sale-price,
+.lb-addon-cont .lb-price-sale-price,
+.lb-widget-cpac .lb-price-sale-price,
+[class*="lb-widget"] .lb-price-sale-price {
+  font-size: 17px !important;
+  font-weight: 700 !important;
+  color: #141517 !important;
+  letter-spacing: -0.01em !important;
+}
+
+/* 2. Compare-at strikethrough price */
+[class*="lb-bundle"] .lb-price-compare-price,
+.lb-addon-cont .lb-price-compare-price,
+.lb-widget-cpac .lb-price-compare-price,
+[class*="lb-widget"] .lb-price-compare-price {
+  font-size: 14px !important;
+  font-weight: 500 !important;
+  color: #767676 !important;
+}
+
+/* 3. Discount percentage tag (-15%, -10%) */
+[class*="lb-bundle"] .lb-price-discount,
+.lb-addon-cont .lb-price-discount,
+.lb-widget-cpac .lb-price-discount,
+[class*="lb-widget"] .lb-price-discount {
+  font-size: 13px !important;
+  font-weight: 700 !important;
+  color: #B31818 !important;
+}
+
+/* 4. Total Price in Bundle Checkout Box */
+[class*="lb-bundle"] .lb-bundle-cta-total-cont .lb-price-sale-price,
+.lb-bundle-cta-total-cont .lb-price-sale-price {
+  font-size: 21px !important;
+  font-weight: 800 !important;
+  color: #141517 !important;
+}
+
+[class*="lb-bundle"] .lb-bundle-cta-total-cont .lb-price-compare-price,
+.lb-bundle-cta-total-cont .lb-price-compare-price {
+  font-size: 15px !important;
+  font-weight: 500 !important;
+}
+
+[class*="lb-bundle"] .lb-bundle-cta-total-cont .lb-price-discount,
+.lb-bundle-cta-total-cont .lb-price-discount {
+  font-size: 14px !important;
+  font-weight: 700 !important;
+}
+
+/* 5. Quantity selector digits */
+[class*="lb-bundle"] .lb-qty-picker,
+.lb-addon-cont .lb-qty-picker,
+.lb-qty-input,
+.lb-qty-picker-cont input,
+.lb-qty-picker-cont {
+  font-size: 15px !important;
+  font-weight: 600 !important;
+}
+
+/* =========================================================================
+   SHOPIFY CHAT (INBOX) FLOATING BUTTON - COMPACT, ACCESSIBLE & NON-INTRUSIVE
+   Prevents oversized widget, eliminates off-screen clipping, and hides when modals open
+   ========================================================================= */
+shopify-chat {
+  transform: scale(0.78) !important;
+  transform-origin: bottom right !important;
+  transition: opacity 0.2s ease, visibility 0.2s ease !important;
+  z-index: 9999 !important;
+}
+
+@media screen and (min-width: 768px) {
+  shopify-chat {
+    transform: scale(0.85) !important;
+    transform-origin: bottom right !important;
+  }
+}
+
+/* Hide floating chat button whenever any modal, currency selector, cart drawer or backdrop is open */
+body.af-curr-open shopify-chat,
+body.af-curr-open #shopify-chat,
+body.af-curr-open [id*="shopify-chat"],
+body.af-curr-open iframe#dummy-chat-button-iframe,
+body.af-curr-open iframe#chat-button-iframe,
+body:has(.lh-mobile-drawer.is-open) shopify-chat,
+body:has(.lh-drawer-backdrop.is-open) shopify-chat,
+body:has(.af-curr-backdrop.is-active) shopify-chat,
+body:has(.af-curr-menu:not([hidden])) shopify-chat,
+body:has(.cart-drawer.active) shopify-chat,
+body:has(details[open].menu-drawer-container) shopify-chat,
+body:has(.search-modal[open]) shopify-chat,
+body:has(.modal.is-open) shopify-chat,
+body:has(dialog[open]) shopify-chat,
+body:has([widget*="preview"]) shopify-chat {
+  display: none !important;
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+
+
+
+
+
+
+
+/* Ensure position: sticky works 100% on product templates */
+body.template-product,
+html.template-product,
+.template-product #MainContent {
+  overflow: visible !important;
+  overflow-x: clip !important;
+  overflow-y: visible !important;
+}

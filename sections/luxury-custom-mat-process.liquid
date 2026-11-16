@@ -1,0 +1,650 @@
+{%- comment -%}
+  -----------------------------------------------------------------------------
+  SECTION: LUXURY CUSTOM MAT PROCESS ("From Your Idea to Your Table")
+  - Clean Atelier Aesthetic with Step Numbering & Progress Indicators
+  - 100% Dynamic - ZERO HARDCODED TEXT OR IMAGES:
+    * All images come directly from block.settings.image (or block.settings.custom_image_url)
+    * All headings, text, numbers come directly from block.settings
+    * Fully controllable via Shopify Theme Editor (Blocks & Section settings)
+  -----------------------------------------------------------------------------
+{%- endcomment -%}
+
+{%- style -%}
+  #CustomMatProcess-{{ section.id }} {
+    background-color: {{ section.settings.bg_color | default: '#FCFAF8' }};
+    padding-top: {{ section.settings.padding_top_mobile | default: 56 }}px;
+    padding-bottom: {{ section.settings.padding_bottom_mobile | default: 64 }}px;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    color: {{ section.settings.card_heading_color | default: '#141517' }};
+    position: relative;
+    overflow: hidden;
+  }
+
+  @media (min-width: 768px) {
+    #CustomMatProcess-{{ section.id }} {
+      padding-top: {{ section.settings.padding_top | default: 80 }}px;
+      padding-bottom: {{ section.settings.padding_bottom | default: 88 }}px;
+    }
+  }
+
+  #CustomMatProcess-{{ section.id }} * {
+    box-sizing: border-box !important;
+  }
+
+  .cmp-container-{{ section.id }} {
+    max-width: {{ section.settings.container_max_width | default: 1240 }}px;
+    margin: 0 auto;
+    padding: 0 24px;
+    width: 100%;
+  }
+
+  .cmp-header-{{ section.id }} {
+    text-align: {{ section.settings.header_alignment | default: 'center' }};
+    max-width: 820px;
+    margin: 0 auto {% if section.settings.subtitle != blank %}60px{% else %}40px{% endif %} auto;
+  }
+
+  .cmp-eyebrow-{{ section.id }} {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: {{ section.settings.accent_color | default: '#7F2F68' }};
+    margin-bottom: 12px;
+  }
+
+  .cmp-title-{{ section.id }} {
+    font-family: var(--font-heading-family, serif);
+    font-size: {{ section.settings.heading_size_mobile | default: 30 }}px;
+    font-weight: 700;
+    line-height: 1.25;
+    color: {{ section.settings.heading_color | default: '#141517' }};
+    margin: 0 0 14px 0;
+    letter-spacing: -0.01em;
+  }
+
+  @media (min-width: 768px) {
+    .cmp-title-{{ section.id }} {
+      font-size: {{ section.settings.heading_size | default: 42 }}px;
+    }
+  }
+
+  .cmp-subtitle-{{ section.id }} {
+    font-size: 16px;
+    line-height: 1.6;
+    color: {{ section.settings.subtitle_color | default: '#55504C' }};
+    margin: 0;
+  }
+
+  /* Process Cards Grid */
+  .cmp-grid-{{ section.id }} {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 32px 24px;
+    position: relative;
+    align-items: stretch;
+  }
+
+  @media (min-width: 640px) {
+    .cmp-grid-{{ section.id }} {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 36px 24px;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .cmp-grid-{{ section.id }} {
+      grid-template-columns: repeat({{ section.settings.columns_desktop | default: 4 }}, 1fr);
+      gap: 24px;
+    }
+
+    {%- if section.settings.show_connecting_line -%}
+      .cmp-grid-{{ section.id }}::before {
+        content: '';
+        position: absolute;
+        top: calc({{ section.settings.circle_size | default: 120 }}px / 2);
+        left: 10%;
+        right: 10%;
+        height: 1px;
+        background: {{ section.settings.line_color | default: '#E5DFD7' }};
+        z-index: 1;
+      }
+    {%- endif -%}
+  }
+
+  .cmp-step-item-{{ section.id }} {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    z-index: 2;
+  }
+
+  /* Circular Step Image Container */
+  .cmp-image-wrapper-{{ section.id }} {
+    position: relative;
+    width: {{ section.settings.circle_size | default: 120 }}px;
+    height: {{ section.settings.circle_size | default: 120 }}px;
+    margin-bottom: -18px; /* Smooth overlap onto top of card */
+    z-index: 3;
+    flex-shrink: 0;
+  }
+
+  .cmp-image-circle-{{ section.id }} {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    overflow: hidden;
+    border: {{ section.settings.ring_width | default: 3 }}px solid {{ section.settings.ring_color | default: '#D4AF37' }};
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+    background: #F4EFEB;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .cmp-image-circle-{{ section.id }} img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.4s ease;
+  }
+
+  .cmp-image-circle-{{ section.id }} svg.cmp-placeholder-svg {
+    width: 100%;
+    height: 100%;
+    fill: #D5CEC7;
+    background: #F4EFEB;
+  }
+
+  .cmp-step-item-{{ section.id }}:hover .cmp-image-circle-{{ section.id }} img {
+    transform: scale(1.08);
+  }
+
+  /* Circular Step Number Badge below image */
+  .cmp-step-number-{{ section.id }} {
+    position: absolute;
+    bottom: -8px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: {{ section.settings.accent_color | default: '#7F2F68' }};
+    color: {{ section.settings.number_text_color | default: '#FFFFFF' }};
+    font-size: 14px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    border: 2px solid #FFFFFF;
+    z-index: 4;
+  }
+
+  /* Card Body */
+  .cmp-card-{{ section.id }} {
+    background: {{ section.settings.card_bg | default: '#FFFFFF' }};
+    border: 1px solid {{ section.settings.card_border_color | default: '#ECE7E1' }};
+    border-radius: {{ section.settings.card_corner_radius | default: 20 }}px;
+    padding: 44px 24px 32px 24px;
+    width: 100%;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    text-align: {{ section.settings.card_text_alignment | default: 'left' }};
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.03);
+    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+  }
+
+  .cmp-step-item-{{ section.id }}:hover .cmp-card-{{ section.id }} {
+    transform: translateY(-4px);
+    box-shadow: 0 14px 34px rgba(0, 0, 0, 0.08);
+    border-color: #D5CEC7;
+  }
+
+  .cmp-card-heading-{{ section.id }} {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    font-size: 19px;
+    font-weight: 700;
+    color: {{ section.settings.card_heading_color | default: '#141517' }};
+    margin: 0 0 14px 0;
+    line-height: 1.35;
+  }
+
+  .cmp-card-desc-{{ section.id }} {
+    font-size: 14px;
+    line-height: 1.65;
+    color: {{ section.settings.card_desc_color | default: '#635E59' }};
+    margin: 0;
+  }
+
+  .cmp-card-desc-{{ section.id }} p {
+    margin: 0;
+    font-size: inherit;
+    line-height: inherit;
+    color: inherit;
+  }
+{%- endstyle -%}
+
+<section id="CustomMatProcess-{{ section.id }}" class="cmp-section">
+  <div class="cmp-container-{{ section.id }}">
+    
+    {%- if section.settings.heading != blank or section.settings.subtitle != blank or section.settings.eyebrow != blank -%}
+      <div class="cmp-header-{{ section.id }}">
+        {%- if section.settings.show_eyebrow and section.settings.eyebrow != blank -%}
+          <span class="cmp-eyebrow-{{ section.id }}">{{ section.settings.eyebrow }}</span>
+        {%- endif -%}
+        {%- if section.settings.heading != blank -%}
+          <h2 class="cmp-title-{{ section.id }}">{{ section.settings.heading }}</h2>
+        {%- endif -%}
+        {%- if section.settings.subtitle != blank -%}
+          <p class="cmp-subtitle-{{ section.id }}">{{ section.settings.subtitle }}</p>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+
+    <div class="cmp-grid-{{ section.id }}">
+      {%- for block in section.blocks -%}
+        {%- assign step_num = block.settings.step_number | default: forloop.index -%}
+        <div class="cmp-step-item-{{ section.id }}" {{ block.shopify_attributes }}>
+          <div class="cmp-image-wrapper-{{ section.id }}">
+            <div class="cmp-image-circle-{{ section.id }}"
+              {% if block.settings.custom_ring_color != blank and block.settings.custom_ring_color != 'rgba(0,0,0,0)' %}
+                style="border-color: {{ block.settings.custom_ring_color }};"
+              {% endif %}
+            >
+              {%- if block.settings.custom_image_url != blank -%}
+                {%- assign img_src = block.settings.custom_image_url -%}
+                {%- unless img_src contains 'http://' or img_src contains 'https://' or img_src contains '//' -%}
+                  {%- assign img_src = img_src | asset_url -%}
+                {%- endunless -%}
+                <img src="{{ img_src }}" alt="{{ block.settings.heading | escape }}" loading="lazy" width="240" height="240">
+              {%- elsif block.settings.image != blank -%}
+                {{ block.settings.image | image_url: width: 400 | image_tag: loading: 'lazy', alt: block.settings.heading }}
+              {%- else -%}
+                {{ 'image' | placeholder_svg_tag: 'cmp-placeholder-svg' }}
+              {%- endif -%}
+            </div>
+            {%- if step_num != blank -%}
+              <div class="cmp-step-number-{{ section.id }}"
+                {% if block.settings.custom_badge_color != blank and block.settings.custom_badge_color != 'rgba(0,0,0,0)' %}
+                  style="background: {{ block.settings.custom_badge_color }};"
+                {% endif %}
+              >
+                {{ step_num }}
+              </div>
+            {%- endif -%}
+          </div>
+
+          <div class="cmp-card-{{ section.id }}">
+            {%- if block.settings.heading != blank -%}
+              <h3 class="cmp-card-heading-{{ section.id }}">{{ block.settings.heading }}</h3>
+            {%- endif -%}
+            {%- if block.settings.description != blank -%}
+              <div class="cmp-card-desc-{{ section.id }}">{{ block.settings.description }}</div>
+            {%- endif -%}
+          </div>
+        </div>
+      {%- endfor -%}
+    </div>
+
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Custom 4-Step Process",
+  "tag": "section",
+  "class": "section",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "settings": [
+    {
+      "type": "header",
+      "content": "Section Header"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_eyebrow",
+      "label": "Show Eyebrow Text",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow Text",
+      "default": "THE BESPOKE 4-STEP ATELIER JOURNEY"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "From Your Idea to Your Table"
+    },
+    {
+      "type": "range",
+      "id": "heading_size",
+      "min": 24,
+      "max": 64,
+      "step": 2,
+      "unit": "px",
+      "label": "Heading Size (Desktop)",
+      "default": 42
+    },
+    {
+      "type": "range",
+      "id": "heading_size_mobile",
+      "min": 20,
+      "max": 44,
+      "step": 2,
+      "unit": "px",
+      "label": "Heading Size (Mobile)",
+      "default": 30
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading Color",
+      "default": "#141517"
+    },
+    {
+      "type": "textarea",
+      "id": "subtitle",
+      "label": "Subtitle",
+      "default": "Four steps, about two weeks, and nothing printed until you say so."
+    },
+    {
+      "type": "color",
+      "id": "subtitle_color",
+      "label": "Subtitle Color",
+      "default": "#55504C"
+    },
+    {
+      "type": "select",
+      "id": "header_alignment",
+      "label": "Header Alignment",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "header",
+      "content": "Step Card Styling"
+    },
+    {
+      "type": "select",
+      "id": "columns_desktop",
+      "label": "Columns on Desktop",
+      "options": [
+        { "value": "2", "label": "2 Columns" },
+        { "value": "3", "label": "3 Columns" },
+        { "value": "4", "label": "4 Columns" }
+      ],
+      "default": "4"
+    },
+    {
+      "type": "select",
+      "id": "card_text_alignment",
+      "label": "Card Text Alignment",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "color",
+      "id": "card_bg",
+      "label": "Card Background",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "card_border_color",
+      "label": "Card Border Color",
+      "default": "#ECE7E1"
+    },
+    {
+      "type": "color",
+      "id": "card_heading_color",
+      "label": "Card Heading Color",
+      "default": "#141517"
+    },
+    {
+      "type": "color",
+      "id": "card_desc_color",
+      "label": "Card Description Color",
+      "default": "#635E59"
+    },
+    {
+      "type": "range",
+      "id": "card_corner_radius",
+      "min": 0,
+      "max": 36,
+      "step": 2,
+      "unit": "px",
+      "label": "Card Corner Radius",
+      "default": 20
+    },
+    {
+      "type": "header",
+      "content": "Image & Badge Styling"
+    },
+    {
+      "type": "range",
+      "id": "circle_size",
+      "min": 80,
+      "max": 160,
+      "step": 4,
+      "unit": "px",
+      "label": "Image Circle Size",
+      "default": 120
+    },
+    {
+      "type": "color",
+      "id": "ring_color",
+      "label": "Circle Ring Color",
+      "default": "#D4AF37"
+    },
+    {
+      "type": "range",
+      "id": "ring_width",
+      "min": 1,
+      "max": 6,
+      "step": 1,
+      "unit": "px",
+      "label": "Circle Ring Width",
+      "default": 3
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Step Badge Color (Purple)",
+      "default": "#7F2F68"
+    },
+    {
+      "type": "color",
+      "id": "number_text_color",
+      "label": "Step Badge Number Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_connecting_line",
+      "label": "Show Connecting Line Behind Circles",
+      "default": true
+    },
+    {
+      "type": "color",
+      "id": "line_color",
+      "label": "Connecting Line Color",
+      "default": "#E5DFD7"
+    },
+    {
+      "type": "header",
+      "content": "Section Layout & Spacing"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Section Background",
+      "default": "#FCFAF8"
+    },
+    {
+      "type": "range",
+      "id": "container_max_width",
+      "min": 1000,
+      "max": 1400,
+      "step": 20,
+      "unit": "px",
+      "label": "Container Max Width",
+      "default": 1240
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 160,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding Top (Desktop)",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 160,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding Bottom (Desktop)",
+      "default": 88
+    },
+    {
+      "type": "range",
+      "id": "padding_top_mobile",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding Top (Mobile)",
+      "default": 56
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_mobile",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding Bottom (Mobile)",
+      "default": 64
+    }
+  ],
+  "blocks": [
+    {
+      "type": "step",
+      "name": "Step Card",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Step Image",
+          "info": "Upload or select an image for this step."
+        },
+        {
+          "type": "text",
+          "id": "custom_image_url",
+          "label": "Or Image URL",
+          "info": "Direct image URL if not using Shopify media library"
+        },
+        {
+          "type": "text",
+          "id": "step_number",
+          "label": "Step Number",
+          "info": "Leave blank to auto-number (1, 2, 3...)"
+        },
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Step Title",
+          "default": "Step Title"
+        },
+        {
+          "type": "richtext",
+          "id": "description",
+          "label": "Step Description",
+          "default": "<p>A short description of this step in the journey.</p>"
+        },
+        {
+          "type": "color",
+          "id": "custom_badge_color",
+          "label": "Custom Badge Color",
+          "info": "Optional: override badge color for this step"
+        },
+        {
+          "type": "color",
+          "id": "custom_ring_color",
+          "label": "Custom Ring Color",
+          "info": "Optional: override ring color for this step"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Custom 4-Step Process",
+      "settings": {
+        "heading": "From Your Idea to Your Table",
+        "subtitle": "Four steps, about two weeks, and nothing printed until you say so.",
+        "bg_color": "#FCFAF8",
+        "accent_color": "#7F2F68",
+        "ring_color": "#D4AF37",
+        "show_connecting_line": true
+      },
+      "blocks": [
+        {
+          "type": "step",
+          "settings": {
+            "step_number": "1",
+            "heading": "Share your idea",
+            "description": "<p>A name, a date, your colours, a motif you love. A few words are enough.</p>"
+          }
+        },
+        {
+          "type": "step",
+          "settings": {
+            "step_number": "2",
+            "heading": "We draw you three",
+            "description": "<p>Our artist hand-draws three different concepts on an iPad, from a blank canvas, within 24 hours.</p>"
+          }
+        },
+        {
+          "type": "step",
+          "settings": {
+            "step_number": "3",
+            "heading": "You choose and refine",
+            "description": "<p>Pick your favourite and tell us what to change — up to three rounds.</p>"
+          }
+        },
+        {
+          "type": "step",
+          "settings": {
+            "step_number": "4",
+            "heading": "We print and ship",
+            "description": "<p>Made to order and sent free anywhere in the United States.</p>"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

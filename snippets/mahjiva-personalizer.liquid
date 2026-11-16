@@ -1,0 +1,380 @@
+{%- comment -%}
+  Mahjiva Personalizer
+  Renders personalization steps from Shopify data only:
+    product.metafields.custom.personalization_options  (list of metaobject "personalization_option")
+      option.title / type / values / required / max_length / placeholder / help_text / show_when
+      option.show_when -> list of "personalization_value": the step is shown only while one of
+                          those values is picked in another step (empty = always shown)
+      option.values -> list of metaobject "personalization_value"
+        value.name / thumbnail / layer_image / color / font_file / price_adjustment
+
+  Every step posts a real line item property: properties[<Option Title>].
+  Must be rendered inside the product form ('product' form tag).
+
+  Params:
+    product     - product object (required)
+    section_id  - section.id, used for unique ids (required)
+{%- endcomment -%}
+
+{%- assign pz_options = product.metafields.custom.personalization_options.value -%}
+
+{%- if pz_options == blank -%}
+  {%- if request.design_mode -%}
+    <div class="pz-empty">
+      <strong>Personalization: chưa có dữ liệu</strong>
+      <p>Sản phẩm "{{ product.title | escape }}" chưa được gán bước tùy chỉnh nào. Vào Shopify Admin → Sản phẩm → {{ product.title | escape }} → Trường siêu dữ liệu → <em>Personalization Options</em> và chọn các bước (Personalization Option).</p>
+    </div>
+  {%- endif -%}
+{%- else -%}
+  {{ 'mahjiva-personalizer.css' | asset_url | stylesheet_tag }}
+
+  {%- comment -%}
+    Fonts for 'font' steps: an uploaded Font File wins; otherwise the value's Google Font name
+    (exact Google Fonts family, e.g. "Holtwood One SC") is loaded from fonts.googleapis.com.
+  {%- endcomment -%}
+  {%- assign pz_google_query = '' -%}
+  {%- capture pz_font_faces -%}
+    {%- for option in pz_options -%}
+      {%- if option.type.value == 'font' -%}
+        {%- for v in option.values.value -%}
+          {%- assign pz_font_url = v.font_file.value.url -%}
+          {%- if pz_font_url != blank -%}
+            @font-face { font-family: "pz-font-{{ v.system.handle }}"; src: url("{{ pz_font_url }}"); font-display: swap; }
+          {%- elsif v.google_font.value != blank -%}
+            {%- assign pz_google_param = 'family=' | append: v.google_font.value -%}
+            {%- assign pz_google_param = pz_google_param | strip | replace: ' ', '+' -%}
+            {%- unless pz_google_query contains pz_google_param -%}
+              {%- assign pz_google_query = pz_google_query | append: pz_google_param | append: '&' -%}
+            {%- endunless -%}
+          {%- endif -%}
+        {%- endfor -%}
+      {%- endif -%}
+    {%- endfor -%}
+  {%- endcapture -%}
+  {%- if pz_font_faces != blank -%}
+    <style>{{ pz_font_faces }}</style>
+  {%- endif -%}
+  {%- if pz_google_query != '' -%}
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?{{ pz_google_query | escape }}display=swap">
+  {%- endif -%}
+
+  <div class="pz" data-pz-root>
+    {%- assign pz_step_num = 0 -%}
+    {%- for option in pz_options -%}
+      {%- assign opt_title = option.title.value -%}
+      {%- assign opt_type = option.type.value -%}
+      {%- if opt_title == blank or opt_type == blank -%}
+        {%- continue -%}
+      {%- endif -%}
+
+      {%- assign pz_step_num = pz_step_num | plus: 1 -%}
+      {%- assign opt_key = option.system.handle -%}
+      {%- assign opt_required = false -%}
+      {%- if option.required.value == true -%}
+        {%- assign opt_required = true -%}
+      {%- endif -%}
+      {%- assign prop_name = 'properties[' | append: opt_title | append: ']' -%}
+      {%- assign field_id = 'pz-' | append: section_id | append: '-' | append: opt_key -%}
+      {%- assign opt_values = option.values.value -%}
+
+      {%- assign opt_show = '' -%}
+      {%- assign opt_show_names = '' -%}
+      {%- for sv in option.show_when.value -%}
+        {%- assign opt_show = opt_show | append: sv.system.handle | append: ',' -%}
+        {%- unless opt_show_names == '' -%}{%- assign opt_show_names = opt_show_names | append: ' / ' -%}{%- endunless -%}
+        {%- assign opt_show_names = opt_show_names | append: sv.name.value -%}
+      {%- endfor -%}
+
+      <div
+        class="pz-step"
+        role="group"
+        aria-labelledby="{{ field_id }}-label"
+        data-pz-step
+        data-pz-key="{{ opt_key }}"
+        data-pz-type="{{ opt_type }}"
+        {% if opt_show != '' %}data-pz-show-when="{{ opt_show | escape }}" hidden{% endif %}
+      >
+        <div class="pz-step__head">
+          <span class="pz-step__num" aria-hidden="true">{{ pz_step_num }}</span>
+          <span class="pz-step__title" id="{{ field_id }}-label">
+            {{- opt_title -}}
+            {%- if opt_required -%}
+              <span class="pz-step__req" aria-hidden="true">*</span>
+            {%- else -%}
+              <span class="pz-step__opt"> (Optional)</span>
+            {%- endif -%}
+          </span>
+          <span class="pz-step__selected" data-pz-selected></span>
+        </div>
+
+        {%- comment -%} "(Optional)" is already shown next to the title of non-required steps {%- endcomment -%}
+        {%- assign opt_help = option.help_text.value | strip -%}
+        {%- assign opt_help_lower = opt_help | downcase -%}
+        {%- if opt_help != blank and opt_help_lower != 'optional' -%}
+          <p class="pz-step__help">{{ opt_help }}</p>
+        {%- endif -%}
+        {%- if request.design_mode and opt_show != '' -%}
+          <p class="pz-step__cond">Chỉ hiện khi khách chọn: {{ opt_show_names | escape }}</p>
+        {%- endif -%}
+
+        {%- comment -%}
+          text_color without Values = free colour picker; with Values = thread-colour swatches.
+        {%- endcomment -%}
+        {%- assign pz_render = opt_type -%}
+        {%- if opt_type == 'text_color' and opt_values == blank -%}
+          {%- assign pz_render = 'text_color_free' -%}
+        {%- endif -%}
+
+        {%- case pz_render -%}
+          {%- when 'text' -%}
+            <div class="pz-field">
+              <input
+                type="text"
+                class="pz-input"
+                id="{{ field_id }}"
+                name="{{ prop_name | escape }}"
+                {% if option.placeholder.value != blank %}placeholder="{{ option.placeholder.value | escape }}"{% endif %}
+                {% if option.max_length.value > 0 %}maxlength="{{ option.max_length.value }}"{% endif %}
+                {% if opt_required %}required{% endif %}
+                autocomplete="off"
+                data-pz-input
+              >
+              {%- if option.max_length.value > 0 -%}
+                <span class="pz-counter" data-pz-counter>0/{{ option.max_length.value }}</span>
+              {%- endif -%}
+            </div>
+            {%- comment -%} Filled + enabled only when the customer drags this text in the live preview {%- endcomment -%}
+            {%- comment -%}
+              Per-line colour + size. Each value is sent only after the customer changes it
+              (hidden inputs are enabled by assets/mahjiva-personalizer.js).
+            {%- endcomment -%}
+            <div class="pz-text-tools">
+              <label class="pz-text-tools__color" title="Text colour">
+                <input type="color" value="#faf8f5" aria-label="{{ opt_title | escape }}: text colour" data-pz-line-color>
+                <span class="pz-text-tools__label" data-pz-line-color-label>Colour</span>
+              </label>
+              <div class="pz-text-tools__size">
+                <span class="pz-range__a pz-range__a--small" aria-hidden="true">A</span>
+                <input
+                  type="range"
+                  class="pz-range__input"
+                  min="60"
+                  max="160"
+                  step="5"
+                  value="100"
+                  aria-label="{{ opt_title | escape }}: text size"
+                  data-pz-line-size
+                >
+                <span class="pz-range__a pz-range__a--big" aria-hidden="true">A</span>
+                <output class="pz-range__value" data-pz-line-size-value>100%</output>
+              </div>
+            </div>
+            {%- assign color_prop = 'properties[' | append: opt_title | append: ' – color]' -%}
+            {%- assign size_prop = 'properties[' | append: opt_title | append: ' – size]' -%}
+            <input type="hidden" name="{{ color_prop | escape }}" value="" data-pz-line-commit="color" disabled>
+            <input type="hidden" name="{{ size_prop | escape }}" value="" data-pz-line-commit="size" disabled>
+            {%- assign position_prop = 'properties[' | append: opt_title | append: ' – position]' -%}
+            <input type="hidden" name="{{ position_prop | escape }}" value="" data-pz-position="{{ opt_key }}" disabled>
+
+          {%- when 'textarea' -%}
+            <div class="pz-field">
+              <textarea
+                class="pz-input pz-input--area"
+                id="{{ field_id }}"
+                name="{{ prop_name | escape }}"
+                rows="3"
+                {% if option.placeholder.value != blank %}placeholder="{{ option.placeholder.value | escape }}"{% endif %}
+                {% if option.max_length.value > 0 %}maxlength="{{ option.max_length.value }}"{% endif %}
+                {% if opt_required %}required{% endif %}
+                data-pz-input
+              ></textarea>
+              {%- if option.max_length.value > 0 -%}
+                <span class="pz-counter" data-pz-counter>0/{{ option.max_length.value }}</span>
+              {%- endif -%}
+            </div>
+
+          {%- when 'image_swatch', 'color_swatch', 'text_color', 'font' -%}
+            {%- if opt_values == blank -%}
+              {%- if request.design_mode -%}
+                <p class="pz-step__warn">Bước "{{ opt_title | escape }}" chưa có Values. Thêm Personalization Value cho bước này trong Shopify Admin.</p>
+              {%- endif -%}
+            {%- else -%}
+              <div class="pz-swatches pz-swatches--{{ opt_type }}">
+                {%- for v in opt_values -%}
+                  {%- assign v_name = v.name.value -%}
+                  {%- if v_name == blank -%}{%- continue -%}{%- endif -%}
+
+                  {%- assign v_color = v.color.value -%}
+                  {%- assign v_value = v_name -%}
+                  {%- if opt_type == 'color_swatch' or opt_type == 'text_color' -%}
+                    {%- if v_color != blank -%}
+                      {%- assign v_value = v_name | append: ' (' | append: v_color | append: ')' -%}
+                    {%- endif -%}
+                  {%- endif -%}
+
+                  {%- assign v_thumb = v.thumbnail.value -%}
+                  {%- assign v_thumb_url = '' -%}
+                  {%- if v_thumb != blank -%}
+                    {%- if v_thumb.media_type == 'image' -%}
+                      {%- assign v_thumb_url = v_thumb | image_url: width: 240 -%}
+                    {%- else -%}
+                      {%- assign v_thumb_url = v_thumb.url -%}
+                    {%- endif -%}
+                  {%- endif -%}
+
+                  {%- assign v_layer = v.layer_image.value -%}
+                  {%- assign v_layer_url = '' -%}
+                  {%- if v_layer != blank -%}
+                    {%- if v_layer.media_type == 'image' -%}
+                      {%- assign v_layer_url = v_layer | image_url: width: 1600 -%}
+                    {%- else -%}
+                      {%- assign v_layer_url = v_layer.url -%}
+                    {%- endif -%}
+                  {%- endif -%}
+
+                  {%- assign v_font_family = '' -%}
+                  {%- if v.font_file.value.url != blank -%}
+                    {%- assign v_font_family = 'pz-font-' | append: v.system.handle -%}
+                  {%- elsif v.google_font.value != blank -%}
+                    {%- assign v_font_family = v.google_font.value | strip -%}
+                  {%- endif -%}
+
+                  <label class="pz-swatch{% if v_thumb_url == blank and opt_type == 'image_swatch' %} pz-swatch--text{% endif %}">
+                    <input
+                      type="radio"
+                      class="pz-swatch__input"
+                      name="{{ prop_name | escape }}"
+                      value="{{ v_value | escape }}"
+                      {% if opt_required and forloop.first %}required{% endif %}
+                      data-pz-input
+                      data-label="{{ v_name | escape }}"
+                      data-pz-vh="{{ v.system.handle }}"
+                      {% if v_color != blank %}data-color="{{ v_color }}"{% endif %}
+                      {% if v_layer_url != blank %}data-layer="{{ v_layer_url }}"{% endif %}
+                      {% if v_font_family != blank %}data-font-family="{{ v_font_family | escape }}"{% endif %}
+                    >
+                    {%- case opt_type -%}
+                      {%- when 'color_swatch', 'text_color' -%}
+                        {%- if v_thumb_url != blank -%}
+                          <span class="pz-swatch__visual pz-swatch__visual--img"><img src="{{ v_thumb_url }}" alt="" loading="lazy" width="120" height="120"></span>
+                        {%- elsif v_color != blank -%}
+                          <span class="pz-swatch__visual pz-swatch__visual--color" style="background-color: {{ v_color }};"></span>
+                        {%- endif -%}
+                      {%- when 'font' -%}
+                        {%- if v_font_family != blank -%}
+                          <span class="pz-swatch__visual pz-swatch__visual--font" style="font-family: '{{ v_font_family | escape }}', serif;">Abc</span>
+                        {%- elsif v_thumb_url != blank -%}
+                          <span class="pz-swatch__visual pz-swatch__visual--img"><img src="{{ v_thumb_url }}" alt="" loading="lazy" width="120" height="120"></span>
+                        {%- else -%}
+                          {%- comment -%} No Font File / Google Font / Thumbnail yet: same card, sample drawn in a fallback serif {%- endcomment -%}
+                          <span class="pz-swatch__visual pz-swatch__visual--font" style="font-family: '{{ v_name | escape }}', Georgia, 'Times New Roman', serif;">Abc</span>
+                        {%- endif -%}
+                      {%- else -%}
+                        {%- if v_thumb_url != blank -%}
+                          <span class="pz-swatch__visual pz-swatch__visual--img"><img src="{{ v_thumb_url }}" alt="" loading="lazy" width="120" height="120"></span>
+                        {%- endif -%}
+                    {%- endcase -%}
+                    <span class="pz-swatch__name">{{ v_name }}</span>
+                  </label>
+                {%- endfor -%}
+              </div>
+            {%- endif -%}
+
+          {%- when 'dropdown' -%}
+            {%- if opt_values == blank -%}
+              {%- if request.design_mode -%}
+                <p class="pz-step__warn">Bước "{{ opt_title | escape }}" chưa có Values. Thêm Personalization Value cho bước này trong Shopify Admin.</p>
+              {%- endif -%}
+            {%- else -%}
+              <div class="pz-field">
+                <select
+                  class="pz-input pz-select"
+                  id="{{ field_id }}"
+                  name="{{ prop_name | escape }}"
+                  {% if opt_required %}required{% endif %}
+                  data-pz-input
+                >
+                  <option value="" selected {% if opt_required %}disabled{% endif %}>{{ option.placeholder.value | default: opt_title }}</option>
+                  {%- for v in opt_values -%}
+                    {%- assign v_name = v.name.value -%}
+                    {%- if v_name == blank -%}{%- continue -%}{%- endif -%}
+                    {%- assign v_layer = v.layer_image.value -%}
+                    {%- assign v_layer_url = '' -%}
+                    {%- if v_layer != blank -%}
+                      {%- if v_layer.media_type == 'image' -%}
+                        {%- assign v_layer_url = v_layer | image_url: width: 1600 -%}
+                      {%- else -%}
+                        {%- assign v_layer_url = v_layer.url -%}
+                      {%- endif -%}
+                    {%- endif -%}
+                    <option
+                      value="{{ v_name | escape }}"
+                      data-label="{{ v_name | escape }}"
+                      data-pz-vh="{{ v.system.handle }}"
+                      {% if v.color.value != blank %}data-color="{{ v.color.value }}"{% endif %}
+                      {% if v_layer_url != blank %}data-layer="{{ v_layer_url }}"{% endif %}
+                    >{{ v_name }}</option>
+                  {%- endfor -%}
+                </select>
+              </div>
+            {%- endif -%}
+
+          {%- when 'upload' -%}
+            <label class="pz-upload" for="{{ field_id }}">
+              <input
+                type="file"
+                class="pz-upload__input"
+                id="{{ field_id }}"
+                name="{{ prop_name | escape }}"
+                accept="image/*,.pdf"
+                {% if opt_required %}required{% endif %}
+                data-pz-input
+              >
+              <span class="pz-upload__cta">Choose file</span>
+              <span class="pz-upload__hint" data-pz-file-name>
+                {{- option.placeholder.value | default: 'PNG, JPG or PDF' -}}
+              </span>
+            </label>
+
+          {%- when 'text_color_free' -%}
+            {%- comment -%} Sent only after the customer picks a colour (hidden input enabled by JS) {%- endcomment -%}
+            <label class="pz-picker" for="{{ field_id }}">
+              <input type="color" class="pz-picker__input" id="{{ field_id }}" value="#faf8f5" data-pz-picker>
+              <span class="pz-picker__value" data-pz-picker-value>{{ option.placeholder.value | default: 'Pick any colour' }}</span>
+            </label>
+            <input type="hidden" name="{{ prop_name | escape }}" value="" data-pz-commit disabled>
+
+          {%- when 'text_size' -%}
+            {%- comment -%} Percent of the standard text size; sent only after the customer moves the slider {%- endcomment -%}
+            <div class="pz-range">
+              <span class="pz-range__a pz-range__a--small" aria-hidden="true">A</span>
+              <input
+                type="range"
+                class="pz-range__input"
+                id="{{ field_id }}"
+                min="60"
+                max="160"
+                step="5"
+                value="100"
+                aria-labelledby="{{ field_id }}-label"
+                data-pz-range
+              >
+              <span class="pz-range__a pz-range__a--big" aria-hidden="true">A</span>
+              <output class="pz-range__value" for="{{ field_id }}" data-pz-range-value>100%</output>
+            </div>
+            <input type="hidden" name="{{ prop_name | escape }}" value="" data-pz-commit disabled>
+        {%- endcase -%}
+      </div>
+    {%- endfor -%}
+
+    {%- comment -%} Shown by JS on small screens while the live preview is scrolled out of view {%- endcomment -%}
+    <button type="button" class="pz-peek" data-pz-peek hidden>
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg>
+      <span>View preview</span>
+    </button>
+  </div>
+
+  <script src="{{ 'mahjiva-personalizer.js' | asset_url }}" defer></script>
+{%- endif -%}

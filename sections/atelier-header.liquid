@@ -41,44 +41,40 @@
 
 {%- style -%}
   /* =========================================================================
-     1. LAYOUT ARCHITECTURE: HOMEPAGE (OVERLAY HEADER) & SUBPAGES (SOLID & STICKY)
+     1. GLOBAL UNIFIED LAYOUT ARCHITECTURE: STICKY WARM IVORY HEADER ACROSS ALL PAGES
      ========================================================================= */
-
-  /* HOMEPAGE (template == 'index'): Hero Banner starts at Y = 0 under transparent Header */
-  body.template-index #MainContent {
-    margin-top: 0 !important;
-    padding-top: 0 !important;
-  }
-  body.template-index .shopify-section-group-header-group {
-    position: absolute !important;
-    top: 0 !important;
-    left: 0 !important;
-    width: 100% !important;
-    height: 0 !important;
-    overflow: visible !important;
-    z-index: 99999 !important;
-  }
-
-  /* PRODUCT PAGE & ALL SUBPAGES:
-     - Header pinned sticky at top: position: sticky; top: 0; z-index: 1000;
-     - Solid background #FCFAF8 (never transparent, prevents product imagery overlap)
-     - Subtle border-bottom: 0.5px solid #ECE8E1;
-  */
+  body,
+  body.template-index,
   body:not(.template-index) {
     display: flex !important;
     flex-direction: column !important;
+    min-height: 100vh !important;
   }
+
+  #MainContent,
+  body.template-index #MainContent,
   body:not(.template-index) #MainContent {
     flex: 1 0 auto !important;
+    margin-top: 0 !important;
+    padding-top: 0 !important;
   }
+
+  :root {
+    --lh-announcement-h: {% if section.settings.show_announcement_bar != false %}30.5px{% else %}0px{% endif %};
+    --lh-header-h: 68.5px;
+  }
+
+  .shopify-section-group-header-group,
+  body.template-index .shopify-section-group-header-group,
   body:not(.template-index) .shopify-section-group-header-group {
-    position: sticky !important;
-    top: 0 !important;
-    left: 0 !important;
+    position: relative !important;
     width: 100% !important;
+    min-height: calc(var(--lh-announcement-h, 30.5px) + var(--lh-header-h, 68.5px)) !important;
     height: auto !important;
-    z-index: 1000 !important;
-    background-color: #FCFAF8 !important;
+    z-index: 99999 !important;
+    background-color: transparent !important;
+    padding-bottom: 0 !important;
+    margin-bottom: 0 !important;
   }
   
   /* Scoped Reset to override Shopify Base.css styles */
@@ -88,139 +84,86 @@
   }
 
   /* =========================================================================
-     LUXURY THEME SYSTEM: LIQUID GLASS MIRROR
+     LUXURY ATELIER HEADER: SOLID OPAQUE WARM IVORY (#FAF8F5 / #FAF6EE)
+     - 100% solid warm ivory ("trắng ngà"), never transparent or blurred
+     - Smooth continuous sliding sticky pinned at top of viewport across all devices and pages
+     - Zero-jitter linear transition when scrolling up to the very top
+     - Delicate luxury bottom border: 0.5px solid #ECE7DE
+     - High-contrast Noir typography (#16181B)
      ========================================================================= */
   .luxury-header-wrapper,
   .luxury-header-wrapper.theme-glass,
-  .luxury-header-wrapper.theme-ivory {
-    --lh-bg: transparent;
-    --lh-bg-scrolled: {{ section.settings.bg_color_scrolled | default: '#FDFBF8' }};
-    --lh-border: rgba(255, 255, 255, 0.25);
-    --lh-border-scrolled: {{ section.settings.border_bottom_color | default: '#EAE6DF' }};
-    --lh-text: #FFFFFF;
-    --lh-text-scrolled: {{ section.settings.text_color | default: '#16181B' }};
-    --lh-text-muted: rgba(255, 255, 255, 0.85);
-    --lh-text-muted-scrolled: #7E7A73;
-    --lh-accent: #E5C38D;
-    --lh-accent-scrolled: {{ section.settings.accent_hover_color | default: '#B89768' }};
-    --lh-shadow: none;
-    --lh-shadow-scrolled: 0 4px 24px rgba(0, 0, 0, 0.08);
-    --lh-bubble-bg: {{ section.settings.accent_hover_color | default: '#B89768' }};
-    --lh-bubble-text: #FFFFFF;
-  }
-
-  .luxury-header-wrapper.theme-pure_white {
-    --lh-bg: transparent;
-    --lh-bg-scrolled: #FFFFFF;
-    --lh-border: rgba(255, 255, 255, 0.3);
-    --lh-border-scrolled: rgba(196, 164, 112, 0.35);
-    --lh-text: #FFFFFF;
+  .luxury-header-wrapper.theme-ivory,
+  .luxury-header-wrapper.theme-pure_white,
+  .luxury-header-wrapper.theme-dark {
+    --lh-bg: #FAF8F5;
+    --lh-bg-scrolled: #FAF6EE;
+    --lh-border: #ECE7DE;
+    --lh-border-scrolled: #E5DFD3;
+    --lh-text: #16181B;
     --lh-text-scrolled: #16181B;
-    --lh-text-muted: rgba(255, 255, 255, 0.85);
+    --lh-text-muted: #7E7A73;
     --lh-text-muted-scrolled: #7E7A73;
-    --lh-accent: #E5C38D;
+    --lh-accent: #B89768;
     --lh-accent-scrolled: #B89768;
-    --lh-shadow: none;
-    --lh-shadow-scrolled: 0 4px 20px rgba(0, 0, 0, 0.06);
+    --lh-shadow: 0 2px 14px rgba(22, 51, 39, 0.05);
+    --lh-shadow-scrolled: 0 4px 20px rgba(22, 51, 39, 0.08);
     --lh-bubble-bg: #16181B;
     --lh-bubble-text: #FFFFFF;
   }
 
-  .luxury-header-wrapper.theme-dark {
-    --lh-bg: rgba(14, 32, 26, 0.35);
-    --lh-bg-scrolled: rgba(10, 24, 19, 0.96);
-    --lh-border: rgba(255, 255, 255, 0.12);
-    --lh-border-scrolled: rgba(212, 175, 55, 0.22);
-    --lh-text: #F5F2EB;
-    --lh-text-scrolled: #F5F2EB;
-    --lh-text-muted: #C5A880;
-    --lh-text-muted-scrolled: #C5A880;
-    --lh-accent: #D4AF37;
-    --lh-accent-scrolled: #D4AF37;
-    --lh-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
-    --lh-shadow-scrolled: 0 4px 20px rgba(0, 0, 0, 0.2);
-    --lh-bubble-bg: #D4AF37;
-    --lh-bubble-text: #10241E;
-  }
-
-  /* Header Wrapper chung */
+  /* Header Wrapper - Solid Opaque Warm Ivory ("Trắng Ngà") */
   .luxury-header-wrapper {
     width: 100% !important;
-    position: {% if section.settings.enable_sticky != false %}fixed{% else %}absolute{% endif %} !important;
-    top: 0 !important;
+    position: fixed !important;
+    top: var(--lh-announcement-h, 30.5px);
     left: 0 !important;
     right: 0 !important;
     z-index: 99999 !important;
-    background-color: var(--lh-bg) !important;
+    background-color: #FAF8F5 !important;
     backdrop-filter: none !important;
     -webkit-backdrop-filter: none !important;
-    border-bottom: none !important;
-    box-shadow: var(--lh-shadow) !important;
-    transition: background-color 0.35s cubic-bezier(0.16, 1, 0.3, 1),
-                border-color 0.35s ease,
-                box-shadow 0.35s ease,
-                backdrop-filter 0.35s ease,
-                -webkit-backdrop-filter 0.35s ease !important;
+    border-bottom: 0.5px solid #ECE7DE !important;
+    box-shadow: 0 2px 14px rgba(22, 51, 39, 0.05) !important;
+    transform: none !important;
+    will-change: top, box-shadow;
+    transition: background-color 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease !important;
   }
 
-  /* =========================================================================
-     HEADER ARCHITECTURE ON PRODUCT & SUBPAGES (SOLID & STICKY):
-     - Solid background: #FCFAF8
-     - Sticky pinned at top: position: sticky; top: 0; z-index: 1000;
-     - Bottom border: 0.5px solid #ECE8E1;
-     - Never transparent, prevents product imagery overlap
-     ========================================================================= */
-  body:not(.template-index) .luxury-header-wrapper,
-  .luxury-header-wrapper.is-subpage-header,
-  .luxury-header-wrapper.is-solid-header {
-    position: sticky !important;
-    top: 0 !important;
-    left: 0 !important;
-    right: 0 !important;
-    width: 100% !important;
-    z-index: 1000 !important;
-    background-color: #FCFAF8 !important;
-    border-bottom: 0.5px solid #ECE8E1 !important;
-    box-shadow: 0 2px 14px rgba(20, 21, 23, 0.04) !important;
-    backdrop-filter: none !important;
-    -webkit-backdrop-filter: none !important;
+  /* Smooth elevated shadow & background on scroll */
+  .luxury-header-wrapper.is-scrolled {
+    background-color: #FAF6EE !important;
+    border-bottom: 0.5px solid #E5DFD3 !important;
+    box-shadow: 0 4px 20px rgba(22, 51, 39, 0.08) !important;
   }
 
-  /* Text, Icons & Navigation on subpages: High-contrast Noir (#16181B) */
-  body:not(.template-index) .luxury-header-wrapper .lh-mobile-toggle,
-  body:not(.template-index) .luxury-header-wrapper .lh-nav-link,
-  body:not(.template-index) .luxury-header-wrapper .lh-curr-toggle,
-  body:not(.template-index) .luxury-header-wrapper .lh-action-btn,
-  body:not(.template-index) .luxury-header-wrapper .lh-action-link,
-  body:not(.template-index) .luxury-header-wrapper .lh-brand-title,
-  body:not(.template-index) .luxury-header-wrapper .lh-curr-current,
-  .is-subpage-header .lh-mobile-toggle,
-  .is-subpage-header .lh-nav-link,
-  .is-subpage-header .lh-curr-toggle,
-  .is-subpage-header .lh-action-btn,
-  .is-subpage-header .lh-action-link,
-  .is-subpage-header .lh-brand-title,
-  .is-subpage-header .lh-curr-current {
+  body.is-scrolled-past-top .shopify-section-group-header-group,
+  body.header-is-revealed .shopify-section-group-header-group {
+    padding-bottom: 0 !important;
+  }
+
+  /* Text, Icons & Navigation: High-contrast Noir (#16181B) Everywhere */
+  .luxury-header-wrapper .lh-mobile-toggle,
+  .luxury-header-wrapper .lh-nav-link,
+  .luxury-header-wrapper .lh-curr-toggle,
+  .luxury-header-wrapper .lh-action-btn,
+  .luxury-header-wrapper .lh-action-link,
+  .luxury-header-wrapper .lh-brand-title,
+  .luxury-header-wrapper .lh-curr-current {
     color: #16181B !important;
     text-shadow: none !important;
     filter: none !important;
   }
 
-  body:not(.template-index) .luxury-header-wrapper .lh-nav-link:hover,
-  body:not(.template-index) .luxury-header-wrapper .lh-nav-item:hover > .lh-nav-link,
-  body:not(.template-index) .luxury-header-wrapper .lh-curr-toggle:hover,
-  body:not(.template-index) .luxury-header-wrapper .lh-action-btn:hover,
-  body:not(.template-index) .luxury-header-wrapper .lh-action-link:hover,
-  .is-subpage-header .lh-nav-link:hover,
-  .is-subpage-header .lh-nav-item:hover > .lh-nav-link,
-  .is-subpage-header .lh-curr-toggle:hover,
-  .is-subpage-header .lh-action-btn:hover,
-  .is-subpage-header .lh-action-link:hover {
+  .luxury-header-wrapper .lh-nav-link:hover,
+  .luxury-header-wrapper .lh-nav-item:hover > .lh-nav-link,
+  .luxury-header-wrapper .lh-curr-toggle:hover,
+  .luxury-header-wrapper .lh-action-btn:hover,
+  .luxury-header-wrapper .lh-action-link:hover {
     color: #B89768 !important;
   }
 
-  body:not(.template-index) .luxury-header-wrapper .lh-divider,
-  .is-subpage-header .lh-divider {
+  .luxury-header-wrapper .lh-divider {
     background-color: rgba(196, 164, 112, 0.3) !important;
   }
 
@@ -237,61 +180,16 @@
                 text-shadow 0.3s ease !important;
   }
 
-  /* STATE 1: UNSCROLLED & UNHOVERED ON HOMEPAGE (Transparent overlay above Hero Banner) */
-  body.template-index .luxury-header-wrapper:not(.is-scrolled):not(:hover):not(.is-hovered) {
-    background-color: var(--lh-bg) !important;
-    backdrop-filter: none !important;
-    -webkit-backdrop-filter: none !important;
-    border-bottom: none !important;
-    box-shadow: none !important;
-  }
-
-  body.template-index .luxury-header-wrapper:not(.is-scrolled):not(:hover):not(.is-hovered) .lh-mobile-toggle {
-    color: #FFFFFF !important;
-    filter: drop-shadow(0 1px 3px rgba(0, 0, 0, 0.65)) !important;
-  }
-
-  body.template-index .luxury-header-wrapper:not(.is-scrolled):not(:hover):not(.is-hovered) .lh-nav-link {
-    color: #FFFFFF !important;
-    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.45) !important;
-  }
-  body.template-index .luxury-header-wrapper:not(.is-scrolled):not(:hover):not(.is-hovered) .lh-nav-link:hover,
-  body.template-index .luxury-header-wrapper:not(.is-scrolled):not(:hover):not(.is-hovered) .lh-nav-item:hover > .lh-nav-link {
-    color: var(--lh-accent) !important;
-  }
-
-  body.template-index .luxury-header-wrapper:not(.is-scrolled):not(:hover):not(.is-hovered) .lh-curr-toggle {
-    color: #FFFFFF !important;
-    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.45) !important;
-  }
-  body.template-index .luxury-header-wrapper:not(.is-scrolled):not(:hover):not(.is-hovered) .lh-curr-toggle:hover {
-    color: var(--lh-accent) !important;
-  }
-
-  body.template-index .luxury-header-wrapper:not(.is-scrolled):not(:hover):not(.is-hovered) .lh-action-btn,
-  body.template-index .luxury-header-wrapper:not(.is-scrolled):not(:hover):not(.is-hovered) .lh-action-link {
-    color: #FFFFFF !important;
-    filter: drop-shadow(0 1px 3px rgba(0, 0, 0, 0.5)) !important;
-  }
-  body.template-index .luxury-header-wrapper:not(.is-scrolled):not(:hover):not(.is-hovered) .lh-action-btn:hover,
-  body.template-index .luxury-header-wrapper:not(.is-scrolled):not(:hover):not(.is-hovered) .lh-action-link:hover {
-    color: var(--lh-accent) !important;
-  }
-
-  body.template-index .luxury-header-wrapper:not(.is-scrolled):not(:hover):not(.is-hovered) .lh-divider {
-    background-color: rgba(255, 255, 255, 0.35) !important;
-  }
-
   /* STATE 2: ON HOVER OR SCROLLED DOWN
-     -> Smooth transition to luminous frosted pearl background, high-contrast Noir typography */
+     -> Smoothly transitions to rich warm ivory ("trắng ngà"), high-contrast Noir typography */
   .luxury-header-wrapper:hover,
   .luxury-header-wrapper.is-hovered,
   .luxury-header-wrapper.is-scrolled {
-    background-color: var(--lh-bg-scrolled) !important;
-    backdrop-filter: blur(20px) saturate(180%) !important;
-    -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
-    border-bottom: 1px solid var(--lh-border-scrolled) !important;
-    box-shadow: var(--lh-shadow-scrolled) !important;
+    background-color: #FAF6EE !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    border-bottom: 0.5px solid #E5DFD3 !important;
+    box-shadow: 0 4px 20px rgba(22, 51, 39, 0.08) !important;
   }
 
   .luxury-header-wrapper:hover .lh-mobile-toggle,
@@ -304,6 +202,7 @@
   .luxury-header-wrapper:hover .lh-nav-link,
   .luxury-header-wrapper.is-hovered .lh-nav-link,
   .luxury-header-wrapper.is-scrolled .lh-nav-link {
+    text-transform: uppercase !important;
     color: var(--lh-text-scrolled) !important;
     text-shadow: none !important;
   }
@@ -365,7 +264,7 @@
     position: static !important;
   }
 
-  @media (min-width: 1024px) {
+  @media (min-width: 1441px) {
     .luxury-header-container {
       padding: 0 36px !important;
     }
@@ -697,43 +596,34 @@
     gap: 7px !important;
   }
 
-  .lh-country-select {
-    appearance: auto !important;
-    -webkit-appearance: menulist !important;
-    display: inline-block !important;
-    max-width: 190px !important;
-    text-overflow: ellipsis !important;
-  }
-
-  .lh-country-select option {
-    color: #141517;
-    background: #FFFFFF;
-    text-transform: none;
-  }
-
   .lh-curr-toggle {
-    background: transparent !important;
-    border: none !important;
-    padding: 6px 4px !important;
+    background: rgba(22, 51, 39, 0.04) !important;
+    border: 1px solid rgba(22, 51, 39, 0.12) !important;
+    border-radius: 20px !important;
+    padding: 5px 10px 5px 8px !important;
     margin: 0 !important;
     cursor: pointer !important;
     display: inline-flex !important;
     align-items: center !important;
     gap: 6px !important;
-    color: var(--lh-text) !important;
+    color: var(--lh-text, #16181B) !important;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
     font-size: 11.5px !important;
-    font-weight: 500 !important;
-    letter-spacing: 0.08em !important;
+    font-weight: 600 !important;
+    letter-spacing: 0.05em !important;
     text-transform: uppercase !important;
-    transition: color 0.2s ease, opacity 0.2s ease !important;
+    transition: all 0.2s ease !important;
     outline: none !important;
     box-shadow: none !important;
     white-space: nowrap !important;
+    line-height: 1 !important;
   }
 
   .lh-curr-toggle:hover {
-    color: var(--lh-accent-scrolled, #B89768) !important;
+    background: #FAF7F2 !important;
+    border-color: #B89768 !important;
+    color: #163327 !important;
+    box-shadow: 0 2px 8px rgba(184, 151, 104, 0.15) !important;
   }
 
   .lh-curr-flag {
@@ -765,6 +655,19 @@
     padding: 8px 0 !important;
     z-index: 100005 !important;
     animation: lhFadeInDown 0.18s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  }
+
+  @media (max-width: 749px) {
+    .lh-curr-menu {
+      position: fixed !important;
+      top: 64px !important;
+      left: 16px !important;
+      right: 16px !important;
+      width: auto !important;
+      min-width: 0 !important;
+      max-width: calc(100vw - 32px) !important;
+      z-index: 100010 !important;
+    }
   }
 
   .lh-curr-menu[hidden] {
@@ -1654,13 +1557,31 @@
   }
 
   /* =========================================================================
-     MOBILE RESPONSIVE RULES (@media max-width: 991px)
+     MOBILE & TABLET (IPAD) RESPONSIVE RULES (@media max-width: 1280px)
+     - Clean, dedicated iPad / Tablet presentation (768px - 1280px)
+     - Solves menu overflow & truncation: full navigation lives in the satin drawer
+     - Zero horizontal clipping on all iPad portrait (768px-834px) & landscape (1024px-1280px)
      ========================================================================= */
-  @media (max-width: 991px) {
-    .luxury-header-wrapper {
-      background: #FFFFFF !important;
-      border-bottom: 1px solid rgba(20, 21, 23, 0.08) !important;
-      box-shadow: 0 2px 14px rgba(0, 0, 0, 0.04) !important;
+  @media (max-width: 1280px) {
+    /* Solid warm ivory ("trắng ngà") backdrop on mobile & tablet for maximum legibility */
+    .luxury-header-wrapper,
+    body.template-index .luxury-header-wrapper,
+    body.template-index .luxury-header-wrapper:not(.is-scrolled),
+    body.template-index .luxury-header-wrapper:not(.is-scrolled):not(:hover):not(.is-hovered),
+    body:not(.template-index) .luxury-header-wrapper {
+      background: #FAF8F5 !important;
+      backdrop-filter: none !important;
+      -webkit-backdrop-filter: none !important;
+      border-bottom: 0.5px solid #ECE7DE !important;
+      box-shadow: 0 2px 14px rgba(22, 51, 39, 0.05) !important;
+    }
+
+    .luxury-header-wrapper.is-scrolled,
+    body.template-index .luxury-header-wrapper.is-scrolled,
+    body:not(.template-index) .luxury-header-wrapper.is-scrolled {
+      background: #FAF6EE !important;
+      border-bottom: 0.5px solid #E5DFD3 !important;
+      box-shadow: 0 4px 20px rgba(22, 51, 39, 0.08) !important;
     }
 
     .luxury-header-container {
@@ -1680,7 +1601,9 @@
       gap: 0 !important;
     }
 
-    .lh-mobile-toggle {
+    .lh-mobile-toggle,
+    body.template-index .luxury-header-wrapper .lh-mobile-toggle,
+    body.template-index .luxury-header-wrapper:not(.is-scrolled):not(:hover):not(.is-hovered) .lh-mobile-toggle {
       width: 40px !important;
       height: 40px !important;
       display: inline-flex !important;
@@ -1688,10 +1611,11 @@
       justify-content: center !important;
       background: transparent !important;
       border: none !important;
-      color: #141517 !important;
+      color: #163327 !important;
       cursor: pointer !important;
       padding: 0 !important;
       z-index: 12 !important;
+      filter: none !important;
       transition: opacity 0.2s ease, transform 0.15s ease !important;
     }
 
@@ -1703,10 +1627,10 @@
       width: 22px !important;
       height: 22px !important;
       stroke-width: 2.2 !important;
-      stroke: #141517 !important;
+      stroke: #163327 !important;
     }
 
-    /* Center: Logo (Scalable on mobile without limits) */
+    /* Center: Logo (Scalable on mobile & tablet without limits) */
     .lh-brand-link {
       position: absolute !important;
       left: 50% !important;
@@ -1735,12 +1659,12 @@
       font-weight: 700 !important;
     }
 
-    /* Desktop Navigation hidden on mobile */
+    /* Desktop Navigation hidden on mobile & tablet - full luxury navigation lives in side drawer */
     .lh-header-nav {
       display: none !important;
     }
 
-    /* Right: Search + Cart */
+    /* Right: Actions Cluster */
     .lh-header-right {
       display: flex !important;
       align-items: center !important;
@@ -1752,30 +1676,34 @@
     }
 
     .lh-action-btn,
-    .lh-action-link {
+    .lh-action-link,
+    body.template-index .luxury-header-wrapper .lh-action-btn,
+    body.template-index .luxury-header-wrapper .lh-action-link,
+    body.template-index .luxury-header-wrapper:not(.is-scrolled):not(:hover):not(.is-hovered) .lh-action-btn,
+    body.template-index .luxury-header-wrapper:not(.is-scrolled):not(:hover):not(.is-hovered) .lh-action-link {
       width: 38px !important;
       height: 38px !important;
       display: inline-flex !important;
       align-items: center !important;
       justify-content: center !important;
-      color: #141517 !important;
+      color: #163327 !important;
+      filter: none !important;
     }
 
     .lh-action-btn svg,
-    .lh-action-link svg {
+    .lh-action-link svg,
+    body.template-index .luxury-header-wrapper .lh-action-btn svg,
+    body.template-index .luxury-header-wrapper .lh-action-link svg,
+    body.template-index .luxury-header-wrapper:not(.is-scrolled):not(:hover):not(.is-hovered) .lh-action-btn svg,
+    body.template-index .luxury-header-wrapper:not(.is-scrolled):not(:hover):not(.is-hovered) .lh-action-link svg {
       width: 20px !important;
       height: 20px !important;
       stroke-width: 2 !important;
-      stroke: #141517 !important;
+      stroke: #163327 !important;
+      color: #163327 !important;
     }
 
-    /* Hide Currency & Account from top bar on mobile - they live in the mobile drawer */
-    .lh-curr-dropdown-wrapper,
-    .lh-header-right .header__icon--account {
-      display: none !important;
-    }
-
-    /* Mobile Search: Centered Popup Modal with Zoom-in Animation */
+    /* Mobile & Tablet Search: Centered Popup Modal with Zoom-in Animation */
     .lh-search-float-card {
       position: fixed !important;
       top: 70px !important;
@@ -1789,13 +1717,205 @@
       box-shadow: 0 24px 60px rgba(0, 0, 0, 0.32), 0 2px 10px rgba(0, 0, 0, 0.08) !important;
       border: 1px solid rgba(197, 168, 128, 0.35) !important;
       animation: lhSearchPopupMobile 0.28s cubic-bezier(0.16, 1, 0.3, 1) !important;
+      z-index: 100020 !important;
     }
+  }
+
+  /* =========================================================================
+     DEDICATED IPAD / TABLET INTERFACE (@media 740px - 1280px)
+     - Seamless luxury experience for ALL iPads:
+       * iPad Portrait: Mini 6 (744px), Mini 5 (768px), 9th/10th Gen (810/820px), Air (820px), Pro 11" (834px), Pro 12.9" (1024px)
+       * iPad Landscape: Mini (1024px), 9th/10th (1080/1180px), Pro 11" (1194px), Pro 12.9" (1366px)
+     - Preserves Currency Destination Selector & Customer Account directly in top bar
+     - Absolutely ZERO horizontal overflow, clipping or cutoff
+     ========================================================================= */
+  @media (min-width: 740px) and (max-width: 1280px) {
+    .luxury-header-container {
+      height: 68px !important;
+      padding: 0 20px !important;
+    }
+
+    .lh-brand-link {
+      max-width: 200px !important;
+    }
+
+    .lh-logo-img {
+      max-height: 44px !important;
+      min-height: 40px !important;
+    }
+
+    .lh-header-right {
+      gap: 10px !important;
+    }
+
+    /* Show Currency Selector & Account in top bar on iPad - ample space available */
+    .lh-curr-dropdown-wrapper {
+      display: inline-flex !important;
+    }
+
+    .lh-curr-toggle {
+      padding: 5px 8px !important;
+      font-size: 11px !important;
+    }
+
+    .lh-curr-current {
+      font-size: 11px !important;
+    }
+
+    .lh-header-right .header__icon--account {
+      display: inline-flex !important;
+    }
+
+    .lh-mobile-drawer {
+      width: 360px !important;
+    }
+
+    .lh-announcement-bar {
+      font-size: 10px !important;
+      padding: 6.5px 16px !important;
+    }
+  }
+
+  /* Touch Screen Tablet Mode: All iPads including iPad Pro 12.9" Landscape (1366px) */
+  @media (hover: none) and (pointer: coarse) and (max-width: 1366px) {
+    .lh-header-nav {
+      display: none !important;
+    }
+    .lh-mobile-toggle {
+      display: inline-flex !important;
+    }
+    .lh-brand-link {
+      position: absolute !important;
+      left: 50% !important;
+      top: 50% !important;
+      transform: translate(-50%, -50%) !important;
+      max-width: 200px !important;
+    }
+    .lh-header-right {
+      margin-left: auto !important;
+      gap: 10px !important;
+    }
+    .lh-curr-dropdown-wrapper {
+      display: inline-flex !important;
+    }
+    .lh-header-right .header__icon--account {
+      display: inline-flex !important;
+    }
+  }
+
+  /* Phone only (< 740px): Hide Currency & Account from top bar to keep compact */
+  @media (max-width: 739px) {
+    .lh-curr-dropdown-wrapper,
+    .lh-header-right .header__icon--account {
+      display: none !important;
+    }
+  }
+
+  /* Small Desktop Laptops (1281px - 1440px): Compact Nav & Zero Overflow */
+  @media (min-width: 1281px) and (max-width: 1440px) {
+    .luxury-header-container {
+      padding: 0 16px !important;
+      max-width: 100% !important;
+      width: 100% !important;
+    }
+    .lh-header-left {
+      gap: 12px !important;
+      min-width: 0 !important;
+    }
+    .lh-brand-link {
+      flex-shrink: 0 !important;
+    }
+    .lh-brand-title {
+      font-size: 17px !important;
+    }
+    .lh-nav {
+      gap: 8px !important;
+    }
+    .lh-nav-link {
+      font-size: 11px !important;
+      letter-spacing: 0.02em !important;
+      padding: 4px 2px !important;
+    }
+    .lh-header-right {
+      gap: 6px !important;
+      margin-left: 8px !important;
+      flex-shrink: 0 !important;
+    }
+    .lh-curr-toggle {
+      padding: 4px 6px !important;
+      font-size: 11px !important;
+    }
+    .lh-action-btn,
+    .lh-action-link {
+      width: 32px !important;
+      height: 32px !important;
+    }
+    .lh-action-btn svg,
+    .lh-action-link svg {
+      width: 17px !important;
+      height: 17px !important;
+    }
+  }
+
+  /* Haute Horlogerie Top Announcement Bar (Warm Champagne Ivory Palette) */
+  .lh-announcement-bar {
+    width: 100%;
+    text-align: center;
+    padding: 7px 16px;
+    font-size: 10.5px;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    line-height: 1.4;
+    border-bottom: 1px solid rgba(184, 151, 104, 0.28);
+    z-index: 99998;
+    position: absolute;
+    top: 0;
+    left: 0;
+    box-sizing: border-box;
+    background: #F5EFE6;
+    color: #163327;
+  }
+  @media (max-width: 767px) {
+    .lh-announcement-bar {
+      font-size: 9px;
+      padding: 6px 10px;
+      letter-spacing: 0.1em;
+    }
+  }
+  .lh-announcement-container {
+    max-width: 1360px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .lh-announcement-spark {
+    color: #B89768;
+    font-size: 10px;
+    margin: 0 8px;
+    display: inline-block;
+    vertical-align: middle;
   }
 {%- endstyle -%}
 
 {%- assign is_home = false -%}
 {%- if template == 'index' or template.name == 'index' or request.page_type == 'index' -%}
   {%- assign is_home = true -%}
+{%- endif -%}
+
+{%- if section.settings.show_announcement_bar != false -%}
+  <aside class="lh-announcement-bar" id="LhAnnouncementBar" style="background-color: {{ section.settings.announcement_bg | default: '#F5EFE6' }}; color: {{ section.settings.announcement_text_color | default: '#163327' }};">
+    <div class="lh-announcement-container">
+      <span class="lh-announcement-text">
+        <span class="lh-announcement-spark" aria-hidden="true">✦</span>
+{%- assign lh_today = 'now' | date: '%Y-%m-%d' -%}{%- assign lh_ps = section.settings.promo_start | strip -%}{%- assign lh_pe = section.settings.promo_end | strip -%}{%- if section.settings.promo_text != blank and lh_ps != blank and lh_pe != blank and lh_today >= lh_ps and lh_today <= lh_pe -%}<span>{{ section.settings.promo_text }}</span>{%- else -%}
+          <span>{{ section.settings.announcement_text | default: 'COMPLIMENTARY WORLDWIDE SHIPPING • 30-DAY MAHJIVA GUARANTEE' }}</span>
+        {%- endif -%}
+        <span class="lh-announcement-spark" aria-hidden="true">✦</span>
+      </span>
+    </div>
+  </aside>
 {%- endif -%}
 
 <header class="luxury-header-wrapper header-wrapper header-localization theme-{{ section.settings.header_color_scheme | default: 'ivory' }}{% if is_home %} is-home-header{% else %} is-subpage-header is-solid-header{% endif %}" id="MaisonLuxuryHeader">
@@ -2189,10 +2309,11 @@
           }
 
           .lh-mega-products-view-all:hover {
-            background-color: #163327 !important;
+            background: linear-gradient(180deg, #1D4B37 0%, #143828 42%, #081610 100%) !important;
             color: #FAF8F5 !important;
-            border-color: #163327 !important;
+            border-color: #143828 !important;
             transform: translateX(2px) !important;
+            box-shadow: 0 4px 12px rgba(8, 22, 16, 0.35) !important;
           }
 
           .lh-mega-products-view-all svg {
@@ -2466,7 +2587,14 @@
         <ul class="lh-nav">
           {%- assign menu_handle = section.settings.menu | default: 'main-menu' -%}
           {%- if linklists[menu_handle].links.size > 0 -%}
+            {%- assign has_nav_help = false -%}
+            {%- assign has_nav_about = false -%}
+            {%- assign has_nav_policy = false -%}
             {%- for link in linklists[menu_handle].links -%}
+              {%- assign link_title_check = link.title | downcase | strip -%}
+              {%- if link_title_check contains 'help' -%}{%- assign has_nav_help = true -%}{%- endif -%}
+              {%- if link_title_check contains 'about' -%}{%- assign has_nav_about = true -%}{%- endif -%}
+              {%- if link_title_check contains 'policy' or link_title_check contains 'refund' -%}{%- assign has_nav_policy = true -%}{%- endif -%}
               {%- assign link_title_down = link.title | downcase | strip -%}
               {%- assign link_url_down = link.url | downcase | strip -%}
 
@@ -2574,14 +2702,58 @@
                     {%- endfor -%}
                   </ul>
                 </li>
+              {%- elsif link_title_down contains 'help' -%}
+                {%- assign has_nav_help = true -%}
+                <li class="lh-nav-item has-dropdown lh-has-dropdown">
+                  <a href="/pages/contact" class="lh-nav-link{% if link.active %} is-active{% endif %}" aria-expanded="false" aria-haspopup="true">
+                    <span>{{ link.title }}</span>
+                    <svg class="lh-dropdown-arrow" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                      <polyline points="6 9 12 15 18 9"></polyline>
+                    </svg>
+                  </a>
+                  <ul class="lh-dropdown-menu">
+                    {%- if link.links.size > 0 -%}
+                      {%- for childlink in link.links -%}
+                        <li class="lh-dropdown-item"><a href="{{ childlink.url }}" class="lh-dropdown-link"><span>{{ childlink.title }}</span></a></li>
+                      {%- endfor -%}
+                    {%- else -%}
+                      <li class="lh-dropdown-item"><a href="/pages/track-order" class="lh-dropdown-link"><span>Track Order</span></a></li>
+                      <li class="lh-dropdown-item"><a href="/pages/contact" class="lh-dropdown-link"><span>Contact</span></a></li>
+                    {%- endif -%}
+                  </ul>
+                </li>
               {%- else -%}
+                {%- assign nav_destination = link.url -%}
+                {%- if link_title_down contains 'about' -%}
+                  {%- assign nav_destination = '/pages/about-us' -%}
+                {%- endif -%}
+                {%- if nav_destination == '/pages/refund-policy' or nav_destination contains '/pages/refund' or nav_destination contains '/pages/return' or link_title_down == 'policy' or link_title_down == 'refund policy' -%}
+                  {%- assign nav_destination = '/policies/refund-policy' -%}
+                {%- endif -%}
                 <li class="lh-nav-item">
-                  <a href="{{ link.url }}" class="lh-nav-link{% if link.active %} is-active{% endif %}">
+                  <a href="{{ nav_destination }}" class="lh-nav-link{% if link.active %} is-active{% endif %}">
                     <span>{{ link.title }}</span>
                   </a>
                 </li>
               {%- endif -%}
             {%- endfor -%}
+            {%- unless has_nav_about -%}
+              <li class="lh-nav-item"><a href="/pages/about-us" class="lh-nav-link"><span>ABOUT US</span></a></li>
+            {%- endunless -%}
+            {%- unless has_nav_help -%}
+              <li class="lh-nav-item has-dropdown lh-has-dropdown">
+                <a href="/pages/contact" class="lh-nav-link" aria-expanded="false" aria-haspopup="true">
+                  <span>HELP</span>
+                  <svg class="lh-dropdown-arrow" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="6 9 12 15 18 9"></polyline>
+                  </svg>
+                </a>
+                <ul class="lh-dropdown-menu">
+                  <li class="lh-dropdown-item"><a href="/pages/track-order" class="lh-dropdown-link"><span>Track Order</span></a></li>
+                  <li class="lh-dropdown-item"><a href="/pages/contact" class="lh-dropdown-link"><span>Contact</span></a></li>
+                </ul>
+              </li>
+            {%- endunless -%}
           {%- else -%}
             <!-- Fallback Navigation with Collections Mega Menu -->
             <li class="lh-nav-item has-dropdown lh-has-dropdown has-mega-menu">
@@ -2596,7 +2768,7 @@
             <li class="lh-nav-item"><a href="{{ routes.all_products_collection_url }}" class="lh-nav-link"><span>The 144-Tile Suites</span></a></li>
             <li class="lh-nav-item"><a href="{{ routes.all_products_collection_url }}" class="lh-nav-link"><span>Tablecraft & Pushers</span></a></li>
             <li class="lh-nav-item"><a href="/pages/contact" class="lh-nav-link"><span>Private Bespoke</span></a></li>
-            <li class="lh-nav-item"><a href="/pages/about" class="lh-nav-link"><span>Atelier Story</span></a></li>
+            <li class="lh-nav-item"><a href="/pages/about-us" class="lh-nav-link"><span>Atelier Story</span></a></li>
           {%- endif -%}
         </ul>
       </nav>
@@ -2606,25 +2778,67 @@
     <!-- RIGHT CLUSTER: Localization, Account, Apps, Search, Cart -->
     <div class="lh-header-right">
       
-      <!-- 1. Native Shopify Currency Dropdown -->
+      <!-- 1. Native Shopify Localization Dropdown (Compact Atelier Curation) -->
       {%- if section.settings.enable_country_selector -%}
         <div class="lh-curr-dropdown-wrapper">
           {%- form 'localization', id: 'HeaderCountryForm', class: 'lh-currency-form' -%}
-            <span class="lh-curr-flag" aria-hidden="true">{% render 'country-flag', country: localization.country, country_code: localization.country.iso_code %}</span>
-            <label class="visually-hidden" for="HeaderCountryCode">Shipping destination and currency</label>
-            <select
-              name="country_code"
-              id="HeaderCountryCode"
-              class="lh-curr-toggle lh-country-select"
-              aria-label="Shipping destination and currency"
-              onchange="this.form.submit()"
+            <input type="hidden" name="country_code" id="HeaderCountryCode" value="{{ localization.country.iso_code }}">
+            <button 
+              type="button" 
+              class="lh-curr-toggle" 
+              id="lhCurrencyToggle" 
+              aria-expanded="false" 
+              aria-label="Shipping Destination & Currency (Currently {{ localization.country.name }} - {{ localization.country.currency.iso_code }} {{ localization.country.currency.symbol }})"
+              {% if localization.available_countries.size <= 1 %}style="cursor: default;"{% endif %}
             >
-              {%- for country in localization.available_countries -%}
-                <option value="{{ country.iso_code }}"{% if country.iso_code == localization.country.iso_code %} selected{% endif %}>
-                  {{ country.name }} — {{ country.currency.iso_code }} {{ country.currency.symbol }}
-                </option>
-              {%- endfor -%}
-            </select>
+              <span class="lh-curr-flag" aria-hidden="true">
+                {% render 'country-flag', country: localization.country, country_code: localization.country.iso_code %}
+              </span>
+              <span class="lh-curr-current">{{ localization.country.currency.iso_code }} ({{ localization.country.currency.symbol }})</span>
+              {%- if localization.available_countries.size > 1 -%}
+                <svg class="lh-curr-arrow" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <polyline points="6 9 12 15 18 9"></polyline>
+                </svg>
+              {%- endif -%}
+            </button>
+
+            {%- if localization.available_countries.size > 1 -%}
+              <div class="lh-curr-menu" id="lhCurrencyMenu" hidden>
+                <div class="lh-curr-header">Shipping Destination & Currency</div>
+                
+                <div class="lh-curr-search-box">
+                  <input 
+                    type="search" 
+                    class="lh-curr-search-input" 
+                    id="lhCurrSearchDesktop" 
+                    placeholder="Search region or currency..." 
+                    aria-label="Search region or currency"
+                    autocomplete="off"
+                  >
+                </div>
+
+                <ul class="lh-curr-options" role="list">
+                  {%- for country in localization.available_countries -%}
+                    <li class="lh-curr-option-item">
+                      <button 
+                        type="button" 
+                        class="lh-curr-select-btn{% if country.iso_code == localization.country.iso_code %} is-active{% endif %}"
+                        data-country-code="{{ country.iso_code }}"
+                        data-currency="{{ country.currency.iso_code }}"
+                      >
+                        <div class="lh-curr-btn-left">
+                          {% render 'country-flag', country: country, country_code: country.iso_code %}
+                          <span class="lh-curr-country-name">{{ country.name }}</span>
+                        </div>
+                        <span class="lh-curr-currency-tag">
+                          {{ country.currency.iso_code }} {{ country.currency.symbol }}
+                        </span>
+                      </button>
+                    </li>
+                  {%- endfor -%}
+                </ul>
+              </div>
+            {%- endif -%}
           {%- endform -%}
         </div>
       {%- endif -%}
@@ -2683,7 +2897,7 @@
           <!-- Search Floating / Popup Card -->
           <div class="lh-search-float-card" id="lhSearchFloatCard" hidden>
             <div class="lh-search-card-header">
-              <span class="lh-search-card-title">Search Repertoire</span>
+              <span class="lh-search-card-title">Search Collection</span>
               <button type="button" class="lh-search-card-close" id="lhSearchCloseBtn" aria-label="Close search">
                 <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                   <line x1="18" y1="6" x2="6" y2="18"></line>
@@ -2698,7 +2912,7 @@
                   name="q" 
                   class="lh-search-pill-input" 
                   id="lhSearchMiniInput"
-                  placeholder="{{ section.settings.search_placeholder | default: 'Search the Atelier repertoire...' }}"
+                  placeholder="{{ section.settings.search_placeholder | default: 'Search Mahjiva collections...' }}"
                   autocomplete="off"
                 >
                 <button type="submit" class="lh-search-pill-submit" aria-label="Search">
@@ -2715,11 +2929,11 @@
             <div class="lh-search-trending">
               <span class="lh-search-trending-title">Quick Discoveries:</span>
               <div class="lh-search-trending-tags">
-                <button type="button" class="lh-search-tag-chip" data-search-query="Imperial Suites">Imperial Suites</button>
-                <button type="button" class="lh-search-tag-chip" data-search-query="Burl Walnut">Burl Walnut Racks</button>
-                <button type="button" class="lh-search-tag-chip" data-search-query="Acoustic Mats">Acoustic Mats</button>
-                <button type="button" class="lh-search-tag-chip" data-search-query="Bespoke Trunks">Bespoke Trunks</button>
-                <button type="button" class="lh-search-tag-chip" data-search-query="Nephrite Jade">Nephrite Jade Grade A</button>
+                <button type="button" class="lh-search-tag-chip" data-search-query="Mahjong Set">Mahjong Sets</button>
+                <button type="button" class="lh-search-tag-chip" data-search-query="Custom Mat">Custom Mats</button>
+                <button type="button" class="lh-search-tag-chip" data-search-query="Tile Bag">Tile Bags</button>
+                <button type="button" class="lh-search-tag-chip" data-search-query="Racks">Racks &amp; Pushers</button>
+                <button type="button" class="lh-search-tag-chip" data-search-query="Dice">Gemstone Dice</button>
               </div>
             </div>
           </div>
@@ -2782,7 +2996,14 @@
       <ul class="lh-drawer-list">
         {%- assign menu_handle = section.settings.menu | default: 'main-menu' -%}
         {%- if linklists[menu_handle].links.size > 0 -%}
+          {%- assign has_drawer_help = false -%}
+          {%- assign has_drawer_about = false -%}
+          {%- assign has_drawer_policy = false -%}
           {%- for link in linklists[menu_handle].links -%}
+            {%- assign link_title_check = link.title | downcase | strip -%}
+            {%- if link_title_check contains 'help' -%}{%- assign has_drawer_help = true -%}{%- endif -%}
+            {%- if link_title_check contains 'about' -%}{%- assign has_drawer_about = true -%}{%- endif -%}
+            {%- if link_title_check contains 'policy' or link_title_check contains 'refund' -%}{%- assign has_drawer_policy = true -%}{%- endif -%}
             {%- assign is_drawer_mega = false -%}
             {%- assign link_title_down = link.title | downcase | strip -%}
             {%- assign link_url_down = link.url | downcase | strip -%}
@@ -2883,12 +3104,60 @@
                   {%- endfor -%}
                 </ul>
               </li>
+            {%- elsif link_title_down contains 'help' -%}
+              {%- assign has_drawer_help = true -%}
+              <li class="lh-drawer-item has-submenu has-dropdown">
+                <div class="lh-drawer-parent-row">
+                  <a href="/pages/contact" class="lh-drawer-link">{{ link.title }}</a>
+                  <button type="button" class="lh-drawer-sub-toggle" aria-expanded="false" aria-label="Toggle {{ link.title }}">
+                    <svg width="8" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                  </button>
+                </div>
+                <ul class="lh-drawer-sublist" hidden>
+                  {%- if link.links.size > 0 -%}
+                    {%- for childlink in link.links -%}
+                      <li class="lh-drawer-subitem"><a href="{{ childlink.url }}" class="lh-drawer-sublink">{{ childlink.title }}</a></li>
+                    {%- endfor -%}
+                  {%- else -%}
+                    <li class="lh-drawer-subitem"><a href="/pages/track-order" class="lh-drawer-sublink">Track Order</a></li>
+                    <li class="lh-drawer-subitem"><a href="/pages/contact" class="lh-drawer-sublink">Contact</a></li>
+                  {%- endif -%}
+                </ul>
+              </li>
             {%- else -%}
+              {%- assign drawer_destination = link.url -%}
+              {%- if link_title_down contains 'about' -%}
+                {%- assign drawer_destination = '/pages/about-us' -%}
+              {%- endif -%}
+              {%- if drawer_destination == '/pages/refund-policy' or drawer_destination contains '/pages/refund' or drawer_destination contains '/pages/return' or link_title_down == 'policy' or link_title_down == 'refund policy' -%}
+                {%- assign drawer_destination = '/policies/refund-policy' -%}
+              {%- endif -%}
               <li class="lh-drawer-item">
-                <a href="{{ link.url }}" class="lh-drawer-link">{{ link.title }}</a>
+                <a href="{{ drawer_destination }}" class="lh-drawer-link{% if link.active %} is-active{% endif %}">{{ link.title }}</a>
               </li>
             {%- endif -%}
           {%- endfor -%}
+          {%- unless has_drawer_about -%}
+            <li class="lh-drawer-item"><a href="/pages/about-us" class="lh-drawer-link">ABOUT US</a></li>
+          {%- endunless -%}
+          {%- unless has_drawer_help -%}
+            <li class="lh-drawer-item has-submenu has-dropdown">
+              <div class="lh-drawer-parent-row">
+                <a href="/pages/contact" class="lh-drawer-link">HELP</a>
+                <button type="button" class="lh-drawer-sub-toggle" aria-expanded="false" aria-label="Toggle HELP">
+                  <svg width="8" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="9 18 15 12 9 6"></polyline>
+                  </svg>
+                </button>
+              </div>
+              <ul class="lh-drawer-sublist" hidden>
+                <li class="lh-drawer-subitem"><a href="/pages/track-order" class="lh-drawer-sublink">Track Order</a></li>
+                <li class="lh-drawer-subitem"><a href="/pages/contact" class="lh-drawer-sublink">Contact</a></li>
+              </ul>
+            </li>
+          {%- endunless -%}
         {%- else -%}
           <li class="lh-drawer-item has-submenu has-dropdown">
             <div class="lh-drawer-parent-row">
@@ -2909,7 +3178,7 @@
           <li class="lh-drawer-item"><a href="{{ routes.all_products_collection_url }}" class="lh-drawer-link">The 144-Tile Suites</a></li>
           <li class="lh-drawer-item"><a href="{{ routes.all_products_collection_url }}" class="lh-drawer-link">Tablecraft & Pushers</a></li>
           <li class="lh-drawer-item"><a href="/pages/contact" class="lh-drawer-link">Private Bespoke</a></li>
-          <li class="lh-drawer-item"><a href="/pages/about" class="lh-drawer-link">Atelier Story</a></li>
+          <li class="lh-drawer-item"><a href="/pages/about-us" class="lh-drawer-link">Atelier Story</a></li>
         {%- endif -%}
       </ul>
     </nav>
@@ -2938,20 +3207,48 @@
 
       <div class="lh-drawer-currency">
         {%- form 'localization', id: 'DrawerCountryForm', class: 'lh-drawer-currency-form' -%}
-          <label class="visually-hidden" for="DrawerCountryCode">Shipping destination and currency</label>
-          <select
-            name="country_code"
-            id="DrawerCountryCode"
-            class="lh-drawer-curr-btn lh-drawer-country-select"
-            aria-label="Shipping destination and currency"
-            onchange="this.form.submit()"
+          <input type="hidden" name="country_code" id="DrawerCountryCode" value="{{ localization.country.iso_code }}">
+          <button 
+            type="button" 
+            class="lh-drawer-curr-btn" 
+            id="lhDrawerCurrBtn" 
+            aria-expanded="false" 
+            aria-label="Shipping Destination &amp; Currency (Currently {{ localization.country.name }} — {{ localization.country.currency.iso_code }} {{ localization.country.currency.symbol }})"
+            {% if localization.available_countries.size <= 1 %}style="cursor: default;"{% endif %}
           >
-            {%- for country in localization.available_countries -%}
-              <option value="{{ country.iso_code }}"{% if country.iso_code == localization.country.iso_code %} selected{% endif %}>
-                {{ country.name }} — {{ country.currency.iso_code }} {{ country.currency.symbol }}
-              </option>
-            {%- endfor -%}
-          </select>
+            <span class="lh-drawer-curr-flag">
+              {% render 'country-flag', country: localization.country, country_code: localization.country.iso_code %}
+            </span>
+            <span>{{ localization.country.currency.iso_code }} ({{ localization.country.currency.symbol }})</span>
+            {%- if localization.available_countries.size > 1 -%}
+              <svg class="lh-drawer-curr-arrow" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            {%- endif -%}
+          </button>
+
+          {%- if localization.available_countries.size > 1 -%}
+            <div class="lh-drawer-curr-menu" id="lhDrawerCurrMenu" hidden>
+              <div class="lh-drawer-curr-header">Select Region / Currency</div>
+              <ul class="lh-drawer-curr-options" role="list">
+                {%- for country in localization.available_countries -%}
+                  <li>
+                    <button 
+                      type="button" 
+                      class="lh-drawer-curr-opt-btn{% if country.iso_code == localization.country.iso_code %} is-active{% endif %}"
+                      data-country-code="{{ country.iso_code }}"
+                    >
+                      <div class="lh-curr-btn-left">
+                        {% render 'country-flag', country: country, country_code: country.iso_code %}
+                        <span class="lh-curr-country-name">{{ country.name }}</span>
+                      </div>
+                      <span class="lh-drawer-currency-tag">{{ country.currency.iso_code }} {{ country.currency.symbol }}</span>
+                    </button>
+                  </li>
+                {%- endfor -%}
+              </ul>
+            </div>
+          {%- endif -%}
         {%- endform -%}
       </div>
     </div>
@@ -3056,10 +3353,39 @@
       });
     }
 
-    // 2. Dynamic Scroll & Hover Header (No touch lock-in!)
+    // 2. Continuous Smooth Sticky Header: Linear zero-jitter sliding transition
+    const announcementBar = document.getElementById('LhAnnouncementBar');
+    let annHeight = announcementBar ? announcementBar.offsetHeight : 0;
+
+    function syncHeaderDimensions() {
+      if (announcementBar) {
+        const h = announcementBar.offsetHeight;
+        if (h > 0) {
+          annHeight = h;
+          document.documentElement.style.setProperty('--lh-announcement-h', `${h}px`);
+        }
+      } else {
+        annHeight = 0;
+        document.documentElement.style.setProperty('--lh-announcement-h', '0px');
+      }
+
+      if (headerWrapper) {
+        const hh = headerWrapper.offsetHeight;
+        if (hh > 0) {
+          document.documentElement.style.setProperty('--lh-header-h', `${hh}px`);
+        }
+      }
+    }
+    syncHeaderDimensions();
+    window.addEventListener('resize', syncHeaderDimensions, { passive: true });
+
     function handleScrollState() {
       if (!headerWrapper) return;
-      if (window.scrollY > 20) {
+      const currentScrollY = window.pageYOffset || document.documentElement.scrollTop;
+      const targetTop = Math.max(0, annHeight - currentScrollY);
+      headerWrapper.style.setProperty('top', `${targetTop}px`, 'important');
+
+      if (currentScrollY > 15) {
         headerWrapper.classList.add('is-scrolled');
       } else {
         headerWrapper.classList.remove('is-scrolled');
@@ -3157,6 +3483,7 @@
         searchCard.removeAttribute('hidden');
         if (searchTrigger) searchTrigger.setAttribute('aria-expanded', 'true');
         if (searchBackdrop) searchBackdrop.classList.add('is-open');
+        document.body.style.overflow = 'hidden';
         setTimeout(function() {
           if (searchInput) searchInput.focus();
         }, 60);
@@ -3169,6 +3496,7 @@
         if (searchTrigger) searchTrigger.setAttribute('aria-expanded', 'false');
       }
       if (searchBackdrop) searchBackdrop.classList.remove('is-open');
+      document.body.style.overflow = '';
     }
 
     if (searchTrigger) {
@@ -3277,6 +3605,37 @@
   "tag": "header",
   "class": "section-header section-luxury-header",
   "settings": [
+    {
+      "type": "header",
+      "content": "Top Announcement Bar"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_announcement_bar",
+      "label": "Show Announcement Bar",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "announcement_text",
+      "label": "Announcement Text",
+      "default": "COMPLIMENTARY WORLDWIDE SHIPPING • 30-DAY MAHJIVA GUARANTEE"
+    },
+    {"type": "text", "id": "promo_text", "label": "Promo Text"},
+    {"type": "text", "id": "promo_start", "label": "Promo Start Date (YYYY-MM-DD)", "info": "Example: 2026-11-11"},
+    {"type": "text", "id": "promo_end", "label": "Promo End Date (YYYY-MM-DD)", "info": "Example: 2026-11-14"},
+    {
+      "type": "color",
+      "id": "announcement_bg",
+      "label": "Announcement Background",
+      "default": "#F5EFE6"
+    },
+    {
+      "type": "color",
+      "id": "announcement_text_color",
+      "label": "Announcement Text Color",
+      "default": "#163327"
+    },
     {
       "type": "header",
       "content": "Dimensions & Sticky Pinning"
@@ -3494,12 +3853,12 @@
       "type": "checkbox",
       "id": "enable_search",
       "default": true,
-      "label": "Enable Repertoire Search"
+      "label": "Enable Collection Search"
     },
     {
       "type": "text",
       "id": "search_placeholder",
-      "default": "Search the Atelier repertoire...",
+      "default": "Search Mahjiva collections...",
       "label": "Search Bar Placeholder"
     },
     {
