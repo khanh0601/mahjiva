@@ -3081,6 +3081,17 @@
     margin-top: 2px;
   }
 
+  .pdp-giftbox-price {
+    font-weight: 600;
+    color: #163327;
+  }
+
+  .pdp-giftbox-compare {
+    margin-left: 6px;
+    font-weight: 400;
+    color: #9A948C;
+  }
+
   .pdp-giftbox-cta {
     flex-shrink: 0;
     display: inline-flex;
@@ -4921,7 +4932,12 @@
                     {{ gift_eyebrow | escape }}
                   </span>
                   <span class="pdp-giftbox-title">{{ gift_product.title | escape }}</span>
-                  <span class="pdp-giftbox-price">{{ gift_product.price | money }}</span>
+                  <span class="pdp-giftbox-price">
+                    {{ gift_product.price | money }}
+                    {%- if gift_product.compare_at_price > gift_product.price -%}
+                      <s class="pdp-giftbox-compare">{{ gift_product.compare_at_price | money }}</s>
+                    {%- endif -%}
+                  </span>
                 </span>
                 <span class="pdp-giftbox-cta">
                   <span class="pdp-giftbox-cta-label">{{ gift_cta | escape }}</span>
