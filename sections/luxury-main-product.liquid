@@ -2982,6 +2982,179 @@
     }
   }
 
+  /* =========================================================================
+     PDP GIFT BOX UPSELL CARD (Mahjong Set products only, sits below WhatsApp box)
+     ========================================================================= */
+  .pdp-whatsapp-box:has(+ .pdp-giftbox-card) {
+    margin-bottom: 12px !important;
+  }
+
+  .pdp-giftbox-card {
+    margin: 12px 0 10px;
+    padding: 12px 16px 12px 12px;
+    border: 1px solid #E6DCCB;
+    border-radius: 12px;
+    background-color: #FFFFFF;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    box-sizing: border-box;
+    width: 100%;
+    text-decoration: none !important;
+    color: #163327;
+    box-shadow: 0 4px 16px rgba(22, 51, 39, 0.04);
+    transition: border-color 0.25s ease, box-shadow 0.25s ease, transform 0.25s ease;
+  }
+
+  .pdp-whatsapp-box + .pdp-giftbox-card {
+    margin-top: 0;
+  }
+
+  .pdp-giftbox-card:hover {
+    border-color: #B89768;
+    box-shadow: 0 6px 20px rgba(184, 151, 104, 0.14);
+    transform: translateY(-1px);
+  }
+
+  .pdp-giftbox-card:focus-visible {
+    outline: 2px solid #163327;
+    outline-offset: 2px;
+  }
+
+  .pdp-giftbox-media {
+    flex-shrink: 0;
+    width: 64px;
+    height: 64px;
+    border-radius: 8px;
+    overflow: hidden;
+    background: #FAF7F2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #B89768;
+  }
+
+  .pdp-giftbox-media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.4s ease;
+  }
+
+  .pdp-giftbox-card:hover .pdp-giftbox-media img {
+    transform: scale(1.06);
+  }
+
+  .pdp-giftbox-content {
+    flex: 1 1 auto;
+    min-width: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  }
+
+  .pdp-giftbox-eyebrow {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #B89768;
+    margin-bottom: 3px;
+  }
+
+  .pdp-giftbox-title {
+    font-size: 14.5px;
+    font-weight: 700;
+    line-height: 1.35;
+    color: #163327;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .pdp-giftbox-price {
+    font-size: 13px;
+    color: #5C5854;
+    margin-top: 2px;
+  }
+
+  .pdp-giftbox-cta {
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 16px;
+    border-radius: 999px;
+    background: #163327;
+    color: #FFFFFF;
+    font-size: 13px;
+    font-weight: 600;
+    white-space: nowrap;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    transition: background-color 0.2s ease;
+  }
+
+  .pdp-giftbox-card:hover .pdp-giftbox-cta {
+    background: #0E241B;
+  }
+
+  .pdp-giftbox-cta-arrow {
+    display: inline-block;
+    transition: transform 0.2s ease;
+  }
+
+  .pdp-giftbox-card:hover .pdp-giftbox-cta-arrow {
+    transform: translateX(3px);
+  }
+
+  .pdp-giftbox-empty {
+    margin: 12px 0 10px;
+    padding: 12px 16px;
+    border: 1.5px dashed #C9A227;
+    border-radius: 12px;
+    background: #FFFBEA;
+    color: #5C4A00;
+    font-size: 13px;
+    line-height: 1.5;
+  }
+
+  @media (min-width: 740px) and (max-width: 1199px) {
+    .pdp-giftbox-card {
+      margin-bottom: 30px;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .pdp-giftbox-card {
+      margin-bottom: 24px;
+      padding: 10px 12px 10px 10px;
+      gap: 12px;
+    }
+    .pdp-giftbox-media {
+      width: 56px;
+      height: 56px;
+    }
+    .pdp-giftbox-title {
+      font-size: 13.5px;
+    }
+    .pdp-giftbox-cta {
+      padding: 7px 12px;
+      font-size: 12.5px;
+    }
+  }
+
+  @media (max-width: 380px) {
+    .pdp-giftbox-cta-label {
+      display: none;
+    }
+    .pdp-giftbox-cta {
+      padding: 8px 11px;
+    }
+  }
+
   /* Product Description Directly Below Title (100% Faithful to Shopify Rich Text Editor) */
   .pdp-description,
   .pdp-description * {
@@ -4709,7 +4882,59 @@
           </div>
         {%- endif -%}
 
-
+        <!-- =========================================================================
+             GIFT BOX UPSELL CARD
+             - Only on products that belong to the "mahjong-set" collection
+             - Title / price / image / URL are read live from the Shopify product
+             ========================================================================= -->
+        {%- if section.settings.show_gift_box_link != false -%}
+          {%- liquid
+            assign in_mahjong_set = false
+            for c in product.collections
+              if c.handle == 'mahjong-set'
+                assign in_mahjong_set = true
+                break
+              endif
+            endfor
+          -%}
+          {%- if in_mahjong_set -%}
+            {%- liquid
+              assign gift_product = section.settings.gift_box_product
+              if gift_product == blank
+                assign gift_product = all_products['mahjiva-signature-mahjong-gift-box-for-tiles-only']
+              endif
+              assign gift_eyebrow = section.settings.gift_box_eyebrow | default: 'Make It a Gift'
+              assign gift_cta = section.settings.gift_box_button_label | default: 'View Gift Box'
+            -%}
+            {%- if gift_product != blank and gift_product.id != blank and gift_product.id != product.id -%}
+              <a class="pdp-giftbox-card" id="pdpGiftBox-{{ section.id }}" href="{{ gift_product.url }}" aria-label="{{ gift_cta | escape }}: {{ gift_product.title | escape }}">
+                <span class="pdp-giftbox-media" aria-hidden="true">
+                  {%- if gift_product.featured_image -%}
+                    {{ gift_product.featured_image | image_url: width: 192 | image_tag: loading: 'lazy', width: 64, height: 64, alt: '' }}
+                  {%- else -%}
+                    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="8" width="18" height="4" rx="1"/><path d="M12 8v13M19 12v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-7M7.5 8a2.5 2.5 0 0 1 0-5C11 3 12 8 12 8s1-5 4.5-5a2.5 2.5 0 0 1 0 5"/></svg>
+                  {%- endif -%}
+                </span>
+                <span class="pdp-giftbox-content">
+                  <span class="pdp-giftbox-eyebrow">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="8" width="18" height="4" rx="1"/><path d="M12 8v13M19 12v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-7M7.5 8a2.5 2.5 0 0 1 0-5C11 3 12 8 12 8s1-5 4.5-5a2.5 2.5 0 0 1 0 5"/></svg>
+                    {{ gift_eyebrow | escape }}
+                  </span>
+                  <span class="pdp-giftbox-title">{{ gift_product.title | escape }}</span>
+                  <span class="pdp-giftbox-price">{{ gift_product.price | money }}</span>
+                </span>
+                <span class="pdp-giftbox-cta">
+                  <span class="pdp-giftbox-cta-label">{{ gift_cta | escape }}</span>
+                  <span class="pdp-giftbox-cta-arrow" aria-hidden="true">→</span>
+                </span>
+              </a>
+            {%- elsif request.design_mode and gift_product.id != product.id -%}
+              <div class="pdp-giftbox-empty">
+                Gift box product not found. Select a product under “Gift Box Link (Mahjong Set products)” in this section's settings.
+              </div>
+            {%- endif -%}
+          {%- endif -%}
+        {%- endif -%}
 
       </div>
 
@@ -6654,6 +6879,35 @@ window.addEventListener('pointercancel', endTrackDrag);
       "id": "whatsapp_bg_color",
       "label": "Background Color",
       "default": "#FAF7F2"
+    },
+    {
+      "type": "header",
+      "content": "Gift Box Link (Mahjong Set products)"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_gift_box_link",
+      "label": "Show Gift Box Card",
+      "default": true,
+      "info": "Shown below the WhatsApp box, only on products in the 'mahjong-set' collection."
+    },
+    {
+      "type": "product",
+      "id": "gift_box_product",
+      "label": "Gift Box Product",
+      "info": "Leave empty to use 'mahjiva-signature-mahjong-gift-box-for-tiles-only'."
+    },
+    {
+      "type": "text",
+      "id": "gift_box_eyebrow",
+      "label": "Eyebrow Text",
+      "default": "Make It a Gift"
+    },
+    {
+      "type": "text",
+      "id": "gift_box_button_label",
+      "label": "Button Label",
+      "default": "View Gift Box"
     },
     {
       "type": "header",
